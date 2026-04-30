@@ -22,6 +22,8 @@ on:
         description: 'PR head SHA or ref to check out (set by /gitnexus command)'
         type: string
         default: ''
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: read
@@ -50,7 +52,7 @@ jobs:
     # not pull_request.
     if: |
       github.event_name != 'pull_request' ||
-      github.event.pull_request.user.login == 'danny-avila'
+      github.event.pull_request.user.login == 'carloswps'
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
