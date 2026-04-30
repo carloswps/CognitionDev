@@ -95,8 +95,17 @@ export async function loadAddedAgent(
       }
     }
 
-    const modelSpecs = (appConfig?.modelSpecs as { list?: Array<{ name: string; label?: string }> })
-      ?.list;
+    const modelSpecs = (
+      appConfig?.modelSpecs as {
+        list?: Array<{
+          name: string;
+          label?: string;
+          preset?: {
+            instructions?: string;
+          };
+        }>;
+      }
+    )?.list;
     const modelSpec = spec != null && spec !== '' ? modelSpecs?.find((s) => s.name === spec) : null;
     const sender =
       rest.modelLabel ??
@@ -136,6 +145,9 @@ export async function loadAddedAgent(
         executeCode?: boolean;
         fileSearch?: boolean;
         webSearch?: boolean;
+        preset?: {
+          instructions?: string;
+        };
       }>;
     }
   )?.list;
