@@ -89,7 +89,9 @@ export async function loadEphemeralAgent(
     }
   }
 
-  const instructions = req.body?.promptPrefix;
+  //const instructions = req.body?.promptPrefix;
+
+  const instructions = req.body?.promptPrefix ?? modelSpec?.preset?.instructions;
 
   // Get endpoint config for modelDisplayLabel fallback
   const appConfig = req.config;
