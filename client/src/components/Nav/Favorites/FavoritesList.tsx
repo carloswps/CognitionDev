@@ -1,25 +1,26 @@
-import React, { useRef, useCallback, useMemo, useEffect } from 'react';
-import { LayoutGrid } from 'lucide-react';
-import { useRecoilValue } from 'recoil';
-import { useDrag, useDrop } from 'react-dnd';
 import { Skeleton } from '@librechat/client';
-import { useNavigate } from 'react-router-dom';
 import { useQueries } from '@tanstack/react-query';
-import { QueryKeys, dataService } from 'librechat-data-provider';
 import type { Agent, TEndpointsConfig, TModelSpec } from 'librechat-data-provider';
+import { dataService, QueryKeys } from 'librechat-data-provider';
+import { LayoutGrid } from 'lucide-react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import type { AgentQueryResult } from '~/common';
-import {
-  useGetConversation,
-  useFavorites,
-  useLocalize,
-  useShowMarketplace,
-  useNewConvo,
-} from '~/hooks';
 import { useGetEndpointsQuery, useGetStartupConfig } from '~/data-provider';
-import { useAssistantsMapContext, useAgentsMapContext } from '~/Providers';
+import {
+  useFavorites,
+  useGetConversation,
+  useLocalize,
+  useNewConvo,
+  useShowMarketplace,
+} from '~/hooks';
 import useSelectMention from '~/hooks/Input/useSelectMention';
-import FavoriteItem from './FavoriteItem';
+import { useAgentsMapContext, useAssistantsMapContext } from '~/Providers';
 import store from '~/store';
+import FavoriteItem from './FavoriteItem';
 
 /** Height intentionally matches FavoriteItem (px-3 py-2 + h-5 icon) to keep the CellMeasurerCache valid across the isAgentsLoading transition. */
 const FavoriteItemSkeleton = () => (

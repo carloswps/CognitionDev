@@ -1,11 +1,11 @@
-import { useState } from 'react';
 import * as Menu from '@ariakit/react/menu';
+import { DropdownPopup, Input, Label } from '@librechat/client';
 import { ChevronDown, Eye, EyeOff } from 'lucide-react';
-import { Input, Label, DropdownPopup } from '@librechat/client';
-import type { SearchApiKeyFormData } from '~/hooks/Plugins/useAuthSearchTool';
+import { useState } from 'react';
 import type { UseFormRegister } from 'react-hook-form';
 import type { MenuItemProps } from '~/common';
 import { useLocalize } from '~/hooks';
+import type { SearchApiKeyFormData } from '~/hooks/Plugins/useAuthSearchTool';
 
 interface InputConfig {
   placeholder: string;
@@ -146,4 +146,4 @@ export default function InputSection({
   );
 }
 
-export type { InputConfig, DropdownOption };
+export type { DropdownOption, InputConfig };

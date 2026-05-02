@@ -1,5 +1,5 @@
-import conversationTagSchema, { IConversationTag } from '~/schema/conversationTag';
 import { applyTenantIsolation } from '~/models/plugins/tenantIsolation';
+import conversationTagSchema, { type IConversationTag } from '~/schema/conversationTag';
 
 export function createConversationTagModel(mongoose: typeof import('mongoose')) {
   applyTenantIsolation(conversationTagSchema);

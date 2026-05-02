@@ -42,7 +42,11 @@ async function buildEndpointOption(req, res, next) {
   } catch (error) {
     logger.error(`Error parsing compact conversation for endpoint ${endpoint}`, error);
     logger.debug({
-      'Error parsing compact conversation': { endpoint, endpointType, conversation: req.body },
+      'Error parsing compact conversation': {
+        endpoint,
+        endpointType,
+        conversation: req.body,
+      },
     });
     return handleError(res, { text: 'Error parsing conversation' });
   }

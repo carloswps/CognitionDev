@@ -1,27 +1,27 @@
-import { useMemo, useState, useEffect } from 'react';
-import { Plus } from 'lucide-react';
-import { matchSorter } from 'match-sorter';
-import { SystemRoles, PermissionTypes, Permissions } from 'librechat-data-provider';
 import {
   Button,
   Checkbox,
-  Spinner,
   FilterInput,
-  TooltipAnchor,
   OGDialogTrigger,
+  Spinner,
+  TooltipAnchor,
   useToastContext,
 } from '@librechat/client';
 import type { TUserMemory } from 'librechat-data-provider';
+import { Permissions, PermissionTypes, SystemRoles } from 'librechat-data-provider';
+import { Plus } from 'lucide-react';
+import { matchSorter } from 'match-sorter';
+import { useEffect, useMemo, useState } from 'react';
 import {
-  useUpdateMemoryPreferencesMutation,
-  useMemoriesQuery,
   useGetUserQuery,
+  useMemoriesQuery,
+  useUpdateMemoryPreferencesMutation,
 } from '~/data-provider';
-import { useLocalize, useAuthContext, useHasAccess } from '~/hooks';
-import MemoryCreateDialog from './MemoryCreateDialog';
-import MemoryUsageBadge from './MemoryUsageBadge';
+import { useAuthContext, useHasAccess, useLocalize } from '~/hooks';
 import AdminSettings from './AdminSettings';
+import MemoryCreateDialog from './MemoryCreateDialog';
 import MemoryList from './MemoryList';
+import MemoryUsageBadge from './MemoryUsageBadge';
 
 const pageSize = 10;
 

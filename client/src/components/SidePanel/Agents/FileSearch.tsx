@@ -1,18 +1,18 @@
-import { memo, useMemo, useRef, useState } from 'react';
-import { Folder } from 'lucide-react';
 import * as Ariakit from '@ariakit/react';
+import { AttachmentIcon, DropdownPopup, SharePointIcon } from '@librechat/client';
+import { AgentCapabilities, EModelEndpoint, EToolResources } from 'librechat-data-provider';
+import { Folder } from 'lucide-react';
+import { memo, useMemo, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { SharePointIcon, AttachmentIcon, DropdownPopup } from '@librechat/client';
-import { EModelEndpoint, EToolResources, AgentCapabilities } from 'librechat-data-provider';
-import type { ExtendedFile, AgentForm } from '~/common';
-import { useSharePointFileHandlingNoChatContext } from '~/hooks/Files/useSharePointFileHandling';
-import { useFileHandlingNoChatContext } from '~/hooks/Files/useFileHandling';
-import { useAgentFileConfig, useLocalize, useLazyEffect } from '~/hooks';
-import { SharePointPickerDialog } from '~/components/SharePoint';
-import FileRow from '~/components/Chat/Input/Files/FileRow';
-import { useGetStartupConfig } from '~/data-provider';
-import FileSearchCheckbox from './FileSearchCheckbox';
+import type { AgentForm, ExtendedFile } from '~/common';
 import { isEphemeralAgent } from '~/common';
+import FileRow from '~/components/Chat/Input/Files/FileRow';
+import { SharePointPickerDialog } from '~/components/SharePoint';
+import { useGetStartupConfig } from '~/data-provider';
+import { useAgentFileConfig, useLazyEffect, useLocalize } from '~/hooks';
+import { useFileHandlingNoChatContext } from '~/hooks/Files/useFileHandling';
+import { useSharePointFileHandlingNoChatContext } from '~/hooks/Files/useSharePointFileHandling';
+import FileSearchCheckbox from './FileSearchCheckbox';
 
 function FileSearch({
   agent_id,
@@ -36,7 +36,10 @@ function FileSearch({
 
   const { handleFileChange } = useFileHandlingNoChatContext(
     {
-      additionalMetadata: { agent_id, tool_resource: EToolResources.file_search },
+      additionalMetadata: {
+        agent_id,
+        tool_resource: EToolResources.file_search,
+      },
       endpointOverride,
       endpointTypeOverride: endpointType,
       fileSetter: setFiles,
@@ -47,7 +50,10 @@ function FileSearch({
   const { handleSharePointFiles, isProcessing, downloadProgress } =
     useSharePointFileHandlingNoChatContext(
       {
-        additionalMetadata: { agent_id, tool_resource: EToolResources.file_search },
+        additionalMetadata: {
+          agent_id,
+          tool_resource: EToolResources.file_search,
+        },
         endpointOverride,
         endpointTypeOverride: endpointType,
         fileSetter: setFiles,

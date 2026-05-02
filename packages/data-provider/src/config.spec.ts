@@ -1,7 +1,7 @@
-import type { TEndpointsConfig } from './types';
-import { EModelEndpoint, isDocumentSupportedProvider } from './schemas';
+import { excludedKeys, resolveEndpointType } from './config';
 import { getEndpointFileConfig, mergeFileConfig } from './file-config';
-import { resolveEndpointType, excludedKeys } from './config';
+import { EModelEndpoint, isDocumentSupportedProvider } from './schemas';
+import type { TEndpointsConfig } from './types';
 
 const endpointsConfig: TEndpointsConfig = {
   [EModelEndpoint.openAI]: { userProvide: false, order: 0 },
@@ -9,7 +9,11 @@ const endpointsConfig: TEndpointsConfig = {
   [EModelEndpoint.anthropic]: { userProvide: false, order: 6 },
   [EModelEndpoint.bedrock]: { userProvide: false, order: 7 },
   Moonshot: { type: EModelEndpoint.custom, userProvide: false, order: 9999 },
-  'Some Endpoint': { type: EModelEndpoint.custom, userProvide: false, order: 9999 },
+  'Some Endpoint': {
+    type: EModelEndpoint.custom,
+    userProvide: false,
+    order: 9999,
+  },
   Gemini: { type: EModelEndpoint.custom, userProvide: false, order: 9999 },
 };
 
@@ -310,16 +314,15 @@ describe('any custom endpoint is document-supported regardless of name', () => {
     expect(isDocumentSupportedProvider(endpointType)).toBe(true);
   });
 
-  it.each(arbitraryNames)(
-    '"%s" resolves the same whether used directly or through an agent',
-    (name) => {
-      const directType = resolveEndpointType(configWithArbitraryEndpoints, name);
-      const agentType = resolveEndpointType(
-        configWithArbitraryEndpoints,
-        EModelEndpoint.agents,
-        name,
-      );
-      expect(directType).toBe(agentType);
-    },
-  );
+  it.each(
+    arbitraryNames,
+  )('"%s" resolves the same whether used directly or through an agent', (name) => {
+    const directType = resolveEndpointType(configWithArbitraryEndpoints, name);
+    const agentType = resolveEndpointType(
+      configWithArbitraryEndpoints,
+      EModelEndpoint.agents,
+      name,
+    );
+    expect(directType).toBe(agentType);
+  });
 });

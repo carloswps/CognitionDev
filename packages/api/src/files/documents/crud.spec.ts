@@ -1,6 +1,6 @@
-import path from 'path';
 import * as fs from 'fs';
 import JSZip from 'jszip';
+import path from 'path';
 import { parseDocument } from './crud';
 
 describe('Document Parser', () => {
@@ -106,8 +106,12 @@ describe('Document Parser', () => {
 
   test('parseDocument() aborts decompression when content.xml exceeds the size limit', async () => {
     const zip = new JSZip();
-    zip.file('mimetype', 'application/vnd.oasis.opendocument.text', { compression: 'STORE' });
-    zip.file('content.xml', 'x'.repeat(51 * 1024 * 1024), { compression: 'DEFLATE' });
+    zip.file('mimetype', 'application/vnd.oasis.opendocument.text', {
+      compression: 'STORE',
+    });
+    zip.file('content.xml', 'x'.repeat(51 * 1024 * 1024), {
+      compression: 'DEFLATE',
+    });
     const buf = await zip.generateAsync({ type: 'nodebuffer' });
 
     const tmpPath = path.join(__dirname, 'bomb.odt');

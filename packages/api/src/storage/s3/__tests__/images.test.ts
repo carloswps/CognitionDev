@@ -1,8 +1,8 @@
 import fs from 'fs';
-import type { S3ImageServiceDeps } from '~/storage/s3/images';
-import type { ServerRequest } from '~/types';
-import { S3ImageService } from '~/storage/s3/images';
 import { saveBufferToS3 } from '~/storage/s3/crud';
+import type { S3ImageServiceDeps } from '~/storage/s3/images';
+import { S3ImageService } from '~/storage/s3/images';
+import type { ServerRequest } from '~/types';
 
 jest.mock('fs', () => ({
   ...jest.requireActual('fs'),
@@ -101,7 +101,10 @@ describe('S3ImageService', () => {
 
   describe('prepareImageURL', () => {
     it('returns tuple with resolved promise and filepath', async () => {
-      const file = { file_id: 'file123', filepath: 'https://example.com/file.png' };
+      const file = {
+        file_id: 'file123',
+        filepath: 'https://example.com/file.png',
+      };
       const result = await service.prepareImageURL(file);
 
       expect(Array.isArray(result)).toBe(true);
@@ -109,7 +112,10 @@ describe('S3ImageService', () => {
     });
 
     it('calls updateFile with file_id', async () => {
-      const file = { file_id: 'file123', filepath: 'https://example.com/file.png' };
+      const file = {
+        file_id: 'file123',
+        filepath: 'https://example.com/file.png',
+      };
       await service.prepareImageURL(file);
 
       expect(mockDeps.updateFile).toHaveBeenCalledWith({ file_id: 'file123' });

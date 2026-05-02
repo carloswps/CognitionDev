@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
-import { apiBaseUrl, QueryKeys, request, dataService } from 'librechat-data-provider';
-import { useQuery, useQueries, useQueryClient } from '@tanstack/react-query';
+import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { Agents, TConversation } from 'librechat-data-provider';
+import { apiBaseUrl, dataService, QueryKeys, request } from 'librechat-data-provider';
+import { useEffect, useMemo, useState } from 'react';
 import { updateConvoInAllQueries } from '~/utils';
 
 export interface StreamStatusResponse {
@@ -116,7 +116,10 @@ export function useTitleGeneration(enabled = true) {
           [QueryKeys.conversation, conversationId],
           (convo: TConversation | undefined) => (convo ? { ...convo, title } : convo),
         );
-        updateConvoInAllQueries(queryClient, conversationId, (c) => ({ ...c, title }));
+        updateConvoInAllQueries(queryClient, conversationId, (c) => ({
+          ...c,
+          title,
+        }));
         // Only update document title if this conversation is currently active
         if (window.location.pathname.includes(conversationId)) {
           document.title = title;

@@ -1,15 +1,16 @@
 import { logger } from '@librechat/data-schemas';
-import { ErrorTypes } from 'librechat-data-provider';
 import type { NextFunction, Request, Response } from 'express';
-import type { MongoServerError, ValidationError, CustomError } from '~/types';
+import { ErrorTypes } from 'librechat-data-provider';
+import type { CustomError, MongoServerError, ValidationError } from '~/types';
 
 const handleDuplicateKeyError = (err: MongoServerError, res: Response) => {
   logger.warn('Duplicate key error: ' + (err.errmsg || err.message));
   const field = err.keyValue ? `${JSON.stringify(Object.keys(err.keyValue))}` : 'unknown';
   const code = 409;
-  res
-    .status(code)
-    .send({ messages: `An document with that ${field} already exists.`, fields: field });
+  res.status(code).send({
+    messages: `An document with that ${field} already exists.`,
+    fields: field,
+  });
 };
 
 const handleValidationError = (err: ValidationError, res: Response) => {

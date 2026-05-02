@@ -1,27 +1,27 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import FormData from 'form-data';
 import { logger } from '@librechat/data-schemas';
+import type { AxiosError, AxiosRequestConfig } from 'axios';
+import FormData from 'form-data';
+import * as fs from 'fs';
 import { HttpsProxyAgent } from 'https-proxy-agent';
+import type { TCustomConfig } from 'librechat-data-provider';
 import {
-  FileSources,
   envVarRegex,
   extractEnvVariable,
   extractVariableName,
+  FileSources,
 } from 'librechat-data-provider';
-import type { TCustomConfig } from 'librechat-data-provider';
-import type { AxiosError, AxiosRequestConfig } from 'axios';
+import * as path from 'path';
 import type {
   MistralFileUploadResponse,
-  MistralSignedUrlResponse,
-  MistralOCRUploadResult,
   MistralOCRError,
+  MistralOCRUploadResult,
+  MistralSignedUrlResponse,
+  OCRImage,
+  OCRResult,
   OCRResultPage,
   ServerRequest,
-  OCRResult,
-  OCRImage,
 } from '~/types';
-import { logAxiosError, createAxiosInstance } from '~/utils/axios';
+import { createAxiosInstance, logAxiosError } from '~/utils/axios';
 import { readFileAsBuffer } from '~/utils/files';
 import { loadServiceKey } from '~/utils/key';
 
@@ -334,7 +334,10 @@ function getDocumentType(file: Express.Multer.File): 'image_url' | 'document_url
 /**
  * Processes OCR result pages into aggregated text and images
  */
-function processOCRResult(ocrResult: OCRResult): { text: string; images: string[] } {
+function processOCRResult(ocrResult: OCRResult): {
+  text: string;
+  images: string[];
+} {
   let aggregatedText = '';
   const images: string[] = [];
 
@@ -641,7 +644,10 @@ async function performGoogleVertexOCR({
     url: baseURL,
     body: {
       ...requestBody,
-      document: { ...requestBody.document, [documentKey]: 'base64_data_hidden' },
+      document: {
+        ...requestBody.document,
+        [documentKey]: 'base64_data_hidden',
+      },
     },
   });
 

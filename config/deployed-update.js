@@ -11,7 +11,9 @@ async function validateDockerRunning() {
 }
 
 function getCurrentBranch() {
-  return execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim();
+  return execSync('git rev-parse --abbrev-ref HEAD', {
+    encoding: 'utf8',
+  }).trim();
 }
 
 const shouldRebase = process.argv.includes('--rebase');

@@ -1,10 +1,9 @@
-import type { FilterQuery, Model, SortOrder } from 'mongoose';
-import { createTempChatExpirationDate } from '~/utils/tempChatRetention';
-import { tenantSafeBulkWrite } from '~/utils/tenantBulkWrite';
+import type { DeleteResult, FilterQuery, Model, SortOrder } from 'mongoose';
 import logger from '~/config/winston';
 import type { AppConfig, IConversation } from '~/types';
+import { createTempChatExpirationDate } from '~/utils/tempChatRetention';
+import { tenantSafeBulkWrite } from '~/utils/tenantBulkWrite';
 import type { MessageMethods } from './message';
-import type { DeleteResult } from 'mongoose';
 
 export interface ConversationMethods {
   getConvoFiles(conversationId: string): Promise<string[]>;
@@ -14,9 +13,21 @@ export interface ConversationMethods {
     messages: { deletedCount?: number };
   }>;
   saveConvo(
-    ctx: { userId: string; isTemporary?: boolean; interfaceConfig?: AppConfig['interfaceConfig'] },
-    data: { conversationId: string; newConversationId?: string; [key: string]: unknown },
-    metadata?: { context?: string; unsetFields?: Record<string, number>; noUpsert?: boolean },
+    ctx: {
+      userId: string;
+      isTemporary?: boolean;
+      interfaceConfig?: AppConfig['interfaceConfig'];
+    },
+    data: {
+      conversationId: string;
+      newConversationId?: string;
+      [key: string]: unknown;
+    },
+    metadata?: {
+      context?: string;
+      unsetFields?: Record<string, number>;
+      noUpsert?: boolean;
+    },
   ): Promise<IConversation | { message: string } | null>;
   bulkSaveConvos(conversations: Array<Record<string, unknown>>): Promise<unknown>;
   getConvosByCursor(
@@ -156,7 +167,11 @@ export function createConversationMethods(
       newConversationId?: string;
       [key: string]: unknown;
     },
-    metadata?: { context?: string; unsetFields?: Record<string, number>; noUpsert?: boolean },
+    metadata?: {
+      context?: string;
+      unsetFields?: Record<string, number>;
+      noUpsert?: boolean;
+    },
   ) {
     try {
       const Conversation = mongoose.models.Conversation as Model<IConversation>;
@@ -167,7 +182,11 @@ export function createConversationMethods(
       }
 
       const messages = await getMessages({ conversationId }, '_id');
-      const update: Record<string, unknown> = { ...convo, messages, user: userId };
+      const update: Record<string, unknown> = {
+        ...convo,
+        messages,
+        user: userId,
+      };
 
       if (newConversationId) {
         update.conversationId = newConversationId;
@@ -299,7 +318,9 @@ export function createConversationMethods(
         if (!matchingIds.length) {
           return { conversations: [], nextCursor: null };
         }
-        filters.push({ conversationId: { $in: matchingIds } } as FilterQuery<IConversation>);
+        filters.push({
+          conversationId: { $in: matchingIds },
+        } as FilterQuery<IConversation>);
       } catch (error) {
         logger.error('[getConvosByCursor] Error during meiliSearch', error);
         throw new Error('Error during meiliSearch');

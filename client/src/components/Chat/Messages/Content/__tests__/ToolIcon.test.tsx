@@ -1,4 +1,4 @@
-import { Constants, actionDelimiter } from 'librechat-data-provider';
+import { actionDelimiter, Constants } from 'librechat-data-provider';
 import { getToolIconType } from '../ToolOutput/ToolIcon';
 
 describe('getToolIconType - ACTN-01: Action delimiter detection', () => {

@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import TagManager from 'react-gtm-module';
-import { LocalStorageKeys, PermissionTypes, Permissions } from 'librechat-data-provider';
 import type { TStartupConfig, TUser } from 'librechat-data-provider';
-import { useMCPToolsQuery, useMCPServersQuery } from '~/data-provider';
-import { cleanupTimestampedStorage } from '~/utils/timestamps';
-import useSpeechSettingsInit from './useSpeechSettingsInit';
+import { LocalStorageKeys, Permissions, PermissionTypes } from 'librechat-data-provider';
+import { useEffect } from 'react';
+import TagManager from 'react-gtm-module';
+import { useRecoilState } from 'recoil';
+import { useMCPServersQuery, useMCPToolsQuery } from '~/data-provider';
 import { useHasAccess } from '~/hooks';
 import store from '~/store';
+import { cleanupTimestampedStorage } from '~/utils/timestamps';
+import useSpeechSettingsInit from './useSpeechSettingsInit';
 
 export default function useAppStartup({
   startupConfig,

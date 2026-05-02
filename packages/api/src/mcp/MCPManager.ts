@@ -1,23 +1,23 @@
-import pick from 'lodash/pick';
+import type { IUser, TokenMethods } from '@librechat/data-schemas';
 import { logger } from '@librechat/data-schemas';
-import { CallToolResultSchema, ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
 import type { RequestOptions } from '@modelcontextprotocol/sdk/shared/protocol.js';
-import type { TokenMethods, IUser } from '@librechat/data-schemas';
-import type { GraphTokenResolver } from '~/utils/graph';
+import { CallToolResultSchema, ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
+import pick from 'lodash/pick';
 import type { FlowStateManager } from '~/flow/manager';
-import type { MCPOAuthTokens } from './oauth';
 import type { RequestBody } from '~/types';
-import type * as t from './types';
-import { MCPServersInitializer } from './registry/MCPServersInitializer';
-import { MCPServerInspector } from './registry/MCPServerInspector';
-import { MCPServersRegistry } from './registry/MCPServersRegistry';
-import { UserConnectionManager } from './UserConnectionManager';
-import { ConnectionsRepository } from './ConnectionsRepository';
-import { MCPConnectionFactory } from './MCPConnectionFactory';
-import { preProcessGraphTokens } from '~/utils/graph';
-import { formatToolContent } from './parsers';
-import { MCPConnection } from './connection';
 import { processMCPEnv } from '~/utils/env';
+import type { GraphTokenResolver } from '~/utils/graph';
+import { preProcessGraphTokens } from '~/utils/graph';
+import { ConnectionsRepository } from './ConnectionsRepository';
+import type { MCPConnection } from './connection';
+import { MCPConnectionFactory } from './MCPConnectionFactory';
+import type { MCPOAuthTokens } from './oauth';
+import { formatToolContent } from './parsers';
+import { MCPServerInspector } from './registry/MCPServerInspector';
+import { MCPServersInitializer } from './registry/MCPServersInitializer';
+import { MCPServersRegistry } from './registry/MCPServersRegistry';
+import type * as t from './types';
+import { UserConnectionManager } from './UserConnectionManager';
 import { isUserSourced } from './utils';
 
 /**
@@ -147,7 +147,11 @@ export class MCPManager extends UserConnectionManager {
       connectionTimeout: args.connectionTimeout,
     });
 
-    return { tools: result.tools, oauthRequired: result.oauthRequired, oauthUrl: result.oauthUrl };
+    return {
+      tools: result.tools,
+      oauthRequired: result.oauthRequired,
+      oauthUrl: result.oauthUrl,
+    };
   }
 
   /** Returns all available tool functions from app-level connections */

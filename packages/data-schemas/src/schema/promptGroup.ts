@@ -1,5 +1,5 @@
-import { Schema } from 'mongoose';
 import { Constants } from 'librechat-data-provider';
+import { Schema } from 'mongoose';
 import type { IPromptGroupDocument } from '~/types';
 
 const promptGroupSchema = new Schema<IPromptGroupDocument>(
@@ -42,9 +42,8 @@ const promptGroupSchema = new Schema<IPromptGroupDocument>(
       type: String,
       index: true,
       validate: {
-        validator: function (v: string | undefined | null): boolean {
-          return v === undefined || v === null || v === '' || /^[a-z0-9-]+$/.test(v);
-        },
+        validator: (v: string | undefined | null): boolean =>
+          v === undefined || v === null || v === '' || /^[a-z0-9-]+$/.test(v),
         message: (props: { value?: string } | undefined) =>
           `${props?.value ?? 'Value'} is not a valid command. Only lowercase alphanumeric characters and hyphens are allowed.`,
       },

@@ -1,11 +1,11 @@
-import React from 'react';
-import { SystemRoles } from 'librechat-data-provider';
-import { render, screen } from '@testing-library/react';
 import type { UseMutationResult } from '@tanstack/react-query';
+import { render, screen } from '@testing-library/react';
+import { SystemRoles } from 'librechat-data-provider';
+import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import type { Agent, AgentCreateParams, TUser, ResourceType } from 'librechat-data-provider';
-import AgentFooter from '../AgentFooter';
+import type { Agent, AgentCreateParams, ResourceType, TUser } from 'librechat-data-provider';
 import { Panel } from '~/common';
+import AgentFooter from '../AgentFooter';
 
 const mockUseWatch = jest.fn();
 const mockUseAuthContext = jest.fn();
@@ -351,7 +351,11 @@ describe('AgentFooter', () => {
       mockUseAuthContext.mockReturnValue(createAuthContext(mockUsers.different));
       mockUseWatch.mockImplementation(({ name }) => {
         if (name === 'agent') {
-          return { name: 'Test Agent', author: 'different-author', _id: 'agent-123' };
+          return {
+            name: 'Test Agent',
+            author: 'different-author',
+            _id: 'agent-123',
+          };
         }
         if (name === 'id') {
           return 'agent-123';

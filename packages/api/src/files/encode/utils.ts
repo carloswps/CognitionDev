@@ -1,8 +1,8 @@
-import getStream from 'get-stream';
-import { Providers } from '@librechat/agents';
-import { FileSources, mergeFileConfig, getEndpointFileConfig } from 'librechat-data-provider';
+import type { Providers } from '@librechat/agents';
 import type { IMongoFile } from '@librechat/data-schemas';
-import type { ServerRequest, StrategyFunctions, ProcessedFile } from '~/types';
+import getStream from 'get-stream';
+import { FileSources, getEndpointFileConfig, mergeFileConfig } from 'librechat-data-provider';
+import type { ProcessedFile, ServerRequest, StrategyFunctions } from '~/types';
 
 /**
  * Extracts the configured file size limit for a specific provider from fileConfig

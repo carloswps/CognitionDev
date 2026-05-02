@@ -1,5 +1,5 @@
+import type { TPlugin, TUser } from 'librechat-data-provider';
 import { atom } from 'recoil';
-import type { TUser, TPlugin } from 'librechat-data-provider';
 
 const user = atom<TUser | undefined>({
   key: 'user',

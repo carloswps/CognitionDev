@@ -1,17 +1,17 @@
-import { useState } from 'react';
 import { Button, OGDialog, OGDialogTemplate } from '@librechat/client';
 import {
   AuthType,
   RerankerTypes,
-  SearchProviders,
   ScraperProviders,
   SearchCategories,
+  SearchProviders,
 } from 'librechat-data-provider';
-import type { SearchApiKeyFormData } from '~/hooks/Plugins/useAuthSearchTool';
-import type { UseFormRegister, UseFormHandleSubmit } from 'react-hook-form';
-import InputSection, { type DropdownOption } from './InputSection';
+import { useState } from 'react';
+import type { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form';
 import { useGetStartupConfig } from '~/data-provider';
 import { useLocalize } from '~/hooks';
+import type { SearchApiKeyFormData } from '~/hooks/Plugins/useAuthSearchTool';
+import InputSection, { type DropdownOption } from './InputSection';
 
 export default function ApiKeyDialog({
   isOpen,

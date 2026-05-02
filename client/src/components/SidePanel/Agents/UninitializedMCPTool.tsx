@@ -1,9 +1,9 @@
+import { Label, OGDialog, OGDialogTemplate, OGDialogTrigger, TrashIcon } from '@librechat/client';
 import React, { useState } from 'react';
-import { Label, OGDialog, TrashIcon, OGDialogTrigger, OGDialogTemplate } from '@librechat/client';
 import type { MCPServerInfo } from '~/common';
-import { useLocalize, useMCPServerManager, useRemoveMCPTool } from '~/hooks';
-import MCPServerStatusIcon from '~/components/MCP/MCPServerStatusIcon';
 import MCPConfigDialog from '~/components/MCP/MCPConfigDialog';
+import MCPServerStatusIcon from '~/components/MCP/MCPServerStatusIcon';
+import { useLocalize, useMCPServerManager, useRemoveMCPTool } from '~/hooks';
 import { cn } from '~/utils';
 
 export default function UninitializedMCPTool({ serverInfo }: { serverInfo?: MCPServerInfo }) {
@@ -90,7 +90,11 @@ export default function UninitializedMCPTool({ serverInfo }: { serverInfo?: MCPS
           )}
           <div
             className="grow px-2 py-1.5"
-            style={{ textOverflow: 'ellipsis', wordBreak: 'break-all', overflow: 'hidden' }}
+            style={{
+              textOverflow: 'ellipsis',
+              wordBreak: 'break-all',
+              overflow: 'hidden',
+            }}
           >
             {serverName}
             {isServerInitializing && (

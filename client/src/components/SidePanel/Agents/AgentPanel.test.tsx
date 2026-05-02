@@ -1,11 +1,12 @@
 /**
  * @jest-environment jsdom
  */
-import * as React from 'react';
-import { render, waitFor, fireEvent } from '@testing-library/react';
-import { describe, it, expect, beforeEach, jest } from '@jest/globals';
+
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import type { Agent } from 'librechat-data-provider';
+import type * as React from 'react';
 
 // Mock toast context - define this after all mocks
 let mockShowToast: jest.Mock;
@@ -85,7 +86,10 @@ jest.mock('librechat-data-provider/react-query', () => ({
 }));
 
 jest.mock('~/utils', () => ({
-  createProviderOption: jest.fn((provider: string) => ({ value: provider, label: provider })),
+  createProviderOption: jest.fn((provider: string) => ({
+    value: provider,
+    label: provider,
+  })),
   getDefaultAgentFormValues: jest.fn(() => ({
     id: '',
     name: '',

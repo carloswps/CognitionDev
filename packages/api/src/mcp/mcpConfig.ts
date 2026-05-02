@@ -1,4 +1,4 @@
-import { math, isEnabled } from '~/utils';
+import { isEnabled, math } from '~/utils';
 
 /**
  * Centralized configuration for MCP-related environment variables.

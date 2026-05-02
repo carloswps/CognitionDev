@@ -1,15 +1,15 @@
-import { Types } from 'mongoose';
-import {
-  ResourceType,
-  AccessRoleIds,
-  PrincipalType,
-  PermissionBits,
-} from 'librechat-data-provider';
-import { logger, encryptV2, decryptV2, createMethods } from '@librechat/data-schemas';
 import type { AllMethods, MCPServerDocument } from '@librechat/data-schemas';
-import type { IServerConfigsRepositoryInterface } from '~/mcp/registry/ServerConfigsRepositoryInterface';
-import type { ParsedServerConfig, AddServerResult } from '~/mcp/types';
+import { createMethods, decryptV2, encryptV2, logger } from '@librechat/data-schemas';
+import {
+  AccessRoleIds,
+  PermissionBits,
+  PrincipalType,
+  ResourceType,
+} from 'librechat-data-provider';
+import type { Types } from 'mongoose';
 import { AccessControlService } from '~/acl/accessControlService';
+import type { IServerConfigsRepositoryInterface } from '~/mcp/registry/ServerConfigsRepositoryInterface';
+import type { AddServerResult, ParsedServerConfig } from '~/mcp/types';
 
 /**
  * Regex patterns for credential/env placeholders that should not be allowed in user-provided configs.
@@ -551,7 +551,9 @@ export class ServerConfigsDB implements IServerConfigsRepositoryInterface {
     }
 
     if (result.oauth?.client_secret) {
-      const oauthConfig = result.oauth as { client_secret: string } & typeof result.oauth;
+      const oauthConfig = result.oauth as {
+        client_secret: string;
+      } & typeof result.oauth;
       try {
         result = {
           ...result,

@@ -1,9 +1,9 @@
+import { Button, Sidebar, TooltipAnchor } from '@librechat/client';
 import { startTransition } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { TooltipAnchor, Button, Sidebar } from '@librechat/client';
 import { useLocalize } from '~/hooks';
-import { cn } from '~/utils';
 import store from '~/store';
+import { cn } from '~/utils';
 
 export const CLOSE_SIDEBAR_ID = 'close-sidebar-button';
 export const OPEN_SIDEBAR_ID = 'open-sidebar-button';

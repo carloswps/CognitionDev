@@ -1,6 +1,12 @@
 import type { QueryOptions } from 'mongoose';
-import { IToken, TokenCreateData, TokenQuery, TokenUpdateData, TokenDeleteResult } from '~/types';
 import logger from '~/config/winston';
+import type {
+  IToken,
+  TokenCreateData,
+  TokenDeleteResult,
+  TokenQuery,
+  TokenUpdateData,
+} from '~/types';
 
 // Factory function that takes mongoose instance and returns the methods
 export function createTokenMethods(mongoose: typeof import('mongoose')) {

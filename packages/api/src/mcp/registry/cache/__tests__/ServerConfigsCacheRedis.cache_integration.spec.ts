@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import { ParsedServerConfig } from '~/mcp/types';
+import type { ParsedServerConfig } from '~/mcp/types';
 
 describe('ServerConfigsCacheRedis Integration Tests', () => {
   let ServerConfigsCacheRedis: typeof import('../ServerConfigsCacheRedis').ServerConfigsCacheRedis;
@@ -63,7 +63,9 @@ describe('ServerConfigsCacheRedis Integration Tests', () => {
       const keysToDelete: string[] = [];
 
       // Collect all keys first
-      for await (const key of keyvRedisClient.scanIterator({ MATCH: pattern })) {
+      for await (const key of keyvRedisClient.scanIterator({
+        MATCH: pattern,
+      })) {
         keysToDelete.push(key);
       }
 

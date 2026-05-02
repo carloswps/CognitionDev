@@ -1,11 +1,11 @@
-import { useState, useMemo, memo, useCallback, useRef, useId, type MouseEvent } from 'react';
+import { CheckMark, Clipboard, TooltipAnchor } from '@librechat/client';
 import { useAtomValue } from 'jotai';
-import { Lightbulb, ChevronDown, ChevronUp } from 'lucide-react';
-import { Clipboard, CheckMark, TooltipAnchor } from '@librechat/client';
-import type { FocusEvent, FC } from 'react';
-import { useLocalize, useExpandCollapse } from '~/hooks';
-import { showThinkingAtom } from '~/store/showThinking';
+import { ChevronDown, ChevronUp, Lightbulb } from 'lucide-react';
+import type { FC, FocusEvent } from 'react';
+import { type MouseEvent, memo, useCallback, useId, useMemo, useRef, useState } from 'react';
+import { useExpandCollapse, useLocalize } from '~/hooks';
 import { fontSizeAtom } from '~/store/fontSize';
+import { showThinkingAtom } from '~/store/showThinking';
 import { cn } from '~/utils';
 
 /**

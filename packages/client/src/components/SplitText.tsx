@@ -1,4 +1,4 @@
-import { useSprings, animated, SpringConfig } from '@react-spring/web';
+import { animated, type SpringConfig, useSprings } from '@react-spring/web';
 import { useEffect, useRef, useState } from 'react';
 
 interface SegmenterOptions {

@@ -1,7 +1,7 @@
-import { z } from 'zod';
-import { ViolationTypes, ErrorTypes } from 'librechat-data-provider';
-import type { Agent, TModelsConfig } from 'librechat-data-provider';
 import type { Request, Response } from 'express';
+import type { Agent, TModelsConfig } from 'librechat-data-provider';
+import { ErrorTypes, ViolationTypes } from 'librechat-data-provider';
+import { z } from 'zod';
 
 /**
  * Permissive Request alias used by {@link validateAgentModel}. Accepts either
@@ -51,11 +51,20 @@ export const agentSupportContactSchema = z
 export const graphEdgeSchema = z.object({
   from: z.union([z.string(), z.array(z.string())]),
   to: z.union([z.string(), z.array(z.string())]),
-  description: z.string().optional().transform((v) => (v === '' ? undefined : v)),
+  description: z
+    .string()
+    .optional()
+    .transform((v) => (v === '' ? undefined : v)),
   edgeType: z.enum(['handoff', 'direct']).optional(),
-  prompt: z.union([z.string(), z.function()]).optional().transform((v) => (v === '' ? undefined : v)),
+  prompt: z
+    .union([z.string(), z.function()])
+    .optional()
+    .transform((v) => (v === '' ? undefined : v)),
   excludeResults: z.boolean().optional(),
-  promptKey: z.string().optional().transform((v) => (v === '' ? undefined : v)),
+  promptKey: z
+    .string()
+    .optional()
+    .transform((v) => (v === '' ? undefined : v)),
 });
 
 /** Per-tool options schema (defer_loading, allowed_callers) */

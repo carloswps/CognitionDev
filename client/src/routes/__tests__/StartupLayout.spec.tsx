@@ -1,6 +1,7 @@
 /* eslint-disable i18next/no-literal-string */
-import React from 'react';
+
 import { render, waitFor } from '@testing-library/react';
+import type React from 'react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import StartupLayout from '~/routes/Layouts/Startup';
 import { SESSION_KEY } from '~/utils';

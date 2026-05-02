@@ -1,7 +1,7 @@
 import { createReadStream } from 'fs';
 import { readFile, stat } from 'fs/promises';
 import { Readable } from 'stream';
-import { readFileAsString, readFileAsBuffer, readJsonFile } from '../files';
+import { readFileAsBuffer, readFileAsString, readJsonFile } from '../files';
 
 jest.mock('fs');
 jest.mock('fs/promises');
@@ -112,7 +112,9 @@ describe('File utilities', () => {
 
       (createReadStream as jest.Mock).mockReturnValue(mockStream);
 
-      await readFileAsString(mockFilePath, { streamThreshold: customThreshold });
+      await readFileAsString(mockFilePath, {
+        streamThreshold: customThreshold,
+      });
 
       expect(createReadStream).toHaveBeenCalled();
       expect(readFile).not.toHaveBeenCalled();
@@ -250,7 +252,9 @@ describe('File utilities', () => {
 
       (createReadStream as jest.Mock).mockReturnValue(mockStream);
 
-      await readFileAsBuffer(mockFilePath, { highWaterMark: customHighWaterMark });
+      await readFileAsBuffer(mockFilePath, {
+        highWaterMark: customHighWaterMark,
+      });
 
       expect(createReadStream).toHaveBeenCalledWith(mockFilePath, {
         highWaterMark: customHighWaterMark,

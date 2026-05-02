@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { TableColumn } from './DataTable.types';
 
 export function useDebounced<T>(value: T, delay: number) {
@@ -46,7 +46,9 @@ export const useColumnStyles = <TData, TValue>(
 
     const styles: Record<string, React.CSSProperties> = {};
     let totalFixedWidth = 0;
-    const flexibleColumns: (TableColumn<TData, TValue> & { priority: number })[] = [];
+    const flexibleColumns: (TableColumn<TData, TValue> & {
+      priority: number;
+    })[] = [];
 
     columns.forEach((column) => {
       const key = String(column.id ?? column.accessorKey ?? '');
@@ -60,7 +62,10 @@ export const useColumnStyles = <TData, TValue>(
           minWidth: column.meta?.minWidth || size,
         };
       } else {
-        flexibleColumns.push({ ...column, priority: column.meta?.priority ?? 1 });
+        flexibleColumns.push({
+          ...column,
+          priority: column.meta?.priority ?? 1,
+        });
       }
     });
 

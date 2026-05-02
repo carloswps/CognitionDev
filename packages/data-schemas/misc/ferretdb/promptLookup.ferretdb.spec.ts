@@ -23,7 +23,11 @@ const promptGroupSchema = new Schema(
     numberOfGenerations: { type: Number, default: 0 },
     oneliner: { type: String, default: '' },
     category: { type: String, default: '', index: true },
-    productionId: { type: Schema.Types.ObjectId, ref: 'FDBPrompt', index: true },
+    productionId: {
+      type: Schema.Types.ObjectId,
+      ref: 'FDBPrompt',
+      index: true,
+    },
     author: { type: Schema.Types.ObjectId, required: true, index: true },
     authorName: { type: String, required: true },
     command: { type: String },
@@ -33,7 +37,11 @@ const promptGroupSchema = new Schema(
 
 const promptSchema = new Schema(
   {
-    groupId: { type: Schema.Types.ObjectId, ref: 'FDBPromptGroup', required: true },
+    groupId: {
+      type: Schema.Types.ObjectId,
+      ref: 'FDBPromptGroup',
+      required: true,
+    },
     author: { type: Schema.Types.ObjectId, required: true },
     prompt: { type: String, required: true },
     type: { type: String, enum: ['text', 'chat'], required: true },

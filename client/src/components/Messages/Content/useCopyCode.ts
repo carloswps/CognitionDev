@@ -1,5 +1,5 @@
-import { useRef, useState, useCallback, useEffect } from 'react';
 import copy from 'copy-to-clipboard';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export default function useCopyCode(codeRef: React.RefObject<HTMLElement | null>) {
   const [isCopied, setIsCopied] = useState(false);

@@ -1,19 +1,19 @@
-import { useRecoilValue } from 'recoil';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { dataService, QueryKeys } from 'librechat-data-provider';
 import type { UseMutationResult } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type t from 'librechat-data-provider';
+import { dataService, QueryKeys } from 'librechat-data-provider';
+import { useRecoilValue } from 'recoil';
+import store from '~/store';
 import {
   /* Prompts */
   addGroupToAll,
   addPromptGroup,
-  updateGroupInAll,
-  updateGroupFields,
-  updateGroupFieldsInPlace,
   deletePromptGroup,
   removeGroupFromAll,
+  updateGroupFields,
+  updateGroupFieldsInPlace,
+  updateGroupInAll,
 } from '~/utils';
-import store from '~/store';
 
 export const useUpdatePromptGroup = (
   options?: t.UpdatePromptGroupOptions,
@@ -204,7 +204,11 @@ export const useDeletePrompt = (
                   return data;
                 }
                 if (data.productionId === variables._id) {
-                  return { ...data, productionId: prompts[0]?._id, productionPrompt: prompts[0] };
+                  return {
+                    ...data,
+                    productionId: prompts[0]?._id,
+                    productionPrompt: prompts[0],
+                  };
                 }
                 return data;
               },
@@ -371,7 +375,10 @@ export const useRecordPromptUsage = (): UseMutationResult<
   return useMutation({
     mutationFn: (groupId: string) => dataService.recordPromptGroupUsage(groupId),
     onSuccess: (data, groupId) => {
-      const update = { _id: groupId, numberOfGenerations: data.numberOfGenerations };
+      const update = {
+        _id: groupId,
+        numberOfGenerations: data.numberOfGenerations,
+      };
       queryClient.setQueryData<t.PromptGroupListData>(
         [QueryKeys.promptGroups, name, category, pageSize],
         (old) => (old ? updateGroupFieldsInPlace(old, update) : old),

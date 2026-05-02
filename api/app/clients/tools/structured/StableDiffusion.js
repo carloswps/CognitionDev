@@ -138,7 +138,9 @@ class StableDiffusionAPI extends Tool {
     this.relativePath = path.relative(clientPath, imageOutputPath);
 
     if (!fs.existsSync(path.join(imageOutputPath, this.userId))) {
-      fs.mkdirSync(path.join(imageOutputPath, this.userId), { recursive: true });
+      fs.mkdirSync(path.join(imageOutputPath, this.userId), {
+        recursive: true,
+      });
     }
 
     try {

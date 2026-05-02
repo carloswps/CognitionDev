@@ -1,11 +1,11 @@
 import react from '@vitejs/plugin-react';
-import path from 'path';
-import { defineConfig } from 'vite';
 import { createRequire } from 'module';
-import { VitePWA } from 'vite-plugin-pwa';
+import path from 'path';
+import type { Plugin } from 'vite';
+import { defineConfig } from 'vite';
 import { compression } from 'vite-plugin-compression2';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
-import type { Plugin } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
 
 const require = createRequire(import.meta.url);
 

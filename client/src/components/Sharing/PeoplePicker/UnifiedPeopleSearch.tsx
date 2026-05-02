@@ -1,9 +1,9 @@
-import React, { useState, useMemo } from 'react';
-import type { TPrincipal, PrincipalType, PrincipalSearchParams } from 'librechat-data-provider';
+import type { PrincipalSearchParams, PrincipalType, TPrincipal } from 'librechat-data-provider';
 import { useSearchPrincipalsQuery } from 'librechat-data-provider/react-query';
+import React, { useMemo, useState } from 'react';
+import { useLocalize } from '~/hooks';
 import PeoplePickerSearchItem from './PeoplePickerSearchItem';
 import { SearchPicker } from './SearchPicker';
-import { useLocalize } from '~/hooks';
 
 interface UnifiedPeopleSearchProps {
   onAddPeople: (principals: TPrincipal[]) => void;

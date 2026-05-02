@@ -276,7 +276,10 @@ class OpenWeather extends Tool {
 
       const baseUrl = 'https://api.openweathermap.org/data/3.0';
       let endpoint = '';
-      const params = new URLSearchParams({ appid: this.apiKey, units: owmUnits });
+      const params = new URLSearchParams({
+        appid: this.apiKey,
+        units: owmUnits,
+      });
 
       let dt;
       if (action === 'timestamp') {

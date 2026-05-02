@@ -24,10 +24,10 @@
  */
 
 import type { OAuthClientInformation } from '@modelcontextprotocol/sdk/shared/auth.js';
-import type { OAuthTestServer } from './helpers/oauthTestServer';
-import { InMemoryTokenStore, createOAuthMCPServer } from './helpers/oauthTestServer';
 import { MCPConnectionFactory } from '~/mcp/MCPConnectionFactory';
 import { MCPOAuthHandler, MCPTokenStorage } from '~/mcp/oauth';
+import type { OAuthTestServer } from './helpers/oauthTestServer';
+import { createOAuthMCPServer, InMemoryTokenStore } from './helpers/oauthTestServer';
 
 jest.mock('@librechat/data-schemas', () => ({
   logger: {
@@ -50,7 +50,10 @@ jest.mock('~/auth', () => ({
 }));
 
 jest.mock('~/mcp/mcpConfig', () => ({
-  mcpConfig: { CONNECTION_CHECK_TTL: 0, USER_CONNECTION_IDLE_TIMEOUT: 30 * 60 * 1000 },
+  mcpConfig: {
+    CONNECTION_CHECK_TTL: 0,
+    USER_CONNECTION_IDLE_TIMEOUT: 30 * 60 * 1000,
+  },
 }));
 
 describe('MCPOAuthHandler - client registration reuse on reconnection', () => {
@@ -443,7 +446,10 @@ describe('MCPOAuthHandler - client registration reuse on reconnection', () => {
 
   describe('Token exchange with enforced client_id', () => {
     it('should reject token exchange when client_id does not match registered client', async () => {
-      server = await createOAuthMCPServer({ tokenTTLMs: 60000, enforceClientId: true });
+      server = await createOAuthMCPServer({
+        tokenTTLMs: 60000,
+        enforceClientId: true,
+      });
 
       // Register a real client via DCR
       const regRes = await fetch(`${server.url}register`, {
@@ -469,7 +475,10 @@ describe('MCPOAuthHandler - client registration reuse on reconnection', () => {
       });
 
       expect(tokenRes.status).toBe(401);
-      const body = (await tokenRes.json()) as { error: string; error_description?: string };
+      const body = (await tokenRes.json()) as {
+        error: string;
+        error_description?: string;
+      };
       expect(body.error).toBe('invalid_client');
 
       // Verify isClientRejection would match this error
@@ -478,7 +487,10 @@ describe('MCPOAuthHandler - client registration reuse on reconnection', () => {
     });
 
     it('should accept token exchange when client_id matches', async () => {
-      server = await createOAuthMCPServer({ tokenTTLMs: 60000, enforceClientId: true });
+      server = await createOAuthMCPServer({
+        tokenTTLMs: 60000,
+        enforceClientId: true,
+      });
 
       const regRes = await fetch(`${server.url}register`, {
         method: 'POST',

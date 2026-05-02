@@ -73,5 +73,10 @@ export const getRoleLocalizationKeys = (
   name: TranslationKeys;
   description: TranslationKeys;
 } => {
-  return ROLE_LOCALIZATIONS[roleId] || { name: 'com_ui_unknown', description: 'com_ui_unknown' };
+  return (
+    ROLE_LOCALIZATIONS[roleId] || {
+      name: 'com_ui_unknown',
+      description: 'com_ui_unknown',
+    }
+  );
 };

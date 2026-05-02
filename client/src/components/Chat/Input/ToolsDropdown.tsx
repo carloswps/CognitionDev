@@ -1,19 +1,19 @@
-import React, { useState, useMemo, useCallback } from 'react';
 import * as Ariakit from '@ariakit/react';
-import { Globe, Settings, Settings2, TerminalSquareIcon } from 'lucide-react';
-import { TooltipAnchor, DropdownPopup, PinIcon, VectorIcon } from '@librechat/client';
-import type { MenuItemProps } from '~/common';
+import { DropdownPopup, PinIcon, TooltipAnchor, VectorIcon } from '@librechat/client';
 import {
-  AuthType,
-  Permissions,
   ArtifactModes,
-  PermissionTypes,
+  AuthType,
   defaultAgentCapabilities,
+  Permissions,
+  PermissionTypes,
 } from 'librechat-data-provider';
-import { useLocalize, useHasAccess, useAgentCapabilities } from '~/hooks';
+import { Globe, Settings, Settings2, TerminalSquareIcon } from 'lucide-react';
+import React, { useCallback, useMemo, useState } from 'react';
+import type { MenuItemProps } from '~/common';
 import ArtifactsSubMenu from '~/components/Chat/Input/ArtifactsSubMenu';
 import MCPSubMenu from '~/components/Chat/Input/MCPSubMenu';
 import { useGetStartupConfig } from '~/data-provider';
+import { useAgentCapabilities, useHasAccess, useLocalize } from '~/hooks';
 import { useBadgeRowContext } from '~/Providers';
 import { cn } from '~/utils';
 

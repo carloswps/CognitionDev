@@ -1,14 +1,14 @@
-import { logger } from '@librechat/data-schemas';
 import type { AppConfig } from '@librechat/data-schemas';
+import { logger } from '@librechat/data-schemas';
+import type { Agent, TConversation } from 'librechat-data-provider';
 import {
-  Tools,
+  appendAgentIdSuffix,
   Constants,
+  encodeEphemeralAgentId,
   isAgentsEndpoint,
   isEphemeralAgentId,
-  appendAgentIdSuffix,
-  encodeEphemeralAgentId,
+  Tools,
 } from 'librechat-data-provider';
-import type { Agent, TConversation } from 'librechat-data-provider';
 import { getCustomEndpointConfig } from '~/app/config';
 
 const { mcp_all, mcp_delimiter } = Constants;
@@ -112,7 +112,12 @@ export async function loadAddedAgent(
       modelSpec?.label ??
       (endpointConfig?.modelDisplayLabel as string | undefined) ??
       '';
-    const ephemeralId = encodeEphemeralAgentId({ endpoint, model, sender, index: 1 });
+    const ephemeralId = encodeEphemeralAgentId({
+      endpoint,
+      model,
+      sender,
+      index: 1,
+    });
 
     return {
       id: ephemeralId,
@@ -223,7 +228,12 @@ export async function loadAddedAgent(
     modelSpec?.label ??
     (endpointConfig?.modelDisplayLabel as string | undefined) ??
     '';
-  const ephemeralId = encodeEphemeralAgentId({ endpoint, model, sender, index: 1 });
+  const ephemeralId = encodeEphemeralAgentId({
+    endpoint,
+    model,
+    sender,
+    index: 1,
+  });
 
   const result: Record<string, unknown> = {
     id: ephemeralId,

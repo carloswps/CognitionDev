@@ -7,8 +7,13 @@ jest.mock('librechat-data-provider', () => ({
   getEndpointField: jest.fn(),
 }));
 jest.mock('~/components/Endpoints/ConvoIconURL', () => jest.fn());
-jest.mock('~/data-provider', () => ({ useGetEndpointsQuery: jest.fn(() => ({ data: {} })) }));
-jest.mock('~/utils', () => ({ getIconEndpoint: jest.fn(), logger: { log: jest.fn() } }));
+jest.mock('~/data-provider', () => ({
+  useGetEndpointsQuery: jest.fn(() => ({ data: {} })),
+}));
+jest.mock('~/utils', () => ({
+  getIconEndpoint: jest.fn(),
+  logger: { log: jest.fn() },
+}));
 jest.mock('~/components/Endpoints/Icon', () => jest.fn());
 
 import { arePropsEqual } from '../MessageIcon';
@@ -62,8 +67,14 @@ describe('MessageIcon arePropsEqual', () => {
   it('returns false when agent avatar filepath changes', () => {
     expect(
       arePropsEqual(
-        { iconData: baseIconData, agent: makeAgent({ avatar: { filepath: '/a.png' } }) },
-        { iconData: baseIconData, agent: makeAgent({ avatar: { filepath: '/b.png' } }) },
+        {
+          iconData: baseIconData,
+          agent: makeAgent({ avatar: { filepath: '/a.png' } }),
+        },
+        {
+          iconData: baseIconData,
+          agent: makeAgent({ avatar: { filepath: '/b.png' } }),
+        },
       ),
     ).toBe(false);
   });
@@ -83,8 +94,14 @@ describe('MessageIcon arePropsEqual', () => {
   it('returns false when assistant name changes', () => {
     expect(
       arePropsEqual(
-        { iconData: baseIconData, assistant: makeAssistant({ name: 'Helper' }) },
-        { iconData: baseIconData, assistant: makeAssistant({ name: 'Wizard' }) },
+        {
+          iconData: baseIconData,
+          assistant: makeAssistant({ name: 'Helper' }),
+        },
+        {
+          iconData: baseIconData,
+          assistant: makeAssistant({ name: 'Wizard' }),
+        },
       ),
     ).toBe(false);
   });
@@ -92,8 +109,14 @@ describe('MessageIcon arePropsEqual', () => {
   it('returns false when assistant avatar changes', () => {
     expect(
       arePropsEqual(
-        { iconData: baseIconData, assistant: makeAssistant({ metadata: { avatar: '/a.png' } }) },
-        { iconData: baseIconData, assistant: makeAssistant({ metadata: { avatar: '/b.png' } }) },
+        {
+          iconData: baseIconData,
+          assistant: makeAssistant({ metadata: { avatar: '/a.png' } }),
+        },
+        {
+          iconData: baseIconData,
+          assistant: makeAssistant({ metadata: { avatar: '/b.png' } }),
+        },
       ),
     ).toBe(false);
   });

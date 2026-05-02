@@ -1,5 +1,5 @@
+import type { TError } from 'librechat-data-provider';
 import React, { useState } from 'react';
-import { TError } from 'librechat-data-provider';
 
 type ProviderValue = {
   error?: TError;

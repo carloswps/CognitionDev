@@ -1,6 +1,6 @@
-import { SafeSearchTypes } from 'librechat-data-provider';
 import type { TCustomConfig } from 'librechat-data-provider';
-import type { TWebSearchKeys, TWebSearchCategories } from '~/types/web';
+import { SafeSearchTypes } from 'librechat-data-provider';
+import type { TWebSearchCategories, TWebSearchKeys } from '~/types/web';
 
 export const webSearchAuth = {
   providers: {

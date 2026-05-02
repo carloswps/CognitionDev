@@ -11,7 +11,10 @@ const AuthSchema = new Schema(
     authorization_url: { type: String },
     client_url: { type: String },
     scope: { type: String },
-    token_exchange_method: { type: String, enum: ['default_post', 'basic_auth_header', null] },
+    token_exchange_method: {
+      type: String,
+      enum: ['default_post', 'basic_auth_header', null],
+    },
   },
   { _id: false },
 );

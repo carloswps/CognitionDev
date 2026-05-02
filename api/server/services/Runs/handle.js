@@ -78,7 +78,7 @@ async function waitForRun({
   const runIdLog = `run_id: ${run_id}`;
   const runInfo = `user: ${openai.req.user.id} | thread_id: ${thread_id} | ${runIdLog}`;
   const raceTimeoutMs = 3000;
-  let maxRetries = 5;
+  const maxRetries = 5;
   while (timeElapsed < timeout) {
     i++;
     logger.debug(`[heartbeat ${i}] ${runIdLog} | Retrieving run status...`);
@@ -179,7 +179,9 @@ async function waitForRun({
  * @return {Promise<RunStep[]>} A promise that resolves to an array of RunStep objects.
  */
 async function _retrieveRunSteps({ openai, thread_id, run_id }) {
-  const runSteps = await openai.beta.threads.runs.steps.list(run_id, { thread_id });
+  const runSteps = await openai.beta.threads.runs.steps.list(run_id, {
+    thread_id,
+  });
   return runSteps;
 }
 

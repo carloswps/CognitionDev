@@ -1,9 +1,9 @@
-import { useMemo } from 'react';
-import { Tools, EToolResources } from 'librechat-data-provider';
 import type { TEphemeralAgent } from 'librechat-data-provider';
+import { EToolResources, Tools } from 'librechat-data-provider';
+import { useMemo } from 'react';
+import { isEphemeralAgent } from '~/common';
 import { useGetAgentByIdQuery } from '~/data-provider';
 import { useAgentsMapContext } from '~/Providers';
-import { isEphemeralAgent } from '~/common';
 
 interface AgentToolPermissionsResult {
   fileSearchAllowedByAgent: boolean;

@@ -2,8 +2,10 @@ import * as React from 'react';
 
 // import { NumericFormat } from 'react-number-format';
 
+// import { NumericFormat } from 'react-number-format';
+
+import type * as InputNumberPrimitive from 'rc-input-number';
 import RCInputNumber from 'rc-input-number';
-import * as InputNumberPrimitive from 'rc-input-number';
 import { cn } from '~/utils';
 
 // TODO help needed

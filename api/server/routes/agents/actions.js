@@ -204,7 +204,7 @@ router.post(
       const updatedAction = await db.updateAction({ action_id, agent_id }, actionUpdateData);
 
       const sensitiveFields = ['api_key', 'oauth_client_id', 'oauth_client_secret'];
-      for (let field of sensitiveFields) {
+      for (const field of sensitiveFields) {
         if (updatedAction.metadata[field]) {
           delete updatedAction.metadata[field];
         }

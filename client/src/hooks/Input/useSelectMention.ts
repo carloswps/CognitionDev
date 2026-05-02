@@ -1,23 +1,27 @@
+import type {
+  TAssistantsMap,
+  TConversation,
+  TEndpointsConfig,
+  TModelSpec,
+  TPreset,
+} from 'librechat-data-provider';
+import {
+  type EModelEndpoint,
+  isAgentsEndpoint,
+  isAssistantsEndpoint,
+} from 'librechat-data-provider';
 import { useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
-import { EModelEndpoint, isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
-import type {
-  TPreset,
-  TModelSpec,
-  TConversation,
-  TAssistantsMap,
-  TEndpointsConfig,
-} from 'librechat-data-provider';
-import type { MentionOption, ConvoGenerator } from '~/common';
-import {
-  clearModelForNonEphemeralAgent,
-  removeUnavailableTools,
-  getModelSpecIconURL,
-  getConvoSwitchLogic,
-  logger,
-} from '~/utils';
+import type { ConvoGenerator, MentionOption } from '~/common';
 import { useDefaultConvo } from '~/hooks';
 import store from '~/store';
+import {
+  clearModelForNonEphemeralAgent,
+  getConvoSwitchLogic,
+  getModelSpecIconURL,
+  logger,
+  removeUnavailableTools,
+} from '~/utils';
 
 export default function useSelectMention({
   presets,
@@ -88,7 +92,10 @@ export default function useSelectMention({
 
         const currentConvo = getDefaultConversation({
           /* target endpointType is necessary to avoid endpoint mixing */
-          conversation: { ...(conversation ?? {}), endpointType: template.endpointType },
+          conversation: {
+            ...(conversation ?? {}),
+            endpointType: template.endpointType,
+          },
           preset: template,
           cleanOutput: true,
         });
@@ -202,7 +209,13 @@ export default function useSelectMention({
       logger.info('conversation', 'Switching conversation to new endpoint/model', template);
       newConversation({
         template: { ...(template as Partial<TConversation>) },
-        preset: { ...kwargs, spec: null, iconURL: null, modelLabel: null, endpoint: newEndpoint },
+        preset: {
+          ...kwargs,
+          spec: null,
+          iconURL: null,
+          modelLabel: null,
+          endpoint: newEndpoint,
+        },
         keepAddedConvos: isNewModular,
       });
     },
@@ -246,7 +259,10 @@ export default function useSelectMention({
         template.modelLabel = null;
         const currentConvo = getDefaultConversation({
           /* target endpointType is necessary to avoid endpoint mixing */
-          conversation: { ...(conversation ?? {}), endpointType: template.endpointType },
+          conversation: {
+            ...(conversation ?? {}),
+            endpointType: template.endpointType,
+          },
           preset: template,
           cleanInput: true,
         });

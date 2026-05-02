@@ -1,5 +1,5 @@
-import { useRef, useState, useEffect } from 'react';
 import type { RefObject } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
  * Mirrors Ariakit's composite `data-active-item` attribute into a React state value.
@@ -23,7 +23,10 @@ export default function useIsActiveItem<T extends HTMLElement = HTMLElement>(): 
       setIsActive(element.hasAttribute('data-active-item'));
     });
 
-    observer.observe(element, { attributes: true, attributeFilter: ['data-active-item'] });
+    observer.observe(element, {
+      attributes: true,
+      attributeFilter: ['data-active-item'],
+    });
     setIsActive(element.hasAttribute('data-active-item'));
 
     return () => observer.disconnect();

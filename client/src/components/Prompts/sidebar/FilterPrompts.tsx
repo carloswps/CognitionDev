@@ -1,14 +1,15 @@
-import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import { useRecoilState } from 'recoil';
-import { ListFilter, User, Share2 } from 'lucide-react';
 import { Dropdown, FilterInput } from '@librechat/client';
 import { SystemCategories } from 'librechat-data-provider';
+import { ListFilter, Share2, User } from 'lucide-react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import type { Option } from '~/common';
-import { useLocalize, useCategories, useDebounce } from '~/hooks';
-import CreatePromptButton from '../buttons/CreatePromptButton';
+import { useCategories, useDebounce, useLocalize } from '~/hooks';
 import { usePromptGroupsContext } from '~/Providers';
-import { cn } from '~/utils';
 import store from '~/store';
+import { cn } from '~/utils';
+import CreatePromptButton from '../buttons/CreatePromptButton';
 
 export default function FilterPrompts({
   className = '',

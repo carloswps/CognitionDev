@@ -1,5 +1,5 @@
+import { PrincipalModel, PrincipalType } from 'librechat-data-provider';
 import { Schema } from 'mongoose';
-import { PrincipalType, PrincipalModel } from 'librechat-data-provider';
 import type { IConfig } from '~/types';
 
 const configSchema = new Schema<IConfig>(
@@ -49,7 +49,12 @@ const configSchema = new Schema<IConfig>(
 
 // Enforce 1:1 principal-to-config (one config document per principal per tenant)
 configSchema.index({ principalType: 1, principalId: 1, tenantId: 1 }, { unique: true });
-configSchema.index({ principalType: 1, principalId: 1, isActive: 1, tenantId: 1 });
+configSchema.index({
+  principalType: 1,
+  principalId: 1,
+  isActive: 1,
+  tenantId: 1,
+});
 configSchema.index({ priority: 1, isActive: 1, tenantId: 1 });
 
 export default configSchema;

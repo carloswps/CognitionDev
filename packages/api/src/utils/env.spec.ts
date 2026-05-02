@@ -1,8 +1,8 @@
-import { Types } from 'mongoose';
-import { TokenExchangeMethodEnum } from 'librechat-data-provider';
-import type { MCPOptions } from 'librechat-data-provider';
 import type { IUser } from '@librechat/data-schemas';
-import { resolveHeaders, resolveNestedObject, processMCPEnv, encodeHeaderValue } from './env';
+import type { MCPOptions } from 'librechat-data-provider';
+import { TokenExchangeMethodEnum } from 'librechat-data-provider';
+import { Types } from 'mongoose';
+import { encodeHeaderValue, processMCPEnv, resolveHeaders, resolveNestedObject } from './env';
 
 function isStdioOptions(options: MCPOptions): options is Extract<MCPOptions, { type?: 'stdio' }> {
   return !options.type || options.type === 'stdio';
@@ -472,7 +472,11 @@ describe('resolveHeaders', () => {
       'X-Multi': 'User: {{LIBRECHAT_USER_ID}}, Env: ${TEST_API_KEY}, Custom: {{MY_CUSTOM}}',
     };
     const customVars = { MY_CUSTOM: 'custom-value' };
-    const result = resolveHeaders({ headers, user, customUserVars: customVars });
+    const result = resolveHeaders({
+      headers,
+      user,
+      customUserVars: customVars,
+    });
     expect(result['X-Multi']).toBe('User: abc, Env: test-api-key-value, Custom: custom-value');
   });
 
@@ -504,7 +508,11 @@ describe('resolveHeaders', () => {
       'X-Boolean': '{{LIBRECHAT_USER_EMAILVERIFIED}}',
     };
     const customVars = { MY_CUSTOM: 'custom-value' };
-    const result = resolveHeaders({ headers, user, customUserVars: customVars });
+    const result = resolveHeaders({
+      headers,
+      user,
+      customUserVars: customVars,
+    });
 
     expect(result['X-User']).toBe('abc');
     expect(result['X-Env']).toBe('test-api-key-value');
@@ -1738,7 +1746,10 @@ describe('processMCPEnv', () => {
     });
 
     it('should NOT resolve {{LIBRECHAT_USER_*}} when dbSourced is true', () => {
-      const user = createTestUser({ id: 'user-123', email: 'test@example.com' });
+      const user = createTestUser({
+        id: 'user-123',
+        email: 'test@example.com',
+      });
       const options: MCPOptions = {
         type: 'streamable-http',
         url: 'https://api.example.com',
@@ -1811,7 +1822,11 @@ describe('processMCPEnv', () => {
 
     it('should resolve customUserVars but block all other placeholders when dbSourced is true', () => {
       const user = createTestUser({ id: 'user-123' });
-      const body = { conversationId: 'conv-123', parentMessageId: 'p-1', messageId: 'm-1' };
+      const body = {
+        conversationId: 'conv-123',
+        parentMessageId: 'p-1',
+        messageId: 'm-1',
+      };
       const options: MCPOptions = {
         type: 'streamable-http',
         url: '${DATABASE_URL}',
@@ -1951,7 +1966,10 @@ describe('processMCPEnv', () => {
       const result = processMCPEnv({
         options,
         dbSourced: true,
-        customUserVars: { MY_CLIENT_ID: 'resolved-client', MY_CLIENT_SECRET: 'resolved-secret' },
+        customUserVars: {
+          MY_CLIENT_ID: 'resolved-client',
+          MY_CLIENT_SECRET: 'resolved-secret',
+        },
       });
 
       const oauth = (result as { oauth?: Record<string, unknown> }).oauth;
@@ -2013,7 +2031,11 @@ describe('processMCPEnv', () => {
         },
       };
 
-      const result = processMCPEnv({ options, dbSourced: true, customUserVars: {} });
+      const result = processMCPEnv({
+        options,
+        dbSourced: true,
+        customUserVars: {},
+      });
 
       if (isStreamableHTTPOptions(result)) {
         expect(result.headers?.['X-Key']).toBe('${TEST_API_KEY}');

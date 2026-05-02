@@ -1,30 +1,31 @@
-import React, { useMemo } from 'react';
-import { useRecoilValue } from 'recoil';
 import { OGDialog, OGDialogTemplate } from '@librechat/client';
 import {
-  ImageUpIcon,
-  FileSearch,
-  FileType2Icon,
-  FileImageIcon,
-  TerminalSquareIcon,
-} from 'lucide-react';
-import {
-  Providers,
-  inferMimeType,
-  EToolResources,
-  EModelEndpoint,
-  isBedrockDocumentType,
   defaultAgentCapabilities,
+  EModelEndpoint,
+  EToolResources,
+  inferMimeType,
+  isBedrockDocumentType,
   isDocumentSupportedProvider,
+  Providers,
 } from 'librechat-data-provider';
 import {
-  useAgentToolPermissions,
+  FileImageIcon,
+  FileSearch,
+  FileType2Icon,
+  ImageUpIcon,
+  TerminalSquareIcon,
+} from 'lucide-react';
+import type React from 'react';
+import { useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
+import {
   useAgentCapabilities,
+  useAgentToolPermissions,
   useGetAgentsConfig,
   useLocalize,
 } from '~/hooks';
-import { ephemeralAgentByConvoId } from '~/store';
 import { useDragDropContext } from '~/Providers';
+import { ephemeralAgentByConvoId } from '~/store';
 
 interface DragDropModalProps {
   onOptionSelect: (option: EToolResources | undefined) => void;

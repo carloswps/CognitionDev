@@ -1,11 +1,11 @@
 import { PrincipalType, SystemRoles } from 'librechat-data-provider';
-import type { Types, Model, ClientSession, FilterQuery } from 'mongoose';
-import type { SystemCapability } from '~/types/admin';
-import type { ISystemGrant } from '~/types';
-import { SystemCapabilities, CapabilityImplications } from '~/admin/capabilities';
-import { tenantSafeBulkWrite } from '~/utils/tenantBulkWrite';
-import { normalizePrincipalId } from '~/utils/principal';
+import type { ClientSession, FilterQuery, Model, Types } from 'mongoose';
+import { CapabilityImplications, SystemCapabilities } from '~/admin/capabilities';
 import logger from '~/config/winston';
+import type { ISystemGrant } from '~/types';
+import type { SystemCapability } from '~/types/admin';
+import { normalizePrincipalId } from '~/utils/principal';
+import { tenantSafeBulkWrite } from '~/utils/tenantBulkWrite';
 
 /**
  * Precomputed reverse map: for each capability, which broader capabilities imply it.
@@ -67,7 +67,10 @@ export function createSystemGrantMethods(mongoose: typeof import('mongoose')) {
     capability,
     tenantId,
   }: {
-    principals: Array<{ principalType: PrincipalType; principalId?: string | Types.ObjectId }>;
+    principals: Array<{
+      principalType: PrincipalType;
+      principalId?: string | Types.ObjectId;
+    }>;
     capability: SystemCapability;
     tenantId?: string;
   }): Promise<boolean> {
@@ -110,7 +113,10 @@ export function createSystemGrantMethods(mongoose: typeof import('mongoose')) {
     capabilities,
     tenantId,
   }: {
-    principals: Array<{ principalType: PrincipalType; principalId?: string | Types.ObjectId }>;
+    principals: Array<{
+      principalType: PrincipalType;
+      principalId?: string | Types.ObjectId;
+    }>;
     capabilities: SystemCapability[];
     tenantId?: string;
   }): Promise<Set<SystemCapability>> {
@@ -294,7 +300,9 @@ export function createSystemGrantMethods(mongoose: typeof import('mongoose')) {
     const limit = Math.min(GRANTS_MAX_LIMIT, Math.max(1, options?.limit ?? GRANTS_DEFAULT_LIMIT));
     const offset = options?.offset ?? 0;
     const filter: FilterQuery<ISystemGrant> = {
-      ...(options?.principalTypes?.length && { principalType: { $in: options.principalTypes } }),
+      ...(options?.principalTypes?.length && {
+        principalType: { $in: options.principalTypes },
+      }),
       ...tenantCondition(options?.tenantId),
     };
 
@@ -311,7 +319,9 @@ export function createSystemGrantMethods(mongoose: typeof import('mongoose')) {
   }): Promise<number> {
     const SystemGrant = mongoose.models.SystemGrant as Model<ISystemGrant>;
     const filter: FilterQuery<ISystemGrant> = {
-      ...(options?.principalTypes?.length && { principalType: { $in: options.principalTypes } }),
+      ...(options?.principalTypes?.length && {
+        principalType: { $in: options.principalTypes },
+      }),
       ...tenantCondition(options?.tenantId),
     };
 
@@ -322,7 +332,10 @@ export function createSystemGrantMethods(mongoose: typeof import('mongoose')) {
     principals,
     tenantId,
   }: {
-    principals: Array<{ principalType: PrincipalType; principalId: string | Types.ObjectId }>;
+    principals: Array<{
+      principalType: PrincipalType;
+      principalId: string | Types.ObjectId;
+    }>;
     tenantId?: string;
   }): Promise<ISystemGrant[]> {
     if (!principals.length) {
@@ -386,7 +399,7 @@ export function createSystemGrantMethods(mongoose: typeof import('mongoose')) {
         return;
       } catch (err) {
         if (attempt < maxRetries) {
-          const delay = 1000 * Math.pow(2, attempt - 1);
+          const delay = 1000 * 2 ** (attempt - 1);
           logger.warn(
             `[seedSystemGrants] Attempt ${attempt}/${maxRetries} failed, retrying in ${delay}ms: ${(err as Error).message ?? String(err)}`,
           );

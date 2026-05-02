@@ -1,18 +1,18 @@
-import { useEffect } from 'react';
-import { RecoilRoot } from 'recoil';
-import { DndProvider } from 'react-dnd';
-import { RouterProvider } from 'react-router-dom';
+import { ThemeProvider, Toast, ToastProvider } from '@librechat/client';
 import * as RadixToast from '@radix-ui/react-toast';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Toast, ThemeProvider, ToastProvider } from '@librechat/client';
-import { QueryClient, QueryClientProvider, QueryCache } from '@tanstack/react-query';
-import { ScreenshotProvider, useApiErrorBoundary } from './hooks';
-import WakeLockManager from '~/components/System/WakeLockManager';
-import { getThemeFromEnv } from './utils/getThemeFromEnv';
-import { initializeFontSize } from '~/store/fontSize';
+import { useEffect } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { RouterProvider } from 'react-router-dom';
+import { RecoilRoot } from 'recoil';
 import { LiveAnnouncer } from '~/a11y';
+import WakeLockManager from '~/components/System/WakeLockManager';
+import { initializeFontSize } from '~/store/fontSize';
+import { ScreenshotProvider, useApiErrorBoundary } from './hooks';
 import { router } from './routes';
+import { getThemeFromEnv } from './utils/getThemeFromEnv';
 
 const App = () => {
   const { setError } = useApiErrorBoundary();

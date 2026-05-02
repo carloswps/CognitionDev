@@ -62,9 +62,7 @@ const createTTSLimiters = () => {
     windowMs: ttsUserWindowMs,
     max: ttsUserMax,
     handler: createTTSHandler(false),
-    keyGenerator: function (req) {
-      return req.user?.id;
-    },
+    keyGenerator: (req) => req.user?.id,
     store: limiterCache('tts_user_limiter'),
   };
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import { TStartupConfig } from 'librechat-data-provider';
+import type { TStartupConfig } from 'librechat-data-provider';
+import type React from 'react';
 
 export interface Endpoint {
   value: string;

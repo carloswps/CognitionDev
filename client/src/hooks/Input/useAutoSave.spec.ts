@@ -23,14 +23,14 @@ jest.mock('~/utils', () => ({
   clearAllDrafts: jest.fn(),
 }));
 
-import React from 'react';
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
+import type React from 'react';
 import { useRecoilValue } from 'recoil';
-import { useChatFormContext } from '~/Providers';
 import { useGetFiles } from '~/data-provider';
-import { getDraft, setDraft } from '~/utils';
-import store from '~/store';
 import { useAutoSave } from '~/hooks';
+import { useChatFormContext } from '~/Providers';
+import store from '~/store';
+import { getDraft, setDraft } from '~/utils';
 
 const mockSetValue = jest.fn();
 const mockGetDraft = getDraft as jest.Mock;
@@ -38,7 +38,11 @@ const mockSetDraft = setDraft as jest.Mock;
 
 const makeTextAreaRef = (value = '') =>
   ({
-    current: { value, addEventListener: jest.fn(), removeEventListener: jest.fn() },
+    current: {
+      value,
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+    },
   }) as unknown as React.RefObject<HTMLTextAreaElement>;
 
 beforeEach(() => {
@@ -97,7 +101,12 @@ describe('useAutoSave — conversation switching', () => {
 
     const { rerender } = renderHook(
       ({ conversationId }: { conversationId: string }) =>
-        useAutoSave({ conversationId, textAreaRef, files: new Map(), setFiles: jest.fn() }),
+        useAutoSave({
+          conversationId,
+          textAreaRef,
+          files: new Map(),
+          setFiles: jest.fn(),
+        }),
       { initialProps: { conversationId: 'convo-1' } },
     );
 
@@ -105,6 +114,9 @@ describe('useAutoSave — conversation switching', () => {
       rerender({ conversationId: 'convo-2' });
     });
 
-    expect(mockSetDraft).toHaveBeenCalledWith({ id: 'convo-1', value: 'draft in progress' });
+    expect(mockSetDraft).toHaveBeenCalledWith({
+      id: 'convo-1',
+      value: 'draft in progress',
+    });
   });
 });

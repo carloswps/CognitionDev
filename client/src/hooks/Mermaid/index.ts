@@ -1,2 +1,2 @@
-export { useMermaid, default } from './useMermaid';
 export { useDebouncedMermaid } from './useDebouncedMermaid';
+export { default, useMermaid } from './useMermaid';

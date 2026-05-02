@@ -1,4 +1,4 @@
-import { TranslationKeys } from '~/hooks/useLocalize';
+import type { TranslationKeys } from '~/hooks/useLocalize';
 
 export interface AgentCategory {
   label: TranslationKeys;

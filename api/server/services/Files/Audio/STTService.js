@@ -319,7 +319,10 @@ class STTService {
 
       return response.data.text.trim();
     } catch (error) {
-      logAxiosError({ message: `STT request failed for provider ${provider}:`, error });
+      logAxiosError({
+        message: `STT request failed for provider ${provider}:`,
+        error,
+      });
       throw error;
     }
   }
@@ -346,10 +349,17 @@ class STTService {
     try {
       const [provider, sttSchema] = await this.getProviderSchema(req);
       const language = req.body?.language || '';
-      const text = await this.sttRequest(provider, sttSchema, { audioBuffer, audioFile, language });
+      const text = await this.sttRequest(provider, sttSchema, {
+        audioBuffer,
+        audioFile,
+        language,
+      });
       res.json({ text });
     } catch (error) {
-      logAxiosError({ message: 'An error occurred while processing the audio:', error });
+      logAxiosError({
+        message: 'An error occurred while processing the audio:',
+        error,
+      });
       res.sendStatus(500);
     } finally {
       try {
@@ -383,4 +393,9 @@ async function speechToText(req, res) {
   await sttService.processSpeechToText(req, res);
 }
 
-module.exports = { STTService, speechToText, getFileExtensionFromMime, MIME_TO_EXTENSION_MAP };
+module.exports = {
+  STTService,
+  speechToText,
+  getFileExtensionFromMime,
+  MIME_TO_EXTENSION_MAP,
+};

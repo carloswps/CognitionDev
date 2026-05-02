@@ -1,11 +1,11 @@
 import { logger } from '@librechat/data-schemas';
-import { FileSources } from 'librechat-data-provider';
 import type { Agent, AgentAvatar } from 'librechat-data-provider';
+import { FileSources } from 'librechat-data-provider';
 
 const MAX_AVATAR_REFRESH_AGENTS = 1000;
 const AVATAR_REFRESH_BATCH_SIZE = 20;
 
-export { MAX_AVATAR_REFRESH_AGENTS, AVATAR_REFRESH_BATCH_SIZE };
+export { AVATAR_REFRESH_BATCH_SIZE, MAX_AVATAR_REFRESH_AGENTS };
 
 export type RefreshS3UrlFn = (avatar: AgentAvatar) => Promise<string | undefined>;
 

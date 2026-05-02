@@ -11,7 +11,9 @@ interface CustomAudioElement extends HTMLAudioElement {
   };
 }
 
-type TCustomAudioResult = { audioRef: React.MutableRefObject<CustomAudioElement | null> };
+type TCustomAudioResult = {
+  audioRef: React.MutableRefObject<CustomAudioElement | null>;
+};
 
 export default function useCustomAudioRef({
   setIsPlaying,

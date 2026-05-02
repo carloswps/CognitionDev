@@ -1,20 +1,20 @@
-import { useRef } from 'react';
-import { KeyRoundIcon } from 'lucide-react';
-import { AuthType, AgentCapabilities } from 'librechat-data-provider';
-import { useFormContext, Controller, useWatch } from 'react-hook-form';
 import {
   Checkbox,
-  HoverCard,
   CircleHelpIcon,
+  HoverCard,
   HoverCardContent,
   HoverCardPortal,
   HoverCardTrigger,
 } from '@librechat/client';
+import { AgentCapabilities, AuthType } from 'librechat-data-provider';
+import { KeyRoundIcon } from 'lucide-react';
+import { useRef } from 'react';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import type { AgentForm } from '~/common';
-import { useLocalize, useCodeApiKeyForm } from '~/hooks';
-import ApiKeyDialog from './ApiKeyDialog';
 import { ESide } from '~/common';
+import { useCodeApiKeyForm, useLocalize } from '~/hooks';
 import { cn } from '~/utils';
+import ApiKeyDialog from './ApiKeyDialog';
 
 export default function Action({ authType = '', isToolAuthenticated = false }) {
   const localize = useLocalize();
@@ -38,7 +38,10 @@ export default function Action({ authType = '', isToolAuthenticated = false }) {
     },
   });
 
-  const runCodeIsEnabled = useWatch({ control, name: AgentCapabilities.execute_code });
+  const runCodeIsEnabled = useWatch({
+    control,
+    name: AgentCapabilities.execute_code,
+  });
   const isUserProvided = authType === AuthType.USER_PROVIDED;
 
   const handleCheckboxChange = (checked: boolean) => {

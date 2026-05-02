@@ -1,8 +1,8 @@
-import React, { memo } from 'react';
-import { Globe } from 'lucide-react';
 import { CheckboxButton } from '@librechat/client';
 import { Permissions, PermissionTypes } from 'librechat-data-provider';
-import { useLocalize, useHasAccess } from '~/hooks';
+import { Globe } from 'lucide-react';
+import React, { memo } from 'react';
+import { useHasAccess, useLocalize } from '~/hooks';
 import { useBadgeRowContext } from '~/Providers';
 
 function WebSearch() {

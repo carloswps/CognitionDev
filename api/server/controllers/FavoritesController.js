@@ -30,28 +30,28 @@ const updateFavoritesController = async (req, res) => {
       const hasSpec = !!fav.spec;
 
       if (fav.agentId && fav.agentId.length > MAX_STRING_LENGTH) {
-        return res
-          .status(400)
-          .json({ message: `agentId exceeds maximum length of ${MAX_STRING_LENGTH}` });
+        return res.status(400).json({
+          message: `agentId exceeds maximum length of ${MAX_STRING_LENGTH}`,
+        });
       }
       if (fav.model && fav.model.length > MAX_STRING_LENGTH) {
-        return res
-          .status(400)
-          .json({ message: `model exceeds maximum length of ${MAX_STRING_LENGTH}` });
+        return res.status(400).json({
+          message: `model exceeds maximum length of ${MAX_STRING_LENGTH}`,
+        });
       }
       if (fav.endpoint && fav.endpoint.length > MAX_STRING_LENGTH) {
-        return res
-          .status(400)
-          .json({ message: `endpoint exceeds maximum length of ${MAX_STRING_LENGTH}` });
+        return res.status(400).json({
+          message: `endpoint exceeds maximum length of ${MAX_STRING_LENGTH}`,
+        });
       }
       if (fav.spec !== undefined && fav.spec !== null) {
         if (typeof fav.spec !== 'string' || fav.spec.length === 0) {
           return res.status(400).json({ message: 'spec must be a non-empty string' });
         }
         if (fav.spec.length > MAX_STRING_LENGTH) {
-          return res
-            .status(400)
-            .json({ message: `spec exceeds maximum length of ${MAX_STRING_LENGTH}` });
+          return res.status(400).json({
+            message: `spec exceeds maximum length of ${MAX_STRING_LENGTH}`,
+          });
         }
       }
 
@@ -75,14 +75,14 @@ const updateFavoritesController = async (req, res) => {
       }
 
       if (hasSpec && (fav.agentId || fav.model || fav.endpoint)) {
-        return res
-          .status(400)
-          .json({ message: 'spec cannot be combined with agentId, model, or endpoint' });
+        return res.status(400).json({
+          message: 'spec cannot be combined with agentId, model, or endpoint',
+        });
       }
       if (hasAgent && (fav.model || fav.endpoint)) {
-        return res
-          .status(400)
-          .json({ message: 'agentId cannot be combined with model or endpoint' });
+        return res.status(400).json({
+          message: 'agentId cannot be combined with model or endpoint',
+        });
       }
     }
 

@@ -5,7 +5,12 @@ const { SystemCapabilities } = require('@librechat/data-schemas');
 
 jest.mock('@librechat/data-schemas', () => ({
   ...jest.requireActual('@librechat/data-schemas'),
-  logger: { error: jest.fn(), warn: jest.fn(), debug: jest.fn(), info: jest.fn() },
+  logger: {
+    error: jest.fn(),
+    warn: jest.fn(),
+    debug: jest.fn(),
+    info: jest.fn(),
+  },
 }));
 
 jest.mock('~/cache', () => ({
@@ -88,7 +93,9 @@ describe('canDeleteAccount', () => {
       });
 
       const next = jest.fn();
-      const req = { user: { id: admin._id.toString(), role: SystemRoles.ADMIN } };
+      const req = {
+        user: { id: admin._id.toString(), role: SystemRoles.ADMIN },
+      };
 
       await canDeleteAccount(req, makeRes(), next);
 
@@ -125,7 +132,9 @@ describe('canDeleteAccount', () => {
 
       const next = jest.fn();
       const res = makeRes();
-      const req = { user: { id: admin._id.toString(), role: SystemRoles.ADMIN } };
+      const req = {
+        user: { id: admin._id.toString(), role: SystemRoles.ADMIN },
+      };
 
       await canDeleteAccount(req, res, next);
 

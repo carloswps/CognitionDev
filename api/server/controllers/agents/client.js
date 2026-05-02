@@ -209,7 +209,10 @@ class AgentClient extends BaseClient {
 
     /** Collect all agents for unified processing, extracting base instructions during collection */
     const allAgents = [
-      { agent: extractBaseInstructions(this.options.agent), agentId: this.options.agent.id },
+      {
+        agent: extractBaseInstructions(this.options.agent),
+        agentId: this.options.agent.id,
+      },
       ...(this.agentConfigs?.size > 0
         ? Array.from(this.agentConfigs.entries()).map(([agentId, agent]) => ({
             agent: extractBaseInstructions(agent),
@@ -263,7 +266,10 @@ class AgentClient extends BaseClient {
           const textPart = formattedMessage.content.find((part) => part.type === 'text');
           textPart
             ? (textPart.text = message.fileContext + '\n' + textPart.text)
-            : formattedMessage.content.unshift({ type: 'text', text: message.fileContext });
+            : formattedMessage.content.unshift({
+                type: 'text',
+                text: message.fileContext,
+              });
         }
       }
 
@@ -286,7 +292,6 @@ class AgentClient extends BaseClient {
             continue;
           }
           if (file.metadata?.fileIdentifier) {
-            continue;
           }
         }
       }
@@ -473,7 +478,10 @@ class AgentClient extends BaseClient {
         memoryConfig.agent?.model != null &&
         memoryConfig.agent?.provider != null
       ) {
-        prelimAgent = { id: Constants.EPHEMERAL_AGENT_ID, ...memoryConfig.agent };
+        prelimAgent = {
+          id: Constants.EPHEMERAL_AGENT_ID,
+          ...memoryConfig.agent,
+        };
       }
     } catch (error) {
       logger.error(
@@ -659,8 +667,14 @@ class AgentClient extends BaseClient {
       {
         spendTokens: db.spendTokens,
         spendStructuredTokens: db.spendStructuredTokens,
-        pricing: { getMultiplier: db.getMultiplier, getCacheMultiplier: db.getCacheMultiplier },
-        bulkWriteOps: { insertMany: db.bulkInsertTransactions, updateBalance: db.updateBalance },
+        pricing: {
+          getMultiplier: db.getMultiplier,
+          getCacheMultiplier: db.getCacheMultiplier,
+        },
+        bulkWriteOps: {
+          insertMany: db.bulkInsertTransactions,
+          updateBalance: db.updateBalance,
+        },
       },
       {
         user: this.user ?? this.options.req.user?.id,
@@ -971,7 +985,10 @@ class AgentClient extends BaseClient {
       model: agent.model || agent.model_parameters.model,
     };
 
-    let titleProviderConfig = getProviderConfig({ provider: endpoint, appConfig });
+    let titleProviderConfig = getProviderConfig({
+      provider: endpoint,
+      appConfig,
+    });
 
     /** @type {TEndpoint | undefined} */
     const endpointConfig =
@@ -1005,7 +1022,10 @@ class AgentClient extends BaseClient {
         );
         // Fall back to original provider config
         endpoint = agent.endpoint;
-        titleProviderConfig = getProviderConfig({ provider: endpoint, appConfig });
+        titleProviderConfig = getProviderConfig({
+          provider: endpoint,
+          appConfig,
+        });
       }
     }
 

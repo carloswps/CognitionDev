@@ -1,8 +1,8 @@
 // file deepcode ignore HardcodedNonCryptoSecret: No hardcoded secrets
-import { ViolationTypes, ErrorTypes, alternateName } from 'librechat-data-provider';
+import { alternateName, ErrorTypes, ViolationTypes } from 'librechat-data-provider';
 import type { LocalizeFunction } from '~/common';
-import { formatJSON, extractJson, isJson } from '~/utils/json';
 import { useLocalize } from '~/hooks';
+import { extractJson, formatJSON, isJson } from '~/utils/json';
 import CodeBlock from './CodeBlock';
 
 const localizedErrorPrefix = 'com_error';
@@ -59,7 +59,10 @@ const errorMessages = {
   [ErrorTypes.NO_SYSTEM_MESSAGES]: `com_error_${ErrorTypes.NO_SYSTEM_MESSAGES}`,
   [ErrorTypes.EXPIRED_USER_KEY]: (json: TExpiredKey, localize: LocalizeFunction) => {
     const { expiredAt, endpoint } = json;
-    return localize('com_error_expired_user_key', { 0: endpoint, 1: expiredAt });
+    return localize('com_error_expired_user_key', {
+      0: endpoint,
+      1: expiredAt,
+    });
   },
   [ErrorTypes.INPUT_LENGTH]: (json: TGenericError, localize: LocalizeFunction) => {
     const { info } = json;
@@ -82,7 +85,10 @@ const errorMessages = {
     const { info } = json;
     const [endpoint, model = 'unknown'] = info?.split('|') ?? [];
     const provider = (alternateName[endpoint ?? ''] as string | undefined) ?? endpoint ?? 'unknown';
-    return localize('com_error_illegal_model_request', { 0: model, 1: provider });
+    return localize('com_error_illegal_model_request', {
+      0: model,
+      1: provider,
+    });
   },
   invalid_api_key:
     'Invalid API key. Please check your API key and try again. You can do this by clicking on the model logo in the left corner of the textbox and selecting "Set Token" for the current selected endpoint. Thank you for your understanding.',

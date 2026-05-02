@@ -1,10 +1,10 @@
-import { getEndpointField, isAssistantsEndpoint } from 'librechat-data-provider';
 import type {
-  TPreset,
-  TConversation,
   TAssistantsMap,
+  TConversation,
   TEndpointsConfig,
+  TPreset,
 } from 'librechat-data-provider';
+import { getEndpointField, isAssistantsEndpoint } from 'librechat-data-provider';
 import ConvoIconURL from '~/components/Endpoints/ConvoIconURL';
 import MinimalIcon from '~/components/Endpoints/MinimalIcon';
 import { getIconEndpoint } from '~/utils';
@@ -26,7 +26,11 @@ export default function EndpointIcon({
 }) {
   const convoIconURL = conversation?.iconURL ?? '';
   let endpoint = conversation?.endpoint;
-  endpoint = getIconEndpoint({ endpointsConfig, iconURL: convoIconURL, endpoint });
+  endpoint = getIconEndpoint({
+    endpointsConfig,
+    iconURL: convoIconURL,
+    endpoint,
+  });
 
   const endpointType = getEndpointField(endpointsConfig, endpoint, 'type');
   const endpointIconURL = getEndpointField(endpointsConfig, endpoint, 'iconURL');

@@ -1,6 +1,6 @@
-import { useLocalize, TranslationKeys } from '~/hooks';
 import { CategoryIcon } from '~/components/Prompts';
 import { useGetCategories } from '~/data-provider';
+import { type TranslationKeys, useLocalize } from '~/hooks';
 
 const loadingCategories: { label: TranslationKeys; value: string }[] = [
   {

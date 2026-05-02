@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { BookmarkPlusIcon } from 'lucide-react';
 import { OGDialogTrigger } from '@librechat/client';
+import { BookmarkPlusIcon } from 'lucide-react';
+import type React from 'react';
 import type { FC } from 'react';
-import { BookmarkEditDialog, BookmarkItems, BookmarkItem } from '~/components/Bookmarks';
+import { useState } from 'react';
+import { BookmarkEditDialog, BookmarkItem, BookmarkItems } from '~/components/Bookmarks';
 import { useLocalize } from '~/hooks';
 
 export const BookmarkMenuItems: FC<{

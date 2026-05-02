@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { HoverCard, HoverCardTrigger, Label, Switch } from '@librechat/client';
 import type { DynamicSettingProps } from 'librechat-data-provider';
-import { Label, Switch, HoverCard, HoverCardTrigger } from '@librechat/client';
-import { TranslationKeys, useLocalize, useParameterEffects } from '~/hooks';
+import { useState } from 'react';
+import { ESide } from '~/common';
+import { type TranslationKeys, useLocalize, useParameterEffects } from '~/hooks';
 import { useChatContext } from '~/Providers';
 import OptionHover from './OptionHover';
-import { ESide } from '~/common';
 
 function DynamicSwitch({
   label = '',

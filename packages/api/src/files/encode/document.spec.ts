@@ -1,6 +1,6 @@
 import { Providers } from '@librechat/agents';
-import { mbToBytes } from 'librechat-data-provider';
 import type { AppConfig, IMongoFile } from '@librechat/data-schemas';
+import { mbToBytes } from 'librechat-data-provider';
 import type { ServerRequest } from '~/types';
 import { encodeAndFormatDocuments } from './document';
 
@@ -16,9 +16,9 @@ jest.mock('./utils', () => ({
   getConfiguredFileSizeLimit: jest.fn(),
 }));
 
-import { validatePdf, validateBedrockDocument } from '~/files/validation';
-import { getFileStream, getConfiguredFileSizeLimit } from './utils';
 import { Types } from 'mongoose';
+import { validateBedrockDocument, validatePdf } from '~/files/validation';
+import { getConfiguredFileSizeLimit, getFileStream } from './utils';
 
 const mockedValidatePdf = validatePdf as jest.MockedFunction<typeof validatePdf>;
 const mockedValidateBedrockDocument = validateBedrockDocument as jest.MockedFunction<

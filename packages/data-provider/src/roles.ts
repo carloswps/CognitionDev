@@ -1,21 +1,21 @@
 import { z } from 'zod';
 import {
+  agentPermissionsSchema,
+  bookmarkPermissionsSchema,
+  fileCitationsPermissionsSchema,
+  fileSearchPermissionsSchema,
+  mcpServersPermissionsSchema,
+  memoryPermissionsSchema,
+  multiConvoPermissionsSchema,
   Permissions,
   PermissionTypes,
-  permissionsSchema,
-  agentPermissionsSchema,
-  promptPermissionsSchema,
-  memoryPermissionsSchema,
-  runCodePermissionsSchema,
-  bookmarkPermissionsSchema,
-  webSearchPermissionsSchema,
-  fileSearchPermissionsSchema,
-  multiConvoPermissionsSchema,
-  mcpServersPermissionsSchema,
   peoplePickerPermissionsSchema,
+  permissionsSchema,
+  promptPermissionsSchema,
   remoteAgentsPermissionsSchema,
+  runCodePermissionsSchema,
   temporaryChatPermissionsSchema,
-  fileCitationsPermissionsSchema,
+  webSearchPermissionsSchema,
 } from './permissions';
 
 /**

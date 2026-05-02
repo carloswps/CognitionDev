@@ -333,7 +333,9 @@ describe('canAccessAgentResource middleware', () => {
 
     test('should support combined permissions', async () => {
       const viewAndEdit = 1 | 2; // 3
-      const middleware = canAccessAgentResource({ requiredPermission: viewAndEdit });
+      const middleware = canAccessAgentResource({
+        requiredPermission: viewAndEdit,
+      });
       await middleware(req, res, next);
       expect(next).toHaveBeenCalled();
     });

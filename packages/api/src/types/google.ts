@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { AuthKeys, googleBaseSchema } from 'librechat-data-provider';
+import { AuthKeys, type googleBaseSchema } from 'librechat-data-provider';
+import type { z } from 'zod';
 
 export type GoogleParameters = z.infer<typeof googleBaseSchema>;
 

@@ -1,15 +1,16 @@
-import React, { useMemo, useEffect, useCallback, useRef } from 'react';
-import { AutoSizer, List as VirtualList, WindowScroller } from 'react-virtualized';
-import { throttle } from 'lodash';
 import { Spinner } from '@librechat/client';
-import { PermissionBits } from 'librechat-data-provider';
 import type t from 'librechat-data-provider';
+import { PermissionBits } from 'librechat-data-provider';
+import { throttle } from 'lodash';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { AutoSizer, List as VirtualList, WindowScroller } from 'react-virtualized';
 import { useMarketplaceAgentsInfiniteQuery } from '~/data-provider/Agents';
 import { useAgentCategories, useLocalize } from '~/hooks';
-import { useHasData } from './SmartLoader';
-import ErrorDisplay from './ErrorDisplay';
-import AgentCard from './AgentCard';
 import { cn } from '~/utils';
+import AgentCard from './AgentCard';
+import ErrorDisplay from './ErrorDisplay';
+import { useHasData } from './SmartLoader';
 
 interface VirtualizedAgentGridProps {
   category: string;
@@ -102,7 +103,9 @@ const VirtualizedAgentGrid: React.FC<VirtualizedAgentGridProps> = ({
       }
     }, 200);
 
-    scrollElement.addEventListener('scroll', throttledScrollHandler, { passive: true });
+    scrollElement.addEventListener('scroll', throttledScrollHandler, {
+      passive: true,
+    });
 
     return () => {
       scrollElement.removeEventListener('scroll', throttledScrollHandler);

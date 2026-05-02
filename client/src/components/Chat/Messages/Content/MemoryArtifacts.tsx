@@ -1,9 +1,9 @@
-import { Tools } from 'librechat-data-provider';
-import { useState, useRef, useMemo, useLayoutEffect, useEffect } from 'react';
 import type { MemoryArtifact, TAttachment } from 'librechat-data-provider';
-import MemoryInfo from './MemoryInfo';
+import { Tools } from 'librechat-data-provider';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
+import MemoryInfo from './MemoryInfo';
 
 export default function MemoryArtifacts({ attachments }: { attachments?: TAttachment[] }) {
   const localize = useLocalize();

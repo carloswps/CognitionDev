@@ -1,11 +1,11 @@
-import { logger } from '@librechat/data-schemas';
 import type { StandardGraph } from '@librechat/agents';
+import { logger } from '@librechat/data-schemas';
 import type { Agents } from 'librechat-data-provider';
 import type {
-  SerializableJobData,
-  UsageMetadata,
   IJobStore,
   JobStatus,
+  SerializableJobData,
+  UsageMetadata,
 } from '~/stream/interfaces/IJobStore';
 
 /**
@@ -285,7 +285,11 @@ export class InMemoryJobStore implements IJobStore {
     if (existing) {
       existing.contentParts = contentParts;
     } else {
-      this.contentState.set(streamId, { contentParts, graphRef: null, collectedUsage: [] });
+      this.contentState.set(streamId, {
+        contentParts,
+        graphRef: null,
+        collectedUsage: [],
+      });
     }
   }
 
@@ -297,7 +301,11 @@ export class InMemoryJobStore implements IJobStore {
     if (existing) {
       existing.collectedUsage = collectedUsage;
     } else {
-      this.contentState.set(streamId, { contentParts: [], graphRef: null, collectedUsage });
+      this.contentState.set(streamId, {
+        contentParts: [],
+        graphRef: null,
+        collectedUsage,
+      });
     }
   }
 

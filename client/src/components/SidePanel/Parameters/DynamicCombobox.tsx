@@ -1,11 +1,11 @@
-import { useMemo, useState, useCallback } from 'react';
+import { ControlCombobox, HoverCard, HoverCardTrigger, Label } from '@librechat/client';
 import type { DynamicSettingProps } from 'librechat-data-provider';
-import { Label, HoverCard, HoverCardTrigger, ControlCombobox } from '@librechat/client';
-import { TranslationKeys, useLocalize, useParameterEffects } from '~/hooks';
-import { useChatContext } from '~/Providers';
-import OptionHover from './OptionHover';
+import { useCallback, useMemo, useState } from 'react';
 import { ESide } from '~/common';
+import { type TranslationKeys, useLocalize, useParameterEffects } from '~/hooks';
+import { useChatContext } from '~/Providers';
 import { cn } from '~/utils';
+import OptionHover from './OptionHover';
 
 function DynamicCombobox({
   label = '',
@@ -27,7 +27,10 @@ function DynamicCombobox({
   SelectIcon = null,
   selectPlaceholder = '',
   searchPlaceholder = '',
-}: DynamicSettingProps & { isCollapsed?: boolean; SelectIcon?: React.ReactNode }) {
+}: DynamicSettingProps & {
+  isCollapsed?: boolean;
+  SelectIcon?: React.ReactNode;
+}) {
   const localize = useLocalize();
   const { preset } = useChatContext();
   const [inputValue, setInputValue] = useState<string | null>(null);

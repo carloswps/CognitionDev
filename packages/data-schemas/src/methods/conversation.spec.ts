@@ -1,11 +1,11 @@
+import { EModelEndpoint } from 'librechat-data-provider';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import { EModelEndpoint } from 'librechat-data-provider';
-import type { IConversation } from '../types';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import { ConversationMethods, createConversationMethods } from './conversation';
-import { tenantStorage, runAsSystem } from '~/config/tenantContext';
+import { runAsSystem, tenantStorage } from '~/config/tenantContext';
 import { createModels } from '../models';
+import type { IConversation } from '../types';
+import { type ConversationMethods, createConversationMethods } from './conversation';
 
 jest.mock('~/config/winston', () => ({
   error: jest.fn(),
@@ -33,7 +33,10 @@ beforeAll(async () => {
   Object.assign(mongoose.models, models);
   Conversation = mongoose.models.Conversation as mongoose.Model<IConversation>;
 
-  methods = createConversationMethods(mongoose, { getMessages, deleteMessages });
+  methods = createConversationMethods(mongoose, {
+    getMessages,
+    deleteMessages,
+  });
 
   await mongoose.connect(mongoUri);
 });
@@ -161,7 +164,9 @@ describe('Conversation Operations', () => {
 
       expect(result).toBeNull();
 
-      const dbConvo = await Conversation.findOne({ conversationId: nonExistentId });
+      const dbConvo = await Conversation.findOne({
+        conversationId: nonExistentId,
+      });
       expect(dbConvo).toBeNull();
     });
 
@@ -170,7 +175,10 @@ describe('Conversation Operations', () => {
 
       const result = await saveConvo(
         mockCtx,
-        { conversationId: mockConversationData.conversationId, title: 'Updated Title' },
+        {
+          conversationId: mockConversationData.conversationId,
+          title: 'Updated Title',
+        },
         { noUpsert: true },
       );
 
@@ -419,7 +427,9 @@ describe('Conversation Operations', () => {
       });
 
       // Mock Meili search
-      Object.assign(Conversation, { meiliSearch: jest.fn().mockResolvedValue({ hits: [] }) });
+      Object.assign(Conversation, {
+        meiliSearch: jest.fn().mockResolvedValue({ hits: [] }),
+      });
 
       const result = await getConvosByCursor('user123');
 
@@ -878,7 +888,9 @@ describe('Conversation Operations', () => {
         new Date('2026-01-01T00:00:00.000Z').getTime(),
       );
 
-      const result = await getConvosByCursor('user123', { sortBy: 'createdAt' });
+      const result = await getConvosByCursor('user123', {
+        sortBy: 'createdAt',
+      });
 
       // Should be sorted by createdAt DESC
       expect(result?.conversations).toHaveLength(2);

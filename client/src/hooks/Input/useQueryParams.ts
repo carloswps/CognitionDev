@@ -1,27 +1,27 @@
-import { useEffect, useCallback, useRef } from 'react';
-import { useRecoilValue } from 'recoil';
-import { useSearchParams } from 'react-router-dom';
-import { QueryClient, useQueryClient } from '@tanstack/react-query';
-import { QueryKeys, EModelEndpoint, PermissionBits } from 'librechat-data-provider';
+import { type QueryClient, useQueryClient } from '@tanstack/react-query';
 import type {
   AgentListResponse,
   TEndpointsConfig,
-  TStartupConfig,
   TPreset,
+  TStartupConfig,
 } from 'librechat-data-provider';
-import {
-  clearModelForNonEphemeralAgent,
-  removeUnavailableTools,
-  specDisplayFieldReset,
-  processValidSettings,
-  getModelSpecIconURL,
-  getConvoSwitchLogic,
-  logger,
-} from '~/utils';
-import { useAuthContext, useAgentsMap, useDefaultConvo, useSubmitMessage } from '~/hooks';
+import { EModelEndpoint, PermissionBits, QueryKeys } from 'librechat-data-provider';
+import { useCallback, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { startupConfigKey, useGetAgentByIdQuery } from '~/data-provider';
+import { useAgentsMap, useAuthContext, useDefaultConvo, useSubmitMessage } from '~/hooks';
 import { useChatContext, useChatFormContext } from '~/Providers';
 import store from '~/store';
+import {
+  clearModelForNonEphemeralAgent,
+  getConvoSwitchLogic,
+  getModelSpecIconURL,
+  logger,
+  processValidSettings,
+  removeUnavailableTools,
+  specDisplayFieldReset,
+} from '~/utils';
 
 const injectAgentIntoAgentsMap = (queryClient: QueryClient, agent: any) => {
   const editCacheKey = [QueryKeys.agents, { requiredPermission: PermissionBits.EDIT }];

@@ -1,30 +1,30 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useRecoilState } from 'recoil';
+import { useMediaQuery, useOnClickOutside } from '@librechat/client';
 import * as Tabs from '@radix-ui/react-tabs';
-import { Lightbulb, Cog } from 'lucide-react';
-import { useOnClickOutside, useMediaQuery } from '@librechat/client';
 import { useGetCustomConfigSpeechQuery } from 'librechat-data-provider/react-query';
+import { Cog, Lightbulb } from 'lucide-react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { useLocalize } from '~/hooks';
+import store from '~/store';
+import { cn } from '~/utils';
+import ConversationModeSwitch from './ConversationModeSwitch';
 import {
-  CloudBrowserVoicesSwitch,
-  AutomaticPlaybackSwitch,
-  TextToSpeechSwitch,
-  EngineTTSDropdown,
-  CacheTTSSwitch,
-  VoiceDropdown,
-  PlaybackRate,
-} from './TTS';
-import {
+  AutoSendTextSelector,
   AutoTranscribeAudioSwitch,
+  DecibelSelector,
+  EngineSTTDropdown,
   LanguageSTTDropdown,
   SpeechToTextSwitch,
-  AutoSendTextSelector,
-  EngineSTTDropdown,
-  DecibelSelector,
 } from './STT';
-import ConversationModeSwitch from './ConversationModeSwitch';
-import { useLocalize } from '~/hooks';
-import { cn } from '~/utils';
-import store from '~/store';
+import {
+  AutomaticPlaybackSwitch,
+  CacheTTSSwitch,
+  CloudBrowserVoicesSwitch,
+  EngineTTSDropdown,
+  PlaybackRate,
+  TextToSpeechSwitch,
+  VoiceDropdown,
+} from './TTS';
 
 function Speech() {
   const localize = useLocalize();
@@ -59,21 +59,33 @@ function Speech() {
       const settings = {
         sttExternal: { value: sttExternal, setFunc: setSttExternal },
         ttsExternal: { value: ttsExternal, setFunc: setTtsExternal },
-        conversationMode: { value: conversationMode, setFunc: setConversationMode },
+        conversationMode: {
+          value: conversationMode,
+          setFunc: setConversationMode,
+        },
         advancedMode: { value: advancedMode, setFunc: setAdvancedMode },
         speechToText: { value: speechToText, setFunc: setSpeechToText },
         textToSpeech: { value: textToSpeech, setFunc: setTextToSpeech },
         cacheTTS: { value: cacheTTS, setFunc: setCacheTTS },
         engineSTT: { value: engineSTT, setFunc: setEngineSTT },
         languageSTT: { value: languageSTT, setFunc: setLanguageSTT },
-        autoTranscribeAudio: { value: autoTranscribeAudio, setFunc: setAutoTranscribeAudio },
+        autoTranscribeAudio: {
+          value: autoTranscribeAudio,
+          setFunc: setAutoTranscribeAudio,
+        },
         decibelValue: { value: decibelValue, setFunc: setDecibelValue },
         autoSendText: { value: autoSendText, setFunc: setAutoSendText },
         engineTTS: { value: engineTTS, setFunc: setEngineTTS },
         voice: { value: voice, setFunc: setVoice },
-        cloudBrowserVoices: { value: cloudBrowserVoices, setFunc: setCloudBrowserVoices },
+        cloudBrowserVoices: {
+          value: cloudBrowserVoices,
+          setFunc: setCloudBrowserVoices,
+        },
         languageTTS: { value: languageTTS, setFunc: setLanguageTTS },
-        automaticPlayback: { value: automaticPlayback, setFunc: setAutomaticPlayback },
+        automaticPlayback: {
+          value: automaticPlayback,
+          setFunc: setAutomaticPlayback,
+        },
         playbackRate: { value: playbackRate, setFunc: setPlaybackRate },
       };
 

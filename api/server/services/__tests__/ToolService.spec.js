@@ -111,7 +111,10 @@ describe('ToolService - Action Capability Gating', () => {
       toolRegistry: new Map(),
       hasDeferredTools: false,
     });
-    mockLoadToolsUtil.mockResolvedValue({ loadedTools: [], toolContextMap: {} });
+    mockLoadToolsUtil.mockResolvedValue({
+      loadedTools: [],
+      toolContextMap: {},
+    });
     mockLoadActionSets.mockResolvedValue([]);
   });
 
@@ -292,7 +295,9 @@ describe('ToolService - Action Capability Gating', () => {
         definitionsOnly: false,
       });
 
-      expect(mockLoadActionSets).toHaveBeenCalledWith({ agent_id: 'agent_123' });
+      expect(mockLoadActionSets).toHaveBeenCalledWith({
+        agent_id: 'agent_123',
+      });
     });
   });
 
@@ -328,7 +333,9 @@ describe('ToolService - Action Capability Gating', () => {
         actionsEnabled: true,
       });
 
-      expect(mockLoadActionSets).toHaveBeenCalledWith({ agent_id: 'agent_123' });
+      expect(mockLoadActionSets).toHaveBeenCalledWith({
+        agent_id: 'agent_123',
+      });
     });
 
     it('should resolve actionsEnabled from capabilities when not explicitly provided', async () => {
@@ -571,7 +578,9 @@ describe('ToolService - Action Capability Gating', () => {
               responses: {
                 200: {
                   description: 'OK',
-                  content: { 'application/json': { schema: { type: 'object' } } },
+                  content: {
+                    'application/json': { schema: { type: 'object' } },
+                  },
                 },
               },
             },

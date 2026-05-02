@@ -1,9 +1,9 @@
-import { FileSources } from 'librechat-data-provider';
 import type { Agent, AgentAvatar, AgentModelParameters } from 'librechat-data-provider';
+import { FileSources } from 'librechat-data-provider';
 import type { RefreshS3UrlFn, UpdateAgentFn } from './avatars';
 import {
-  MAX_AVATAR_REFRESH_AGENTS,
   AVATAR_REFRESH_BATCH_SIZE,
+  MAX_AVATAR_REFRESH_AGENTS,
   refreshListAvatars,
 } from './avatars';
 
@@ -270,7 +270,10 @@ describe('refreshListAvatars', () => {
     expect(stats.updated).toBe(2); // agent1 and agent2 (other user's agent now refreshed)
     expect(stats.not_s3).toBe(1); // agent3
     expect(stats.no_id).toBe(1); // agent with empty id
-    expect(stats.urlCache).toEqual({ agent1: 'new-path.jpg', agent2: 'new-path.jpg' });
+    expect(stats.urlCache).toEqual({
+      agent1: 'new-path.jpg',
+      agent2: 'new-path.jpg',
+    });
   });
 });
 

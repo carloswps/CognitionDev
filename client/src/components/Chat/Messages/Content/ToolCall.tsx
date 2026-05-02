@@ -1,22 +1,22 @@
-import { useMemo, useState, useEffect, useCallback } from 'react';
-import { useRecoilValue } from 'recoil';
 import { Button } from '@librechat/client';
-import { TriangleAlert } from 'lucide-react';
+import type { TAttachment } from 'librechat-data-provider';
 import {
-  Constants,
-  dataService,
   actionDelimiter,
   actionDomainSeparator,
+  Constants,
+  dataService,
 } from 'librechat-data-provider';
-import type { TAttachment } from 'librechat-data-provider';
-import { useLocalize, useProgress, useExpandCollapse } from '~/hooks';
-import { ToolIcon, getToolIconType, isError } from './ToolOutput';
+import { TriangleAlert } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { useExpandCollapse, useLocalize, useProgress } from '~/hooks';
 import { useMCPIconMap } from '~/hooks/MCP';
-import { AttachmentGroup } from './Parts';
-import ToolCallInfo from './ToolCallInfo';
-import ProgressText from './ProgressText';
-import { logger } from '~/utils';
 import store from '~/store';
+import { logger } from '~/utils';
+import { AttachmentGroup } from './Parts';
+import ProgressText from './ProgressText';
+import ToolCallInfo from './ToolCallInfo';
+import { getToolIconType, isError, ToolIcon } from './ToolOutput';
 
 export default function ToolCall({
   initialProgress = 0.1,
@@ -62,7 +62,12 @@ export default function ToolCall({
 
   const { function_name, domain, isMCPToolCall, mcpServerName } = useMemo(() => {
     if (typeof name !== 'string') {
-      return { function_name: '', domain: null, isMCPToolCall: false, mcpServerName: '' };
+      return {
+        function_name: '',
+        domain: null,
+        isMCPToolCall: false,
+        mcpServerName: '',
+      };
     }
     if (name.includes(Constants.mcp_delimiter)) {
       const parts = name.split(Constants.mcp_delimiter);
@@ -176,7 +181,9 @@ export default function ToolCall({
       return localize('com_ui_cancelled');
     }
     if (isMCPToolCall === true) {
-      return localize('com_assistants_completed_function', { 0: function_name });
+      return localize('com_assistants_completed_function', {
+        0: function_name,
+      });
     }
     if (domain != null && domain && domain.length !== Constants.ENCODED_DOMAIN_LENGTH) {
       return localize('com_assistants_completed_action', { 0: domain });

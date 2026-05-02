@@ -1,17 +1,17 @@
-import { useState, useRef, useEffect, useMemo, memo, useCallback } from 'react';
-import { AutoSizer, List } from 'react-virtualized';
 import { Spinner, useCombobox } from '@librechat/client';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
 import type { TPromptGroup } from 'librechat-data-provider';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { AutoSizer, List } from 'react-virtualized';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import type { PromptOption } from '~/common';
-import useInitPopoverInput from '~/hooks/Input/useInitPopoverInput';
-import { removeCharIfLast, detectVariables } from '~/utils';
-import { useRecordPromptUsage } from '~/data-provider';
 import { VariableDialog } from '~/components/Prompts';
-import { usePromptGroupsContext } from '~/Providers';
-import MentionItem from './MentionItem';
+import { useRecordPromptUsage } from '~/data-provider';
 import { useLocalize } from '~/hooks';
+import useInitPopoverInput from '~/hooks/Input/useInitPopoverInput';
+import { usePromptGroupsContext } from '~/Providers';
 import store from '~/store';
+import { detectVariables, removeCharIfLast } from '~/utils';
+import MentionItem from './MentionItem';
 
 const commandChar = '/';
 
@@ -153,7 +153,10 @@ function PromptsCommand({
 
   useEffect(() => {
     const currentActiveItem = document.getElementById(`prompt-item-${activeIndex}`);
-    currentActiveItem?.scrollIntoView({ behavior: 'instant', block: 'nearest' });
+    currentActiveItem?.scrollIntoView({
+      behavior: 'instant',
+      block: 'nearest',
+    });
   }, [activeIndex]);
 
   if (!hasAccess) {

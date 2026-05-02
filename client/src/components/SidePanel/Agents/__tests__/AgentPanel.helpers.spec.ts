@@ -1,14 +1,14 @@
 /**
  * @jest-environment jsdom
  */
-import { describe, it, expect, jest } from '@jest/globals';
-import { Constants, type Agent } from 'librechat-data-provider';
+import { describe, expect, it, jest } from '@jest/globals';
+import { type Agent, Constants } from 'librechat-data-provider';
 import type { FieldNamesMarkedBoolean } from 'react-hook-form';
 import type { AgentForm } from '~/common';
 import {
   composeAgentUpdatePayload,
-  persistAvatarChanges,
   isAvatarUploadOnlyDirty,
+  persistAvatarChanges,
 } from '../AgentPanel';
 
 const createForm = (): AgentForm => ({

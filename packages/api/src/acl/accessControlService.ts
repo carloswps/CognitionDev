@@ -1,6 +1,6 @@
-import { Types, ClientSession, DeleteResult } from 'mongoose';
-import { AllMethods, IAclEntry, createMethods, logger } from '@librechat/data-schemas';
-import { AccessRoleIds, PrincipalType, ResourceType } from 'librechat-data-provider';
+import { type AllMethods, createMethods, type IAclEntry, logger } from '@librechat/data-schemas';
+import { type AccessRoleIds, PrincipalType, ResourceType } from 'librechat-data-provider';
+import { type ClientSession, type DeleteResult, Types } from 'mongoose';
 
 export class AccessControlService {
   private _dbMethods: AllMethods;
@@ -131,7 +131,10 @@ export class AccessControlService {
       this.validateResourceType(resourceType as ResourceType);
 
       // Get all principals for the user (user + groups + public)
-      const principalsList = await this._dbMethods.getUserPrincipals({ userId, role });
+      const principalsList = await this._dbMethods.getUserPrincipals({
+        userId,
+        role,
+      });
 
       if (principalsList.length === 0) {
         return [];
@@ -220,7 +223,10 @@ export class AccessControlService {
 
     try {
       // Get user principals (user + groups + public)
-      const principals = await this._dbMethods.getUserPrincipals({ userId, role });
+      const principals = await this._dbMethods.getUserPrincipals({
+        userId,
+        role,
+      });
 
       // Use batch method from aclEntry
       const permissionsMap = await this._dbMethods.getEffectivePermissionsForResources(
@@ -311,7 +317,10 @@ export class AccessControlService {
       this.validateResourceType(resourceType);
 
       // Get all principals for the user (user + groups + public)
-      const principals = await this._dbMethods.getUserPrincipals({ userId, role });
+      const principals = await this._dbMethods.getUserPrincipals({
+        userId,
+        role,
+      });
 
       if (principals.length === 0) {
         return false;

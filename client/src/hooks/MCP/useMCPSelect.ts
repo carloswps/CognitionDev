@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useMemo } from 'react';
 import { useAtom } from 'jotai';
-import isEqual from 'lodash/isEqual';
-import { useRecoilState } from 'recoil';
 import { Constants, LocalStorageKeys } from 'librechat-data-provider';
-import { ephemeralAgentByConvoId, mcpValuesAtomFamily, mcpPinnedAtom } from '~/store';
+import isEqual from 'lodash/isEqual';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useRecoilState } from 'recoil';
+import { ephemeralAgentByConvoId, mcpPinnedAtom, mcpValuesAtomFamily } from '~/store';
 import { setTimestamp } from '~/utils/timestamps';
-import { MCPServerDefinition } from './useMCPServerManager';
+import type { MCPServerDefinition } from './useMCPServerManager';
 
 export function useMCPSelect({
   conversationId,

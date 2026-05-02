@@ -1,23 +1,23 @@
-import { Globe } from 'lucide-react';
 import { Spinner } from '@librechat/client';
-import { useWatch, useFormContext } from 'react-hook-form';
 import {
-  SystemRoles,
-  Permissions,
-  ResourceType,
   PermissionBits,
+  Permissions,
   PermissionTypes,
+  ResourceType,
+  SystemRoles,
 } from 'librechat-data-provider';
+import { Globe } from 'lucide-react';
+import { useFormContext, useWatch } from 'react-hook-form';
 import type { AgentForm, AgentPanelProps } from '~/common';
-import { useLocalize, useAuthContext, useHasAccess, useResourcePermissions } from '~/hooks';
-import { GenericGrantAccessDialog } from '~/components/Sharing';
-import { useUpdateAgentMutation } from '~/data-provider';
-import AdvancedButton from './Advanced/AdvancedButton';
-import VersionButton from './Version/VersionButton';
-import DuplicateAgent from './DuplicateAgent';
-import AdminSettings from './AdminSettings';
-import DeleteButton from './DeleteButton';
 import { Panel } from '~/common';
+import { GenericGrantAccessDialog } from '~/components/Sharing';
+import type { useUpdateAgentMutation } from '~/data-provider';
+import { useAuthContext, useHasAccess, useLocalize, useResourcePermissions } from '~/hooks';
+import AdminSettings from './AdminSettings';
+import AdvancedButton from './Advanced/AdvancedButton';
+import DeleteButton from './DeleteButton';
+import DuplicateAgent from './DuplicateAgent';
+import VersionButton from './Version/VersionButton';
 
 export default function AgentFooter({
   activePanel,

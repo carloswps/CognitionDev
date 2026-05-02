@@ -1,8 +1,8 @@
+import type { TAgentsEndpoint, TAnthropicEndpoint, TCustomConfig } from 'librechat-data-provider';
 import { EModelEndpoint } from 'librechat-data-provider';
-import type { TCustomConfig, TAgentsEndpoint, TAnthropicEndpoint } from 'librechat-data-provider';
 import type { AppConfig } from '~/types';
-import { azureAssistantsDefaults, assistantsConfigSetup } from './assistants';
 import { agentsConfigSetup } from './agents';
+import { assistantsConfigSetup, azureAssistantsDefaults } from './assistants';
 import { azureConfigSetup } from './azure';
 import { vertexConfigSetup } from './vertex';
 

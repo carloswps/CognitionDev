@@ -1,11 +1,11 @@
-import debounce from 'lodash/debounce';
-import { FileSources, EToolResources, removeNullishValues } from 'librechat-data-provider';
-import { useCallback, useState, useEffect } from 'react';
-import type * as t from 'librechat-data-provider';
 import type { UseMutateAsyncFunction } from '@tanstack/react-query';
+import type * as t from 'librechat-data-provider';
+import { type EToolResources, FileSources, removeNullishValues } from 'librechat-data-provider';
+import debounce from 'lodash/debounce';
+import { useCallback, useEffect, useState } from 'react';
 import type { ExtendedFile, GenericSetter } from '~/common';
-import useSetFilesToDelete from './useSetFilesToDelete';
 import { deletePreview } from '~/utils';
+import useSetFilesToDelete from './useSetFilesToDelete';
 
 type FileMapSetter = GenericSetter<Map<string, ExtendedFile>>;
 

@@ -1,10 +1,10 @@
+import type { IUser, TokenMethods } from '@librechat/data-schemas';
 import { logger } from '@librechat/data-schemas';
-import type { TokenMethods, IUser } from '@librechat/data-schemas';
-import type { MCPOAuthTokens } from './types';
-import { OAuthReconnectionTracker } from './OAuthReconnectionTracker';
-import { FlowStateManager } from '~/flow/manager';
+import type { FlowStateManager } from '~/flow/manager';
 import { MCPManager } from '~/mcp/MCPManager';
 import { MCPServersRegistry } from '~/mcp/registry/MCPServersRegistry';
+import { OAuthReconnectionTracker } from './OAuthReconnectionTracker';
+import type { MCPOAuthTokens } from './types';
 
 const DEFAULT_CONNECTION_TIMEOUT_MS = 10_000; // ms
 const RECONNECT_STAGGER_MS = 500; // ms between each server reconnection

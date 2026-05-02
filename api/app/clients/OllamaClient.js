@@ -96,7 +96,7 @@ class OllamaClient {
       }
 
       let aggregatedText = '';
-      let imageUrls = [];
+      const imageUrls = [];
 
       for (const content of message.content) {
         if (content.type === 'text') {

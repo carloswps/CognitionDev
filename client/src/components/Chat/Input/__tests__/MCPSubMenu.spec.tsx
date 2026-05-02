@@ -1,7 +1,7 @@
-import React from 'react';
 import * as Ariakit from '@ariakit/react';
-import userEvent from '@testing-library/user-event';
 import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import type React from 'react';
 import MCPSubMenu from '../MCPSubMenu';
 
 const mockToggleServerSelection = jest.fn();
@@ -14,7 +14,10 @@ const defaultMcpServerManager = {
   placeholderText: 'MCP Servers',
   selectableServers: [
     { serverName: 'server-a', config: { title: 'Server A' } },
-    { serverName: 'server-b', config: { title: 'Server B', description: 'Second server' } },
+    {
+      serverName: 'server-b',
+      config: { title: 'Server B', description: 'Second server' },
+    },
   ],
   connectionStatus: {},
   isInitializing: () => false,
@@ -43,7 +46,9 @@ jest.mock('@librechat/client', () => {
   return {
     MCPIcon: ({ className }: { className?: string }) => R.createElement('span', { className }),
     PinIcon: ({ unpin }: { unpin?: boolean }) =>
-      R.createElement('span', { 'data-testid': unpin ? 'unpin-icon' : 'pin-icon' }),
+      R.createElement('span', {
+        'data-testid': unpin ? 'unpin-icon' : 'pin-icon',
+      }),
     Spinner: ({ className }: { className?: string }) => R.createElement('span', { className }),
   };
 });
@@ -78,7 +83,10 @@ describe('MCPSubMenu', () => {
   });
 
   it('renders nothing when selectableServers is empty', () => {
-    mockMcpServerManager = { ...defaultMcpServerManager, selectableServers: [] };
+    mockMcpServerManager = {
+      ...defaultMcpServerManager,
+      selectableServers: [],
+    };
     renderSubMenu();
     expect(screen.queryByText('MCP Servers')).not.toBeInTheDocument();
   });

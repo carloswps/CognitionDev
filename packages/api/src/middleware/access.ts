@@ -1,13 +1,13 @@
-import { logger } from '@librechat/data-schemas';
-import {
-  Permissions,
-  EndpointURLs,
-  EModelEndpoint,
-  PermissionTypes,
-  isAgentsEndpoint,
-} from 'librechat-data-provider';
-import type { NextFunction, Request as ServerRequest, Response as ServerResponse } from 'express';
 import type { IRole, IUser } from '@librechat/data-schemas';
+import { logger } from '@librechat/data-schemas';
+import type { NextFunction, Request as ServerRequest, Response as ServerResponse } from 'express';
+import {
+  EModelEndpoint,
+  EndpointURLs,
+  isAgentsEndpoint,
+  type Permissions,
+  type PermissionTypes,
+} from 'librechat-data-provider';
 
 export function skipAgentCheck(req?: ServerRequest): boolean {
   if (!req || !req?.body?.endpoint) {
@@ -71,9 +71,7 @@ export const checkAccess = async ({
       }
 
       if (bodyProps[permission] && checkObject) {
-        return bodyProps[permission].every((prop) =>
-          Object.prototype.hasOwnProperty.call(checkObject, prop),
-        );
+        return bodyProps[permission].every((prop) => Object.hasOwn(checkObject, prop));
       }
 
       return false;

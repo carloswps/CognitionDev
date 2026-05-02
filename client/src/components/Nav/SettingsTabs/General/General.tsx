@@ -1,11 +1,11 @@
-import React, { useContext, useCallback } from 'react';
-import Cookies from 'js-cookie';
-import { useRecoilState } from 'recoil';
 import { Dropdown, ThemeContext } from '@librechat/client';
-import ArchivedChats from './ArchivedChats';
-import ToggleSwitch from '../ToggleSwitch';
+import Cookies from 'js-cookie';
+import React, { useCallback, useContext } from 'react';
+import { useRecoilState } from 'recoil';
 import { useLocalize } from '~/hooks';
 import store from '~/store';
+import ToggleSwitch from '../ToggleSwitch';
+import ArchivedChats from './ArchivedChats';
 
 const toggleSwitchConfigs = [
   {

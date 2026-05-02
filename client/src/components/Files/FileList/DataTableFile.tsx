@@ -1,6 +1,25 @@
-import * as React from 'react';
-import { ListFilter } from 'lucide-react';
-import { useSetRecoilState } from 'recoil';
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  Input,
+  Spinner,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TrashIcon,
+} from '@librechat/client';
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+} from '@tanstack/react-table';
 import {
   flexRender,
   getCoreRowModel,
@@ -9,36 +28,17 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import type {
-  ColumnDef,
-  SortingState,
-  VisibilityState,
-  ColumnFiltersState,
-} from '@tanstack/react-table';
-import { FileContext } from 'librechat-data-provider';
-import {
-  Input,
-  Table,
-  Button,
-  Spinner,
-  TableRow,
-  TableBody,
-  TableCell,
-  TableHead,
-  TrashIcon,
-  TableHeader,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-  DropdownMenuCheckboxItem,
-} from '@librechat/client';
 import type { TFile } from 'librechat-data-provider';
+import { FileContext } from 'librechat-data-provider';
+import { ListFilter } from 'lucide-react';
+import * as React from 'react';
+import { useSetRecoilState } from 'recoil';
 import type { AugmentedColumnDef } from '~/common';
 import ActionButton from '~/components/Files/ActionButton';
-import { useDeleteFilesFromTable } from '~/hooks/Files';
-import UploadFileButton from './UploadFileButton';
 import { useLocalize } from '~/hooks';
+import { useDeleteFilesFromTable } from '~/hooks/Files';
 import store from '~/store';
+import UploadFileButton from './UploadFileButton';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -53,7 +53,11 @@ const contextMap = {
   [FileContext.bytes]: 'com_ui_size',
 };
 
-type Style = { width?: number | string; maxWidth?: number | string; minWidth?: number | string };
+type Style = {
+  width?: number | string;
+  maxWidth?: number | string;
+  minWidth?: number | string;
+};
 
 export default function DataTableFile<TData, TValue>({
   columns,

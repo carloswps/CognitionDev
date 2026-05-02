@@ -1,13 +1,14 @@
 // client/src/hooks/Audio/useTTSBrowser.ts
-import { useRef, useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { parseTextParts } from 'librechat-data-provider';
+
 import type { TMessageContentParts } from 'librechat-data-provider';
-import useTextToSpeechBrowser from '~/hooks/Input/useTextToSpeechBrowser';
-import usePauseGlobalAudio from '~/hooks/Audio/usePauseGlobalAudio';
+import { parseTextParts } from 'librechat-data-provider';
+import { useEffect, useRef, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import useAudioRef from '~/hooks/Audio/useAudioRef';
-import { logger } from '~/utils';
+import usePauseGlobalAudio from '~/hooks/Audio/usePauseGlobalAudio';
+import useTextToSpeechBrowser from '~/hooks/Input/useTextToSpeechBrowser';
 import store from '~/store';
+import { logger } from '~/utils';
 
 type TUseTextToSpeech = {
   messageId?: string;
@@ -45,12 +46,18 @@ const useTTSBrowser = (props?: TUseTextToSpeech) => {
       if (lastSelectedVoice != null) {
         const currentVoice =
           typeof lastSelectedVoice === 'object' ? lastSelectedVoice.value : lastSelectedVoice;
-        logger.log('useTextToSpeech.ts - Effect:', { voices, voice: currentVoice });
+        logger.log('useTextToSpeech.ts - Effect:', {
+          voices,
+          voice: currentVoice,
+        });
         setVoice(currentVoice);
         return;
       }
 
-      logger.log('useTextToSpeech.ts - Effect:', { voices, voice: firstVoice.value });
+      logger.log('useTextToSpeech.ts - Effect:', {
+        voices,
+        voice: firstVoice.value,
+      });
       setVoice(firstVoice.value);
     }
   }, [setVoice, voice, voices]);

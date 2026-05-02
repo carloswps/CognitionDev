@@ -1,11 +1,11 @@
-import mongoose, { Types } from 'mongoose';
 import { PrincipalType, SystemRoles } from 'librechat-data-provider';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose, { Types } from 'mongoose';
+import groupSchema from '~/schema/group';
+import roleSchema from '~/schema/role';
+import userSchema from '~/schema/user';
 import type * as t from '~/types';
 import { createUserGroupMethods } from './userGroup';
-import groupSchema from '~/schema/group';
-import userSchema from '~/schema/user';
-import roleSchema from '~/schema/role';
 
 jest.mock('~/config/winston', () => ({
   error: jest.fn(),
@@ -53,7 +53,10 @@ async function createTestUser(overrides: Partial<t.IUser> = {}) {
 describe('userGroup methods', () => {
   describe('findGroupById', () => {
     it('returns the group when it exists', async () => {
-      const group = await Group.create({ name: 'Engineering', source: 'local' });
+      const group = await Group.create({
+        name: 'Engineering',
+        source: 'local',
+      });
       const found = await methods.findGroupById(group._id);
       expect(found).toBeTruthy();
       expect(found!.name).toBe('Engineering');
@@ -170,7 +173,10 @@ describe('userGroup methods', () => {
 
   describe('createGroup', () => {
     it('creates a group and returns the document', async () => {
-      const group = await methods.createGroup({ name: 'New Group', source: 'local' });
+      const group = await methods.createGroup({
+        name: 'New Group',
+        source: 'local',
+      });
       expect(group).toBeTruthy();
       expect(group.name).toBe('New Group');
       expect(group._id).toBeDefined();
@@ -188,7 +194,11 @@ describe('userGroup methods', () => {
     });
 
     it('updates existing group when found', async () => {
-      await Group.create({ name: 'Old Name', source: 'entra', idOnTheSource: 'ext-1' });
+      await Group.create({
+        name: 'Old Name',
+        source: 'entra',
+        idOnTheSource: 'ext-1',
+      });
       const group = await methods.upsertGroupByExternalId('ext-1', 'entra', {
         name: 'Updated Name',
       });
@@ -269,7 +279,11 @@ describe('userGroup methods', () => {
     it('removes user from every group they belong to', async () => {
       const userId = new Types.ObjectId();
       await Group.create([
-        { name: 'Group A', source: 'local', memberIds: [userId.toString(), 'other'] },
+        {
+          name: 'Group A',
+          source: 'local',
+          memberIds: [userId.toString(), 'other'],
+        },
         { name: 'Group B', source: 'local', memberIds: [userId.toString()] },
         { name: 'Group C', source: 'local', memberIds: ['other'] },
       ]);
@@ -284,7 +298,11 @@ describe('userGroup methods', () => {
     });
 
     it('is a no-op when user is not in any groups', async () => {
-      await Group.create({ name: 'Group A', source: 'local', memberIds: ['other'] });
+      await Group.create({
+        name: 'Group A',
+        source: 'local',
+        memberIds: ['other'],
+      });
       await expect(
         methods.removeUserFromAllGroups(new Types.ObjectId().toString()),
       ).resolves.not.toThrow();
@@ -294,7 +312,11 @@ describe('userGroup methods', () => {
   describe('getUserGroups', () => {
     it('delegates to findGroupsByMemberId', async () => {
       const user = await createTestUser({ idOnTheSource: 'user-ext-1' });
-      await Group.create({ name: 'Team', source: 'local', memberIds: ['user-ext-1'] });
+      await Group.create({
+        name: 'Team',
+        source: 'local',
+        memberIds: ['user-ext-1'],
+      });
 
       const groups = await methods.getUserGroups(user._id);
       expect(groups).toHaveLength(1);
@@ -336,7 +358,9 @@ describe('userGroup methods', () => {
 
     it('queries user role from DB when role param is undefined', async () => {
       const user = await createTestUser({ role: SystemRoles.ADMIN });
-      const principals = await methods.getUserPrincipals({ userId: user._id.toString() });
+      const principals = await methods.getUserPrincipals({
+        userId: user._id.toString(),
+      });
 
       const rolePrincipal = principals.find((p) => p.principalType === PrincipalType.ROLE);
       expect(rolePrincipal).toBeTruthy();
@@ -383,7 +407,12 @@ describe('userGroup methods', () => {
 
       const { addedGroups, removedGroups } = await methods.syncUserEntraGroups(user._id, [
         { id: 'entra-g1', name: 'Entra Group 1' },
-        { id: 'entra-g2', name: 'Entra Group 2', description: 'desc', email: 'g2@co.com' },
+        {
+          id: 'entra-g2',
+          name: 'Entra Group 2',
+          description: 'desc',
+          email: 'g2@co.com',
+        },
       ]);
 
       expect(addedGroups).toHaveLength(2);
@@ -754,7 +783,11 @@ describe('userGroup methods', () => {
 
   describe('findGroupByQuery', () => {
     it('finds a group by custom filter', async () => {
-      await Group.create({ name: 'Target', source: 'local', email: 'target@co.com' });
+      await Group.create({
+        name: 'Target',
+        source: 'local',
+        email: 'target@co.com',
+      });
       const found = await methods.findGroupByQuery({ email: 'target@co.com' });
       expect(found).toBeTruthy();
       expect(found!.name).toBe('Target');
@@ -769,12 +802,16 @@ describe('userGroup methods', () => {
   describe('updateGroupById', () => {
     it('updates the group and returns the new document', async () => {
       const group = await Group.create({ name: 'Old Name', source: 'local' });
-      const updated = await methods.updateGroupById(group._id, { name: 'New Name' });
+      const updated = await methods.updateGroupById(group._id, {
+        name: 'New Name',
+      });
       expect(updated!.name).toBe('New Name');
     });
 
     it('returns null when group does not exist', async () => {
-      const updated = await methods.updateGroupById(new Types.ObjectId(), { name: 'X' });
+      const updated = await methods.updateGroupById(new Types.ObjectId(), {
+        name: 'X',
+      });
       expect(updated).toBeNull();
     });
   });

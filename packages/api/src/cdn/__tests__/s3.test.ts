@@ -48,7 +48,10 @@ describe('initializeS3', () => {
     expect(MockS3Client).toHaveBeenCalledWith(
       expect.objectContaining({
         region: 'us-east-1',
-        credentials: { accessKeyId: 'test-key-id', secretAccessKey: 'test-secret' },
+        credentials: {
+          accessKeyId: 'test-key-id',
+          secretAccessKey: 'test-secret',
+        },
       }),
     );
   });
@@ -58,7 +61,9 @@ describe('initializeS3', () => {
     const { MockS3Client, initializeS3 } = await load();
     initializeS3();
     expect(MockS3Client).toHaveBeenCalledWith(
-      expect.objectContaining({ endpoint: 'https://fsn1.your-objectstorage.com' }),
+      expect.objectContaining({
+        endpoint: 'https://fsn1.your-objectstorage.com',
+      }),
     );
   });
 

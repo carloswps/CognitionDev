@@ -21,7 +21,9 @@ const { saveLocalBuffer } = require('../crud');
 
 describe('saveLocalBuffer path containment', () => {
   beforeAll(() => {
-    fs.mkdirSync(path.join(mockTmpBase, 'public', 'images'), { recursive: true });
+    fs.mkdirSync(path.join(mockTmpBase, 'public', 'images'), {
+      recursive: true,
+    });
     fs.mkdirSync(path.join(mockTmpBase, 'uploads'), { recursive: true });
   });
 
@@ -41,7 +43,9 @@ describe('saveLocalBuffer path containment', () => {
   });
 
   test('rejects prefix-collision traversal (startsWith bypass)', async () => {
-    fs.mkdirSync(path.join(mockTmpBase, 'uploads', 'user10'), { recursive: true });
+    fs.mkdirSync(path.join(mockTmpBase, 'uploads', 'user10'), {
+      recursive: true,
+    });
     await expect(
       saveLocalBuffer({
         userId: 'user1',

@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
+import type { IConversation } from '~/types';
 import { conversationPreset } from './defaults';
-import { IConversation } from '~/types';
 
 const convoSchema: Schema<IConversation> = new Schema(
   {

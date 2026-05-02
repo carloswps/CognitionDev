@@ -1,7 +1,7 @@
-import React from 'react';
-import { SystemRoles } from 'librechat-data-provider';
 import { render, screen } from '@testing-library/react';
 import type { TUser } from 'librechat-data-provider';
+import { SystemRoles } from 'librechat-data-provider';
+import React from 'react';
 import Account from './Account';
 
 jest.mock('./DisplayUsernameMessages', () => () => <div data-testid="display-username" />);
@@ -35,7 +35,9 @@ const baseUser: TUser = {
 
 beforeEach(() => {
   mockUseAuthContext.mockReturnValue({ user: baseUser });
-  mockUseGetStartupConfig.mockReturnValue({ data: { allowAccountDeletion: true } });
+  mockUseGetStartupConfig.mockReturnValue({
+    data: { allowAccountDeletion: true },
+  });
 });
 
 afterEach(() => {
@@ -50,7 +52,9 @@ describe('Account', () => {
     });
 
     it('hides DeleteAccount when allowAccountDeletion is false', () => {
-      mockUseGetStartupConfig.mockReturnValue({ data: { allowAccountDeletion: false } });
+      mockUseGetStartupConfig.mockReturnValue({
+        data: { allowAccountDeletion: false },
+      });
       render(<Account />);
       expect(screen.queryByTestId('delete-account')).not.toBeInTheDocument();
     });

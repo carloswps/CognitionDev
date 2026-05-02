@@ -17,7 +17,11 @@ const { getAppConfig } = require('./app');
 async function loadDefaultModels(req) {
   try {
     const appConfig =
-      req.config ?? (await getAppConfig({ role: req.user?.role, tenantId: req.user?.tenantId }));
+      req.config ??
+      (await getAppConfig({
+        role: req.user?.role,
+        tenantId: req.user?.tenantId,
+      }));
     const vertexConfig = appConfig?.endpoints?.[EModelEndpoint.anthropic]?.vertexConfig;
 
     const [openAI, anthropic, azureOpenAI, assistants, azureAssistants, google, bedrock] =
@@ -26,12 +30,13 @@ async function loadDefaultModels(req) {
           logger.error('Error fetching OpenAI models:', error);
           return [];
         }),
-        getAnthropicModels({ user: req.user.id, vertexModels: vertexConfig?.modelNames }).catch(
-          (error) => {
-            logger.error('Error fetching Anthropic models:', error);
-            return [];
-          },
-        ),
+        getAnthropicModels({
+          user: req.user.id,
+          vertexModels: vertexConfig?.modelNames,
+        }).catch((error) => {
+          logger.error('Error fetching Anthropic models:', error);
+          return [];
+        }),
         getOpenAIModels({ user: req.user.id, azure: true }).catch((error) => {
           logger.error('Error fetching Azure OpenAI models:', error);
           return [];

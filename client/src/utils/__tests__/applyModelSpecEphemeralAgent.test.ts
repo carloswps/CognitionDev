@@ -1,5 +1,5 @@
+import type { TEphemeralAgent, TModelSpec } from 'librechat-data-provider';
 import { Constants, LocalStorageKeys } from 'librechat-data-provider';
-import type { TModelSpec, TEphemeralAgent } from 'librechat-data-provider';
 import { applyModelSpecEphemeralAgent } from '../endpoints';
 import { setTimestamp } from '../timestamps';
 
@@ -77,7 +77,11 @@ describe('applyModelSpecEphemeralAgent', () => {
         JSON.stringify(['stale-server']),
       );
 
-      const modelSpec = createModelSpec({ executeCode: true, webSearch: false, mcpServers: [] });
+      const modelSpec = createModelSpec({
+        executeCode: true,
+        webSearch: false,
+        mcpServers: [],
+      });
 
       applyModelSpecEphemeralAgent({
         convoId: null,
@@ -95,7 +99,11 @@ describe('applyModelSpecEphemeralAgent', () => {
     it('should handle spec with no MCP servers', () => {
       const modelSpec = createModelSpec({ mcpServers: undefined });
 
-      applyModelSpecEphemeralAgent({ convoId: null, modelSpec, updateEphemeralAgent });
+      applyModelSpecEphemeralAgent({
+        convoId: null,
+        modelSpec,
+        updateEphemeralAgent,
+      });
 
       const agent = updateEphemeralAgent.mock.calls[0][1] as TEphemeralAgent;
       expect(agent.mcp).toEqual([]);
@@ -104,16 +112,26 @@ describe('applyModelSpecEphemeralAgent', () => {
     it('should map artifacts: true to "default" string', () => {
       const modelSpec = createModelSpec({ artifacts: true });
 
-      applyModelSpecEphemeralAgent({ convoId: null, modelSpec, updateEphemeralAgent });
+      applyModelSpecEphemeralAgent({
+        convoId: null,
+        modelSpec,
+        updateEphemeralAgent,
+      });
 
       const agent = updateEphemeralAgent.mock.calls[0][1] as TEphemeralAgent;
       expect(agent.artifacts).toBe('default');
     });
 
     it('should pass through artifacts string value directly', () => {
-      const modelSpec = createModelSpec({ artifacts: 'custom-renderer' as any });
+      const modelSpec = createModelSpec({
+        artifacts: 'custom-renderer' as any,
+      });
 
-      applyModelSpecEphemeralAgent({ convoId: null, modelSpec, updateEphemeralAgent });
+      applyModelSpecEphemeralAgent({
+        convoId: null,
+        modelSpec,
+        updateEphemeralAgent,
+      });
 
       const agent = updateEphemeralAgent.mock.calls[0][1] as TEphemeralAgent;
       expect(agent.artifacts).toBe('custom-renderer');
@@ -136,7 +154,11 @@ describe('applyModelSpecEphemeralAgent', () => {
         webSearch: true,
       });
 
-      applyModelSpecEphemeralAgent({ convoId, modelSpec, updateEphemeralAgent });
+      applyModelSpecEphemeralAgent({
+        convoId,
+        modelSpec,
+        updateEphemeralAgent,
+      });
 
       const agent = updateEphemeralAgent.mock.calls[0][1] as TEphemeralAgent;
       expect(agent.execute_code).toBe(false); // user override
@@ -153,7 +175,11 @@ describe('applyModelSpecEphemeralAgent', () => {
 
       const modelSpec = createModelSpec({ mcpServers: ['clickhouse'] });
 
-      applyModelSpecEphemeralAgent({ convoId, modelSpec, updateEphemeralAgent });
+      applyModelSpecEphemeralAgent({
+        convoId,
+        modelSpec,
+        updateEphemeralAgent,
+      });
 
       const agent = updateEphemeralAgent.mock.calls[0][1] as TEphemeralAgent;
       expect(agent.mcp).toEqual(['clickhouse', 'github']);
@@ -163,9 +189,15 @@ describe('applyModelSpecEphemeralAgent', () => {
       // User removed all MCP servers during the conversation
       localStorage.setItem(`${LocalStorageKeys.LAST_MCP_}${convoId}`, JSON.stringify([]));
 
-      const modelSpec = createModelSpec({ mcpServers: ['clickhouse', 'github'] });
+      const modelSpec = createModelSpec({
+        mcpServers: ['clickhouse', 'github'],
+      });
 
-      applyModelSpecEphemeralAgent({ convoId, modelSpec, updateEphemeralAgent });
+      applyModelSpecEphemeralAgent({
+        convoId,
+        modelSpec,
+        updateEphemeralAgent,
+      });
 
       const agent = updateEphemeralAgent.mock.calls[0][1] as TEphemeralAgent;
       expect(agent.mcp).toEqual([]);
@@ -183,7 +215,11 @@ describe('applyModelSpecEphemeralAgent', () => {
         mcpServers: ['server1'],
       });
 
-      applyModelSpecEphemeralAgent({ convoId, modelSpec, updateEphemeralAgent });
+      applyModelSpecEphemeralAgent({
+        convoId,
+        modelSpec,
+        updateEphemeralAgent,
+      });
 
       const agent = updateEphemeralAgent.mock.calls[0][1] as TEphemeralAgent;
       expect(agent.execute_code).toBe(true); // spec default (not in localStorage)
@@ -210,7 +246,11 @@ describe('applyModelSpecEphemeralAgent', () => {
         mcpServers: ['server1', 'server2'],
       });
 
-      applyModelSpecEphemeralAgent({ convoId, modelSpec, updateEphemeralAgent });
+      applyModelSpecEphemeralAgent({
+        convoId,
+        modelSpec,
+        updateEphemeralAgent,
+      });
 
       expect(updateEphemeralAgent).toHaveBeenCalledWith(convoId, {
         mcp: ['server1', 'server2'],
@@ -230,7 +270,11 @@ describe('applyModelSpecEphemeralAgent', () => {
 
       const modelSpec = createModelSpec({ executeCode: true });
 
-      applyModelSpecEphemeralAgent({ convoId, modelSpec, updateEphemeralAgent });
+      applyModelSpecEphemeralAgent({
+        convoId,
+        modelSpec,
+        updateEphemeralAgent,
+      });
 
       const agent = updateEphemeralAgent.mock.calls[0][1] as TEphemeralAgent;
       // Expired override should be ignored — spec value wins

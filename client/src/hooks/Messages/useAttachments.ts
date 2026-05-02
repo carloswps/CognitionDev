@@ -1,8 +1,8 @@
+import type { TAttachment } from 'librechat-data-provider';
 import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
-import type { TAttachment } from 'librechat-data-provider';
-import { useSearchResultsByTurn } from './useSearchResultsByTurn';
 import store from '~/store';
+import { useSearchResultsByTurn } from './useSearchResultsByTurn';
 
 export default function useAttachments({
   messageId,

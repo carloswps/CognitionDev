@@ -1,11 +1,11 @@
-import React from 'react';
-import { Globe, Shield } from 'lucide-react';
-import { ResourceType } from 'librechat-data-provider';
-import { Switch, InfoHoverCard, ESide, Label } from '@librechat/client';
+import { ESide, InfoHoverCard, Label, Switch } from '@librechat/client';
 import type { AccessRoleIds } from 'librechat-data-provider';
-import AccessRolesPicker from './AccessRolesPicker';
+import { ResourceType } from 'librechat-data-provider';
+import { Globe, Shield } from 'lucide-react';
+import React from 'react';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
+import AccessRolesPicker from './AccessRolesPicker';
 
 interface PublicSharingToggleProps {
   isPublic: boolean;

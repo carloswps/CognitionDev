@@ -1,11 +1,11 @@
-import fs from 'fs';
 import { logger } from '@librechat/data-schemas';
+import fs from 'fs';
 import type {
-  AudioProcessingResult,
-  ServerRequest,
   AudioFileInfo,
-  STTService,
+  AudioProcessingResult,
   FileObject,
+  ServerRequest,
+  STTService,
 } from '~/types';
 
 /**
@@ -30,7 +30,10 @@ export async function processAudioFile({
     };
 
     const [provider, sttSchema] = await sttService.getProviderSchema(req);
-    const text = await sttService.sttRequest(provider, sttSchema, { audioBuffer, audioFile });
+    const text = await sttService.sttRequest(provider, sttSchema, {
+      audioBuffer,
+      audioFile,
+    });
 
     return {
       text,

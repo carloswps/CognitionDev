@@ -1,8 +1,8 @@
-import { ServerConfigsCacheFactory, APP_CACHE_NAMESPACE } from '../ServerConfigsCacheFactory';
-import { ServerConfigsCacheRedisAggregateKey } from '../ServerConfigsCacheRedisAggregateKey';
+import { cacheConfig } from '~/cache';
+import { APP_CACHE_NAMESPACE, ServerConfigsCacheFactory } from '../ServerConfigsCacheFactory';
 import { ServerConfigsCacheInMemory } from '../ServerConfigsCacheInMemory';
 import { ServerConfigsCacheRedis } from '../ServerConfigsCacheRedis';
-import { cacheConfig } from '~/cache';
+import { ServerConfigsCacheRedisAggregateKey } from '../ServerConfigsCacheRedisAggregateKey';
 
 // Mock the cache implementations
 jest.mock('../ServerConfigsCacheRedisAggregateKey');

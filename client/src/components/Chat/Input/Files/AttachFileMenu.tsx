@@ -1,43 +1,42 @@
-import React, { useRef, useState, useMemo, useCallback } from 'react';
-import { useRecoilState } from 'recoil';
 import * as Ariakit from '@ariakit/react';
 import {
-  FileSearch,
-  ImageUpIcon,
-  FileType2Icon,
+  AttachmentIcon,
+  DropdownPopup,
+  FileUpload,
+  SharePointIcon,
+  TooltipAnchor,
+} from '@librechat/client';
+import type { EndpointFileConfig, TConversation } from 'librechat-data-provider';
+import {
+  bedrockDocumentExtensions,
+  defaultAgentCapabilities,
+  EModelEndpoint,
+  EToolResources,
+  isDocumentSupportedProvider,
+  isPermissiveMimeConfig,
+  Providers,
+} from 'librechat-data-provider';
+import {
   FileImageIcon,
+  FileSearch,
+  FileType2Icon,
+  ImageUpIcon,
   TerminalSquareIcon,
 } from 'lucide-react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import type { ExtendedFile, FileSetter, MenuItemProps } from '~/common';
+import { SharePointPickerDialog } from '~/components/SharePoint';
+import { useGetStartupConfig } from '~/data-provider';
 import {
-  FileUpload,
-  TooltipAnchor,
-  DropdownPopup,
-  AttachmentIcon,
-  SharePointIcon,
-} from '@librechat/client';
-import {
-  Providers,
-  EToolResources,
-  EModelEndpoint,
-  isPermissiveMimeConfig,
-  defaultAgentCapabilities,
-  bedrockDocumentExtensions,
-  isDocumentSupportedProvider,
-} from 'librechat-data-provider';
-import type { EndpointFileConfig, TConversation } from 'librechat-data-provider';
-import type { ExtendedFile, FileSetter } from '~/common';
-import {
-  useAgentToolPermissions,
   useAgentCapabilities,
-  useGetAgentsConfig,
+  useAgentToolPermissions,
   useFileHandlingNoChatContext,
+  useGetAgentsConfig,
   useLocalize,
 } from '~/hooks';
 import { useSharePointFileHandlingNoChatContext } from '~/hooks/Files/useSharePointFileHandling';
-import { SharePointPickerDialog } from '~/components/SharePoint';
-import { useGetStartupConfig } from '~/data-provider';
 import { ephemeralAgentByConvoId } from '~/store';
-import { MenuItemProps } from '~/common';
 import { cn } from '~/utils';
 
 type FileUploadType =

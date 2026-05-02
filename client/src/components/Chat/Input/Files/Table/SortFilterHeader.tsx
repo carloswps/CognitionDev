@@ -1,11 +1,11 @@
-import { useState, useId, useMemo } from 'react';
 import * as Menu from '@ariakit/react/menu';
-import { Column } from '@tanstack/react-table';
-import { ListFilter, FilterX } from 'lucide-react';
 import { DropdownPopup, TooltipAnchor } from '@librechat/client';
 import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon } from '@radix-ui/react-icons';
+import type { Column } from '@tanstack/react-table';
+import { FilterX, ListFilter } from 'lucide-react';
+import { useId, useMemo, useState } from 'react';
 import type { MenuItemProps } from '~/common';
-import { useLocalize, TranslationKeys } from '~/hooks';
+import { type TranslationKeys, useLocalize } from '~/hooks';
 import { cn } from '~/utils';
 
 interface SortFilterHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {

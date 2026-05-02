@@ -1,25 +1,25 @@
-import crypto from 'crypto';
-import axios from 'axios';
+import type { IUser } from '@librechat/data-schemas';
 import { logger } from '@librechat/data-schemas';
+import axios from 'axios';
+import crypto from 'crypto';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import {
-  Time,
   CacheKeys,
-  KnownEndpoints,
-  EModelEndpoint,
   defaultModels,
+  EModelEndpoint,
+  KnownEndpoints,
+  Time,
 } from 'librechat-data-provider';
-import type { IUser } from '@librechat/data-schemas';
-import {
-  processModelData,
-  extractBaseURL,
-  isUserProvided,
-  resolveHeaders,
-  deriveBaseURL,
-  logAxiosError,
-  inputSchema,
-} from '~/utils';
 import { standardCache, tokenConfigCache } from '~/cache';
+import {
+  deriveBaseURL,
+  extractBaseURL,
+  inputSchema,
+  isUserProvided,
+  logAxiosError,
+  processModelData,
+  resolveHeaders,
+} from '~/utils';
 
 export interface FetchModelsParams {
   /** User ID for API requests */
@@ -56,7 +56,10 @@ export interface FetchModelsParams {
  */
 async function fetchOllamaModels(
   baseURL: string,
-  options: { headers?: Record<string, string> | null; user?: Partial<IUser> } = {},
+  options: {
+    headers?: Record<string, string> | null;
+    user?: Partial<IUser>;
+  } = {},
 ): Promise<string[]> {
   if (!baseURL) {
     return [];
@@ -139,7 +142,10 @@ export async function fetchModels({
   if (name && name.toLowerCase().startsWith(KnownEndpoints.ollama)) {
     let ollamaModels: string[] | null = null;
     try {
-      ollamaModels = await fetchOllamaModels(baseURL ?? '', { headers, user: userObject });
+      ollamaModels = await fetchOllamaModels(baseURL ?? '', {
+        headers,
+        user: userObject,
+      });
     } catch (ollamaError) {
       logAxiosError({
         message:

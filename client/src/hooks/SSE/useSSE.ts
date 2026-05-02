@@ -1,16 +1,16 @@
+import type { EventSubmission, TMessage, TPayload, TSubmission } from 'librechat-data-provider';
+import { createPayload, removeNullishValues, request } from 'librechat-data-provider';
 import { useEffect, useState } from 'react';
-import { v4 } from 'uuid';
-import { SSE } from 'sse.js';
 import { useSetRecoilState } from 'recoil';
-import { request, createPayload, removeNullishValues } from 'librechat-data-provider';
-import type { TMessage, TPayload, TSubmission, EventSubmission } from 'librechat-data-provider';
-import type { EventHandlerParams } from './useEventHandlers';
+import { SSE } from 'sse.js';
+import { v4 } from 'uuid';
 import type { TResData } from '~/common';
 import { useGetStartupConfig, useGetUserBalance } from '~/data-provider';
 import { useAuthContext } from '~/hooks/AuthContext';
-import useEventHandlers from './useEventHandlers';
-import { clearAllDrafts } from '~/utils';
 import store from '~/store';
+import { clearAllDrafts } from '~/utils';
+import type { EventHandlerParams } from './useEventHandlers';
+import useEventHandlers from './useEventHandlers';
 
 type ChatHelpers = Pick<
   EventHandlerParams,
@@ -88,7 +88,10 @@ export default function useSSE(
 
     const sse = new SSE(payloadData.server, {
       payload: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     sse.addEventListener('attachment', (e: MessageEvent) => {
@@ -190,7 +193,7 @@ export default function useSSE(
     });
 
     sse.addEventListener('error', async (e: MessageEvent) => {
-      /* @ts-ignore */
+      /* @ts-expect-error */
       if (e.responseCode === 401) {
         /* token expired, refresh and retry */
         try {
@@ -216,7 +219,7 @@ export default function useSSE(
       console.log('error in server stream.');
       (startupConfig?.balance?.enabled ?? false) && balanceQuery.refetch();
 
-      let data: TResData | undefined = undefined;
+      let data: TResData | undefined;
       try {
         data = JSON.parse(e.data) as TResData;
       } catch (error) {
@@ -225,7 +228,10 @@ export default function useSSE(
         setIsSubmitting(false);
       }
 
-      errorHandler({ data, submission: { ...submission, userMessage } as EventSubmission });
+      errorHandler({
+        data,
+        submission: { ...submission, userMessage } as EventSubmission,
+      });
     });
 
     setIsSubmitting(true);
@@ -236,7 +242,7 @@ export default function useSSE(
       sse.close();
       if (isCancelled) {
         const e = new Event('cancel');
-        /* @ts-ignore */
+        /* @ts-expect-error */
         sse.dispatchEvent(e);
       }
     };

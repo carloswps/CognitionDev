@@ -1,19 +1,19 @@
-import { useEffect } from 'react';
-import { Search, X } from 'lucide-react';
-import { Dialog, DialogPanel, DialogTitle, Description } from '@headlessui/react';
-import { useFormContext } from 'react-hook-form';
-import { isAgentsEndpoint } from 'librechat-data-provider';
-import { useUpdateUserPluginsMutation } from 'librechat-data-provider/react-query';
+import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import type {
   AssistantsEndpoint,
   EModelEndpoint,
-  TPluginAction,
   TError,
+  TPluginAction,
 } from 'librechat-data-provider';
+import { isAgentsEndpoint } from 'librechat-data-provider';
+import { useUpdateUserPluginsMutation } from 'librechat-data-provider/react-query';
+import { Search, X } from 'lucide-react';
+import { useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 import type { ToolDialogProps } from '~/common/types';
-import { PluginPagination, PluginAuthForm } from '~/components/Plugins/Store';
-import { useLocalize, usePluginDialogHelpers } from '~/hooks';
+import { PluginAuthForm, PluginPagination } from '~/components/Plugins/Store';
 import { useAvailableToolsQuery } from '~/data-provider';
+import { useLocalize, usePluginDialogHelpers } from '~/hooks';
 import ToolItem from './ToolItem';
 
 function AssistantToolsDialog({

@@ -1,11 +1,11 @@
+import type { EndpointFileConfig, FileConfig } from 'librechat-data-provider';
 import {
-  FileSources,
-  mergeFileConfig,
   EModelEndpoint,
+  FileSources,
   getEndpointFileConfig,
   isBedrockDocumentType,
+  mergeFileConfig,
 } from 'librechat-data-provider';
-import type { FileConfig, EndpointFileConfig } from 'librechat-data-provider';
 
 /**
  * Mirrors the categorization logic from BaseClient.processAttachments.

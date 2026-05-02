@@ -15,7 +15,7 @@ const { logViolation } = require('~/cache');
 const { saveMessage } = require('~/models');
 
 function createCloseHandler(abortController) {
-  return function (manual) {
+  return (manual) => {
     if (!manual) {
       logger.debug('[AgentController] Request closed');
     }
@@ -138,7 +138,9 @@ const ResumableAgentController = async (req, res, next, initializeClient, addTit
             interfaceConfig: req?.config?.interfaceConfig,
           },
           partialMessage,
-          { context: 'api/server/controllers/agents/request.js - partial response on disconnect' },
+          {
+            context: 'api/server/controllers/agents/request.js - partial response on disconnect',
+          },
         );
 
         logger.debug(
@@ -296,7 +298,9 @@ const ResumableAgentController = async (req, res, next, initializeClient, addTit
           await saveMessage(
             reqCtx,
             { ...response, user: userId, unfinished: wasAbortedBeforeComplete },
-            { context: 'api/server/controllers/agents/request.js - resumable response end' },
+            {
+              context: 'api/server/controllers/agents/request.js - resumable response end',
+            },
           );
         }
 
@@ -469,7 +473,7 @@ const _LegacyAgentController = async (req, res, next, initializeClient, addTitle
 
   // Create handler to avoid capturing the entire parent scope
   let getReqData = (data = {}) => {
-    for (let key in data) {
+    for (const key in data) {
       if (key === 'userMessage') {
         userMessage = data[key];
         userMessageId = data[key].messageId;
@@ -477,7 +481,9 @@ const _LegacyAgentController = async (req, res, next, initializeClient, addTitle
         responseMessageId = data[key];
       } else if (key === 'promptTokens') {
         // Update job metadata with prompt tokens for abort handling
-        GenerationJobManager.updateMetadata(streamId, { promptTokens: data[key] });
+        GenerationJobManager.updateMetadata(streamId, {
+          promptTokens: data[key],
+        });
       } else if (key === 'sender') {
         GenerationJobManager.updateMetadata(streamId, { sender: data[key] });
       }
@@ -631,7 +637,7 @@ const _LegacyAgentController = async (req, res, next, initializeClient, addTitle
       },
     };
 
-    let response = await client.sendMessage(text, messageOptions);
+    const response = await client.sendMessage(text, messageOptions);
 
     // Extract what we need and immediately break reference
     const messageId = response.messageId;
@@ -679,7 +685,9 @@ const _LegacyAgentController = async (req, res, next, initializeClient, addTitle
             interfaceConfig: req?.config?.interfaceConfig,
           },
           { ...finalResponse, user: userId },
-          { context: 'api/server/controllers/agents/request.js - response end' },
+          {
+            context: 'api/server/controllers/agents/request.js - response end',
+          },
         );
       }
     }
@@ -713,7 +721,9 @@ const _LegacyAgentController = async (req, res, next, initializeClient, addTitle
           interfaceConfig: req?.config?.interfaceConfig,
         },
         userMessage,
-        { context: "api/server/controllers/agents/request.js - don't skip saving user message" },
+        {
+          context: "api/server/controllers/agents/request.js - don't skip saving user message",
+        },
       );
     }
 

@@ -1,4 +1,4 @@
-import { PermissionTypes, Permissions } from 'librechat-data-provider';
+import { Permissions, PermissionTypes } from 'librechat-data-provider';
 import useHasAccess from './Roles/useHasAccess';
 
 export default function usePersonalizationAccess() {

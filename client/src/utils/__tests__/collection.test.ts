@@ -1,12 +1,12 @@
 import type { InfiniteData } from '@tanstack/react-query';
 import {
   addData,
-  findPage,
   deleteData,
+  findPage,
+  getRecordByProperty,
+  normalizeData,
   updateFields,
   updateFieldsInPlace,
-  normalizeData,
-  getRecordByProperty,
 } from '../collection';
 
 // ---------------------------------------------------------------------------
@@ -67,7 +67,9 @@ describe('findPage', () => {
 describe('updateFieldsInPlace', () => {
   it('updates matching item fields without changing its position', () => {
     const data = makeInfiniteData([
-      { items: [makeItem('a', 'Alpha'), makeItem('b', 'Beta'), makeItem('c', 'Gamma')] },
+      {
+        items: [makeItem('a', 'Alpha'), makeItem('b', 'Beta'), makeItem('c', 'Gamma')],
+      },
     ]);
 
     const result = updateFieldsInPlace<Page, Item>(
@@ -78,7 +80,10 @@ describe('updateFieldsInPlace', () => {
     );
 
     // Item at index 1 is updated
-    expect(result.pages[0].items[1]).toMatchObject({ id: 'b', name: 'BetaUpdated' });
+    expect(result.pages[0].items[1]).toMatchObject({
+      id: 'b',
+      name: 'BetaUpdated',
+    });
     // Surrounding items are untouched
     expect(result.pages[0].items[0]).toMatchObject({ id: 'a', name: 'Alpha' });
     expect(result.pages[0].items[2]).toMatchObject({ id: 'c', name: 'Gamma' });
@@ -100,7 +105,10 @@ describe('updateFieldsInPlace', () => {
     );
 
     // Item stays on page 1, index 1
-    expect(result.pages[1].items[1]).toMatchObject({ id: 'c', name: 'GammaUpdated' });
+    expect(result.pages[1].items[1]).toMatchObject({
+      id: 'c',
+      name: 'GammaUpdated',
+    });
     // Page 0 is unchanged
     expect(result.pages[0].items).toHaveLength(1);
     expect(result.pages[0].items[0]).toMatchObject({ id: 'a', name: 'Alpha' });
@@ -126,7 +134,11 @@ describe('updateFieldsInPlace', () => {
 
     const result = updateFieldsInPlace<Page, Item>(data, { id: 'a', value: 99 }, 'items', 'id');
 
-    expect(result.pages[0].items[0]).toMatchObject({ id: 'a', name: 'Alpha', value: 99 });
+    expect(result.pages[0].items[0]).toMatchObject({
+      id: 'a',
+      name: 'Alpha',
+      value: 99,
+    });
   });
 
   it('returns the data unchanged when the item is not found', () => {
@@ -158,7 +170,10 @@ describe('updateFieldsInPlace', () => {
     );
 
     expect(result.pages[0].items[0]).toMatchObject({ id: 'a', name: 'Alpha' });
-    expect(result.pages[1].items[0]).toMatchObject({ id: 'b', name: 'BetaNew' });
+    expect(result.pages[1].items[0]).toMatchObject({
+      id: 'b',
+      name: 'BetaNew',
+    });
     expect(result.pages[2].items[0]).toMatchObject({ id: 'c', name: 'Gamma' });
   });
 
@@ -199,8 +214,14 @@ describe('updateFieldsInPlace', () => {
       'id',
     );
 
-    expect(result.pages[0].items[0]).toMatchObject({ id: 'first', name: 'FirstUpdated' });
-    expect(result.pages[0].items[1]).toMatchObject({ id: 'second', name: 'Second' });
+    expect(result.pages[0].items[0]).toMatchObject({
+      id: 'first',
+      name: 'FirstUpdated',
+    });
+    expect(result.pages[0].items[1]).toMatchObject({
+      id: 'second',
+      name: 'Second',
+    });
   });
 
   it('updates the last item in a page correctly', () => {
@@ -215,8 +236,14 @@ describe('updateFieldsInPlace', () => {
       'id',
     );
 
-    expect(result.pages[0].items[0]).toMatchObject({ id: 'first', name: 'First' });
-    expect(result.pages[0].items[1]).toMatchObject({ id: 'last', name: 'LastUpdated' });
+    expect(result.pages[0].items[0]).toMatchObject({
+      id: 'first',
+      name: 'First',
+    });
+    expect(result.pages[0].items[1]).toMatchObject({
+      id: 'last',
+      name: 'LastUpdated',
+    });
   });
 
   it('preserves pageParams on the returned data', () => {
@@ -250,7 +277,10 @@ describe('updateFields (contrast with updateFieldsInPlace)', () => {
     const result = updateFields<Page, Item>(data, { id: 'b', name: 'BetaNew' }, 'items', 'id');
 
     // Item is now at the top of page 0
-    expect(result.pages[0].items[0]).toMatchObject({ id: 'b', name: 'BetaNew' });
+    expect(result.pages[0].items[0]).toMatchObject({
+      id: 'b',
+      name: 'BetaNew',
+    });
     expect(result.pages[0].items[0].updatedAt).toBeDefined();
     // Page 1 is now empty (item was removed)
     expect(result.pages[1].items).toHaveLength(0);
@@ -310,7 +340,10 @@ describe('addData', () => {
     );
 
     // updateData moves the item to the top with an updatedAt
-    expect(result.pages[0].items[0]).toMatchObject({ id: 'a', name: 'AlphaUpdated' });
+    expect(result.pages[0].items[0]).toMatchObject({
+      id: 'a',
+      name: 'AlphaUpdated',
+    });
     expect(result.pages[0].items[0].updatedAt).toBeDefined();
   });
 });

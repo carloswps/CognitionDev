@@ -1,8 +1,8 @@
-import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
-import copy from 'copy-to-clipboard';
 import { TooltipAnchor } from '@librechat/client';
-
-import { Expand, ChevronUp, ChevronDown } from 'lucide-react';
+import copy from 'copy-to-clipboard';
+import { ChevronDown, ChevronUp, Expand } from 'lucide-react';
+import type React from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import CopyButton from '~/components/Messages/Content/CopyButton';
 import { useLocalize } from '~/hooks';
 import cn from '~/utils/cn';

@@ -1,7 +1,7 @@
-import { ChevronDown } from 'lucide-react';
 import * as Popover from '@radix-ui/react-popover';
-import CancelledIcon from './CancelledIcon';
+import { ChevronDown } from 'lucide-react';
 import { cn } from '~/utils';
+import CancelledIcon from './CancelledIcon';
 
 const wrapperClass =
   'progress-text-wrapper text-token-text-secondary relative -mt-[0.75px] h-5 w-full leading-5';

@@ -220,7 +220,9 @@ describe('Code Process', () => {
 
         const imageBuffer = Buffer.alloc(500);
         mockAxios.mockResolvedValue({ data: imageBuffer });
-        convertImage.mockResolvedValue({ filepath: '/images/user-123/existing-img-id.webp' });
+        convertImage.mockResolvedValue({
+          filepath: '/images/user-123/existing-img-id.webp',
+        });
 
         const result = await processCodeOutput(imageParams);
 
@@ -266,7 +268,10 @@ describe('Code Process', () => {
         mockAxios.mockResolvedValue({ data: smallBuffer });
         determineFileType.mockResolvedValue({ mime: 'application/pdf' });
 
-        const result = await processCodeOutput({ ...baseParams, name: 'document.pdf' });
+        const result = await processCodeOutput({
+          ...baseParams,
+          name: 'document.pdf',
+        });
 
         expect(determineFileType).toHaveBeenCalledWith(smallBuffer, true);
         expect(result.type).toBe('application/pdf');
@@ -277,7 +282,10 @@ describe('Code Process', () => {
         mockAxios.mockResolvedValue({ data: smallBuffer });
         determineFileType.mockResolvedValue(null);
 
-        const result = await processCodeOutput({ ...baseParams, name: 'unknown.xyz' });
+        const result = await processCodeOutput({
+          ...baseParams,
+          name: 'unknown.xyz',
+        });
 
         expect(result.type).toBe('application/octet-stream');
       });

@@ -14,28 +14,29 @@
  *
  * Requires real API keys in the environment (ANTHROPIC_API_KEY, OPENAI_API_KEY).
  */
+
+import type {
+  EventHandler,
+  MessageContentComplex,
+  SummarizeCompleteEvent,
+  SummarizeStartEvent,
+  SummaryContentBlock,
+  TokenCounter,
+} from '@librechat/agents';
 import {
-  Providers,
   Calculator,
-  GraphEvents,
-  ToolEndHandler,
-  ModelEndHandler,
-  createTokenCounter,
-  formatAgentMessages,
   ChatModelStreamHandler,
   createContentAggregator,
+  createTokenCounter,
+  formatAgentMessages,
+  GraphEvents,
+  ModelEndHandler,
+  Providers,
+  ToolEndHandler,
 } from '@librechat/agents';
-import type {
-  SummarizeCompleteEvent,
-  MessageContentComplex,
-  SummaryContentBlock,
-  SummarizeStartEvent,
-  TokenCounter,
-  EventHandler,
-} from '@librechat/agents';
-import { hydrateMissingIndexTokenCounts } from '~/utils';
-import { ioredisClient, keyvRedisClient } from '~/cache';
 import { createRun } from '~/agents';
+import { ioredisClient, keyvRedisClient } from '~/cache';
+import { hydrateMissingIndexTokenCounts } from '~/utils';
 
 afterAll(async () => {
   await ioredisClient?.quit().catch(() => {});
@@ -279,7 +280,10 @@ const hasAnthropic =
         spies,
         tokenCounter,
       });
-      conversationPayload.push({ role: 'assistant', content: getLastContent(result.runMessages) });
+      conversationPayload.push({
+        role: 'assistant',
+        content: getLastContent(result.runMessages),
+      });
       return result;
     };
 
@@ -371,7 +375,10 @@ const hasAnthropic =
     const tokenCounter = await createTokenCounter();
     const conversationPayload: PayloadMessage[] = [];
 
-    conversationPayload.push({ role: 'user', content: 'What is 42 * 58? Calculator.' });
+    conversationPayload.push({
+      role: 'user',
+      content: 'What is 42 * 58? Calculator.',
+    });
     const t1 = await runFullTurn({
       payload: conversationPayload,
       agentProvider: Providers.ANTHROPIC,
@@ -382,9 +389,15 @@ const hasAnthropic =
       spies,
       tokenCounter,
     });
-    conversationPayload.push({ role: 'assistant', content: getLastContent(t1.runMessages) });
+    conversationPayload.push({
+      role: 'assistant',
+      content: getLastContent(t1.runMessages),
+    });
 
-    conversationPayload.push({ role: 'user', content: 'Now compute 2436 + 1337. Calculator.' });
+    conversationPayload.push({
+      role: 'user',
+      content: 'Now compute 2436 + 1337. Calculator.',
+    });
     const t2 = await runFullTurn({
       payload: conversationPayload,
       agentProvider: Providers.ANTHROPIC,
@@ -395,9 +408,15 @@ const hasAnthropic =
       spies,
       tokenCounter,
     });
-    conversationPayload.push({ role: 'assistant', content: getLastContent(t2.runMessages) });
+    conversationPayload.push({
+      role: 'assistant',
+      content: getLastContent(t2.runMessages),
+    });
 
-    conversationPayload.push({ role: 'user', content: 'What is 100 / 4? Calculator.' });
+    conversationPayload.push({
+      role: 'user',
+      content: 'What is 100 / 4? Calculator.',
+    });
 
     let error: Error | undefined;
     try {
@@ -467,7 +486,10 @@ const hasOpenAI = process.env.OPENAI_API_KEY != null && process.env.OPENAI_API_K
         spies,
         tokenCounter,
       });
-      conversationPayload.push({ role: 'assistant', content: getLastContent(result.runMessages) });
+      conversationPayload.push({
+        role: 'assistant',
+        content: getLastContent(result.runMessages),
+      });
       return result;
     };
 
@@ -512,7 +534,10 @@ const hasOpenAI = process.env.OPENAI_API_KEY != null && process.env.OPENAI_API_K
       },
       conversationPayload[conversationPayload.length - 2],
       conversationPayload[conversationPayload.length - 1],
-      { role: 'user', content: 'What was the first number we calculated? Verify with calculator.' },
+      {
+        role: 'user',
+        content: 'What was the first number we calculated? Verify with calculator.',
+      },
     ];
 
     spies.onSummarizeStart.mockClear();

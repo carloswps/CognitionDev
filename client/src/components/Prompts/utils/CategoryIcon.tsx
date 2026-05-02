@@ -1,19 +1,19 @@
-import React from 'react';
 import {
-  Dices,
+  Beaker as BeakerIcon,
   BoxIcon,
+  Dices,
   FileText,
-  PenLineIcon,
+  GraduationCapIcon,
   LightbulbIcon,
   LineChartIcon,
-  ShoppingBagIcon,
+  PenLineIcon,
   PlaneTakeoffIcon,
-  GraduationCapIcon,
+  Settings as SettingsIcon,
+  ShoppingBagIcon,
   TerminalSquareIcon,
   Users as UsersIcon,
-  Beaker as BeakerIcon,
-  Settings as SettingsIcon,
 } from 'lucide-react';
+import type React from 'react';
 import { cn } from '~/utils';
 
 const categoryIconMap: Record<string, React.ElementType> = {

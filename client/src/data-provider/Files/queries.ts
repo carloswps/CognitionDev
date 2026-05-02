@@ -1,11 +1,11 @@
-import { useRecoilValue } from 'recoil';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { QueryKeys, DynamicQueryKeys, dataService } from 'librechat-data-provider';
 import type { QueryObserverResult, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type t from 'librechat-data-provider';
+import { DynamicQueryKeys, dataService, QueryKeys } from 'librechat-data-provider';
+import { useRecoilValue } from 'recoil';
 import { isEphemeralAgent } from '~/common';
-import { addFileToCache } from '~/utils';
 import store from '~/store';
+import { addFileToCache } from '~/utils';
 
 export const useGetFiles = <TData = t.TFile[] | boolean>(
   config?: UseQueryOptions<t.TFile[], unknown, TData>,

@@ -1,26 +1,27 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { useSetRecoilState } from 'recoil';
-// @ts-ignore - no type definitions available
-import AvatarEditor from 'react-avatar-editor';
-import { FileImage, RotateCw, Upload, ZoomIn, ZoomOut, Move, X } from 'lucide-react';
-import { fileConfig as defaultFileConfig, mergeFileConfig } from 'librechat-data-provider';
 import {
-  Label,
-  Slider,
   Button,
-  Spinner,
+  Label,
   OGDialog,
   OGDialogContent,
   OGDialogHeader,
   OGDialogTitle,
   OGDialogTrigger,
+  Slider,
+  Spinner,
   useToastContext,
 } from '@librechat/client';
 import type { TUser } from 'librechat-data-provider';
-import { useUploadAvatarMutation, useGetFileConfig } from '~/data-provider';
-import { cn, formatBytes } from '~/utils';
+import { fileConfig as defaultFileConfig, mergeFileConfig } from 'librechat-data-provider';
+import { FileImage, Move, RotateCw, Upload, X, ZoomIn, ZoomOut } from 'lucide-react';
+import type React from 'react';
+import { useCallback, useRef, useState } from 'react';
+// @ts-expect-error - no type definitions available
+import AvatarEditor from 'react-avatar-editor';
+import { useSetRecoilState } from 'recoil';
+import { useGetFileConfig, useUploadAvatarMutation } from '~/data-provider';
 import { useLocalize } from '~/hooks';
 import store from '~/store';
+import { cn, formatBytes } from '~/utils';
 
 interface AvatarEditorRef {
   getImageScaledToCanvas: () => HTMLCanvasElement;
@@ -59,7 +60,10 @@ function Avatar() {
     },
     onError: (error) => {
       console.error('Error:', error);
-      showToast({ message: localize('com_ui_upload_error'), status: 'error' });
+      showToast({
+        message: localize('com_ui_upload_error'),
+        status: 'error',
+      });
     },
   });
 

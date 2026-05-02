@@ -1,10 +1,10 @@
-import React from 'react';
-import { Tools } from 'librechat-data-provider';
 import { UIResourceRenderer } from '@mcp-ui/client';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import type { TAttachment } from 'librechat-data-provider';
-import UIResourceCarousel from '~/components/Chat/Messages/Content/UIResourceCarousel';
+import { Tools } from 'librechat-data-provider';
+import React from 'react';
 import ToolCallInfo from '~/components/Chat/Messages/Content/ToolCallInfo';
+import UIResourceCarousel from '~/components/Chat/Messages/Content/UIResourceCarousel';
 
 // Mock the dependencies
 jest.mock('~/hooks', () => ({

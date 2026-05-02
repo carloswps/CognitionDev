@@ -11,7 +11,10 @@ const { GenerationJobManager } = require('@librechat/api');
  */
 function writeAttachment(res, streamId, attachment) {
   if (streamId) {
-    GenerationJobManager.emitChunk(streamId, { event: 'attachment', data: attachment });
+    GenerationJobManager.emitChunk(streamId, {
+      event: 'attachment',
+      data: attachment,
+    });
   } else {
     res.write(`event: attachment\ndata: ${JSON.stringify(attachment)}\n\n`);
   }

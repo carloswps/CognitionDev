@@ -1,6 +1,6 @@
 import { getTenantId, logger } from '@librechat/data-schemas';
+import type { NextFunction, Request, Response } from 'express';
 import { preAuthTenantMiddleware } from './preAuthTenant';
-import type { Request, Response, NextFunction } from 'express';
 
 jest.mock('@librechat/data-schemas', () => ({
   ...jest.requireActual('@librechat/data-schemas'),
@@ -13,7 +13,11 @@ jest.mock('@librechat/data-schemas', () => ({
 }));
 
 describe('preAuthTenantMiddleware', () => {
-  let req: { headers: Record<string, string | string[] | undefined>; ip?: string; path?: string };
+  let req: {
+    headers: Record<string, string | string[] | undefined>;
+    ip?: string;
+    path?: string;
+  };
   let res: Partial<Response>;
 
   beforeEach(() => {
@@ -123,7 +127,11 @@ describe('preAuthTenantMiddleware', () => {
     expect(capturedTenantId).toBeUndefined();
     expect(logger.warn).toHaveBeenCalledWith(
       expect.stringContaining('malformed'),
-      expect.objectContaining({ ip: '192.168.1.1', length: 200, path: '/api/share/abc' }),
+      expect.objectContaining({
+        ip: '192.168.1.1',
+        length: 200,
+        path: '/api/share/abc',
+      }),
     );
   });
 });

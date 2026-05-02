@@ -1,14 +1,19 @@
-import { Types } from 'mongoose';
-import { PrincipalType } from 'librechat-data-provider';
 import type { IGroup, IUser } from '@librechat/data-schemas';
 import type { Response } from 'express';
+import { PrincipalType } from 'librechat-data-provider';
+import { Types } from 'mongoose';
 import type { ServerRequest } from '~/types/http';
 import type { AdminGroupsDeps } from './groups';
 import { createAdminGroupsHandlers } from './groups';
 
 jest.mock('@librechat/data-schemas', () => ({
   ...jest.requireActual('@librechat/data-schemas'),
-  logger: { error: jest.fn(), warn: jest.fn(), info: jest.fn(), debug: jest.fn() },
+  logger: {
+    error: jest.fn(),
+    warn: jest.fn(),
+    info: jest.fn(),
+    debug: jest.fn(),
+  },
 }));
 
 describe('createAdminGroupsHandlers', () => {
@@ -93,14 +98,24 @@ describe('createAdminGroupsHandlers', () => {
       await handlers.listGroups(req, res);
 
       expect(status).toHaveBeenCalledWith(200);
-      expect(json).toHaveBeenCalledWith({ groups, total: 1, limit: 50, offset: 0 });
+      expect(json).toHaveBeenCalledWith({
+        groups,
+        total: 1,
+        limit: 50,
+        offset: 0,
+      });
     });
 
     it('passes source and search filters with pagination', async () => {
       const deps = createDeps();
       const handlers = createAdminGroupsHandlers(deps);
       const { req, res } = createReqRes({
-        query: { source: 'entra', search: 'engineering', limit: '20', offset: '10' },
+        query: {
+          source: 'entra',
+          search: 'engineering',
+          limit: '20',
+          offset: '10',
+        },
       });
 
       await handlers.listGroups(req, res);
@@ -124,7 +139,11 @@ describe('createAdminGroupsHandlers', () => {
 
       await handlers.listGroups(req, res);
 
-      expect(deps.listGroups).toHaveBeenCalledWith({ search: 'eng', limit: 50, offset: 0 });
+      expect(deps.listGroups).toHaveBeenCalledWith({
+        search: 'eng',
+        limit: 50,
+        offset: 0,
+      });
       expect(deps.countGroups).toHaveBeenCalledWith({ search: 'eng' });
     });
 
@@ -142,7 +161,9 @@ describe('createAdminGroupsHandlers', () => {
     it('clamps limit and offset', async () => {
       const deps = createDeps();
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res } = createReqRes({ query: { limit: '999', offset: '-5' } });
+      const { req, res } = createReqRes({
+        query: { limit: '999', offset: '-5' },
+      });
 
       await handlers.listGroups(req, res);
 
@@ -159,7 +180,9 @@ describe('createAdminGroupsHandlers', () => {
       await handlers.listGroups(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'search must not exceed 200 characters' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'search must not exceed 200 characters',
+      });
       expect(deps.listGroups).not.toHaveBeenCalled();
     });
 
@@ -177,7 +200,9 @@ describe('createAdminGroupsHandlers', () => {
     });
 
     it('returns 500 on error', async () => {
-      const deps = createDeps({ listGroups: jest.fn().mockRejectedValue(new Error('db down')) });
+      const deps = createDeps({
+        listGroups: jest.fn().mockRejectedValue(new Error('db down')),
+      });
       const handlers = createAdminGroupsHandlers(deps);
       const { req, res, status, json } = createReqRes();
 
@@ -191,9 +216,13 @@ describe('createAdminGroupsHandlers', () => {
   describe('getGroup', () => {
     it('returns group with 200', async () => {
       const group = mockGroup();
-      const deps = createDeps({ findGroupById: jest.fn().mockResolvedValue(group) });
+      const deps = createDeps({
+        findGroupById: jest.fn().mockResolvedValue(group),
+      });
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validId },
+      });
 
       await handlers.getGroup(req, res);
 
@@ -204,7 +233,9 @@ describe('createAdminGroupsHandlers', () => {
     it('returns 400 for invalid ID', async () => {
       const deps = createDeps();
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: 'not-an-id' } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: 'not-an-id' },
+      });
 
       await handlers.getGroup(req, res);
 
@@ -214,9 +245,13 @@ describe('createAdminGroupsHandlers', () => {
     });
 
     it('returns 404 when group not found', async () => {
-      const deps = createDeps({ findGroupById: jest.fn().mockResolvedValue(null) });
+      const deps = createDeps({
+        findGroupById: jest.fn().mockResolvedValue(null),
+      });
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validId },
+      });
 
       await handlers.getGroup(req, res);
 
@@ -229,7 +264,9 @@ describe('createAdminGroupsHandlers', () => {
         findGroupById: jest.fn().mockRejectedValue(new Error('db down')),
       });
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validId },
+      });
 
       await handlers.getGroup(req, res);
 
@@ -241,7 +278,9 @@ describe('createAdminGroupsHandlers', () => {
   describe('createGroup', () => {
     it('creates group and returns 201', async () => {
       const group = mockGroup();
-      const deps = createDeps({ createGroup: jest.fn().mockResolvedValue(group) });
+      const deps = createDeps({
+        createGroup: jest.fn().mockResolvedValue(group),
+      });
       const handlers = createAdminGroupsHandlers(deps);
       const { req, res, status, json } = createReqRes({
         body: { name: 'New Group', description: 'A group' },
@@ -263,7 +302,10 @@ describe('createAdminGroupsHandlers', () => {
 
     it('normalizes memberIds to idOnTheSource values', async () => {
       const userId = new Types.ObjectId().toString();
-      const user = { _id: new Types.ObjectId(userId), idOnTheSource: 'ext-norm-1' } as IUser;
+      const user = {
+        _id: new Types.ObjectId(userId),
+        idOnTheSource: 'ext-norm-1',
+      } as IUser;
       const group = mockGroup();
       const deps = createDeps({
         createGroup: jest.fn().mockResolvedValue(group),
@@ -307,17 +349,26 @@ describe('createAdminGroupsHandlers', () => {
 
     it('passes idOnTheSource when provided', async () => {
       const group = mockGroup();
-      const deps = createDeps({ createGroup: jest.fn().mockResolvedValue(group) });
+      const deps = createDeps({
+        createGroup: jest.fn().mockResolvedValue(group),
+      });
       const handlers = createAdminGroupsHandlers(deps);
       const { req, res, status } = createReqRes({
-        body: { name: 'Entra Group', source: 'entra', idOnTheSource: 'ent-abc-123' },
+        body: {
+          name: 'Entra Group',
+          source: 'entra',
+          idOnTheSource: 'ent-abc-123',
+        },
       });
 
       await handlers.createGroup(req, res);
 
       expect(status).toHaveBeenCalledWith(201);
       expect(deps.createGroup).toHaveBeenCalledWith(
-        expect.objectContaining({ idOnTheSource: 'ent-abc-123', source: 'entra' }),
+        expect.objectContaining({
+          idOnTheSource: 'ent-abc-123',
+          source: 'entra',
+        }),
       );
     });
 
@@ -345,7 +396,9 @@ describe('createAdminGroupsHandlers', () => {
       await handlers.createGroup(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'name must not exceed 500 characters' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'name must not exceed 500 characters',
+      });
       expect(deps.createGroup).not.toHaveBeenCalled();
     });
 
@@ -375,7 +428,9 @@ describe('createAdminGroupsHandlers', () => {
       await handlers.createGroup(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'email must not exceed 500 characters' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'email must not exceed 500 characters',
+      });
       expect(deps.createGroup).not.toHaveBeenCalled();
     });
 
@@ -389,7 +444,9 @@ describe('createAdminGroupsHandlers', () => {
       await handlers.createGroup(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'avatar must not exceed 2000 characters' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'avatar must not exceed 2000 characters',
+      });
       expect(deps.createGroup).not.toHaveBeenCalled();
     });
 
@@ -420,7 +477,9 @@ describe('createAdminGroupsHandlers', () => {
       await handlers.createGroup(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'memberIds must not exceed 500 entries' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'memberIds must not exceed 500 entries',
+      });
       expect(deps.createGroup).not.toHaveBeenCalled();
     });
 
@@ -455,7 +514,9 @@ describe('createAdminGroupsHandlers', () => {
     it('returns 400 when name is whitespace-only', async () => {
       const deps = createDeps();
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ body: { name: '   ' } });
+      const { req, res, status, json } = createReqRes({
+        body: { name: '   ' },
+      });
 
       await handlers.createGroup(req, res);
 
@@ -466,20 +527,30 @@ describe('createAdminGroupsHandlers', () => {
     it('returns 400 on ValidationError', async () => {
       const validationError = new Error('source must be local or entra');
       validationError.name = 'ValidationError';
-      const deps = createDeps({ createGroup: jest.fn().mockRejectedValue(validationError) });
+      const deps = createDeps({
+        createGroup: jest.fn().mockRejectedValue(validationError),
+      });
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ body: { name: 'Test' } });
+      const { req, res, status, json } = createReqRes({
+        body: { name: 'Test' },
+      });
 
       await handlers.createGroup(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'source must be local or entra' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'source must be local or entra',
+      });
     });
 
     it('returns 500 on unexpected error', async () => {
-      const deps = createDeps({ createGroup: jest.fn().mockRejectedValue(new Error('db crash')) });
+      const deps = createDeps({
+        createGroup: jest.fn().mockRejectedValue(new Error('db crash')),
+      });
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ body: { name: 'Test' } });
+      const { req, res, status, json } = createReqRes({
+        body: { name: 'Test' },
+      });
 
       await handlers.createGroup(req, res);
 
@@ -508,7 +579,9 @@ describe('createAdminGroupsHandlers', () => {
 
     it('updates description only', async () => {
       const group = mockGroup({ description: 'New desc' });
-      const deps = createDeps({ updateGroupById: jest.fn().mockResolvedValue(group) });
+      const deps = createDeps({
+        updateGroupById: jest.fn().mockResolvedValue(group),
+      });
       const handlers = createAdminGroupsHandlers(deps);
       const { req, res, status } = createReqRes({
         params: { id: validId },
@@ -518,12 +591,16 @@ describe('createAdminGroupsHandlers', () => {
       await handlers.updateGroup(req, res);
 
       expect(status).toHaveBeenCalledWith(200);
-      expect(deps.updateGroupById).toHaveBeenCalledWith(validId, { description: 'New desc' });
+      expect(deps.updateGroupById).toHaveBeenCalledWith(validId, {
+        description: 'New desc',
+      });
     });
 
     it('updates email only', async () => {
       const group = mockGroup({ email: 'team@co.com' });
-      const deps = createDeps({ updateGroupById: jest.fn().mockResolvedValue(group) });
+      const deps = createDeps({
+        updateGroupById: jest.fn().mockResolvedValue(group),
+      });
       const handlers = createAdminGroupsHandlers(deps);
       const { req, res, status } = createReqRes({
         params: { id: validId },
@@ -533,12 +610,16 @@ describe('createAdminGroupsHandlers', () => {
       await handlers.updateGroup(req, res);
 
       expect(status).toHaveBeenCalledWith(200);
-      expect(deps.updateGroupById).toHaveBeenCalledWith(validId, { email: 'team@co.com' });
+      expect(deps.updateGroupById).toHaveBeenCalledWith(validId, {
+        email: 'team@co.com',
+      });
     });
 
     it('updates avatar only', async () => {
       const group = mockGroup({ avatar: 'https://img.co/a.png' });
-      const deps = createDeps({ updateGroupById: jest.fn().mockResolvedValue(group) });
+      const deps = createDeps({
+        updateGroupById: jest.fn().mockResolvedValue(group),
+      });
       const handlers = createAdminGroupsHandlers(deps);
       const { req, res, status } = createReqRes({
         params: { id: validId },
@@ -554,8 +635,14 @@ describe('createAdminGroupsHandlers', () => {
     });
 
     it('updates multiple fields at once', async () => {
-      const group = mockGroup({ name: 'New', description: 'Desc', email: 'a@b.com' });
-      const deps = createDeps({ updateGroupById: jest.fn().mockResolvedValue(group) });
+      const group = mockGroup({
+        name: 'New',
+        description: 'Desc',
+        email: 'a@b.com',
+      });
+      const deps = createDeps({
+        updateGroupById: jest.fn().mockResolvedValue(group),
+      });
       const handlers = createAdminGroupsHandlers(deps);
       const { req, res, status } = createReqRes({
         params: { id: validId },
@@ -597,7 +684,9 @@ describe('createAdminGroupsHandlers', () => {
       await handlers.updateGroup(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'name must be a non-empty string' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'name must be a non-empty string',
+      });
     });
 
     it('returns 400 when name is whitespace-only', async () => {
@@ -611,7 +700,9 @@ describe('createAdminGroupsHandlers', () => {
       await handlers.updateGroup(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'name must be a non-empty string' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'name must be a non-empty string',
+      });
     });
 
     it('returns 400 when name exceeds max length', async () => {
@@ -625,7 +716,9 @@ describe('createAdminGroupsHandlers', () => {
       await handlers.updateGroup(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'name must not exceed 500 characters' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'name must not exceed 500 characters',
+      });
       expect(deps.updateGroupById).not.toHaveBeenCalled();
     });
 
@@ -657,7 +750,9 @@ describe('createAdminGroupsHandlers', () => {
       await handlers.updateGroup(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'email must not exceed 500 characters' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'email must not exceed 500 characters',
+      });
       expect(deps.updateGroupById).not.toHaveBeenCalled();
     });
 
@@ -672,7 +767,9 @@ describe('createAdminGroupsHandlers', () => {
       await handlers.updateGroup(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'avatar must not exceed 2000 characters' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'avatar must not exceed 2000 characters',
+      });
       expect(deps.updateGroupById).not.toHaveBeenCalled();
     });
 
@@ -744,9 +841,13 @@ describe('createAdminGroupsHandlers', () => {
 
   describe('deleteGroup', () => {
     it('deletes group and returns 200 with id', async () => {
-      const deps = createDeps({ deleteGroup: jest.fn().mockResolvedValue(mockGroup()) });
+      const deps = createDeps({
+        deleteGroup: jest.fn().mockResolvedValue(mockGroup()),
+      });
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validId },
+      });
 
       await handlers.deleteGroup(req, res);
 
@@ -758,7 +859,9 @@ describe('createAdminGroupsHandlers', () => {
     it('returns 400 for invalid ID', async () => {
       const deps = createDeps();
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: 'bad-id' } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: 'bad-id' },
+      });
 
       await handlers.deleteGroup(req, res);
 
@@ -767,9 +870,13 @@ describe('createAdminGroupsHandlers', () => {
     });
 
     it('returns 404 when deleteGroup returns null', async () => {
-      const deps = createDeps({ deleteGroup: jest.fn().mockResolvedValue(null) });
+      const deps = createDeps({
+        deleteGroup: jest.fn().mockResolvedValue(null),
+      });
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validId },
+      });
 
       await handlers.deleteGroup(req, res);
 
@@ -783,7 +890,9 @@ describe('createAdminGroupsHandlers', () => {
         deleteGroup: jest.fn().mockRejectedValue(new Error('db down')),
       });
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validId },
+      });
 
       await handlers.deleteGroup(req, res);
 
@@ -797,7 +906,9 @@ describe('createAdminGroupsHandlers', () => {
         deleteAclEntries: jest.fn().mockRejectedValue(new Error('cleanup failed')),
       });
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validId },
+      });
 
       await handlers.deleteGroup(req, res);
 
@@ -811,7 +922,9 @@ describe('createAdminGroupsHandlers', () => {
     });
 
     it('cleans up Config and AclEntry on group delete', async () => {
-      const deps = createDeps({ deleteGroup: jest.fn().mockResolvedValue(mockGroup()) });
+      const deps = createDeps({
+        deleteGroup: jest.fn().mockResolvedValue(mockGroup()),
+      });
       const handlers = createAdminGroupsHandlers(deps);
       const { req, res, status } = createReqRes({ params: { id: validId } });
 
@@ -829,25 +942,38 @@ describe('createAdminGroupsHandlers', () => {
   describe('getGroupMembers', () => {
     it('fetches group with memberIds projection only', async () => {
       const group = mockGroup({ memberIds: [] });
-      const deps = createDeps({ findGroupById: jest.fn().mockResolvedValue(group) });
+      const deps = createDeps({
+        findGroupById: jest.fn().mockResolvedValue(group),
+      });
       const handlers = createAdminGroupsHandlers(deps);
       const { req, res } = createReqRes({ params: { id: validId } });
 
       await handlers.getGroupMembers(req, res);
 
-      expect(deps.findGroupById).toHaveBeenCalledWith(validId, { memberIds: 1 });
+      expect(deps.findGroupById).toHaveBeenCalledWith(validId, {
+        memberIds: 1,
+      });
     });
 
     it('returns empty members for group with no memberIds', async () => {
       const group = mockGroup({ memberIds: [] });
-      const deps = createDeps({ findGroupById: jest.fn().mockResolvedValue(group) });
+      const deps = createDeps({
+        findGroupById: jest.fn().mockResolvedValue(group),
+      });
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validId },
+      });
 
       await handlers.getGroupMembers(req, res);
 
       expect(status).toHaveBeenCalledWith(200);
-      expect(json).toHaveBeenCalledWith({ members: [], total: 0, limit: 50, offset: 0 });
+      expect(json).toHaveBeenCalledWith({
+        members: [],
+        total: 0,
+        limit: 50,
+        offset: 0,
+      });
       expect(deps.findUsers).not.toHaveBeenCalled();
     });
 
@@ -859,7 +985,9 @@ describe('createAdminGroupsHandlers', () => {
         findUsers: jest.fn().mockResolvedValue([user]),
       });
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validId },
+      });
 
       await handlers.getGroupMembers(req, res);
 
@@ -906,7 +1034,12 @@ describe('createAdminGroupsHandlers', () => {
       await handlers.getGroupMembers(req, res);
 
       expect(json.mock.calls[0][0].members).toEqual([
-        { userId: 'unknown-member', name: 'unknown-member', email: '', avatarUrl: undefined },
+        {
+          userId: 'unknown-member',
+          name: 'unknown-member',
+          email: '',
+          avatarUrl: undefined,
+        },
       ]);
     });
 
@@ -1024,7 +1157,9 @@ describe('createAdminGroupsHandlers', () => {
     it('returns 400 for invalid group ID', async () => {
       const deps = createDeps();
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: 'nope' } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: 'nope' },
+      });
 
       await handlers.getGroupMembers(req, res);
 
@@ -1033,9 +1168,13 @@ describe('createAdminGroupsHandlers', () => {
     });
 
     it('returns 404 when group not found', async () => {
-      const deps = createDeps({ findGroupById: jest.fn().mockResolvedValue(null) });
+      const deps = createDeps({
+        findGroupById: jest.fn().mockResolvedValue(null),
+      });
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validId },
+      });
 
       await handlers.getGroupMembers(req, res);
 
@@ -1048,12 +1187,16 @@ describe('createAdminGroupsHandlers', () => {
         findGroupById: jest.fn().mockRejectedValue(new Error('db down')),
       });
       const handlers = createAdminGroupsHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validId },
+      });
 
       await handlers.getGroupMembers(req, res);
 
       expect(status).toHaveBeenCalledWith(500);
-      expect(json).toHaveBeenCalledWith({ error: 'Failed to get group members' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Failed to get group members',
+      });
     });
   });
 

@@ -1,16 +1,16 @@
-import { useMemo, memo, type FC, useCallback, useEffect, useRef } from 'react';
+import { Spinner, useMediaQuery } from '@librechat/client';
+import type { TConversation } from 'librechat-data-provider';
 import throttle from 'lodash/throttle';
 import { ChevronDown } from 'lucide-react';
+import { type FC, memo, useCallback, useEffect, useMemo, useRef } from 'react';
+import { AutoSizer, CellMeasurer, CellMeasurerCache, List } from 'react-virtualized';
 import { useRecoilValue } from 'recoil';
-import { Spinner, useMediaQuery } from '@librechat/client';
-import { List, AutoSizer, CellMeasurer, CellMeasurerCache } from 'react-virtualized';
-import type { TConversation } from 'librechat-data-provider';
-import { useLocalize, TranslationKeys, useFavorites, useShowMarketplace } from '~/hooks';
 import FavoritesList from '~/components/Nav/Favorites/FavoritesList';
 import { useActiveJobs } from '~/data-provider';
-import { groupConversationsByDate, cn } from '~/utils';
-import Convo from './Convo';
+import { type TranslationKeys, useFavorites, useLocalize, useShowMarketplace } from '~/hooks';
 import store from '~/store';
+import { cn, groupConversationsByDate } from '~/utils';
+import Convo from './Convo';
 
 export type CellPosition = {
   columnIndex: number;

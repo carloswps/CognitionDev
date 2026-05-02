@@ -1,9 +1,9 @@
 import { Constants } from 'librechat-data-provider';
 import {
-  sanitizeMessageForTransmit,
-  sanitizeFileForTransmit,
   buildMessageFiles,
   getThreadData,
+  sanitizeFileForTransmit,
+  sanitizeMessageForTransmit,
 } from './message';
 
 /** Cast to string for type compatibility with ThreadMessage */
@@ -169,7 +169,10 @@ describe('buildMessageFiles', () => {
   });
 
   it('filters out undefined file_id entries in request files (no set poisoning)', () => {
-    const undefinedAttachment = { ...baseAttachment, file_id: undefined as unknown as string };
+    const undefinedAttachment = {
+      ...baseAttachment,
+      file_id: undefined as unknown as string,
+    };
     const result = buildMessageFiles(
       [{ file_id: undefined }, { file_id: 'file-1' }],
       [undefinedAttachment, baseAttachment],
@@ -179,7 +182,11 @@ describe('buildMessageFiles', () => {
   });
 
   it('returns only attachments whose file_id is in the request set', () => {
-    const attachment2 = { ...baseAttachment, file_id: 'file-2', filename: 'b.png' };
+    const attachment2 = {
+      ...baseAttachment,
+      file_id: 'file-2',
+      filename: 'b.png',
+    };
     const result = buildMessageFiles([{ file_id: 'file-1' }], [baseAttachment, attachment2]);
     expect(result).toHaveLength(1);
     expect(result?.[0].file_id).toBe('file-1');

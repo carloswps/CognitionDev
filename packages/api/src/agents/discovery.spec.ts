@@ -1,6 +1,6 @@
-import { EModelEndpoint } from 'librechat-data-provider';
-import type { Agent, GraphEdge } from 'librechat-data-provider';
 import type { Response } from 'express';
+import type { Agent, GraphEdge } from 'librechat-data-provider';
+import { EModelEndpoint } from 'librechat-data-provider';
 import type { ServerRequest } from '~/types';
 import type { InitializedAgent } from './initialize';
 
@@ -215,7 +215,10 @@ describe('discoverConnectedAgents', () => {
         primaryConfig,
         // Caller passes a non-agents endpoint (e.g. the OpenAI-compat
         // controllers do this — endpoint = primary provider)
-        endpointOption: { endpoint: EModelEndpoint.openAI, model_parameters: {} },
+        endpointOption: {
+          endpoint: EModelEndpoint.openAI,
+          model_parameters: {},
+        },
         allowedProviders: new Set(['openai']),
         modelsConfig: { openai: ['gpt-4o'] },
         loadTools: jest.fn(),
@@ -743,7 +746,9 @@ describe('discoverConnectedAgents', () => {
     // Caller's map is unchanged — only the returned merged map has the
     // sub-agent entries.
     expect(primaryConfig.userMCPAuthMap).toBe(primaryAuth);
-    expect(primaryConfig.userMCPAuthMap).toEqual({ serverA: { token: 'primary' } });
+    expect(primaryConfig.userMCPAuthMap).toEqual({
+      serverA: { token: 'primary' },
+    });
     expect(result.userMCPAuthMap).toEqual({
       serverA: { token: 'primary' },
       serverB: { token: 'secondary' },

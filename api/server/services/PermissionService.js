@@ -295,7 +295,7 @@ const getAvailableRoles = async ({ resourceType }) => {
  * @param {string} [principal.idOnTheSource] - Entra ID object ID for external principals
  * @returns {Promise<string|null>} Returns the principalId for database operations, null for public
  */
-const ensurePrincipalExists = async function (principal) {
+const ensurePrincipalExists = async (principal) => {
   if (principal.type === PrincipalType.PUBLIC) {
     return null;
   }
@@ -309,7 +309,9 @@ const ensurePrincipalExists = async function (principal) {
       throw new Error('Entra ID user principals must have email and idOnTheSource');
     }
 
-    let existingUser = await db.findUser({ idOnTheSource: principal.idOnTheSource });
+    let existingUser = await db.findUser({
+      idOnTheSource: principal.idOnTheSource,
+    });
 
     if (!existingUser) {
       existingUser = await db.findUser({ email: principal.email });
@@ -361,7 +363,7 @@ const ensurePrincipalExists = async function (principal) {
  * @param {string} [authContext.sub] - Subject identifier
  * @returns {Promise<string>} Returns the groupId for database operations
  */
-const ensureGroupPrincipalExists = async function (principal, authContext = null) {
+const ensureGroupPrincipalExists = async (principal, authContext = null) => {
   if (principal.type !== PrincipalType.GROUP) {
     throw new Error(`Invalid principal type: ${principal.type}. Expected '${PrincipalType.GROUP}'`);
   }
@@ -401,7 +403,9 @@ const ensureGroupPrincipalExists = async function (principal, authContext = null
     let existingGroup = await db.findGroupByExternalId(principal.idOnTheSource, 'entra');
 
     if (!existingGroup && principal.email) {
-      existingGroup = await db.findGroupByQuery({ email: principal.email.toLowerCase() });
+      existingGroup = await db.findGroupByQuery({
+        email: principal.email.toLowerCase(),
+      });
     }
 
     if (existingGroup) {

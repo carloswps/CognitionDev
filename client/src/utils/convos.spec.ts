@@ -1,20 +1,20 @@
-import { QueryClient, InfiniteData } from '@tanstack/react-query';
+import { type InfiniteData, QueryClient } from '@tanstack/react-query';
 import type { TConversation } from 'librechat-data-provider';
-import {
-  dateKeys,
-  storeEndpointSettings,
-  addConversationToInfinitePages,
-  updateInfiniteConvoPage,
-  findConversationInInfinite,
-  removeConvoFromInfinitePages,
-  groupConversationsByDate,
-  updateConvoFieldsInfinite,
-  addConvoToAllQueries,
-  updateConvoInAllQueries,
-  removeConvoFromAllQueries,
-  addConversationToAllConversationsQueries,
-} from './convos';
 import { normalizeData } from './collection';
+import {
+  addConversationToAllConversationsQueries,
+  addConversationToInfinitePages,
+  addConvoToAllQueries,
+  dateKeys,
+  findConversationInInfinite,
+  groupConversationsByDate,
+  removeConvoFromAllQueries,
+  removeConvoFromInfinitePages,
+  storeEndpointSettings,
+  updateConvoFieldsInfinite,
+  updateConvoInAllQueries,
+  updateInfiniteConvoPage,
+} from './convos';
 
 jest.mock('date-fns', () => {
   const actual = jest.requireActual('date-fns');
@@ -30,9 +30,18 @@ describe('Conversation Utilities', () => {
       const conversations = [
         { conversationId: '1', updatedAt: '2023-04-01T12:00:00Z' },
         { conversationId: '2', updatedAt: new Date().toISOString() },
-        { conversationId: '3', updatedAt: new Date(Date.now() - 86400000).toISOString() },
-        { conversationId: '4', updatedAt: new Date(Date.now() - 86400000 * 2).toISOString() },
-        { conversationId: '5', updatedAt: new Date(Date.now() - 86400000 * 8).toISOString() },
+        {
+          conversationId: '3',
+          updatedAt: new Date(Date.now() - 86400000).toISOString(),
+        },
+        {
+          conversationId: '4',
+          updatedAt: new Date(Date.now() - 86400000 * 2).toISOString(),
+        },
+        {
+          conversationId: '5',
+          updatedAt: new Date(Date.now() - 86400000 * 8).toISOString(),
+        },
       ];
       const grouped = groupConversationsByDate(conversations as TConversation[]);
       expect(grouped[0][0]).toBe(dateKeys.today);
@@ -306,7 +315,10 @@ describe('Conversation Utilities', () => {
 
     it('returns empty data when there is no data', () => {
       const normalizedData = normalizeData(
-        { pages: [{ conversations: [], pageNumber: 1, pageSize: 5, pages: 1 }], pageParams: [] },
+        {
+          pages: [{ conversations: [], pageNumber: 1, pageSize: 5, pages: 1 }],
+          pageParams: [],
+        },
         'conversations',
         5,
       );
@@ -316,7 +328,10 @@ describe('Conversation Utilities', () => {
 
     it('does not normalize data when not needed', () => {
       const normalizedData = normalizeData(
-        { pages: [{ conversations: ['1'], pageNumber: 1, pageSize: 5, pages: 1 }], pageParams: [] },
+        {
+          pages: [{ conversations: ['1'], pageNumber: 1, pageSize: 5, pages: 1 }],
+          pageParams: [],
+        },
         'conversations',
         5,
       );
@@ -404,7 +419,10 @@ describe('Conversation Utilities', () => {
           pages: [makePage([makeConversation('1', '2023-01-01T00:00:00Z'), makeConversation('2')])],
           pageParams: [],
         };
-        const updater = (c: any) => ({ ...c, updatedAt: '2024-01-01T00:00:00Z' });
+        const updater = (c: any) => ({
+          ...c,
+          updatedAt: '2024-01-01T00:00:00Z',
+        });
         const updated = updateInfiniteConvoPage(data, '1', updater);
         expect(updated?.pages[0].conversations[0].updatedAt).toBe('2024-01-01T00:00:00Z');
       });
@@ -591,14 +609,20 @@ describe('Conversation Utilities', () => {
       });
 
       it('updateConvoInAllQueries updates correct convo', () => {
-        updateConvoInAllQueries(queryClient, 'a', (c) => ({ ...c, model: 'gpt-4' }));
+        updateConvoInAllQueries(queryClient, 'a', (c) => ({
+          ...c,
+          model: 'gpt-4',
+        }));
         const data = queryClient.getQueryData<InfiniteData<any>>(['allConversations']);
         expect(data!.pages[0].conversations[0].model).toBe('gpt-4');
       });
 
       it('updateConvoInAllQueries with moveToTop moves convo to front and updates updatedAt', () => {
         // Add more conversations so 'a' is not at position 0
-        const convoC = { conversationId: 'c', updatedAt: '2024-01-03T12:00:00Z' } as TConversation;
+        const convoC = {
+          conversationId: 'c',
+          updatedAt: '2024-01-03T12:00:00Z',
+        } as TConversation;
         queryClient.setQueryData(['allConversations'], {
           pages: [{ conversations: [convoC, convoA], nextCursor: null }],
           pageParams: [],
@@ -620,8 +644,14 @@ describe('Conversation Utilities', () => {
       });
 
       it('updateConvoInAllQueries with moveToTop from second page', () => {
-        const convoC = { conversationId: 'c', updatedAt: '2024-01-03T12:00:00Z' } as TConversation;
-        const convoD = { conversationId: 'd', updatedAt: '2024-01-04T12:00:00Z' } as TConversation;
+        const convoC = {
+          conversationId: 'c',
+          updatedAt: '2024-01-03T12:00:00Z',
+        } as TConversation;
+        const convoD = {
+          conversationId: 'd',
+          updatedAt: '2024-01-04T12:00:00Z',
+        } as TConversation;
         queryClient.setQueryData(['allConversations'], {
           pages: [
             { conversations: [convoC, convoD], nextCursor: 'cursor1' },

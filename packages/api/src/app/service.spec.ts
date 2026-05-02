@@ -1,5 +1,5 @@
 import type { AppConfig } from '@librechat/data-schemas';
-import { createAppConfigService, _resetOverrideStrictCache } from './service';
+import { _resetOverrideStrictCache, createAppConfigService } from './service';
 
 /** Extends AppConfig with mock fields used by merge behavior tests. */
 interface TestConfig extends AppConfig {
@@ -34,7 +34,10 @@ function createMockCache(namespace = 'app_config') {
 
 function createDeps(overrides = {}) {
   const cache = createMockCache();
-  const baseConfig = { interfaceConfig: { modelSelect: true }, endpoints: ['openAI'] };
+  const baseConfig = {
+    interfaceConfig: { modelSelect: true },
+    endpoints: ['openAI'],
+  };
 
   return {
     loadBaseConfig: jest.fn().mockResolvedValue(baseConfig),
@@ -76,11 +79,13 @@ describe('createAppConfigService', () => {
 
     it('baseOnly returns YAML config without DB queries', async () => {
       const deps = createDeps({
-        getApplicableConfigs: jest
-          .fn()
-          .mockResolvedValue([
-            { priority: 10, overrides: { interface: { modelSelect: false } }, isActive: true },
-          ]),
+        getApplicableConfigs: jest.fn().mockResolvedValue([
+          {
+            priority: 10,
+            overrides: { interface: { modelSelect: false } },
+            isActive: true,
+          },
+        ]),
       });
       const { getAppConfig } = createAppConfigService(deps);
 
@@ -111,7 +116,9 @@ describe('createAppConfigService', () => {
     });
 
     it('caches empty result — does not re-query DB on second call', async () => {
-      const deps = createDeps({ getApplicableConfigs: jest.fn().mockResolvedValue([]) });
+      const deps = createDeps({
+        getApplicableConfigs: jest.fn().mockResolvedValue([]),
+      });
       const { getAppConfig } = createAppConfigService(deps);
 
       await getAppConfig({ role: 'USER' });
@@ -122,11 +129,13 @@ describe('createAppConfigService', () => {
 
     it('merges DB configs when found', async () => {
       const deps = createDeps({
-        getApplicableConfigs: jest
-          .fn()
-          .mockResolvedValue([
-            { priority: 10, overrides: { interface: { modelSelect: false } }, isActive: true },
-          ]),
+        getApplicableConfigs: jest.fn().mockResolvedValue([
+          {
+            priority: 10,
+            overrides: { interface: { modelSelect: false } },
+            isActive: true,
+          },
+        ]),
       });
       const { getAppConfig } = createAppConfigService(deps);
 
@@ -153,11 +162,13 @@ describe('createAppConfigService', () => {
 
     it('uses separate cache keys per userId (no cross-user contamination)', async () => {
       const deps = createDeps({
-        getApplicableConfigs: jest
-          .fn()
-          .mockResolvedValue([
-            { priority: 100, overrides: { x: 'user-specific' }, isActive: true },
-          ]),
+        getApplicableConfigs: jest.fn().mockResolvedValue([
+          {
+            priority: 100,
+            overrides: { x: 'user-specific' },
+            isActive: true,
+          },
+        ]),
       });
       const { getAppConfig } = createAppConfigService(deps);
 
@@ -237,7 +248,10 @@ describe('createAppConfigService', () => {
 
       const config = await getAppConfig({ userId: 'uid1', role: 'USER' });
 
-      expect(deps.getUserPrincipals).toHaveBeenCalledWith({ userId: 'uid1', role: 'USER' });
+      expect(deps.getUserPrincipals).toHaveBeenCalledWith({
+        userId: 'uid1',
+        role: 'USER',
+      });
       expect(deps.getApplicableConfigs).toHaveBeenCalledWith([]);
       expect(config).toEqual(deps._baseConfig);
     });

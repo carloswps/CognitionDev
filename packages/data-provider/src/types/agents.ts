@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { StepTypes, ContentTypes, ToolCallTypes } from './runs';
-import type { FunctionToolCall, SummaryContentPart } from './assistants';
+
 import type { TAttachment, TPlugin } from 'src/schemas';
+import type { FunctionToolCall, SummaryContentPart } from './assistants';
+import type { ContentTypes, StepTypes, ToolCallTypes } from './runs';
 
 export namespace Agents {
   export type MessageType = 'human' | 'ai' | 'generic' | 'system' | 'function' | 'tool' | 'remove';
@@ -308,7 +309,10 @@ export namespace Agents {
     content?: MessageContentComplex[];
   }
 
-  export type ReasoningDeltaUpdate = { type: ContentTypes.THINK; think: string };
+  export type ReasoningDeltaUpdate = {
+    type: ContentTypes.THINK;
+    think: string;
+  };
   export type ContentType =
     | ContentTypes.THINK
     | ContentTypes.TEXT

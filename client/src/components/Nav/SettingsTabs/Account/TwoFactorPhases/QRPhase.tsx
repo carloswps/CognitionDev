@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import { Button, Input, Label } from '@librechat/client';
 import { motion } from 'framer-motion';
+import { Check, Copy } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
-import { Copy, Check } from 'lucide-react';
-import { Input, Button, Label } from '@librechat/client';
+import type React from 'react';
+import { useState } from 'react';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
 

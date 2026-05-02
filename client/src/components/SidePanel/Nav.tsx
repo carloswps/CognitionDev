@@ -1,5 +1,5 @@
 import type { NavLink } from '~/common';
-import { useActivePanel, resolveActivePanel } from '~/Providers';
+import { resolveActivePanel, useActivePanel } from '~/Providers';
 
 export default function Nav({ links }: { links: NavLink[] }) {
   const { active } = useActivePanel();

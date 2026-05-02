@@ -1,10 +1,10 @@
 import './matchMedia.mock';
-import React from 'react';
-import { render as rtlRender } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthContextProvider } from '~/hooks/AuthContext';
+import { render as rtlRender } from '@testing-library/react';
+import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
+import { AuthContextProvider } from '~/hooks/AuthContext';
 
 const client = new QueryClient();
 
@@ -29,5 +29,6 @@ function renderWithProvidersWrapper(ui, { ...options } = {}) {
   }
   return rtlRender(ui, { wrapper: Wrapper, ...options });
 }
+
 export * from '@testing-library/react';
 export { renderWithProvidersWrapper as render };

@@ -207,7 +207,7 @@ class FluxAPI extends Tool {
       throw new Error('Missing required field: prompt');
     }
 
-    let payload = {
+    const payload = {
       prompt: imageData.prompt,
       prompt_upsampling: imageData.prompt_upsampling || false,
       safety_tolerance: imageData.safety_tolerance || 6,
@@ -437,7 +437,7 @@ class FluxAPI extends Tool {
       );
     }
 
-    let payload = {
+    const payload = {
       prompt: imageData.prompt,
       prompt_upsampling: imageData.prompt_upsampling || false,
       safety_tolerance: imageData.safety_tolerance || 6,

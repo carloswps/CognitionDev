@@ -5,15 +5,15 @@
  * streaming format (SSE with chat.completion.chunk objects).
  */
 import type { Response as ServerResponse } from 'express';
-import type {
-  ChatCompletionChunkChoice,
-  OpenAIResponseContext,
-  ChatCompletionChunk,
-  CompletionUsage,
-  ToolCall,
-} from './types';
 import type { ToolExecuteOptions } from '~/agents/handlers';
 import { createToolExecuteHandler } from '~/agents/handlers';
+import type {
+  ChatCompletionChunk,
+  ChatCompletionChunkChoice,
+  CompletionUsage,
+  OpenAIResponseContext,
+  ToolCall,
+} from './types';
 
 /**
  * Create a chat completion chunk in OpenAI format
@@ -302,7 +302,9 @@ export class OpenAIRunStepDeltaHandler implements EventHandler {
             ...(tc.function && {
               function: {
                 ...(tc.function.name && { name: tc.function.name }),
-                ...(tc.function.arguments && { arguments: tc.function.arguments }),
+                ...(tc.function.arguments && {
+                  arguments: tc.function.arguments,
+                }),
               },
             }),
           },
@@ -395,7 +397,9 @@ export class OpenAIReasoningDeltaHandler implements EventHandler {
         this.config.tracker.addReasoning();
 
         // Stream as delta.reasoning (OpenRouter convention)
-        const chunk = createChunk(this.config.context, { reasoning: part.text });
+        const chunk = createChunk(this.config.context, {
+          reasoning: part.text,
+        });
         writeSSE(this.config.res, chunk);
       }
     }

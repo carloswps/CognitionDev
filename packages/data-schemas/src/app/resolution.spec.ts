@@ -1,6 +1,6 @@
 import { INTERFACE_PERMISSION_FIELDS, PermissionTypes } from 'librechat-data-provider';
-import { mergeConfigOverrides } from './resolution';
 import type { AppConfig, IConfig } from '~/types';
+import { mergeConfigOverrides } from './resolution';
 
 function fakeConfig(overrides: Record<string, unknown>, priority: number): IConfig {
   return {
@@ -60,7 +60,11 @@ describe('mergeConfigOverrides', () => {
     const base = {
       endpoints: {
         custom: [
-          { name: 'yaml-only', baseURL: 'https://yaml-only.com', apiKey: 'key1' },
+          {
+            name: 'yaml-only',
+            baseURL: 'https://yaml-only.com',
+            apiKey: 'key1',
+          },
           {
             name: 'shared',
             baseURL: 'https://original.com',
@@ -77,7 +81,11 @@ describe('mergeConfigOverrides', () => {
           endpoints: {
             custom: [
               { name: 'shared', baseURL: 'https://overridden.com' },
-              { name: 'db-only', baseURL: 'https://db-only.com', apiKey: 'key3' },
+              {
+                name: 'db-only',
+                baseURL: 'https://db-only.com',
+                apiKey: 'key3',
+              },
             ],
           },
         },
@@ -104,7 +112,11 @@ describe('mergeConfigOverrides', () => {
       models: { default: ['m1'] },
     });
     // DB-only item appended
-    expect(custom[2]).toEqual({ name: 'db-only', baseURL: 'https://db-only.com', apiKey: 'key3' });
+    expect(custom[2]).toEqual({
+      name: 'db-only',
+      baseURL: 'https://db-only.com',
+      apiKey: 'key3',
+    });
   });
 
   it('preserves all YAML custom endpoints when DB override is empty', () => {
@@ -181,7 +193,14 @@ describe('mergeConfigOverrides', () => {
     } as unknown as AppConfig;
 
     const configs = [
-      fakeConfig({ endpoints: { custom: [{ name: 'db-only', baseURL: 'https://db.com' }] } }, 10),
+      fakeConfig(
+        {
+          endpoints: {
+            custom: [{ name: 'db-only', baseURL: 'https://db.com' }],
+          },
+        },
+        10,
+      ),
     ];
 
     const result = mergeConfigOverrides(base, configs) as unknown as Record<string, unknown>;
@@ -219,8 +238,22 @@ describe('mergeConfigOverrides', () => {
     } as unknown as AppConfig;
 
     const configs = [
-      fakeConfig({ endpoints: { custom: [{ name: 'shared', baseURL: 'https://low.com' }] } }, 10),
-      fakeConfig({ endpoints: { custom: [{ name: 'shared', baseURL: 'https://high.com' }] } }, 100),
+      fakeConfig(
+        {
+          endpoints: {
+            custom: [{ name: 'shared', baseURL: 'https://low.com' }],
+          },
+        },
+        10,
+      ),
+      fakeConfig(
+        {
+          endpoints: {
+            custom: [{ name: 'shared', baseURL: 'https://high.com' }],
+          },
+        },
+        100,
+      ),
     ];
 
     const result = mergeConfigOverrides(base, configs) as unknown as Record<string, unknown>;
@@ -266,8 +299,8 @@ describe('mergeConfigOverrides', () => {
     const result = mergeConfigOverrides(baseConfig, configs) as unknown as Record<string, unknown>;
     expect(result.safe).toBe('ok');
     expect(({} as Record<string, unknown>).polluted).toBeUndefined();
-    expect(Object.prototype.hasOwnProperty.call(result, 'constructor')).toBe(false);
-    expect(Object.prototype.hasOwnProperty.call(result, 'prototype')).toBe(false);
+    expect(Object.hasOwn(result, 'constructor')).toBe(false);
+    expect(Object.hasOwn(result, 'prototype')).toBe(false);
   });
 
   it('merges three priority levels in order', () => {
@@ -384,7 +417,14 @@ describe('mergeConfigOverrides', () => {
     } as unknown as AppConfig;
 
     const configs = [
-      fakeConfig({ interface: { peoplePicker: { users: false, groups: true, roles: true } } }, 10),
+      fakeConfig(
+        {
+          interface: {
+            peoplePicker: { users: false, groups: true, roles: true },
+          },
+        },
+        10,
+      ),
     ];
     const result = mergeConfigOverrides(base, configs) as unknown as Record<string, unknown>;
     const iface = result.interfaceConfig as Record<string, unknown>;
@@ -412,7 +452,12 @@ describe('mergeConfigOverrides', () => {
     const configs = [
       fakeConfig(
         {
-          mcpServers: { 'test-server': { type: 'streamable-http', url: 'https://example.com' } },
+          mcpServers: {
+            'test-server': {
+              type: 'streamable-http',
+              url: 'https://example.com',
+            },
+          },
         },
         10,
       ),

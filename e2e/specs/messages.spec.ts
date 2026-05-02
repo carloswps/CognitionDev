@@ -1,5 +1,5 @@
+import type { BrowserContext, Page, Response } from '@playwright/test';
 import { expect, test } from '@playwright/test';
-import type { Response, Page, BrowserContext } from '@playwright/test';
 
 const basePath = 'http://localhost:3080/c/';
 const initialUrl = `${basePath}new`;
@@ -22,7 +22,9 @@ async function clearConvos(page: Page) {
   await page.getByText('Settings').click();
   await page.getByTestId('clear-convos-initial').click();
   await page.getByTestId('clear-convos-confirm').click();
-  await page.waitForSelector('[data-testid="convo-icon"]', { state: 'detached' });
+  await page.waitForSelector('[data-testid="convo-icon"]', {
+    state: 'detached',
+  });
   await page.getByRole('button', { name: 'Close' }).click();
 }
 

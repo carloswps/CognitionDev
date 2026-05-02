@@ -1,11 +1,11 @@
-import { useMemo } from 'react';
-import { OptionTypes } from 'librechat-data-provider';
+import { Checkbox, HoverCard, HoverCardTrigger, Label } from '@librechat/client';
 import type { DynamicSettingProps } from 'librechat-data-provider';
-import { Label, Checkbox, HoverCard, HoverCardTrigger } from '@librechat/client';
-import { TranslationKeys, useLocalize, useDebouncedInput, useParameterEffects } from '~/hooks';
+import { OptionTypes } from 'librechat-data-provider';
+import { useMemo } from 'react';
+import { ESide } from '~/common';
+import { type TranslationKeys, useDebouncedInput, useLocalize, useParameterEffects } from '~/hooks';
 import { useChatContext } from '~/Providers';
 import OptionHover from './OptionHover';
-import { ESide } from '~/common';
 
 function DynamicCheckbox({
   label = '',

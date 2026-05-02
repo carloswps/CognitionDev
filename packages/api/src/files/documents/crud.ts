@@ -1,7 +1,7 @@
 import * as fs from 'fs';
-import yauzl from 'yauzl';
-import { megabyte, excelMimeTypes, FileSources } from 'librechat-data-provider';
+import { excelMimeTypes, FileSources, megabyte } from 'librechat-data-provider';
 import type { TextItem } from 'pdfjs-dist/types/src/display/api';
+import yauzl from 'yauzl';
 import type { MistralOCRUploadResult } from '~/types';
 
 type FileParseFn = (file: Express.Multer.File) => Promise<string>;
@@ -94,7 +94,9 @@ async function pdfToText(file: Express.Multer.File): Promise<string> {
 /** Parses Word document, returns text inside. */
 async function wordDocToText(file: Express.Multer.File): Promise<string> {
   const { extractRawText } = await import('mammoth');
-  const rawText = await extractRawText({ buffer: await fs.promises.readFile(file.path) });
+  const rawText = await extractRawText({
+    buffer: await fs.promises.readFile(file.path),
+  });
   return rawText.value;
 }
 

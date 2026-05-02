@@ -23,7 +23,10 @@ async function getGlobalProjectAgentIds(db) {
 async function migrateAgentPermissionsEnhanced({ dryRun = true, batchSize = 100 } = {}) {
   await connect();
 
-  logger.info('Starting Enhanced Agent Permissions Migration', { dryRun, batchSize });
+  logger.info('Starting Enhanced Agent Permissions Migration', {
+    dryRun,
+    batchSize,
+  });
 
   const mongoose = require('mongoose');
   /** @type {import('mongoose').mongo.Db | undefined} */

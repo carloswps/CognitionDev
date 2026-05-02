@@ -1,7 +1,7 @@
 import {
-  persistRedirectToSession,
   getPostLoginRedirect,
   isSafeRedirect,
+  persistRedirectToSession,
   SESSION_KEY,
 } from '../redirect';
 

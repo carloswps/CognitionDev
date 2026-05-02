@@ -90,8 +90,16 @@ describe('POST /images - Agent Upload Permission Check (Integration)', () => {
     otherUserId = new mongoose.Types.ObjectId();
     agentCustomId = `agent_${uuidv4().replace(/-/g, '').substring(0, 21)}`;
 
-    await User.create({ _id: authorId, username: 'author', email: 'author@test.com' });
-    await User.create({ _id: otherUserId, username: 'other', email: 'other@test.com' });
+    await User.create({
+      _id: authorId,
+      username: 'author',
+      email: 'author@test.com',
+    });
+    await User.create({
+      _id: otherUserId,
+      username: 'other',
+      email: 'other@test.com',
+    });
 
     jest.clearAllMocks();
   });
@@ -115,7 +123,10 @@ describe('POST /images - Agent Upload Permission Check (Integration)', () => {
     app.use((req, _res, next) => {
       req.user = { id: userId.toString(), role: userRole };
       req.app = { locals: {} };
-      req.config = { fileStrategy: 'local', paths: { imageOutput: '/tmp/images' } };
+      req.config = {
+        fileStrategy: 'local',
+        paths: { imageOutput: '/tmp/images' },
+      };
       next();
     });
     app.use('/images', router);

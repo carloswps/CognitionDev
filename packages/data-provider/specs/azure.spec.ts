@@ -1,5 +1,5 @@
+import { mapGroupToAzureConfig, mapModelToAzureConfig, validateAzureGroups } from '../src/azure';
 import type { TAzureGroups } from '../src/config';
-import { validateAzureGroups, mapModelToAzureConfig, mapGroupToAzureConfig } from '../src/azure';
 
 describe('validateAzureGroups', () => {
   it('should validate a correct configuration', () => {
@@ -127,7 +127,11 @@ describe('validateAzureGroups', () => {
     const { isValid, modelNames, modelGroupMap, groupMap } = validateAzureGroups(configs);
     expect(isValid).toBe(true);
     expect(modelNames).toEqual(['gpt-6']);
-    const { azureOptions } = mapModelToAzureConfig({ modelName: 'gpt-6', modelGroupMap, groupMap });
+    const { azureOptions } = mapModelToAzureConfig({
+      modelName: 'gpt-6',
+      modelGroupMap,
+      groupMap,
+    });
     expect(azureOptions).toEqual({
       azureOpenAIApiKey: 'canada-key',
       azureOpenAIApiInstanceName: 'canada-instance',
@@ -524,7 +528,11 @@ describe('validateAzureGroups with modelGroupMap and groupMap', () => {
     const { isValid, modelGroupMap, groupMap } = validateAzureGroups(validConfigs);
     expect(isValid).toBe(true);
     expect(() =>
-      mapModelToAzureConfig({ modelName: 'gpt-4-turbo', modelGroupMap, groupMap }),
+      mapModelToAzureConfig({
+        modelName: 'gpt-4-turbo',
+        modelGroupMap,
+        groupMap,
+      }),
     ).toThrow();
   });
 

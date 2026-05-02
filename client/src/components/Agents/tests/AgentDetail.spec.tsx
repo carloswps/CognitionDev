@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-import React from 'react';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter, useNavigate } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { RecoilRoot } from 'recoil';
-
 import type t from 'librechat-data-provider';
 import { Constants, EModelEndpoint } from 'librechat-data-provider';
+import type React from 'react';
+import { MemoryRouter, useNavigate } from 'react-router-dom';
+import { RecoilRoot } from 'recoil';
 
 import AgentDetail from '../AgentDetail';
 
@@ -128,7 +128,9 @@ describe('AgentDetail', () => {
     jest.clearAllMocks();
     (useNavigate as jest.Mock).mockReturnValue(mockNavigate);
     const { useToastContext } = require('@librechat/client');
-    (useToastContext as jest.Mock).mockReturnValue({ showToast: mockShowToast });
+    (useToastContext as jest.Mock).mockReturnValue({
+      showToast: mockShowToast,
+    });
     const { useLocalize, useDefaultConvo } = require('~/hooks');
     (useLocalize as jest.Mock).mockReturnValue(mockLocalize);
     (useDefaultConvo as jest.Mock).mockReturnValue(() => ({
@@ -211,7 +213,9 @@ describe('AgentDetail', () => {
     it('should render copy link button', () => {
       renderWithProviders(<AgentDetail {...defaultProps} />);
 
-      const copyLinkButton = screen.getByRole('button', { name: 'com_agents_copy_link' });
+      const copyLinkButton = screen.getByRole('button', {
+        name: 'com_agents_copy_link',
+      });
       expect(copyLinkButton).toBeInTheDocument();
       expect(copyLinkButton).toHaveAttribute('aria-label', 'com_agents_copy_link');
     });
@@ -219,7 +223,9 @@ describe('AgentDetail', () => {
     it('should render Start Chat button', () => {
       renderWithProviders(<AgentDetail {...defaultProps} />);
 
-      const startChatButton = screen.getByRole('button', { name: 'com_agents_start_chat' });
+      const startChatButton = screen.getByRole('button', {
+        name: 'com_agents_start_chat',
+      });
       expect(startChatButton).toBeInTheDocument();
       expect(startChatButton).not.toBeDisabled();
     });
@@ -247,7 +253,9 @@ describe('AgentDetail', () => {
 
       renderWithProviders(<AgentDetail {...defaultProps} />);
 
-      const startChatButton = screen.getByRole('button', { name: 'com_agents_start_chat' });
+      const startChatButton = screen.getByRole('button', {
+        name: 'com_agents_start_chat',
+      });
       await user.click(startChatButton);
 
       expect(mockNewConversation).toHaveBeenCalledWith({
@@ -268,7 +276,9 @@ describe('AgentDetail', () => {
       const user = userEvent.setup();
       renderWithProviders(<AgentDetail {...defaultProps} agent={null as any} />);
 
-      const startChatButton = screen.getByRole('button', { name: 'com_agents_start_chat' });
+      const startChatButton = screen.getByRole('button', {
+        name: 'com_agents_start_chat',
+      });
       expect(startChatButton).toBeDisabled();
 
       await user.click(startChatButton);
@@ -280,7 +290,9 @@ describe('AgentDetail', () => {
       renderWithProviders(<AgentDetail {...defaultProps} />);
 
       // Click copy link button directly (no dropdown needed)
-      const copyLinkButton = screen.getByRole('button', { name: 'com_agents_copy_link' });
+      const copyLinkButton = screen.getByRole('button', {
+        name: 'com_agents_copy_link',
+      });
       await user.click(copyLinkButton);
 
       // Wait for async clipboard operation to complete
@@ -304,7 +316,9 @@ describe('AgentDetail', () => {
       renderWithProviders(<AgentDetail {...defaultProps} />);
 
       // Click copy link button directly
-      const copyLinkButton = screen.getByRole('button', { name: 'com_agents_copy_link' });
+      const copyLinkButton = screen.getByRole('button', {
+        name: 'com_agents_copy_link',
+      });
       await user.click(copyLinkButton);
 
       // Wait for clipboard operation to fail and error toast to show
@@ -334,7 +348,9 @@ describe('AgentDetail', () => {
     it('should have proper ARIA attributes', () => {
       renderWithProviders(<AgentDetail {...defaultProps} />);
 
-      const copyLinkButton = screen.getByRole('button', { name: 'com_agents_copy_link' });
+      const copyLinkButton = screen.getByRole('button', {
+        name: 'com_agents_copy_link',
+      });
       expect(copyLinkButton).toHaveAttribute('aria-label', 'com_agents_copy_link');
     });
 
@@ -342,7 +358,9 @@ describe('AgentDetail', () => {
       const user = userEvent.setup();
       renderWithProviders(<AgentDetail {...defaultProps} />);
 
-      const copyLinkButton = screen.getByRole('button', { name: 'com_agents_copy_link' });
+      const copyLinkButton = screen.getByRole('button', {
+        name: 'com_agents_copy_link',
+      });
 
       // Focus and activate with Enter key
       copyLinkButton.focus();
@@ -358,7 +376,9 @@ describe('AgentDetail', () => {
     it('should have proper focus management', async () => {
       renderWithProviders(<AgentDetail {...defaultProps} />);
 
-      const copyLinkButton = screen.getByRole('button', { name: 'com_agents_copy_link' });
+      const copyLinkButton = screen.getByRole('button', {
+        name: 'com_agents_copy_link',
+      });
       expect(copyLinkButton).toHaveClass('focus-visible:outline-none', 'focus-visible:ring-2');
     });
   });

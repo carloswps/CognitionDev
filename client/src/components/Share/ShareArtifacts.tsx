@@ -1,17 +1,17 @@
-import { useState, useMemo } from 'react';
-import { useRecoilValue } from 'recoil';
 import {
-  useMediaQuery,
-  ResizablePanel,
   ResizableHandleAlt,
+  ResizablePanel,
   ResizablePanelGroup,
+  useMediaQuery,
 } from '@librechat/client';
 import type { TMessage } from 'librechat-data-provider';
+import { useMemo, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import Artifacts from '~/components/Artifacts/Artifacts';
 import type { ArtifactsContextValue } from '~/Providers';
 import { ArtifactsProvider, EditorProvider } from '~/Providers';
-import Artifacts from '~/components/Artifacts/Artifacts';
-import { getLatestText } from '~/utils';
 import store from '~/store';
+import { getLatestText } from '~/utils';
 
 const DEFAULT_ARTIFACT_PANEL_SIZE = 40;
 const SHARE_ARTIFACT_PANEL_STORAGE_KEY = 'share:artifacts-panel-size';

@@ -8,13 +8,13 @@
  * 5. monitorFlow retries once when flow state disappears mid-poll
  */
 
-import { Keyv } from 'keyv';
 import { logger } from '@librechat/data-schemas';
-import type { OAuthTestServer } from './helpers/oauthTestServer';
-import type { MCPOAuthTokens } from '~/mcp/oauth';
-import { MCPTokenStorage, MCPOAuthHandler, ReauthenticationRequiredError } from '~/mcp/oauth';
-import { MockKeyv, createOAuthMCPServer } from './helpers/oauthTestServer';
+import type { Keyv } from 'keyv';
 import { FlowStateManager } from '~/flow/manager';
+import type { MCPOAuthTokens } from '~/mcp/oauth';
+import { MCPOAuthHandler, MCPTokenStorage, ReauthenticationRequiredError } from '~/mcp/oauth';
+import type { OAuthTestServer } from './helpers/oauthTestServer';
+import { createOAuthMCPServer, MockKeyv } from './helpers/oauthTestServer';
 
 jest.mock('@librechat/data-schemas', () => ({
   logger: {
@@ -35,7 +35,10 @@ jest.mock('~/auth', () => ({
 }));
 
 jest.mock('~/mcp/mcpConfig', () => ({
-  mcpConfig: { CONNECTION_CHECK_TTL: 0, USER_CONNECTION_IDLE_TIMEOUT: 30 * 60 * 1000 },
+  mcpConfig: {
+    CONNECTION_CHECK_TTL: 0,
+    USER_CONNECTION_IDLE_TIMEOUT: 30 * 60 * 1000,
+  },
 }));
 
 const mockLogger = logger as jest.Mocked<typeof logger>;
@@ -95,7 +98,10 @@ describe('MCP OAuth Race Condition Fixes', () => {
       });
 
       const store = new MockKeyv();
-      const flowManager = new FlowStateManager(store as unknown as Keyv, { ttl: 30000, ci: true });
+      const flowManager = new FlowStateManager(store as unknown as Keyv, {
+        ttl: 30000,
+        ci: true,
+      });
       const user = { id: 'user-1' };
       const opts = {
         serverName: 'test-server',
@@ -161,7 +167,10 @@ describe('MCP OAuth Race Condition Fixes', () => {
       });
 
       const store = new MockKeyv();
-      const flowManager = new FlowStateManager(store as unknown as Keyv, { ttl: 30000, ci: true });
+      const flowManager = new FlowStateManager(store as unknown as Keyv, {
+        ttl: 30000,
+        ci: true,
+      });
       const user = { id: 'user-2' };
 
       const [conn1, conn2] = await Promise.all([
@@ -187,7 +196,10 @@ describe('MCP OAuth Race Condition Fixes', () => {
   describe('Fix 2: PENDING flow is reused, not deleted', () => {
     it('should join an existing PENDING flow via createFlow instead of deleting it', async () => {
       const store = new MockKeyv();
-      const flowManager = new FlowStateManager(store as unknown as Keyv, { ttl: 30000, ci: true });
+      const flowManager = new FlowStateManager(store as unknown as Keyv, {
+        ttl: 30000,
+        ci: true,
+      });
 
       const flowId = 'test-flow-pending';
 
@@ -211,7 +223,10 @@ describe('MCP OAuth Race Condition Fixes', () => {
 
       const result = await monitorPromise;
       expect(result).toEqual(
-        expect.objectContaining({ access_token: 'test-token', token_type: 'Bearer' }),
+        expect.objectContaining({
+          access_token: 'test-token',
+          token_type: 'Bearer',
+        }),
       );
       expect(deleteSpy).not.toHaveBeenCalled();
 
@@ -220,7 +235,10 @@ describe('MCP OAuth Race Condition Fixes', () => {
 
     it('should delete and recreate FAILED flows', async () => {
       const store = new MockKeyv();
-      const flowManager = new FlowStateManager(store as unknown as Keyv, { ttl: 30000, ci: true });
+      const flowManager = new FlowStateManager(store as unknown as Keyv, {
+        ttl: 30000,
+        ci: true,
+      });
 
       const flowId = 'test-flow-failed';
       await flowManager.initFlow(flowId, 'mcp_oauth', {});
@@ -239,7 +257,10 @@ describe('MCP OAuth Race Condition Fixes', () => {
   describe('Fix 3: completeFlow handles deleted state gracefully', () => {
     it('should return false when state was deleted by race', async () => {
       const store = new MockKeyv();
-      const flowManager = new FlowStateManager(store as unknown as Keyv, { ttl: 30000, ci: true });
+      const flowManager = new FlowStateManager(store as unknown as Keyv, {
+        ttl: 30000,
+        ci: true,
+      });
 
       const flowId = 'race-deleted-flow';
 
@@ -267,7 +288,10 @@ describe('MCP OAuth Race Condition Fixes', () => {
 
     it('should reject monitorFlow when state is deleted and not recoverable', async () => {
       const store = new MockKeyv();
-      const flowManager = new FlowStateManager(store as unknown as Keyv, { ttl: 30000, ci: true });
+      const flowManager = new FlowStateManager(store as unknown as Keyv, {
+        ttl: 30000,
+        ci: true,
+      });
 
       const flowId = 'monitor-retry-flow';
 
@@ -457,7 +481,9 @@ describe('MCP OAuth Race Condition Fixes', () => {
         body: `grant_type=authorization_code&code=${code}`,
       });
 
-      const { access_token } = (await tokenRes.json()) as { access_token: string };
+      const { access_token } = (await tokenRes.json()) as {
+        access_token: string;
+      };
 
       const mcpRes = await fetch(server.url, {
         method: 'POST',
@@ -498,7 +524,9 @@ describe('MCP OAuth Race Condition Fixes', () => {
           body: `grant_type=authorization_code&code=${code}`,
         });
 
-        const { access_token } = (await tokenRes.json()) as { access_token: string };
+        const { access_token } = (await tokenRes.json()) as {
+          access_token: string;
+        };
 
         await new Promise((r) => setTimeout(r, 600));
 

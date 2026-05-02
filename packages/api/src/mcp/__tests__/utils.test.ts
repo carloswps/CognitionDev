@@ -1,13 +1,13 @@
+import type { ParsedServerConfig } from '~/mcp/types';
 import {
   buildOAuthToolCallName,
+  isClientRejectionMessage,
+  isInvalidClientMessage,
+  isUserSourced,
   normalizeServerName,
   redactAllServerSecrets,
   redactServerSecrets,
-  isInvalidClientMessage,
-  isClientRejectionMessage,
-  isUserSourced,
 } from '~/mcp/utils';
-import type { ParsedServerConfig } from '~/mcp/types';
 
 describe('normalizeServerName', () => {
   it('should not modify server names that already match the pattern', () => {
@@ -154,7 +154,10 @@ describe('redactServerSecrets', () => {
       type: 'stdio',
       command: 'node',
       args: ['server.js'],
-      env: { DATABASE_URL: 'postgres://admin:password@localhost/db', PATH: '/usr/bin' },
+      env: {
+        DATABASE_URL: 'postgres://admin:password@localhost/db',
+        PATH: '/usr/bin',
+      },
     };
     const redacted = redactServerSecrets(config);
     expect((redacted as Record<string, unknown>).env).toBeUndefined();
@@ -176,7 +179,11 @@ describe('redactServerSecrets', () => {
     const config: ParsedServerConfig = {
       type: 'sse',
       url: 'https://example.com/mcp',
-      apiKey: { source: 'user', authorization_type: 'bearer', key: 'my-own-key' },
+      apiKey: {
+        source: 'user',
+        authorization_type: 'bearer',
+        key: 'my-own-key',
+      },
     };
     const redacted = redactServerSecrets(config);
     expect(redacted.apiKey?.key).toBeUndefined();
@@ -210,7 +217,9 @@ describe('redactServerSecrets', () => {
       updatedAt: 1700000000000,
       consumeOnly: false,
       inspectionFailed: false,
-      customUserVars: { API_KEY: { title: 'API Key', description: 'Your key' } },
+      customUserVars: {
+        API_KEY: { title: 'API Key', description: 'Your key' },
+      },
     };
     const redacted = redactServerSecrets(config);
     expect(redacted.title).toBe('My Server');
@@ -278,12 +287,14 @@ describe('redactAllServerSecrets', () => {
 });
 
 describe('isInvalidClientMessage', () => {
-  it.each(['invalid_client', 'client_id mismatch', 'client not found', 'unknown client'])(
-    'should detect "%s"',
-    (pattern) => {
-      expect(isInvalidClientMessage(`OAuth error: ${pattern}`)).toBe(true);
-    },
-  );
+  it.each([
+    'invalid_client',
+    'client_id mismatch',
+    'client not found',
+    'unknown client',
+  ])('should detect "%s"', (pattern) => {
+    expect(isInvalidClientMessage(`OAuth error: ${pattern}`)).toBe(true);
+  });
 
   it('should be case-insensitive', () => {
     expect(isInvalidClientMessage('INVALID_CLIENT')).toBe(true);

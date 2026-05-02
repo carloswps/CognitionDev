@@ -22,7 +22,11 @@ export type ConnectionStatusMap = Record<string, MCPServerStatus>;
 export function getSelectedServerIcons(
   selectedServers: MCPServerDefinition[],
   maxIcons: number = 3,
-): { icons: SelectedIconInfo[]; overflowCount: number; defaultServerNames: string[] } {
+): {
+  icons: SelectedIconInfo[];
+  overflowCount: number;
+  defaultServerNames: string[];
+} {
   const customIcons: SelectedIconInfo[] = [];
   const defaultServerNames: string[] = [];
 

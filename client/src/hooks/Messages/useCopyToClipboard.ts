@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useRef } from 'react';
 import copy from 'copy-to-clipboard';
-import { ContentTypes, SearchResultData } from 'librechat-data-provider';
 import type { TMessage } from 'librechat-data-provider';
+import { ContentTypes, type SearchResultData } from 'librechat-data-provider';
+import { useCallback, useEffect, useRef } from 'react';
 import {
-  SPAN_REGEX,
   CLEANUP_REGEX,
   COMPOSITE_REGEX,
-  STANDALONE_PATTERN,
   INVALID_CITATION_REGEX,
+  SPAN_REGEX,
+  STANDALONE_PATTERN,
 } from '~/utils/citations';
 
 type Source = {
@@ -311,9 +311,6 @@ function processCitations(text: string, searchResults: { [key: string]: SearchRe
           compositeCitationsMap.set(fullMatch, uniqueSortedCitations);
           replacements.push([fullMatch, referenceText]);
         }
-
-        // Skip further processing since we've handled the entire composite block
-        continue;
       } else {
         // Single citation
         referenceText = `[${existingCitation.referenceNumber}]`;

@@ -75,7 +75,11 @@ describe('PluginController', () => {
     });
 
     it('should use checkPluginAuth to verify plugin authentication', async () => {
-      const mockPlugin = { name: 'Plugin1', pluginKey: 'key1', description: 'First' };
+      const mockPlugin = {
+        name: 'Plugin1',
+        pluginKey: 'key1',
+        description: 'First',
+      };
 
       require('~/app/clients/tools').availableTools.push(mockPlugin);
 
@@ -166,8 +170,16 @@ describe('PluginController', () => {
       };
 
       require('~/app/clients/tools').availableTools.push(
-        { name: 'user-tool', pluginKey: 'user-tool', description: 'Duplicate user tool' },
-        { name: 'ManifestTool', pluginKey: 'manifest-tool', description: 'Manifest tool' },
+        {
+          name: 'user-tool',
+          pluginKey: 'user-tool',
+          description: 'Duplicate user tool',
+        },
+        {
+          name: 'ManifestTool',
+          pluginKey: 'manifest-tool',
+          description: 'Manifest tool',
+        },
       );
 
       getCachedTools.mockResolvedValueOnce(mockUserTools);

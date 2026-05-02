@@ -210,7 +210,9 @@ describe('initializeMCPs', () => {
     });
 
     it('should handle null return from getAppToolFunctions', async () => {
-      const mcpServers = { 'test-server': { type: 'sse', url: 'http://localhost:3001' } };
+      const mcpServers = {
+        'test-server': { type: 'sse', url: 'http://localhost:3001' },
+      };
       mockGetAppConfig.mockResolvedValue({ mcpConfig: mcpServers });
       mockMCPManagerInstance.getAppToolFunctions.mockResolvedValue(null);
 

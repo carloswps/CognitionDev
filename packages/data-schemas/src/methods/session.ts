@@ -1,6 +1,6 @@
-import type * as t from '~/types/session';
-import { signPayload, hashToken } from '~/crypto';
 import logger from '~/config/winston';
+import { hashToken, signPayload } from '~/crypto';
+import type * as t from '~/types/session';
 
 export class SessionError extends Error {
   public code: string;

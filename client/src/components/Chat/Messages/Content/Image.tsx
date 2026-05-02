@@ -1,8 +1,9 @@
-import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { Skeleton } from '@librechat/client';
 import { apiBaseUrl } from 'librechat-data-provider';
-import DialogImage from './DialogImage';
+import type React from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { cn } from '~/utils';
+import DialogImage from './DialogImage';
 
 /** Max display height for chat images (Tailwind JIT class) */
 export const IMAGE_MAX_H = 'max-h-[45vh]' as const;
@@ -21,7 +22,9 @@ export function _resetImageCaches(): void {
 }
 
 function computeHeightStyle(w: number, h: number): React.CSSProperties {
-  return { height: `min(45vh, ${(h / w) * 100}vw, ${(h / w) * IMAGE_MAX_W_PX}px)` };
+  return {
+    height: `min(45vh, ${(h / w) * 100}vw, ${(h / w) * IMAGE_MAX_W_PX}px)`,
+  };
 }
 
 const Image = ({

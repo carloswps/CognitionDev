@@ -1,9 +1,9 @@
-import React from 'react';
 import { useMediaQuery } from '@librechat/client';
 import type t from 'librechat-data-provider';
-import { useLocalize, TranslationKeys } from '~/hooks';
-import { SmartLoader } from './SmartLoader';
+import type React from 'react';
+import { type TranslationKeys, useLocalize } from '~/hooks';
 import { cn } from '~/utils';
+import { SmartLoader } from './SmartLoader';
 
 /**
  * Props for the CategoryTabs component

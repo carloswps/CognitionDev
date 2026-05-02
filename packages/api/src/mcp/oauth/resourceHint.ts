@@ -53,7 +53,10 @@ export async function probeResourceMetadataHint(
   if (postResult?.resourceMetadataUrl || postResult?.bearerChallenge) {
     // Carry HEAD's auth-challenge observation forward if we got one — the fallback
     // decision is HEAD-only, so POST must not overwrite it back to false.
-    return { ...postResult, headAuthChallenge: !!headResult?.headAuthChallenge };
+    return {
+      ...postResult,
+      headAuthChallenge: !!headResult?.headAuthChallenge,
+    };
   }
 
   /**

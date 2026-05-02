@@ -126,9 +126,11 @@ describe('processAgentFileUpload', () => {
     mockRes.json.mockReturnValue({});
     checkCapability.mockResolvedValue(true);
     getStrategyFunctions.mockReturnValue({
-      handleFileUpload: jest
-        .fn()
-        .mockResolvedValue({ text: 'extracted text', bytes: 42, filepath: 'doc://result' }),
+      handleFileUpload: jest.fn().mockResolvedValue({
+        text: 'extracted text',
+        bytes: 42,
+        filepath: 'doc://result',
+      }),
     });
     mergeFileConfig.mockReturnValue(makeFileConfig());
   });
@@ -146,7 +148,11 @@ describe('processAgentFileUpload', () => {
       mergeFileConfig.mockReturnValue(makeFileConfig());
       const req = makeReq({ mimetype: mime, ocrConfig: null });
 
-      await processAgentFileUpload({ req, res: mockRes, metadata: makeMetadata() });
+      await processAgentFileUpload({
+        req,
+        res: mockRes,
+        metadata: makeMetadata(),
+      });
 
       expect(getStrategyFunctions).toHaveBeenCalledWith(FileSources.document_parser);
     });
@@ -154,7 +160,11 @@ describe('processAgentFileUpload', () => {
     test('does not check OCR capability when using automatic document_parser fallback', async () => {
       const req = makeReq({ mimetype: PDF_MIME, ocrConfig: null });
 
-      await processAgentFileUpload({ req, res: mockRes, metadata: makeMetadata() });
+      await processAgentFileUpload({
+        req,
+        res: mockRes,
+        metadata: makeMetadata(),
+      });
 
       expect(checkCapability).not.toHaveBeenCalledWith(expect.anything(), AgentCapabilities.ocr);
       expect(getStrategyFunctions).toHaveBeenCalledWith(FileSources.document_parser);
@@ -167,7 +177,11 @@ describe('processAgentFileUpload', () => {
         ocrConfig: { strategy: FileSources.mistral_ocr },
       });
 
-      await processAgentFileUpload({ req, res: mockRes, metadata: makeMetadata() });
+      await processAgentFileUpload({
+        req,
+        res: mockRes,
+        metadata: makeMetadata(),
+      });
 
       expect(checkCapability).toHaveBeenCalledWith(expect.anything(), AgentCapabilities.ocr);
       expect(getStrategyFunctions).toHaveBeenCalledWith(FileSources.mistral_ocr);
@@ -180,7 +194,11 @@ describe('processAgentFileUpload', () => {
         ocrConfig: { supportedMimeTypes: [PDF_MIME] },
       });
 
-      await processAgentFileUpload({ req, res: mockRes, metadata: makeMetadata() });
+      await processAgentFileUpload({
+        req,
+        res: mockRes,
+        metadata: makeMetadata(),
+      });
 
       expect(checkCapability).toHaveBeenCalledWith(expect.anything(), AgentCapabilities.ocr);
       expect(getStrategyFunctions).toHaveBeenCalledWith(FileSources.document_parser);
@@ -203,7 +221,11 @@ describe('processAgentFileUpload', () => {
       checkCapability.mockResolvedValue(false);
       const req = makeReq({ mimetype: PDF_MIME, ocrConfig: null });
 
-      await processAgentFileUpload({ req, res: mockRes, metadata: makeMetadata() });
+      await processAgentFileUpload({
+        req,
+        res: mockRes,
+        metadata: makeMetadata(),
+      });
 
       expect(checkCapability).not.toHaveBeenCalledWith(expect.anything(), AgentCapabilities.ocr);
       expect(getStrategyFunctions).toHaveBeenCalledWith(FileSources.document_parser);
@@ -216,7 +238,11 @@ describe('processAgentFileUpload', () => {
         ocrConfig: { strategy: FileSources.mistral_ocr },
       });
 
-      await processAgentFileUpload({ req, res: mockRes, metadata: makeMetadata() });
+      await processAgentFileUpload({
+        req,
+        res: mockRes,
+        metadata: makeMetadata(),
+      });
 
       expect(checkCapability).not.toHaveBeenCalledWith(expect.anything(), AgentCapabilities.ocr);
       expect(getStrategyFunctions).toHaveBeenCalledWith(FileSources.document_parser);
@@ -244,7 +270,11 @@ describe('processAgentFileUpload', () => {
         ocrConfig: { strategy: FileSources.mistral_ocr },
       });
 
-      await processAgentFileUpload({ req, res: mockRes, metadata: makeMetadata() });
+      await processAgentFileUpload({
+        req,
+        res: mockRes,
+        metadata: makeMetadata(),
+      });
 
       expect(checkCapability).toHaveBeenCalledWith(expect.anything(), AgentCapabilities.ocr);
       expect(getStrategyFunctions).toHaveBeenCalledWith(FileSources.mistral_ocr);
@@ -267,9 +297,11 @@ describe('processAgentFileUpload', () => {
     test('falls back to document_parser when configured OCR fails for a document MIME type', async () => {
       mergeFileConfig.mockReturnValue(makeFileConfig({ ocrSupportedMimeTypes: [PDF_MIME] }));
       const failingUpload = jest.fn().mockRejectedValue(new Error('OCR API returned 500'));
-      const fallbackUpload = jest
-        .fn()
-        .mockResolvedValue({ text: 'parsed text', bytes: 11, filepath: 'doc://result' });
+      const fallbackUpload = jest.fn().mockResolvedValue({
+        text: 'parsed text',
+        bytes: 11,
+        filepath: 'doc://result',
+      });
       getStrategyFunctions
         .mockReturnValueOnce({ handleFileUpload: failingUpload })
         .mockReturnValueOnce({ handleFileUpload: fallbackUpload });

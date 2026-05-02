@@ -1,13 +1,14 @@
-import React, { useEffect, useState, useRef, useCallback, memo } from 'react';
-import { RefreshCw } from 'lucide-react';
 import { Spinner } from '@librechat/client';
-import useSvgProcessing from './useSvgProcessing';
-import useMermaidZoom from './useMermaidZoom';
-import MermaidDialog from './MermaidDialog';
-import MermaidHeader from './MermaidHeader';
-import ZoomControls from './ZoomControls';
+import { RefreshCw } from 'lucide-react';
+import type React from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useLocalize } from '~/hooks';
 import cn from '~/utils/cn';
+import MermaidDialog from './MermaidDialog';
+import MermaidHeader from './MermaidHeader';
+import useMermaidZoom from './useMermaidZoom';
+import useSvgProcessing from './useSvgProcessing';
+import ZoomControls from './ZoomControls';
 
 interface MermaidProps {
   children: string;
@@ -40,7 +41,13 @@ const Mermaid: React.FC<MermaidProps> = memo(({ children, id, theme }) => {
     lastValidSvgRef,
     initialScale,
     calculatedHeight,
-  } = useSvgProcessing({ content: children, id, theme, retryCount, containerRef });
+  } = useSvgProcessing({
+    content: children,
+    id,
+    theme,
+    retryCount,
+    containerRef,
+  });
 
   const { zoom, pan, isPanning, handleZoomIn, handleZoomOut, handleResetZoom, handleMouseDown } =
     useMermaidZoom({ containerRef, wheelDep: blobUrl });

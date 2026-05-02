@@ -1,5 +1,5 @@
-import assistantSchema from '~/schema/assistant';
 import { applyTenantIsolation } from '~/models/plugins/tenantIsolation';
+import assistantSchema from '~/schema/assistant';
 import type { IAssistant } from '~/types';
 
 export function createAssistantModel(mongoose: typeof import('mongoose')) {

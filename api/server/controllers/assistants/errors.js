@@ -108,7 +108,9 @@ const createErrorHandler = ({ req, res, getContext, originPath = '/assistants/ch
         return res.end();
       }
       await cache.delete(cacheKey);
-      const cancelledRun = await openai.beta.threads.runs.cancel(run_id, { thread_id });
+      const cancelledRun = await openai.beta.threads.runs.cancel(run_id, {
+        thread_id,
+      });
       logger.debug(`[${originPath}] Cancelled run:`, cancelledRun);
     } catch (error) {
       logger.error(`[${originPath}] Error cancelling run`, error);

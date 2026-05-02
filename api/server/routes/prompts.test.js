@@ -191,7 +191,9 @@ async function setupTestData() {
       case SystemRoles.USER:
         return { permissions: { PROMPTS: { USE: true, CREATE: true } } };
       case SystemRoles.ADMIN:
-        return { permissions: { PROMPTS: { USE: true, CREATE: true, SHARE: true } } };
+        return {
+          permissions: { PROMPTS: { USE: true, CREATE: true, SHARE: true } },
+        };
       default:
         return null;
     }
@@ -891,7 +893,11 @@ describe('Prompt Routes - ACL Permissions', () => {
 
       const secondPage = await request(app)
         .get('/api/prompts/groups')
-        .query({ limit: '5', cursor: firstPage.body.after, category: 'test-cat-1' })
+        .query({
+          limit: '5',
+          cursor: firstPage.body.after,
+          category: 'test-cat-1',
+        })
         .expect(200);
 
       expect(secondPage.body.promptGroups).toHaveLength(3); // 8 total, 5 on page 1, 3 on page 2
@@ -1032,7 +1038,12 @@ describe('Prompt Routes - ACL Permissions', () => {
       // Page 2
       const page2 = await request(app)
         .get('/api/prompts/groups')
-        .query({ limit: '5', cursor: response.body.after, name: 'API', category: 'api-category' })
+        .query({
+          limit: '5',
+          cursor: response.body.after,
+          name: 'API',
+          category: 'api-category',
+        })
         .expect(200);
 
       expect(page2.body.promptGroups).toHaveLength(1); // 6 total, 5 on page 1, 1 on page 2

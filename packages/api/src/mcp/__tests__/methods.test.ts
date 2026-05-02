@@ -1,9 +1,9 @@
 import { TokenExchangeMethodEnum } from 'librechat-data-provider';
 import {
   getForcedTokenEndpointAuthMethod,
+  inferClientAuthMethod,
   resolveTokenEndpointAuthMethod,
   selectRegistrationAuthMethod,
-  inferClientAuthMethod,
 } from '~/mcp/oauth/methods';
 
 describe('getForcedTokenEndpointAuthMethod', () => {

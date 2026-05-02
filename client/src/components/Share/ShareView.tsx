@@ -1,31 +1,31 @@
-import { memo, useState, useCallback, useContext } from 'react';
-import Cookies from 'js-cookie';
-import { useRecoilState } from 'recoil';
-import { useParams } from 'react-router-dom';
-import { buildTree } from 'librechat-data-provider';
-import { CalendarDays, Settings } from 'lucide-react';
-import { useGetSharedMessages } from 'librechat-data-provider/react-query';
 import {
-  Spinner,
   Button,
   OGDialog,
-  ThemeContext,
-  OGDialogTitle,
-  useMediaQuery,
-  OGDialogHeader,
   OGDialogContent,
+  OGDialogHeader,
+  OGDialogTitle,
   OGDialogTrigger,
+  Spinner,
+  ThemeContext,
+  useMediaQuery,
 } from '@librechat/client';
-import { ThemeSelector, LangSelector } from '~/components/Nav/SettingsTabs/General/General';
-import { ShareArtifactsContainer } from './ShareArtifacts';
-import { useLocalize, useDocumentTitle } from '~/hooks';
+import Cookies from 'js-cookie';
+import { buildTree } from 'librechat-data-provider';
+import { useGetSharedMessages } from 'librechat-data-provider/react-query';
+import { CalendarDays, Settings } from 'lucide-react';
+import { memo, useCallback, useContext, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { LangSelector, ThemeSelector } from '~/components/Nav/SettingsTabs/General/General';
 import { useGetStartupConfig } from '~/data-provider';
+import { useDocumentTitle, useLocalize } from '~/hooks';
 import { ShareContext } from '~/Providers';
-import { ShareMessagesProvider } from './ShareMessagesProvider';
-import MessagesView from './MessagesView';
-import Footer from '../Chat/Footer';
-import { cn } from '~/utils';
 import store from '~/store';
+import { cn } from '~/utils';
+import Footer from '../Chat/Footer';
+import MessagesView from './MessagesView';
+import { ShareArtifactsContainer } from './ShareArtifacts';
+import { ShareMessagesProvider } from './ShareMessagesProvider';
 
 function SharedView() {
   const localize = useLocalize();

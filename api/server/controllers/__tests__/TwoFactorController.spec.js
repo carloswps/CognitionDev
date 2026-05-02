@@ -43,7 +43,10 @@ const CODE_OBJECTS = [
 beforeEach(() => {
   jest.clearAllMocks();
   mockGenerateTOTPSecret.mockReturnValue('NEWSECRET');
-  mockGenerateBackupCodes.mockResolvedValue({ plainCodes: PLAIN_CODES, codeObjects: CODE_OBJECTS });
+  mockGenerateBackupCodes.mockResolvedValue({
+    plainCodes: PLAIN_CODES,
+    codeObjects: CODE_OBJECTS,
+  });
   mockEncryptV3.mockReturnValue('encrypted-secret');
 });
 
@@ -51,14 +54,21 @@ describe('enable2FA', () => {
   it('allows first-time setup without token — writes to pending fields', async () => {
     const req = { user: { id: 'user1' }, body: {} };
     const res = createRes();
-    mockGetUserById.mockResolvedValue({ _id: 'user1', twoFactorEnabled: false, email: 'a@b.com' });
+    mockGetUserById.mockResolvedValue({
+      _id: 'user1',
+      twoFactorEnabled: false,
+      email: 'a@b.com',
+    });
     mockUpdateUser.mockResolvedValue({ email: 'a@b.com' });
 
     await enable2FA(req, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith(
-      expect.objectContaining({ otpauthUrl: expect.any(String), backupCodes: PLAIN_CODES }),
+      expect.objectContaining({
+        otpauthUrl: expect.any(String),
+        backupCodes: PLAIN_CODES,
+      }),
     );
     expect(mockVerifyOTPOrBackupCode).not.toHaveBeenCalled();
     const updateCall = mockUpdateUser.mock.calls[0][1];
@@ -127,7 +137,10 @@ describe('enable2FA', () => {
       twoFactorEnabled: true,
       totpSecret: 'enc-secret',
     });
-    mockVerifyOTPOrBackupCode.mockResolvedValue({ verified: false, status: 400 });
+    mockVerifyOTPOrBackupCode.mockResolvedValue({
+      verified: false,
+      status: 400,
+    });
 
     await enable2FA(req, res);
 
@@ -152,7 +165,9 @@ describe('enable2FA', () => {
     await enable2FA(req, res);
 
     expect(res.status).toHaveBeenCalledWith(401);
-    expect(res.json).toHaveBeenCalledWith({ message: 'Invalid token or backup code' });
+    expect(res.json).toHaveBeenCalledWith({
+      message: 'Invalid token or backup code',
+    });
     expect(mockUpdateUser).not.toHaveBeenCalled();
   });
 });
@@ -198,7 +213,10 @@ describe('regenerateBackupCodes', () => {
       twoFactorEnabled: true,
       totpSecret: 'enc-secret',
     });
-    mockVerifyOTPOrBackupCode.mockResolvedValue({ verified: false, status: 400 });
+    mockVerifyOTPOrBackupCode.mockResolvedValue({
+      verified: false,
+      status: 400,
+    });
 
     await regenerateBackupCodes(req, res);
 
@@ -222,7 +240,9 @@ describe('regenerateBackupCodes', () => {
     await regenerateBackupCodes(req, res);
 
     expect(res.status).toHaveBeenCalledWith(401);
-    expect(res.json).toHaveBeenCalledWith({ message: 'Invalid token or backup code' });
+    expect(res.json).toHaveBeenCalledWith({
+      message: 'Invalid token or backup code',
+    });
   });
 
   it('includes backupCodesHash in response', async () => {

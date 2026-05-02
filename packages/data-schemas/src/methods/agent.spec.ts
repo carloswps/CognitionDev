@@ -1,24 +1,24 @@
-import mongoose from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import {
   AccessRoleIds,
-  ResourceType,
-  PrincipalType,
-  PrincipalModel,
-  PermissionBits,
   EToolResources,
+  PermissionBits,
+  PrincipalModel,
+  PrincipalType,
+  ResourceType,
 } from 'librechat-data-provider';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import type {
-  UpdateWithAggregationPipeline,
-  RootFilterQuery,
   QueryOptions,
+  RootFilterQuery,
   UpdateQuery,
+  UpdateWithAggregationPipeline,
 } from 'mongoose';
-import type { IAgent, IAclEntry, IUser, IAccessRole } from '..';
-import { createAgentMethods, type AgentMethods } from './agent';
-import { createAclEntryMethods } from './aclEntry';
+import mongoose from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 import { createModels } from '~/models';
+import type { IAccessRole, IAclEntry, IAgent, IUser } from '..';
+import { createAclEntryMethods } from './aclEntry';
+import { type AgentMethods, createAgentMethods } from './agent';
 
 /** Version snapshot stored in `IAgent.versions[]`. Extends the base omit with runtime-only fields. */
 type VersionEntry = Omit<IAgent, 'versions'> & {
@@ -252,7 +252,12 @@ describe('Agent Methods', () => {
         if (i % 2 === 0) {
           await removeAgentResourceFiles({
             agent_id: agent.id,
-            files: [{ tool_resource: EToolResources.execute_code, file_id: `${fileId}_${i}` }],
+            files: [
+              {
+                tool_resource: EToolResources.execute_code,
+                file_id: `${fileId}_${i}`,
+              },
+            ],
           });
         }
       }
@@ -311,46 +316,49 @@ describe('Agent Methods', () => {
         expectedContains: false,
         setupFile: true,
       },
-    ])(
-      'should handle concurrent $name',
-      async ({ operation, duplicateCount, expectedLength, expectedContains, setupFile }) => {
-        const agent = await createBasicAgent();
-        const fileId = uuidv4();
+    ])('should handle concurrent $name', async ({
+      operation,
+      duplicateCount,
+      expectedLength,
+      expectedContains,
+      setupFile,
+    }) => {
+      const agent = await createBasicAgent();
+      const fileId = uuidv4();
 
-        if (setupFile) {
-          await addAgentResourceFile({
-            agent_id: agent.id,
-            tool_resource: EToolResources.execute_code,
-            file_id: fileId,
-          });
-        }
+      if (setupFile) {
+        await addAgentResourceFile({
+          agent_id: agent.id,
+          tool_resource: EToolResources.execute_code,
+          file_id: fileId,
+        });
+      }
 
-        const promises = Array.from({ length: duplicateCount }).map(() =>
-          operation === 'add'
-            ? addAgentResourceFile({
-                agent_id: agent.id,
-                tool_resource: EToolResources.execute_code,
-                file_id: fileId,
-              })
-            : removeAgentResourceFiles({
-                agent_id: agent.id,
-                files: [{ tool_resource: EToolResources.execute_code, file_id: fileId }],
-              }),
-        );
+      const promises = Array.from({ length: duplicateCount }).map(() =>
+        operation === 'add'
+          ? addAgentResourceFile({
+              agent_id: agent.id,
+              tool_resource: EToolResources.execute_code,
+              file_id: fileId,
+            })
+          : removeAgentResourceFiles({
+              agent_id: agent.id,
+              files: [{ tool_resource: EToolResources.execute_code, file_id: fileId }],
+            }),
+      );
 
-        await Promise.all(promises);
+      await Promise.all(promises);
 
-        const updatedAgent = await Agent.findOne({ id: agent.id });
-        const fileIds = updatedAgent?.tool_resources?.[EToolResources.execute_code]?.file_ids ?? [];
+      const updatedAgent = await Agent.findOne({ id: agent.id });
+      const fileIds = updatedAgent?.tool_resources?.[EToolResources.execute_code]?.file_ids ?? [];
 
-        expect(fileIds).toHaveLength(expectedLength);
-        if (expectedContains) {
-          expect(fileIds[0]).toBe(fileId);
-        } else {
-          expect(fileIds).not.toContain(fileId);
-        }
-      },
-    );
+      expect(fileIds).toHaveLength(expectedLength);
+      if (expectedContains) {
+        expect(fileIds[0]).toBe(fileId);
+      } else {
+        expect(fileIds).not.toContain(fileId);
+      }
+    });
 
     test('should handle concurrent add and remove of the same file', async () => {
       const agent = await createBasicAgent();
@@ -1722,7 +1730,9 @@ describe('Agent Methods', () => {
       // First update with forceVersion should create a version
       const firstUpdate = await updateAgent(
         { id: agentId },
-        { tools: ['listEvents_action_test.com', 'createEvent_action_test.com'] },
+        {
+          tools: ['listEvents_action_test.com', 'createEvent_action_test.com'],
+        },
         { updatingUserId: authorId.toString(), forceVersion: true },
       );
 
@@ -1731,7 +1741,9 @@ describe('Agent Methods', () => {
       // Second update with same data but forceVersion should still create a version
       const secondUpdate = await updateAgent(
         { id: agentId },
-        { tools: ['listEvents_action_test.com', 'createEvent_action_test.com'] },
+        {
+          tools: ['listEvents_action_test.com', 'createEvent_action_test.com'],
+        },
         { updatingUserId: authorId.toString(), forceVersion: true },
       );
 
@@ -1740,7 +1752,9 @@ describe('Agent Methods', () => {
       // Update without forceVersion and no changes should not create a version
       const duplicateUpdate = await updateAgent(
         { id: agentId },
-        { tools: ['listEvents_action_test.com', 'createEvent_action_test.com'] },
+        {
+          tools: ['listEvents_action_test.com', 'createEvent_action_test.com'],
+        },
         { updatingUserId: authorId.toString(), forceVersion: false },
       );
 
@@ -2299,7 +2313,11 @@ describe('Agent Methods', () => {
       const actions = [
         {
           action_id: '123',
-          metadata: { version: '1.0', endpoints: ['GET /api/test'], schema: { type: 'object' } },
+          metadata: {
+            version: '1.0',
+            endpoints: ['GET /api/test'],
+            schema: { type: 'object' },
+          },
         },
         {
           action_id: '456',
@@ -2322,10 +2340,16 @@ describe('Agent Methods', () => {
     test('should generate different hashes for different action metadata', async () => {
       const actionIds = ['test.com_action_123'];
       const actions1 = [
-        { action_id: '123', metadata: { version: '1.0', endpoints: ['GET /api/test'] } },
+        {
+          action_id: '123',
+          metadata: { version: '1.0', endpoints: ['GET /api/test'] },
+        },
       ];
       const actions2 = [
-        { action_id: '123', metadata: { version: '2.0', endpoints: ['GET /api/test'] } },
+        {
+          action_id: '123',
+          metadata: { version: '2.0', endpoints: ['GET /api/test'] },
+        },
       ];
 
       const hash1 = await generateActionMetadataHash(actionIds, actions1);
@@ -2730,7 +2754,9 @@ describe('Agent Methods', () => {
       });
 
       test('should no-op and not throw when file_ids is empty', async () => {
-        const result = await removeAgentResourceFilesFromAllAgents({ file_ids: [] });
+        const result = await removeAgentResourceFilesFromAllAgents({
+          file_ids: [],
+        });
         expect(result).toEqual({ matchedCount: 0, modifiedCount: 0 });
       });
 
@@ -2744,7 +2770,9 @@ describe('Agent Methods', () => {
           file_id: `different_${uuidv4()}`,
         });
 
-        const result = await removeAgentResourceFilesFromAllAgents({ file_ids: [fileId] });
+        const result = await removeAgentResourceFilesFromAllAgents({
+          file_ids: [fileId],
+        });
         expect(result.matchedCount).toBe(0);
         expect(result.modifiedCount).toBe(0);
       });

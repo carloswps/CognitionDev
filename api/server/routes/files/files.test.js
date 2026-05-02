@@ -377,7 +377,10 @@ describe('File Routes - Delete with Agent Access', () => {
           files: [
             { file_id: userFileId, filepath: '/uploads/user-file.txt' },
             { file_id: fileId, filepath: '/uploads/test.txt' },
-            { file_id: unauthorizedFileId, filepath: '/uploads/unauthorized.txt' },
+            {
+              file_id: unauthorizedFileId,
+              filepath: '/uploads/unauthorized.txt',
+            },
           ],
         });
 

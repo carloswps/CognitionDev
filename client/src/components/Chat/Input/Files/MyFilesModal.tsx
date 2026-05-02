@@ -1,9 +1,9 @@
-import { FileSources, FileContext } from 'librechat-data-provider';
-import type { TFile } from 'librechat-data-provider';
 import { OGDialog, OGDialogContent, OGDialogHeader, OGDialogTitle } from '@librechat/client';
+import type { TFile } from 'librechat-data-provider';
+import { FileContext, FileSources } from 'librechat-data-provider';
 import { useGetFiles } from '~/data-provider';
-import { DataTable, columns } from './Table';
 import { useLocalize } from '~/hooks';
+import { columns, DataTable } from './Table';
 
 export function MyFilesModal({
   open,

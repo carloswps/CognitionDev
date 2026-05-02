@@ -367,7 +367,10 @@ describe('loadConfigModels', () => {
 
       const result = await loadConfigModels(mockRequest);
 
-      expect(getUserKeyValues).toHaveBeenCalledWith({ userId: 'testUserId', name: 'UserEndpoint' });
+      expect(getUserKeyValues).toHaveBeenCalledWith({
+        userId: 'testUserId',
+        name: 'UserEndpoint',
+      });
       expect(fetchModels).toHaveBeenCalledWith(
         expect.objectContaining({
           apiKey: 'sk-user-key',
@@ -380,7 +383,9 @@ describe('loadConfigModels', () => {
 
     it('falls back to defaults when getUserKeyValues returns no apiKey', async () => {
       const { getUserKeyValues } = require('~/models');
-      getUserKeyValues.mockResolvedValueOnce({ baseURL: 'https://api.x.com/v1' });
+      getUserKeyValues.mockResolvedValueOnce({
+        baseURL: 'https://api.x.com/v1',
+      });
       getAppConfig.mockResolvedValue({
         endpoints: {
           custom: [

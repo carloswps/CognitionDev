@@ -1,22 +1,23 @@
-import React, { useCallback } from 'react';
-import { Trans } from 'react-i18next';
-import { QueryKeys } from 'librechat-data-provider';
-import { useQueryClient } from '@tanstack/react-query';
-import { useParams, useNavigate } from 'react-router-dom';
 import {
   Button,
-  Spinner,
   OGDialog,
   OGDialogClose,
-  OGDialogTitle,
-  OGDialogHeader,
   OGDialogContent,
+  OGDialogHeader,
+  OGDialogTitle,
+  Spinner,
   useToastContext,
 } from '@librechat/client';
+import { useQueryClient } from '@tanstack/react-query';
 import type { TMessage } from 'librechat-data-provider';
+import { QueryKeys } from 'librechat-data-provider';
+import type React from 'react';
+import { useCallback } from 'react';
+import { Trans } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
+import { NotificationSeverity } from '~/common';
 import { useDeleteConversationMutation } from '~/data-provider';
 import { useLocalize, useNewConvo } from '~/hooks';
-import { NotificationSeverity } from '~/common';
 
 type DeleteButtonProps = {
   conversationId: string;
@@ -77,7 +78,12 @@ export function DeleteConversationDialog({
     const thread_id = messages?.[messages.length - 1]?.thread_id;
     const endpoint = messages?.[messages.length - 1]?.endpoint;
 
-    deleteMutation.mutate({ conversationId, thread_id, endpoint, source: 'button' });
+    deleteMutation.mutate({
+      conversationId,
+      thread_id,
+      endpoint,
+      source: 'button',
+    });
   }, [conversationId, deleteMutation, queryClient]);
 
   return (

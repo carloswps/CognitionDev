@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { logger } from '@librechat/data-schemas';
-import type { AxiosInstance, AxiosProxyConfig, AxiosError } from 'axios';
+import type { AxiosError, AxiosInstance, AxiosProxyConfig } from 'axios';
+import axios from 'axios';
 
 /**
  * Logs Axios errors based on the error object and a custom message.
@@ -52,7 +52,9 @@ export const logAxiosError = ({
     }
   } catch (err: unknown) {
     logMessage = `Error in logAxiosError: ${(err as Error).message}`;
-    logger.error(logMessage, { stack: (err as Error).stack || 'No stack trace available' });
+    logger.error(logMessage, {
+      stack: (err as Error).stack || 'No stack trace available',
+    });
   }
   return logMessage;
 };

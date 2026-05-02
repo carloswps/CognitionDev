@@ -1,8 +1,8 @@
-import { logger, webSearchKeys } from '@librechat/data-schemas';
-import { Constants, extractVariableName } from 'librechat-data-provider';
-import type { TCustomConfig } from 'librechat-data-provider';
 import type { AppConfig } from '@librechat/data-schemas';
-import { isEnabled, checkEmailConfig } from '~/utils';
+import { logger, webSearchKeys } from '@librechat/data-schemas';
+import type { TCustomConfig } from 'librechat-data-provider';
+import { Constants, extractVariableName } from 'librechat-data-provider';
+import { checkEmailConfig, isEnabled } from '~/utils';
 import { handleRateLimits } from './limits';
 
 const secretDefaults = {
@@ -39,12 +39,18 @@ export const deprecatedAzureVariables = [
     description: 'using model names as deployment names',
   },
   { key: 'AZURE_API_KEY', description: 'setting a single Azure API key' },
-  { key: 'AZURE_OPENAI_API_INSTANCE_NAME', description: 'setting a single Azure instance name' },
+  {
+    key: 'AZURE_OPENAI_API_INSTANCE_NAME',
+    description: 'setting a single Azure instance name',
+  },
   {
     key: 'AZURE_OPENAI_API_DEPLOYMENT_NAME',
     description: 'setting a single Azure deployment name',
   },
-  { key: 'AZURE_OPENAI_API_VERSION', description: 'setting a single Azure API version' },
+  {
+    key: 'AZURE_OPENAI_API_VERSION',
+    description: 'setting a single Azure API version',
+  },
   {
     key: 'AZURE_OPENAI_API_COMPLETIONS_DEPLOYMENT_NAME',
     description: 'setting a single Azure completions deployment name',

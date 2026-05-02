@@ -264,8 +264,13 @@ describe('GET /api/config', () => {
 
       const response = await request(app).get('/api/config');
 
-      expect(response.body.modelSpecs).toEqual({ list: [{ name: 'test-spec' }] });
-      expect(response.body.balance).toEqual({ enabled: true, startBalance: 10000 });
+      expect(response.body.modelSpecs).toEqual({
+        list: [{ name: 'test-spec' }],
+      });
+      expect(response.body.balance).toEqual({
+        enabled: true,
+        startBalance: 10000,
+      });
       expect(response.body.webSearch).toEqual({ searchProvider: 'tavily' });
     });
 

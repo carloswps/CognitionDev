@@ -1,16 +1,16 @@
-import fs from 'fs';
-import { Readable } from 'stream';
-import { mockClient } from 'aws-sdk-client-mock';
-import { sdkStreamMixin } from '@smithy/util-stream';
-import { FileSources } from 'librechat-data-provider';
 import {
-  S3Client,
-  PutObjectCommand,
+  DeleteObjectCommand,
   GetObjectCommand,
   HeadObjectCommand,
-  DeleteObjectCommand,
+  PutObjectCommand,
+  S3Client,
 } from '@aws-sdk/client-s3';
+import { sdkStreamMixin } from '@smithy/util-stream';
+import { mockClient } from 'aws-sdk-client-mock';
+import fs from 'fs';
 import type { TFile } from 'librechat-data-provider';
+import { FileSources } from 'librechat-data-provider';
+import { Readable } from 'stream';
 import type { S3FileRef } from '~/storage/types';
 import type { ServerRequest } from '~/types';
 
@@ -43,8 +43,8 @@ jest.mock('@librechat/data-schemas', () => ({
 }));
 
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { deleteRagFile } from '~/files';
 import { logger } from '@librechat/data-schemas';
+import { deleteRagFile } from '~/files';
 
 describe('S3 CRUD', () => {
   let originalEnv: NodeJS.ProcessEnv;
@@ -292,7 +292,10 @@ describe('S3 CRUD', () => {
       const { deleteFileFromS3 } = await import('../crud');
       await deleteFileFromS3(mockReq, mockFile);
 
-      expect(deleteRagFile).toHaveBeenCalledWith({ userId: 'user123', file: mockFile });
+      expect(deleteRagFile).toHaveBeenCalledWith({
+        userId: 'user123',
+        file: mockFile,
+      });
       expect(s3Mock.commandCalls(HeadObjectCommand)).toHaveLength(1);
       expect(s3Mock.commandCalls(DeleteObjectCommand)).toHaveLength(1);
     });
@@ -309,7 +312,10 @@ describe('S3 CRUD', () => {
       await deleteFileFromS3(mockReq, mockFile);
 
       expect(logger.warn).toHaveBeenCalled();
-      expect(deleteRagFile).toHaveBeenCalledWith({ userId: 'user123', file: mockFile });
+      expect(deleteRagFile).toHaveBeenCalledWith({
+        userId: 'user123',
+        file: mockFile,
+      });
       expect(s3Mock.commandCalls(DeleteObjectCommand)).toHaveLength(0);
     });
 
@@ -331,7 +337,9 @@ describe('S3 CRUD', () => {
       } as TFile;
 
       s3Mock.on(HeadObjectCommand).resolvesOnce({});
-      const noSuchKeyError = Object.assign(new Error('NoSuchKey'), { name: 'NoSuchKey' });
+      const noSuchKeyError = Object.assign(new Error('NoSuchKey'), {
+        name: 'NoSuchKey',
+      });
       s3Mock.on(DeleteObjectCommand).rejects(noSuchKeyError);
 
       const { deleteFileFromS3 } = await import('../crud');

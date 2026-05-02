@@ -1,12 +1,12 @@
-import { useRef, useEffect } from 'react';
-import * as Tabs from '@radix-ui/react-tabs';
 import type { SandpackPreviewRef } from '@codesandbox/sandpack-react/unstyled';
+import * as Tabs from '@radix-ui/react-tabs';
 import type { editor } from 'monaco-editor';
+import { useEffect, useRef } from 'react';
 import type { Artifact } from '~/common';
-import { useCodeState } from '~/Providers/EditorContext';
-import useArtifactProps from '~/hooks/Artifacts/useArtifactProps';
-import { ArtifactCodeEditor } from './ArtifactCodeEditor';
 import { useGetStartupConfig } from '~/data-provider';
+import useArtifactProps from '~/hooks/Artifacts/useArtifactProps';
+import { useCodeState } from '~/Providers/EditorContext';
+import { ArtifactCodeEditor } from './ArtifactCodeEditor';
 import { ArtifactPreview } from './ArtifactPreview';
 
 export default function ArtifactTabs({
@@ -30,7 +30,9 @@ export default function ArtifactTabs({
     lastIdRef.current = artifact.id;
   }, [setCurrentCode, artifact.id]);
 
-  const { files, fileKey, template, sharedProps } = useArtifactProps({ artifact });
+  const { files, fileKey, template, sharedProps } = useArtifactProps({
+    artifact,
+  });
 
   return (
     <div className="flex h-full w-full flex-col">

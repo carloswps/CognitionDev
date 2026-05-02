@@ -1,18 +1,18 @@
-import { Keyv } from 'keyv';
-import { createHash } from 'crypto';
 import { logger } from '@librechat/data-schemas';
-import type { IServerConfigsRepositoryInterface } from './ServerConfigsRepositoryInterface';
+import { createHash } from 'crypto';
+import { Keyv } from 'keyv';
+import { cacheConfig } from '~/cache/cacheConfig';
+import { isMCPDomainNotAllowedError, MCPInspectionFailedError } from '~/mcp/errors';
 import type * as t from '~/mcp/types';
+import { withTimeout } from '~/utils';
 import {
-  ServerConfigsCacheFactory,
   APP_CACHE_NAMESPACE,
   CONFIG_CACHE_NAMESPACE,
+  ServerConfigsCacheFactory,
 } from './cache/ServerConfigsCacheFactory';
-import { MCPInspectionFailedError, isMCPDomainNotAllowedError } from '~/mcp/errors';
-import { MCPServerInspector } from './MCPServerInspector';
 import { ServerConfigsDB } from './db/ServerConfigsDB';
-import { cacheConfig } from '~/cache/cacheConfig';
-import { withTimeout } from '~/utils';
+import { MCPServerInspector } from './MCPServerInspector';
+import type { IServerConfigsRepositoryInterface } from './ServerConfigsRepositoryInterface';
 
 /** How long a failure stub is considered fresh before re-attempting inspection (5 minutes). */
 const CONFIG_STUB_RETRY_MS = 5 * 60 * 1000;
@@ -217,7 +217,11 @@ export class MCPServersRegistry {
   ): Promise<t.AddServerResult> {
     const configRepo = this.getConfigRepository(storageLocation);
     const source: t.MCPServerSource = storageLocation === 'CACHE' ? 'yaml' : 'user';
-    const stubConfig: t.ParsedServerConfig = { ...config, inspectionFailed: true, source };
+    const stubConfig: t.ParsedServerConfig = {
+      ...config,
+      inspectionFailed: true,
+      source,
+    };
     const result = await configRepo.add(serverName, stubConfig, userId);
     await this.readThroughCache.delete(this.getReadThroughCacheKey(serverName, userId));
     await this.readThroughCache.delete(this.getReadThroughCacheKey(serverName));
@@ -440,7 +444,10 @@ export class MCPServersRegistry {
         `${prefix} Server initialization timed out`,
       );
 
-      const parsedConfig: t.ParsedServerConfig = { ...inspected, source: 'config' };
+      const parsedConfig: t.ParsedServerConfig = {
+        ...inspected,
+        source: 'config',
+      };
       await this.upsertConfigCache(cacheKey, parsedConfig);
 
       logger.info(

@@ -1,11 +1,12 @@
-import React, { memo, forwardRef } from 'react';
-import { flexRender } from '@tanstack/react-table';
-import type { TableColumn } from './DataTable.types';
 import type { Row } from '@tanstack/react-table';
-import { TableCell, TableRow, TableRowHeader } from '../Table';
+import { flexRender } from '@tanstack/react-table';
+import type React from 'react';
+import { forwardRef, memo } from 'react';
+import { cn } from '~/utils';
 import { Checkbox } from '../Checkbox';
 import { Skeleton } from '../Skeleton';
-import { cn } from '~/utils';
+import { TableCell, TableRow, TableRowHeader } from '../Table';
+import type { TableColumn } from './DataTable.types';
 
 export const SelectionCheckbox = memo(
   ({
@@ -65,7 +66,12 @@ const TableRowComponent = <TData extends Record<string, unknown>>(
     >
       {row.getVisibleCells().map((cell) => {
         const meta = cell.column.columnDef.meta as
-          | { className?: string; desktopOnly?: boolean; width?: number; isRowHeader?: boolean }
+          | {
+              className?: string;
+              desktopOnly?: boolean;
+              width?: number;
+              isRowHeader?: boolean;
+            }
           | undefined;
         const isDesktopOnly = meta?.desktopOnly;
         const isRowHeader = meta?.isRowHeader;

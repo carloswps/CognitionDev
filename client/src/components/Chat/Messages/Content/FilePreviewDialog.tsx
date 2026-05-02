@@ -1,13 +1,13 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { OGDialog, OGDialogContent, OGDialogDescription, OGDialogTitle } from '@librechat/client';
 import copy from 'copy-to-clipboard';
-import { useRecoilValue } from 'recoil';
 import { Download } from 'lucide-react';
-import { OGDialog, OGDialogContent, OGDialogTitle, OGDialogDescription } from '@librechat/client';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import CopyButton from '~/components/Messages/Content/CopyButton';
-import { logger, sortPagesByRelevance } from '~/utils';
 import { useFileDownload } from '~/data-provider';
 import { useLocalize } from '~/hooks';
 import store from '~/store';
+import { logger, sortPagesByRelevance } from '~/utils';
 
 interface FilePreviewDialogProps {
   open: boolean;

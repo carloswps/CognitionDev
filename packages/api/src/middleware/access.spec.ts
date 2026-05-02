@@ -1,11 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
+import type { IRole, IUser } from '@librechat/data-schemas';
+import type { NextFunction, Request, Response } from 'express';
 import {
-  Permissions,
-  PermissionTypes,
   EModelEndpoint,
   EndpointURLs,
+  Permissions,
+  PermissionTypes,
 } from 'librechat-data-provider';
-import type { IRole, IUser } from '@librechat/data-schemas';
 import { checkAccess, generateCheckAccess, skipAgentCheck } from './access';
 
 // Mock logger
@@ -317,7 +317,9 @@ describe('access middleware', () => {
 
       expect(mockNext).not.toHaveBeenCalled();
       expect(mockRes.status).toHaveBeenCalledWith(403);
-      expect(mockRes.json).toHaveBeenCalledWith({ message: 'Forbidden: Insufficient permissions' });
+      expect(mockRes.json).toHaveBeenCalledWith({
+        message: 'Forbidden: Insufficient permissions',
+      });
     });
 
     it('should handle bodyProps in middleware', async () => {

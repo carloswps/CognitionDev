@@ -13,12 +13,12 @@
  */
 
 import * as http from 'http';
-import * as net from 'net';
 import { TokenExchangeMethodEnum } from 'librechat-data-provider';
 import type { Socket } from 'net';
+import * as net from 'net';
+import { MCPOAuthHandler } from '~/mcp/oauth';
 import type { OAuthTestServer } from './helpers/oauthTestServer';
 import { createOAuthMCPServer } from './helpers/oauthTestServer';
-import { MCPOAuthHandler } from '~/mcp/oauth';
 
 jest.mock('@librechat/data-schemas', () => ({
   logger: {

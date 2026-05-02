@@ -115,7 +115,10 @@ describe('deleteMessages – model-level IDOR prevention', () => {
       text: 'My message',
     });
 
-    const result = await Message.deleteMany({ messageId: ownMsgId, user: ownerUserId });
+    const result = await Message.deleteMany({
+      messageId: ownMsgId,
+      user: ownerUserId,
+    });
     expect(result.deletedCount).toBe(1);
 
     const deleted = await Message.findOne({ messageId: ownMsgId }).lean();
@@ -127,11 +130,25 @@ describe('deleteMessages – model-level IDOR prevention', () => {
     const convoB = uuidv4();
 
     await Message.create([
-      { messageId: 'msg-a1', conversationId: convoA, user: ownerUserId, text: 'A1' },
-      { messageId: 'msg-b1', conversationId: convoB, user: ownerUserId, text: 'B1' },
+      {
+        messageId: 'msg-a1',
+        conversationId: convoA,
+        user: ownerUserId,
+        text: 'A1',
+      },
+      {
+        messageId: 'msg-b1',
+        conversationId: convoB,
+        user: ownerUserId,
+        text: 'B1',
+      },
     ]);
 
-    await Message.deleteMany({ messageId: 'msg-a1', conversationId: convoA, user: attackerUserId });
+    await Message.deleteMany({
+      messageId: 'msg-a1',
+      conversationId: convoA,
+      user: attackerUserId,
+    });
 
     const remaining = await Message.find({ user: ownerUserId }).lean();
     expect(remaining).toHaveLength(2);

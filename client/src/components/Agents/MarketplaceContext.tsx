@@ -1,6 +1,6 @@
-import React from 'react';
-import { ChatContext } from '~/Providers';
+import type React from 'react';
 import { useChatHelpers } from '~/hooks';
+import { ChatContext } from '~/Providers';
 
 /**
  * Minimal marketplace provider that provides only what SidePanel actually needs

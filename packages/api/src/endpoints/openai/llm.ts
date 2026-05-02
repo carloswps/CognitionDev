@@ -1,10 +1,10 @@
-import { EModelEndpoint, removeNullishValues } from 'librechat-data-provider';
 import type { BindToolsInput } from '@langchain/core/language_models/chat_models';
-import type { SettingDefinition } from 'librechat-data-provider';
 import type { AzureOpenAIInput } from '@langchain/openai';
+import type { SettingDefinition } from 'librechat-data-provider';
+import { EModelEndpoint, removeNullishValues } from 'librechat-data-provider';
 import type { OpenAI } from 'openai';
 import type * as t from '~/types';
-import { sanitizeModelName, constructAzureURL } from '~/utils/azure';
+import { constructAzureURL, sanitizeModelName } from '~/utils/azure';
 import { isEnabled } from '~/utils/common';
 
 export const knownOpenAIParams = new Set([
@@ -192,7 +192,9 @@ export function getOpenAILLMConfig({
       }
 
       if (knownOpenAIParams.has(key)) {
-        applyDefaultParams(llmConfig as Record<string, unknown>, { [key]: value });
+        applyDefaultParams(llmConfig as Record<string, unknown>, {
+          [key]: value,
+        });
       } else {
         /** Apply to modelKwargs if not a known param */
         if (modelKwargs[key] === undefined) {

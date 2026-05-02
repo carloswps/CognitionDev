@@ -1,10 +1,10 @@
-import { useMemo } from 'react';
 import { UserIcon } from '@librechat/client';
-import type { TMessage, Assistant, Agent } from 'librechat-data-provider';
+import type { Agent, Assistant, TMessage } from 'librechat-data-provider';
+import { useMemo } from 'react';
 import type { TMessageProps } from '~/common';
-import MessageEndpointIcon from '../Endpoints/MessageEndpointIcon';
 import ConvoIconURL from '~/components/Endpoints/ConvoIconURL';
 import { getIconEndpoint, logger } from '~/utils';
+import MessageEndpointIcon from '../Endpoints/MessageEndpointIcon';
 
 export default function MessageIcon(
   props: Pick<TMessageProps, 'message' | 'conversation'> & {

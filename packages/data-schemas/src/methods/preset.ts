@@ -88,7 +88,10 @@ export function createPresetMethods(mongoose: typeof import('mongoose')) {
         update.defaultPreset = defaultPreset;
         update.order = 0;
 
-        const currentDefault = await Preset.findOne({ defaultPreset: true, user });
+        const currentDefault = await Preset.findOne({
+          defaultPreset: true,
+          user,
+        });
 
         if (currentDefault && currentDefault.presetId !== presetId) {
           await Preset.findByIdAndUpdate(currentDefault._id, {

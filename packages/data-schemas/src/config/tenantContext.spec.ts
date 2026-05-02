@@ -1,4 +1,4 @@
-import { tenantStorage, runAsSystem, scopedCacheKey } from './tenantContext';
+import { runAsSystem, scopedCacheKey, tenantStorage } from './tenantContext';
 
 describe('scopedCacheKey', () => {
   it('returns base key when no ALS context is set', () => {

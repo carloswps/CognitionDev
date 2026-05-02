@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import type { ITransaction } from '~/schema/transaction';
-import type { TxData } from './transaction';
-import type { IBalance } from '..';
-import { createTxMethods, tokenValues, premiumTokenValues } from './tx';
-import { matchModelName, findMatchingPattern } from './test-helpers';
-import { createSpendTokensMethods } from './spendTokens';
-import { createTransactionMethods } from './transaction';
+import mongoose from 'mongoose';
 import { createModels } from '~/models';
+import type { ITransaction } from '~/schema/transaction';
+import type { IBalance } from '..';
+import { createSpendTokensMethods } from './spendTokens';
+import { findMatchingPattern, matchModelName } from './test-helpers';
+import type { TxData } from './transaction';
+import { createTransactionMethods } from './transaction';
+import { createTxMethods, premiumTokenValues, tokenValues } from './tx';
 
 jest.mock('~/config/winston', () => ({
   error: jest.fn(),
@@ -40,7 +40,10 @@ beforeAll(async () => {
   Transaction = mongoose.models.Transaction;
 
   // Create methods from factories (following the chain in methods/index.ts)
-  const txMethods = createTxMethods(mongoose, { matchModelName, findMatchingPattern });
+  const txMethods = createTxMethods(mongoose, {
+    matchModelName,
+    findMatchingPattern,
+  });
   getMultiplier = txMethods.getMultiplier;
   getCacheMultiplier = txMethods.getCacheMultiplier;
 
@@ -98,7 +101,10 @@ describe('Regular Token Spending Tests', () => {
     // Assert
     const updatedBalance = await Balance.findOne({ user: userId });
     const promptMultiplier = getMultiplier({ model, tokenType: 'prompt' });
-    const completionMultiplier = getMultiplier({ model, tokenType: 'completion' });
+    const completionMultiplier = getMultiplier({
+      model,
+      tokenType: 'completion',
+    });
     const expectedTotalCost = 100 * promptMultiplier + 50 * completionMultiplier;
     const expectedBalance = initialBalance - expectedTotalCost;
 
@@ -246,7 +252,10 @@ describe('Structured Token Spending Tests', () => {
     };
 
     const promptMultiplier = getMultiplier({ model, tokenType: 'prompt' });
-    const completionMultiplier = getMultiplier({ model, tokenType: 'completion' });
+    const completionMultiplier = getMultiplier({
+      model,
+      tokenType: 'completion',
+    });
     const writeMultiplier = getCacheMultiplier({ model, cacheType: 'write' }) ?? promptMultiplier;
     const readMultiplier = getCacheMultiplier({ model, cacheType: 'read' }) ?? promptMultiplier;
 
@@ -1043,7 +1052,10 @@ describe('Premium Token Pricing Integration Tests', () => {
     await spendTokens(txData, { promptTokens, completionTokens });
 
     const standardPromptRate = getMultiplier({ model, tokenType: 'prompt' });
-    const standardCompletionRate = getMultiplier({ model, tokenType: 'completion' });
+    const standardCompletionRate = getMultiplier({
+      model,
+      tokenType: 'completion',
+    });
     const expectedCost =
       promptTokens * standardPromptRate + completionTokens * standardCompletionRate;
 

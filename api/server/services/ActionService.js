@@ -214,7 +214,9 @@ async function createActionTool({
                 action_id,
               };
 
-              const stateToken = jwt.sign(statePayload, JWT_SECRET, { expiresIn: '10m' });
+              const stateToken = jwt.sign(statePayload, JWT_SECRET, {
+                expiresIn: '10m',
+              });
               try {
                 const redirectUri = `${process.env.DOMAIN_CLIENT}/api/actions/${action_id}/oauth/callback`;
                 const params = new URLSearchParams({
@@ -243,18 +245,27 @@ async function createActionTool({
                   `${identifier}:oauth_login:${config.metadata.thread_id}:${config.metadata.run_id}`,
                   'oauth_login',
                   async () => {
-                    const eventData = { event: GraphEvents.ON_RUN_STEP_DELTA, data };
+                    const eventData = {
+                      event: GraphEvents.ON_RUN_STEP_DELTA,
+                      data,
+                    };
                     if (streamId) {
                       await GenerationJobManager.emitChunk(streamId, eventData);
                     } else {
                       sendEvent(res, eventData);
                     }
-                    logger.debug('Sent OAuth login request to client', { action_id, identifier });
+                    logger.debug('Sent OAuth login request to client', {
+                      action_id,
+                      identifier,
+                    });
                     return true;
                   },
                   config?.signal,
                 );
-                logger.debug('Waiting for OAuth Authorization response', { action_id, identifier });
+                logger.debug('Waiting for OAuth Authorization response', {
+                  action_id,
+                  identifier,
+                });
                 const result = await flowManager.createFlow(
                   identifier,
                   'oauth',
@@ -270,10 +281,16 @@ async function createActionTool({
                   },
                   config?.signal,
                 );
-                logger.debug('Received OAuth Authorization response', { action_id, identifier });
+                logger.debug('Received OAuth Authorization response', {
+                  action_id,
+                  identifier,
+                });
                 data.delta.auth = undefined;
                 data.delta.expires_at = undefined;
-                const successEventData = { event: GraphEvents.ON_RUN_STEP_DELTA, data };
+                const successEventData = {
+                  event: GraphEvents.ON_RUN_STEP_DELTA,
+                  data,
+                };
                 if (streamId) {
                   await GenerationJobManager.emitChunk(streamId, successEventData);
                 } else {

@@ -1,16 +1,16 @@
+import {
+  AccessRoleIds,
+  PermissionBits,
+  PrincipalType,
+  ResourceType,
+} from 'librechat-data-provider';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import type { Types } from 'mongoose';
 import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import {
-  ResourceType,
-  AccessRoleIds,
-  PrincipalType,
-  PermissionBits,
-} from 'librechat-data-provider';
 import type { AccessRole as TAccessRole, AclEntry as TAclEntry } from '..';
-import type { Types } from 'mongoose';
-import { createAclEntryMethods } from './aclEntry';
 import { createModels } from '../models';
+import { createAclEntryMethods } from './aclEntry';
 import { createMethods } from './index';
 
 /** Lean access role object from .lean() */
@@ -375,7 +375,9 @@ describe('File Access Control', () => {
         bytes: 200,
       });
 
-      const files = await methods.getFiles({ file_id: { $in: [fileId1, fileId2] } });
+      const files = await methods.getFiles({
+        file_id: { $in: [fileId1, fileId2] },
+      });
       expect(files).toHaveLength(2);
     });
 

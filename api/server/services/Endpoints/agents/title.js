@@ -34,7 +34,7 @@ const addTitle = async (req, { text, response, client }) => {
     });
 
     let titlePromise;
-    let abortController = new AbortController();
+    const abortController = new AbortController();
     if (client && typeof client.titleConvo === 'function') {
       titlePromise = Promise.race([
         client
@@ -75,7 +75,10 @@ const addTitle = async (req, { text, response, client }) => {
         conversationId: response.conversationId,
         title,
       },
-      { context: 'api/server/services/Endpoints/agents/title.js', noUpsert: true },
+      {
+        context: 'api/server/services/Endpoints/agents/title.js',
+        noUpsert: true,
+      },
     );
   } catch (error) {
     logger.error('Error generating title:', error);

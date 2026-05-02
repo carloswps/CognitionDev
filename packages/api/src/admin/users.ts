@@ -1,15 +1,15 @@
-import { Types } from 'mongoose';
-import { PrincipalType, SystemRoles } from 'librechat-data-provider';
-import { logger, isValidObjectIdString } from '@librechat/data-schemas';
 import type {
-  IUser,
-  IConfig,
   AdminUserListItem,
   AdminUserSearchResult,
+  IConfig,
+  IUser,
   UserDeleteResult,
 } from '@librechat/data-schemas';
-import type { FilterQuery } from 'mongoose';
+import { isValidObjectIdString, logger } from '@librechat/data-schemas';
 import type { Response } from 'express';
+import { PrincipalType, SystemRoles } from 'librechat-data-provider';
+import type { FilterQuery } from 'mongoose';
+import { Types } from 'mongoose';
 import type { ServerRequest } from '~/types/http';
 import { parsePagination } from './pagination';
 
@@ -21,7 +21,11 @@ export interface AdminUsersDeps {
   findUsers: (
     searchCriteria: FilterQuery<IUser>,
     fieldsToSelect?: string | string[] | null,
-    options?: { limit?: number; offset?: number; sort?: Record<string, 1 | -1> },
+    options?: {
+      limit?: number;
+      offset?: number;
+      sort?: Record<string, 1 | -1>;
+    },
   ) => Promise<IUser[]>;
   countUsers: (filter?: FilterQuery<IUser>) => Promise<number>;
   /**
@@ -49,7 +53,11 @@ export function createAdminUsersHandlers(deps: AdminUsersDeps) {
     try {
       const { limit, offset } = parsePagination(req.query);
       const [users, total] = await Promise.all([
-        findUsers({}, USER_LIST_FIELDS, { limit, offset, sort: { createdAt: -1 } }),
+        findUsers({}, USER_LIST_FIELDS, {
+          limit,
+          offset,
+          sort: { createdAt: -1 },
+        }),
         countUsers(),
       ]);
 
@@ -89,9 +97,9 @@ export function createAdminUsersHandlers(deps: AdminUsersDeps) {
       }
 
       if (trimmed.length > MAX_SEARCH_LENGTH) {
-        return res
-          .status(400)
-          .json({ error: `Query must not exceed ${MAX_SEARCH_LENGTH} characters` });
+        return res.status(400).json({
+          error: `Query must not exceed ${MAX_SEARCH_LENGTH} characters`,
+        });
       }
 
       const searchLimit = Math.min(Math.max(1, parseInt(limitStr, 10) || 20), 50);
@@ -112,9 +120,11 @@ export function createAdminUsersHandlers(deps: AdminUsersDeps) {
         avatarUrl: u.avatar,
       }));
 
-      return res
-        .status(200)
-        .json({ users: results, total: results.length, capped: results.length >= searchLimit });
+      return res.status(200).json({
+        users: results,
+        total: results.length,
+        capped: results.length >= searchLimit,
+      });
     } catch (error) {
       logger.error('[adminUsers] searchUsers error:', error);
       return res.status(500).json({ error: 'Failed to search users' });
@@ -161,7 +171,10 @@ export function createAdminUsersHandlers(deps: AdminUsersDeps) {
       const objectId = new Types.ObjectId(id);
       const cleanupResults = await Promise.allSettled([
         deleteConfig(PrincipalType.USER, id),
-        deleteAclEntries({ principalType: PrincipalType.USER, principalId: objectId }),
+        deleteAclEntries({
+          principalType: PrincipalType.USER,
+          principalId: objectId,
+        }),
       ]);
       for (const r of cleanupResults) {
         if (r.status === 'rejected') {

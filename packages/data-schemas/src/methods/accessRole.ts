@@ -1,7 +1,7 @@
-import { AccessRoleIds, ResourceType, PermissionBits } from 'librechat-data-provider';
-import type { Model, Types, DeleteResult } from 'mongoose';
-import type { IAccessRole } from '~/types';
+import { AccessRoleIds, type PermissionBits, ResourceType } from 'librechat-data-provider';
+import type { DeleteResult, Model, Types } from 'mongoose';
 import { RoleBits } from '~/common';
+import type { IAccessRole } from '~/types';
 
 export function createAccessRoleMethods(mongoose: typeof import('mongoose')) {
   /**
@@ -216,7 +216,10 @@ export function createAccessRoleMethods(mongoose: typeof import('mongoose')) {
     permBits: PermissionBits | RoleBits,
   ): Promise<IAccessRole | null> {
     const AccessRole = mongoose.models.AccessRole as Model<IAccessRole>;
-    const exactMatch = await AccessRole.findOne({ resourceType, permBits }).lean();
+    const exactMatch = await AccessRole.findOne({
+      resourceType,
+      permBits,
+    }).lean();
     if (exactMatch) {
       return exactMatch;
     }

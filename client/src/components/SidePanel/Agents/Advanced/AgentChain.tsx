@@ -1,21 +1,21 @@
-import { X, Link2, PlusCircle } from 'lucide-react';
-import { EModelEndpoint } from 'librechat-data-provider';
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
+  CircleHelpIcon,
   ControlCombobox,
   HoverCard,
-  HoverCardPortal,
   HoverCardContent,
+  HoverCardPortal,
   HoverCardTrigger,
-  CircleHelpIcon,
 } from '@librechat/client';
-import type { ControllerRenderProps } from 'react-hook-form';
 import type { TMessage } from 'librechat-data-provider';
+import { EModelEndpoint } from 'librechat-data-provider';
+import { Link2, PlusCircle, X } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import type { ControllerRenderProps } from 'react-hook-form';
 import type { AgentForm, OptionWithIcon } from '~/common';
-import MessageIcon from '~/components/Share/MessageIcon';
-import { useAgentsMapContext } from '~/Providers';
-import { useLocalize } from '~/hooks';
 import { ESide } from '~/common';
+import MessageIcon from '~/components/Share/MessageIcon';
+import { useLocalize } from '~/hooks';
+import { useAgentsMapContext } from '~/Providers';
 
 interface AgentChainProps {
   field: ControllerRenderProps<AgentForm, 'agent_ids'>;
@@ -118,11 +118,17 @@ const AgentChain: React.FC<AgentChainProps> = ({ field, currentAgentId }) => {
             <div className="flex h-9 items-center gap-2 rounded-md border border-border-medium bg-surface-tertiary pr-2">
               <ControlCombobox
                 isCollapsed={false}
-                ariaLabel={localize('com_ui_agent_var', { 0: localize('com_ui_select') })}
+                ariaLabel={localize('com_ui_agent_var', {
+                  0: localize('com_ui_select'),
+                })}
                 selectedValue={agentId}
                 setValue={(id) => updateAgentAt(idx, id)}
-                selectPlaceholder={localize('com_ui_agent_var', { 0: localize('com_ui_select') })}
-                searchPlaceholder={localize('com_ui_agent_var', { 0: localize('com_ui_search') })}
+                selectPlaceholder={localize('com_ui_agent_var', {
+                  0: localize('com_ui_select'),
+                })}
+                searchPlaceholder={localize('com_ui_agent_var', {
+                  0: localize('com_ui_search'),
+                })}
                 items={selectableAgents}
                 displayValue={getAgentDetails(agentId)?.name ?? ''}
                 SelectIcon={
@@ -164,11 +170,17 @@ const AgentChain: React.FC<AgentChainProps> = ({ field, currentAgentId }) => {
             {agentIds.length > 0 && <Link2 className="mx-auto text-text-secondary" size={14} />}
             <ControlCombobox
               isCollapsed={false}
-              ariaLabel={localize('com_ui_agent_var', { 0: localize('com_ui_add') })}
+              ariaLabel={localize('com_ui_agent_var', {
+                0: localize('com_ui_add'),
+              })}
               selectedValue=""
               setValue={setNewAgentId}
-              selectPlaceholder={localize('com_ui_agent_var', { 0: localize('com_ui_add') })}
-              searchPlaceholder={localize('com_ui_agent_var', { 0: localize('com_ui_search') })}
+              selectPlaceholder={localize('com_ui_agent_var', {
+                0: localize('com_ui_add'),
+              })}
+              searchPlaceholder={localize('com_ui_agent_var', {
+                0: localize('com_ui_search'),
+              })}
               items={selectableAgents}
               className="h-9 w-full border-dashed border-border-heavy text-center text-text-secondary hover:text-text-primary"
               containerClassName="px-0"

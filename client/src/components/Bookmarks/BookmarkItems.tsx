@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { useBookmarkContext } from '~/Providers/BookmarkContext';
 import BookmarkItem from './BookmarkItem';
+
 interface BookmarkItemsProps {
   tags: string[];
   handleSubmit: (tag?: string) => void;

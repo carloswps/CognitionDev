@@ -1,10 +1,10 @@
-import { useLocation } from 'react-router-dom';
 import { Button, Sidebar, TooltipAnchor } from '@librechat/client';
-import { usePromptGroupsContext } from '~/Providers';
+import { useLocation } from 'react-router-dom';
 import { useLocalize } from '~/hooks';
-import PanelNavigation from './PanelNavigation';
-import List from '../lists/List';
+import { usePromptGroupsContext } from '~/Providers';
 import { cn } from '~/utils';
+import List from '../lists/List';
+import PanelNavigation from './PanelNavigation';
 
 export default function GroupSidePanel({
   children,

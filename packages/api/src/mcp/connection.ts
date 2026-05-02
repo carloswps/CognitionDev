@@ -1,28 +1,28 @@
-import { EventEmitter } from 'events';
 import { logger } from '@librechat/data-schemas';
-import { fetch as undiciFetch, Agent } from 'undici';
-import {
-  StdioClientTransport,
-  getDefaultEnvironment,
-} from '@modelcontextprotocol/sdk/client/stdio.js';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { SSEClientTransport } from '@modelcontextprotocol/sdk/client/sse.js';
-import { WebSocketClientTransport } from '@modelcontextprotocol/sdk/client/websocket.js';
-import { ResourceListChangedNotificationSchema } from '@modelcontextprotocol/sdk/types.js';
+import {
+  getDefaultEnvironment,
+  StdioClientTransport,
+} from '@modelcontextprotocol/sdk/client/stdio.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import { WebSocketClientTransport } from '@modelcontextprotocol/sdk/client/websocket.js';
 import type { Transport } from '@modelcontextprotocol/sdk/shared/transport.js';
+import { ResourceListChangedNotificationSchema } from '@modelcontextprotocol/sdk/types.js';
+import { EventEmitter } from 'events';
 import type {
-  RequestInit as UndiciRequestInit,
   RequestInfo as UndiciRequestInfo,
+  RequestInit as UndiciRequestInit,
   Response as UndiciResponse,
 } from 'undici';
+import { Agent, fetch as undiciFetch } from 'undici';
+import { createSSRFSafeUndiciConnect, resolveHostnameSSRF } from '~/auth';
+import { withTimeout } from '~/utils/promise';
+import { runOutsideTracing } from '~/utils/tracing';
+import { mcpConfig } from './mcpConfig';
 import type { MCPOAuthTokens } from './oauth/types';
 import type * as t from './types';
-import { createSSRFSafeUndiciConnect, resolveHostnameSSRF } from '~/auth';
-import { runOutsideTracing } from '~/utils/tracing';
 import { sanitizeUrlForLogging } from './utils';
-import { withTimeout } from '~/utils/promise';
-import { mcpConfig } from './mcpConfig';
 
 type FetchLike = (url: string | URL, init?: RequestInit) => Promise<Response>;
 
@@ -133,7 +133,11 @@ function extractSSEErrorMessage(error: unknown): {
     };
   }
 
-  const errorObj = error as { message?: string; code?: number; event?: unknown };
+  const errorObj = error as {
+    message?: string;
+    code?: number;
+    event?: unknown;
+  };
   const rawMessage = errorObj.message ?? '';
   const code = errorObj.code;
 
@@ -343,8 +347,7 @@ export class MCPConnection extends EventEmitter {
     cb.failedRounds++;
     if (cb.failedRounds >= mcpConfig.CB_MAX_FAILED_ROUNDS) {
       const backoff = Math.min(
-        mcpConfig.CB_BASE_BACKOFF_MS *
-          Math.pow(2, cb.failedRounds - mcpConfig.CB_MAX_FAILED_ROUNDS),
+        mcpConfig.CB_BASE_BACKOFF_MS * 2 ** (cb.failedRounds - mcpConfig.CB_MAX_FAILED_ROUNDS),
         mcpConfig.CB_MAX_BACKOFF_MS,
       );
       cb.failedBackoffUntil = now + backoff;
@@ -703,7 +706,7 @@ export class MCPConnection extends EventEmitter {
 
     this.isReconnecting = true;
     const backoffDelay = (attempt: number) => {
-      const base = Math.min(1000 * Math.pow(2, attempt), 30000);
+      const base = Math.min(1000 * 2 ** attempt, 30000);
       const jitter = Math.floor(Math.random() * 1000); // up to 1s of random jitter
       return base + jitter;
     };
@@ -1066,7 +1069,11 @@ export class MCPConnection extends EventEmitter {
 
         // Include the original eventsource event for debugging
         if (sseError.event && typeof sseError.event === 'object') {
-          const event = sseError.event as { code?: number; message?: string; type?: string };
+          const event = sseError.event as {
+            code?: number;
+            message?: string;
+            type?: string;
+          };
           errorContext.eventDetails = {
             type: event.type,
             code: event.code,

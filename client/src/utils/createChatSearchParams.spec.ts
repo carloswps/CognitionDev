@@ -1,5 +1,5 @@
-import { EModelEndpoint, Constants } from 'librechat-data-provider';
 import type { TConversation, TPreset } from 'librechat-data-provider';
+import { Constants, EModelEndpoint } from 'librechat-data-provider';
 import createChatSearchParams from './createChatSearchParams';
 
 describe('createChatSearchParams', () => {
@@ -27,7 +27,9 @@ describe('createChatSearchParams', () => {
     });
 
     it('applies only the model property when other conversation fields are absent', () => {
-      const modelOnly = createChatSearchParams({ model: 'gpt-4' } as TConversation);
+      const modelOnly = createChatSearchParams({
+        model: 'gpt-4',
+      } as TConversation);
       expect(modelOnly.has('endpoint')).toBe(false);
       expect(modelOnly.get('model')).toBe('gpt-4');
       expect(modelOnly.has('model')).toBe(true);

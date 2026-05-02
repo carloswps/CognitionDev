@@ -1,13 +1,13 @@
+import type { IUser } from '@librechat/data-schemas';
+import type { TUser } from 'librechat-data-provider';
 import {
-  MCPOptions,
+  type MCPOptions,
   StdioOptionsSchema,
   StreamableHTTPOptionsSchema,
 } from 'librechat-data-provider';
-import type { TUser } from 'librechat-data-provider';
-import type { IUser } from '@librechat/data-schemas';
+import { processMCPEnv } from '~/utils/env';
 import type { GraphTokenResolver } from '~/utils/graph';
 import { preProcessGraphTokens } from '~/utils/graph';
-import { processMCPEnv } from '~/utils/env';
 import * as oidcUtils from '~/utils/oidc';
 
 // Mock oidc utilities for graph token tests
@@ -246,9 +246,9 @@ describe('Environment Variable Extraction (MCP)', () => {
     });
 
     it('should handle null or undefined input', () => {
-      // @ts-ignore - Testing null/undefined handling
+      // @ts-expect-error - Testing null/undefined handling
       expect(processMCPEnv({ options: null })).toBeNull();
-      // @ts-ignore - Testing null/undefined handling
+      // @ts-expect-error - Testing null/undefined handling
       expect(processMCPEnv({ options: undefined })).toBeUndefined();
     });
 
@@ -358,7 +358,10 @@ describe('Environment Variable Extraction (MCP)', () => {
         },
       };
 
-      const result = processMCPEnv({ options: obj as unknown as MCPOptions, user });
+      const result = processMCPEnv({
+        options: obj as unknown as MCPOptions,
+        user,
+      });
 
       expect('headers' in result && result.headers).toEqual({
         Authorization: 'test-api-key-value',
@@ -574,7 +577,10 @@ describe('Environment Variable Extraction (MCP)', () => {
         },
       };
 
-      const result2 = processMCPEnv({ options: obj2, user: userWithUnderscore });
+      const result2 = processMCPEnv({
+        options: obj2,
+        user: userWithUnderscore,
+      });
       // Since we don't check _id, the placeholder should remain unchanged
       expect('headers' in result2 && result2.headers?.['User-Id']).toBe('{{LIBRECHAT_USER_ID}}');
 
@@ -828,7 +834,10 @@ describe('Environment Variable Extraction (MCP)', () => {
     });
 
     it('should process GitHub MCP server configuration with PAT_TOKEN placeholder', () => {
-      const user = createTestUser({ id: 'github-user-123', email: 'user@example.com' });
+      const user = createTestUser({
+        id: 'github-user-123',
+        email: 'user@example.com',
+      });
       const customUserVars = {
         PAT_TOKEN: 'ghp_1234567890abcdef1234567890abcdef12345678', // GitHub Personal Access Token
       };
@@ -910,7 +919,9 @@ describe('Environment Variable Extraction (MCP)', () => {
 
     beforeEach(() => {
       // Set up mocks to simulate valid OpenID token
-      mockExtractOpenIDTokenInfo.mockReturnValue({ accessToken: 'test-access-token' });
+      mockExtractOpenIDTokenInfo.mockReturnValue({
+        accessToken: 'test-access-token',
+      });
       mockIsOpenIDTokenValid.mockReturnValue(true);
       (mockGraphTokenResolver as jest.Mock).mockClear();
     });

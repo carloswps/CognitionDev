@@ -1,7 +1,7 @@
 import { AuthType, EModelEndpoint } from 'librechat-data-provider';
-import { initializeBedrock } from './initialize';
 import type { BaseInitializeParams, BedrockLLMConfigResult } from '~/types';
 import { checkUserKeyExpiry } from '~/utils';
+import { initializeBedrock } from './initialize';
 
 jest.mock('https-proxy-agent', () => ({
   HttpsProxyAgent: jest.fn().mockImplementation((proxy) => ({ proxy })),
@@ -49,7 +49,9 @@ const createMockParams = (
       user: overrides.user ?? { id: 'test-user-id' },
     },
     endpoint: EModelEndpoint.bedrock,
-    model_parameters: overrides.model_parameters ?? { model: 'anthropic.claude-3-sonnet' },
+    model_parameters: overrides.model_parameters ?? {
+      model: 'anthropic.claude-3-sonnet',
+    },
     db: mockDb,
   } as unknown as BaseInitializeParams;
 };

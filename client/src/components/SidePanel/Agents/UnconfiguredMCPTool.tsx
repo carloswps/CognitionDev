@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { Label, OGDialog, OGDialogTemplate, OGDialogTrigger, TrashIcon } from '@librechat/client';
 import { CircleX } from 'lucide-react';
-import { Label, OGDialog, TrashIcon, OGDialogTrigger, OGDialogTemplate } from '@librechat/client';
+import React, { useState } from 'react';
 import { useLocalize, useRemoveMCPTool } from '~/hooks';
 import { cn } from '~/utils';
 
@@ -37,7 +37,11 @@ export default function UnconfiguredMCPTool({ serverName }: { serverName?: strin
         <div className="flex grow cursor-not-allowed items-center gap-1 rounded bg-transparent p-0 text-left transition-colors">
           <div
             className="grow select-none px-2 py-1.5"
-            style={{ textOverflow: 'ellipsis', wordBreak: 'break-all', overflow: 'hidden' }}
+            style={{
+              textOverflow: 'ellipsis',
+              wordBreak: 'break-all',
+              overflow: 'hidden',
+            }}
           >
             {serverName}
             <span className="ml-2 text-xs text-text-secondary">

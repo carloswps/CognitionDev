@@ -1,4 +1,4 @@
-import type { PrincipalType, PrincipalModel, TCustomConfig } from 'librechat-data-provider';
+import type { PrincipalModel, PrincipalType, TCustomConfig } from 'librechat-data-provider';
 import type { SystemCapabilities } from '~/admin/capabilities';
 
 /* ── Capability types ───────────────────────────────────────────────── */

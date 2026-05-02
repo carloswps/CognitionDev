@@ -1,20 +1,20 @@
-import { useCallback, useEffect, useState, useMemo, memo, lazy, Suspense, useRef } from 'react';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { useMediaQuery } from '@librechat/client';
-import { PermissionTypes, Permissions } from 'librechat-data-provider';
 import type { InfiniteQueryObserverResult } from '@tanstack/react-query';
 import type { ConversationListResponse } from 'librechat-data-provider';
+import { Permissions, PermissionTypes } from 'librechat-data-provider';
+import { lazy, memo, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { List } from 'react-virtualized';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { Conversations } from '~/components/Conversations';
+import SearchBar from '~/components/Nav/SearchBar';
+import { useConversationsInfiniteQuery, useTitleGeneration } from '~/data-provider';
 import {
-  useLocalize,
-  useHasAccess,
   useAuthContext,
+  useHasAccess,
+  useLocalize,
   useLocalStorage,
   useNavScrolling,
 } from '~/hooks';
-import { useConversationsInfiniteQuery, useTitleGeneration } from '~/data-provider';
-import { Conversations } from '~/components/Conversations';
-import SearchBar from '~/components/Nav/SearchBar';
 import store from '~/store';
 
 const BookmarkNav = lazy(() => import('~/components/Nav/Bookmarks/BookmarkNav'));
@@ -97,7 +97,7 @@ const ConversationsSection = memo(() => {
       setIsSearchLoading(true);
     } else if (!isLoading && !isFetching) {
       setIsSearchLoading(false);
-    } else if (!!search.query && (isLoading || isFetching)) {
+    } else if (search.query && (isLoading || isFetching)) {
       setIsSearchLoading(true);
     }
   }, [search.query, search.isTyping, isLoading, isFetching]);

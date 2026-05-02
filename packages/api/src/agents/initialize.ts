@@ -1,37 +1,37 @@
+import type { GenericTool, LCTool, LCToolRegistry, ToolMap } from '@librechat/agents';
 import { Providers } from '@librechat/agents';
-import {
-  Constants,
-  ErrorTypes,
-  EModelEndpoint,
-  EToolResources,
-  paramEndpoints,
-  isAgentsEndpoint,
-  replaceSpecialVars,
-  providerEndpointMap,
-} from 'librechat-data-provider';
+import type { IMongoFile } from '@librechat/data-schemas';
+import type { Response as ServerResponse } from 'express';
 import type {
-  AgentToolResources,
+  Agent,
   AgentToolOptions,
+  AgentToolResources,
   TEndpointOption,
   TFile,
-  Agent,
   TUser,
 } from 'librechat-data-provider';
-import type { GenericTool, LCToolRegistry, ToolMap, LCTool } from '@librechat/agents';
-import type { Response as ServerResponse } from 'express';
-import type { IMongoFile } from '@librechat/data-schemas';
-import type { InitializeResultBase, ServerRequest, EndpointDbMethods } from '~/types';
 import {
-  optionalChainWithEmptyCheck,
+  Constants,
+  EModelEndpoint,
+  ErrorTypes,
+  EToolResources,
+  isAgentsEndpoint,
+  paramEndpoints,
+  providerEndpointMap,
+  replaceSpecialVars,
+} from 'librechat-data-provider';
+import { getProviderConfig } from '~/endpoints';
+import { filterFilesByEndpointConfig } from '~/files';
+import { generateArtifactsPrompt } from '~/prompts';
+import type { EndpointDbMethods, InitializeResultBase, ServerRequest } from '~/types';
+import {
   extractLibreChatParams,
   getModelMaxTokens,
   getThreadData,
+  optionalChainWithEmptyCheck,
 } from '~/utils';
-import { filterFilesByEndpointConfig } from '~/files';
-import { generateArtifactsPrompt } from '~/prompts';
-import { getProviderConfig } from '~/endpoints';
-import { primeResources } from './resources';
 import type { TFilterFilesByAgentAccess } from './resources';
+import { primeResources } from './resources';
 
 /**
  * Fraction of context budget reserved as headroom when no explicit maxContextTokens is set.
@@ -396,7 +396,9 @@ export async function initializeAgent(
     tools = structuredTools.concat(options.tools as GenericTool[]);
   }
 
-  agent.model_parameters = { ...options.llmConfig } as Agent['model_parameters'];
+  agent.model_parameters = {
+    ...options.llmConfig,
+  } as Agent['model_parameters'];
   if (options.configOptions) {
     (agent.model_parameters as Record<string, unknown>).configuration = options.configOptions;
   }

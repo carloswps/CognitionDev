@@ -1,8 +1,8 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useForm, FormProvider } from 'react-hook-form';
-import { EModelEndpoint, mergeFileConfig } from 'librechat-data-provider';
 import type { TEndpointsConfig } from 'librechat-data-provider';
+import { EModelEndpoint, mergeFileConfig } from 'librechat-data-provider';
+import type React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import type { AgentForm } from '~/common';
 import FileContext from '../FileContext';
 
@@ -11,7 +11,9 @@ const mockEndpointsConfig: TEndpointsConfig = {
   Moonshot: { type: EModelEndpoint.custom, userProvide: false, order: 9999 },
 };
 
-let mockFileConfig = mergeFileConfig({ endpoints: { default: { fileLimit: 10 } } });
+let mockFileConfig = mergeFileConfig({
+  endpoints: { default: { fileLimit: 10 } },
+});
 
 jest.mock('~/data-provider', () => ({
   useGetEndpointsQuery: () => ({ data: mockEndpointsConfig }),
@@ -75,7 +77,9 @@ function Wrapper({ provider, children }: { provider?: string; children: React.Re
 
 describe('FileContext', () => {
   it('renders upload UI when file uploads are not disabled', () => {
-    mockFileConfig = mergeFileConfig({ endpoints: { default: { fileLimit: 10 } } });
+    mockFileConfig = mergeFileConfig({
+      endpoints: { default: { fileLimit: 10 } },
+    });
     render(
       <Wrapper provider="Moonshot">
         <FileContext agent_id="agent-1" />
@@ -98,7 +102,10 @@ describe('FileContext', () => {
 
   it('returns null when agents endpoint config is disabled and provider has no specific config', () => {
     mockFileConfig = mergeFileConfig({
-      endpoints: { [EModelEndpoint.agents]: { disabled: true }, default: { fileLimit: 10 } },
+      endpoints: {
+        [EModelEndpoint.agents]: { disabled: true },
+        default: { fileLimit: 10 },
+      },
     });
     const { container } = render(
       <Wrapper>
@@ -109,7 +116,9 @@ describe('FileContext', () => {
   });
 
   it('passes provider as endpointOverride and resolved type as endpointTypeOverride', () => {
-    mockFileConfig = mergeFileConfig({ endpoints: { default: { fileLimit: 10 } } });
+    mockFileConfig = mergeFileConfig({
+      endpoints: { default: { fileLimit: 10 } },
+    });
     mockUseFileHandlingNoChatContext.mockClear();
     render(
       <Wrapper provider="Moonshot">
@@ -122,7 +131,9 @@ describe('FileContext', () => {
   });
 
   it('falls back to agents for endpointOverride when no provider', () => {
-    mockFileConfig = mergeFileConfig({ endpoints: { default: { fileLimit: 10 } } });
+    mockFileConfig = mergeFileConfig({
+      endpoints: { default: { fileLimit: 10 } },
+    });
     mockUseFileHandlingNoChatContext.mockClear();
     render(
       <Wrapper>

@@ -1,18 +1,17 @@
-import mongoose, { Types } from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import { PrincipalType, SystemRoles } from 'librechat-data-provider';
+import type { AllMethods, SystemCapability } from '@librechat/data-schemas';
 import {
-  createModels,
-  createMethods,
-  SystemCapabilities,
   CapabilityImplications,
+  createMethods,
+  createModels,
+  SystemCapabilities,
 } from '@librechat/data-schemas';
-import type { SystemCapability } from '@librechat/data-schemas';
-import type { AllMethods } from '@librechat/data-schemas';
+import { PrincipalType, SystemRoles } from 'librechat-data-provider';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose, { type Types } from 'mongoose';
 import {
-  generateCapabilityCheck,
-  capabilityStore,
   capabilityContextMiddleware,
+  capabilityStore,
+  generateCapabilityCheck,
 } from './capabilities';
 
 jest.mock('@librechat/data-schemas', () => ({
@@ -74,7 +73,11 @@ describe('capabilities integration (real MongoDB)', () => {
       provider: 'local',
       role: SystemRoles.ADMIN,
     });
-    adminUser = { _id: admin._id, id: admin._id.toString(), role: SystemRoles.ADMIN };
+    adminUser = {
+      _id: admin._id,
+      id: admin._id.toString(),
+      role: SystemRoles.ADMIN,
+    };
 
     const user = await User.create({
       name: 'Regular',
@@ -83,7 +86,11 @@ describe('capabilities integration (real MongoDB)', () => {
       provider: 'local',
       role: SystemRoles.USER,
     });
-    regularUser = { _id: user._id, id: user._id.toString(), role: SystemRoles.USER };
+    regularUser = {
+      _id: user._id,
+      id: user._id.toString(),
+      role: SystemRoles.USER,
+    };
   });
 
   describe('end-to-end with real getUserPrincipals + hasCapabilityForPrincipals', () => {

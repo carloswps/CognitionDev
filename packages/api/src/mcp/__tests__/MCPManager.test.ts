@@ -1,13 +1,13 @@
-import { logger } from '@librechat/data-schemas';
 import type { IUser } from '@librechat/data-schemas';
-import type { GraphTokenResolver } from '~/utils/graph';
-import type * as t from '~/mcp/types';
-import { MCPServersInitializer } from '~/mcp/registry/MCPServersInitializer';
-import { MCPServerInspector } from '~/mcp/registry/MCPServerInspector';
-import { MCPConnectionFactory } from '~/mcp/MCPConnectionFactory';
+import { logger } from '@librechat/data-schemas';
 import { ConnectionsRepository } from '~/mcp/ConnectionsRepository';
-import { MCPConnection } from '~/mcp/connection';
+import type { MCPConnection } from '~/mcp/connection';
+import { MCPConnectionFactory } from '~/mcp/MCPConnectionFactory';
 import { MCPManager } from '~/mcp/MCPManager';
+import { MCPServerInspector } from '~/mcp/registry/MCPServerInspector';
+import { MCPServersInitializer } from '~/mcp/registry/MCPServersInitializer';
+import type * as t from '~/mcp/types';
+import type { GraphTokenResolver } from '~/utils/graph';
 import * as graphUtils from '~/utils/graph';
 
 // Mock external dependencies
@@ -794,8 +794,16 @@ describe('MCPManager', () => {
 
   describe('discoverServerTools', () => {
     const mockTools = [
-      { name: 'tool1', description: 'First tool', inputSchema: { type: 'object' } },
-      { name: 'tool2', description: 'Second tool', inputSchema: { type: 'object' } },
+      {
+        name: 'tool1',
+        description: 'First tool',
+        inputSchema: { type: 'object' },
+      },
+      {
+        name: 'tool2',
+        description: 'Second tool',
+        inputSchema: { type: 'object' },
+      },
     ];
 
     const mockConnection = {
@@ -848,7 +856,10 @@ describe('MCPManager', () => {
     });
 
     it('should forward user, customUserVars, requestBody, and connectionTimeout to discoverTools in the non-OAuth path', async () => {
-      const mockUser = { id: 'user123', email: 'test@example.com' } as unknown as IUser;
+      const mockUser = {
+        id: 'user123',
+        email: 'test@example.com',
+      } as unknown as IUser;
       const customUserVars = { MY_CUSTOM_KEY: 'c527bd0abc123' };
 
       mockAppConnections({
@@ -872,7 +883,9 @@ describe('MCPManager', () => {
         serverName,
         user: mockUser,
         customUserVars,
-        requestBody: { conversationId: 'conv-123' } as t.ToolDiscoveryOptions['requestBody'],
+        requestBody: {
+          conversationId: 'conv-123',
+        } as t.ToolDiscoveryOptions['requestBody'],
         connectionTimeout: 10000,
       });
 
@@ -926,7 +939,10 @@ describe('MCPManager', () => {
     });
 
     it('should discover tools with OAuth when user and flowManager provided', async () => {
-      const mockUser = { id: 'user123', email: 'test@example.com' } as unknown as IUser;
+      const mockUser = {
+        id: 'user123',
+        email: 'test@example.com',
+      } as unknown as IUser;
       const mockFlowManager = {
         createFlow: jest.fn(),
         getFlowState: jest.fn(),

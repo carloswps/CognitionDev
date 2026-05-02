@@ -1,41 +1,41 @@
-import { memo, useRef, useMemo, useEffect, useState, useCallback } from 'react';
-import { useWatch } from 'react-hook-form';
 import { TextareaAutosize } from '@librechat/client';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { Constants, isAssistantsEndpoint, isAgentsEndpoint } from 'librechat-data-provider';
 import type { TConversation } from 'librechat-data-provider';
-import type { ExtendedFile, FileSetter, ConvoGenerator } from '~/common';
+import { Constants, isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useWatch } from 'react-hook-form';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import type { ConvoGenerator, ExtendedFile, FileSetter } from '~/common';
+import { type BadgeItem, mainTextareaId } from '~/common';
 import {
-  useChatContext,
-  useChatFormContext,
+  useAutoSave,
+  useFocusChatEffect,
+  useHandleKeyUp,
+  useLocalize,
+  useQueryParams,
+  useRequiresKey,
+  useSubmitMessage,
+  useTextarea,
+} from '~/hooks';
+import {
   useAddedChatContext,
   useAssistantsMapContext,
+  useChatContext,
+  useChatFormContext,
 } from '~/Providers';
-import {
-  useTextarea,
-  useAutoSave,
-  useLocalize,
-  useRequiresKey,
-  useHandleKeyUp,
-  useQueryParams,
-  useSubmitMessage,
-  useFocusChatEffect,
-} from '~/hooks';
-import { mainTextareaId, BadgeItem } from '~/common';
+import store from '~/store';
+import { cn, removeFocusRings } from '~/utils';
+import AudioRecorder from './AudioRecorder';
+import BadgeRow from './BadgeRow';
+import CollapseChat from './CollapseChat';
+import EditBadges from './EditBadges';
 import AttachFileChat from './Files/AttachFileChat';
 import FileFormChat from './Files/FileFormChat';
-import { cn, removeFocusRings } from '~/utils';
-import TextareaHeader from './TextareaHeader';
-import PromptsCommand from './PromptsCommand';
-import AudioRecorder from './AudioRecorder';
-import CollapseChat from './CollapseChat';
-import StreamAudio from './StreamAudio';
-import StopButton from './StopButton';
-import SendButton from './SendButton';
-import EditBadges from './EditBadges';
-import BadgeRow from './BadgeRow';
 import Mention from './Mention';
-import store from '~/store';
+import PromptsCommand from './PromptsCommand';
+import SendButton from './SendButton';
+import StopButton from './StopButton';
+import StreamAudio from './StreamAudio';
+import TextareaHeader from './TextareaHeader';
 
 interface ChatFormProps {
   index: number;

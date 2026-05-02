@@ -1,33 +1,41 @@
-import React, { useCallback, useState, useRef } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { SmartphoneIcon } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import {
   OGDialog,
-  useToastContext,
   OGDialogContent,
   OGDialogHeader,
   OGDialogTitle,
   Progress,
+  useToastContext,
 } from '@librechat/client';
+import { AnimatePresence, motion } from 'framer-motion';
 import type { TUser, TVerify2FARequest } from 'librechat-data-provider';
+import { SmartphoneIcon } from 'lucide-react';
+import React, { useCallback, useRef, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 import {
   useConfirmTwoFactorMutation,
   useDisableTwoFactorMutation,
   useEnableTwoFactorMutation,
   useVerifyTwoFactorMutation,
 } from '~/data-provider';
-import { SetupPhase, QRPhase, VerifyPhase, BackupPhase, DisablePhase } from './TwoFactorPhases';
-import { DisableTwoFactorToggle } from './DisableTwoFactorToggle';
 import { useAuthContext, useLocalize } from '~/hooks';
 import store from '~/store';
+import { DisableTwoFactorToggle } from './DisableTwoFactorToggle';
+import { BackupPhase, DisablePhase, QRPhase, SetupPhase, VerifyPhase } from './TwoFactorPhases';
 
 export type Phase = 'setup' | 'qr' | 'verify' | 'backup' | 'disable';
 
 const phaseVariants = {
   initial: { opacity: 0, scale: 0.95 },
-  animate: { opacity: 1, scale: 1, transition: { duration: 0.3, ease: 'easeOut' } },
-  exit: { opacity: 0, scale: 0.95, transition: { duration: 0.3, ease: 'easeIn' } },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.3, ease: 'easeOut' },
+  },
+  exit: {
+    opacity: 0,
+    scale: 0.95,
+    transition: { duration: 0.3, ease: 'easeIn' },
+  },
 };
 
 const TwoFactorAuthentication: React.FC = () => {
@@ -66,7 +74,10 @@ const TwoFactorAuthentication: React.FC = () => {
     if (user?.twoFactorEnabled && otpauthUrl) {
       disable2FAMutate(undefined, {
         onError: () =>
-          showToast({ message: localize('com_ui_2fa_disable_error'), status: 'error' }),
+          showToast({
+            message: localize('com_ui_2fa_disable_error'),
+            status: 'error',
+          }),
       });
     }
 
@@ -87,7 +98,11 @@ const TwoFactorAuthentication: React.FC = () => {
         setBackupCodes(backupCodes);
         setPhase('qr');
       },
-      onError: () => showToast({ message: localize('com_ui_2fa_generate_error'), status: 'error' }),
+      onError: () =>
+        showToast({
+          message: localize('com_ui_2fa_generate_error'),
+          status: 'error',
+        }),
     });
   }, [enable2FAMutate, localize, showToast]);
 
@@ -106,11 +121,18 @@ const TwoFactorAuthentication: React.FC = () => {
             {
               onSuccess: () => setPhase('backup'),
               onError: () =>
-                showToast({ message: localize('com_ui_2fa_invalid'), status: 'error' }),
+                showToast({
+                  message: localize('com_ui_2fa_invalid'),
+                  status: 'error',
+                }),
             },
           );
         },
-        onError: () => showToast({ message: localize('com_ui_2fa_invalid'), status: 'error' }),
+        onError: () =>
+          showToast({
+            message: localize('com_ui_2fa_invalid'),
+            status: 'error',
+          }),
       },
     );
   }, [verificationToken, verify2FAMutate, confirm2FAMutate, localize, showToast]);
@@ -119,7 +141,9 @@ const TwoFactorAuthentication: React.FC = () => {
     if (!backupCodes.length) {
       return;
     }
-    const blob = new Blob([backupCodes.join('\n')], { type: 'text/plain;charset=utf-8' });
+    const blob = new Blob([backupCodes.join('\n')], {
+      type: 'text/plain;charset=utf-8',
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -183,7 +207,11 @@ const TwoFactorAuthentication: React.FC = () => {
           setPhase('setup');
           setOtpauthUrl('');
         },
-        onError: () => showToast({ message: localize('com_ui_2fa_invalid'), status: 'error' }),
+        onError: () =>
+          showToast({
+            message: localize('com_ui_2fa_invalid'),
+            status: 'error',
+          }),
       });
     },
     [disable2FAMutate, showToast, localize, setUser],

@@ -126,7 +126,11 @@ describe('reserveRatio', () => {
   it('applies ratio from config using baseContextTokens, capped at maxContextTokens', async () => {
     const agents = await callAndCapture({
       agents: [makeAgent({ baseContextTokens: 200_000, maxContextTokens: 200_000 })],
-      summarizationConfig: { reserveRatio: 0.03, provider: 'anthropic', model: 'claude' },
+      summarizationConfig: {
+        reserveRatio: 0.03,
+        provider: 'anthropic',
+        model: 'claude',
+      },
     });
     // Math.round(200000 * 0.97) = 194000, min(200000, 194000) = 194000
     expect(agents[0].maxContextTokens).toBe(194_000);
@@ -135,7 +139,11 @@ describe('reserveRatio', () => {
   it('never exceeds user-configured maxContextTokens even when ratio computes higher', async () => {
     const agents = await callAndCapture({
       agents: [makeAgent({ baseContextTokens: 200_000, maxContextTokens: 50_000 })],
-      summarizationConfig: { reserveRatio: 0.03, provider: 'anthropic', model: 'claude' },
+      summarizationConfig: {
+        reserveRatio: 0.03,
+        provider: 'anthropic',
+        model: 'claude',
+      },
     });
     // Math.round(200000 * 0.97) = 194000, but min(50000, 194000) = 50000
     expect(agents[0].maxContextTokens).toBe(50_000);
@@ -152,7 +160,11 @@ describe('reserveRatio', () => {
   it('falls back to maxContextTokens when ratio is 0', async () => {
     const agents = await callAndCapture({
       agents: [makeAgent({ maxContextTokens: 100_000, baseContextTokens: 200_000 })],
-      summarizationConfig: { reserveRatio: 0, provider: 'anthropic', model: 'claude' },
+      summarizationConfig: {
+        reserveRatio: 0,
+        provider: 'anthropic',
+        model: 'claude',
+      },
     });
     expect(agents[0].maxContextTokens).toBe(100_000);
   });
@@ -160,7 +172,11 @@ describe('reserveRatio', () => {
   it('falls back to maxContextTokens when ratio is 1', async () => {
     const agents = await callAndCapture({
       agents: [makeAgent({ maxContextTokens: 100_000, baseContextTokens: 200_000 })],
-      summarizationConfig: { reserveRatio: 1, provider: 'anthropic', model: 'claude' },
+      summarizationConfig: {
+        reserveRatio: 1,
+        provider: 'anthropic',
+        model: 'claude',
+      },
     });
     expect(agents[0].maxContextTokens).toBe(100_000);
   });
@@ -168,7 +184,11 @@ describe('reserveRatio', () => {
   it('falls back to maxContextTokens when baseContextTokens is undefined', async () => {
     const agents = await callAndCapture({
       agents: [makeAgent({ maxContextTokens: 100_000 })],
-      summarizationConfig: { reserveRatio: 0.05, provider: 'anthropic', model: 'claude' },
+      summarizationConfig: {
+        reserveRatio: 0.05,
+        provider: 'anthropic',
+        model: 'claude',
+      },
     });
     expect(agents[0].maxContextTokens).toBe(100_000);
   });
@@ -176,7 +196,11 @@ describe('reserveRatio', () => {
   it('clamps to 1024 minimum but still capped at maxContextTokens', async () => {
     const agents = await callAndCapture({
       agents: [makeAgent({ baseContextTokens: 500, maxContextTokens: 2000 })],
-      summarizationConfig: { reserveRatio: 0.99, provider: 'anthropic', model: 'claude' },
+      summarizationConfig: {
+        reserveRatio: 0.99,
+        provider: 'anthropic',
+        model: 'claude',
+      },
     });
     // Math.round(500 * 0.01) = 5 → clamped to 1024, min(2000, 1024) = 1024
     expect(agents[0].maxContextTokens).toBe(1024);
@@ -326,8 +350,16 @@ describe('multi-agent + per-agent overrides', () => {
   it('different agents get different effectiveMaxContextTokens', async () => {
     const agents = await callAndCapture({
       agents: [
-        makeAgent({ id: 'agent_1', baseContextTokens: 200_000, maxContextTokens: 100_000 }),
-        makeAgent({ id: 'agent_2', baseContextTokens: 100_000, maxContextTokens: 50_000 }),
+        makeAgent({
+          id: 'agent_1',
+          baseContextTokens: 200_000,
+          maxContextTokens: 100_000,
+        }),
+        makeAgent({
+          id: 'agent_2',
+          baseContextTokens: 100_000,
+          maxContextTokens: 50_000,
+        }),
       ],
       summarizationConfig: {
         reserveRatio: 0.1,
@@ -367,7 +399,11 @@ describe('initialSummary passthrough', () => {
 describe('custom-endpoint provider resolution', () => {
   it('remaps a custom endpoint name to openAI and injects baseURL/apiKey', async () => {
     const appConfig = makeAppConfig([
-      { name: 'Ollama', baseURL: 'http://localhost:11434/v1', apiKey: 'ollama-key' },
+      {
+        name: 'Ollama',
+        baseURL: 'http://localhost:11434/v1',
+        apiKey: 'ollama-key',
+      },
     ]);
     const agents = await callAndCapture({
       summarizationConfig: { provider: 'Ollama', model: 'llama3' },
@@ -387,7 +423,11 @@ describe('custom-endpoint provider resolution', () => {
 
   it('matches Ollama case-insensitively (via normalizeEndpointName)', async () => {
     const appConfig = makeAppConfig([
-      { name: 'Ollama', baseURL: 'http://localhost:11434/v1', apiKey: 'ollama-key' },
+      {
+        name: 'Ollama',
+        baseURL: 'http://localhost:11434/v1',
+        apiKey: 'ollama-key',
+      },
     ]);
     const agents = await callAndCapture({
       summarizationConfig: { provider: 'ollama', model: 'llama3' },
@@ -401,7 +441,11 @@ describe('custom-endpoint provider resolution', () => {
 
   it('resolves non-Ollama endpoints on exact-case match', async () => {
     const appConfig = makeAppConfig([
-      { name: 'Together', baseURL: 'https://api.together.ai/v1', apiKey: 'together-key' },
+      {
+        name: 'Together',
+        baseURL: 'https://api.together.ai/v1',
+        apiKey: 'together-key',
+      },
     ]);
     const agents = await callAndCapture({
       summarizationConfig: { provider: 'Together', model: 'mixtral' },
@@ -412,7 +456,11 @@ describe('custom-endpoint provider resolution', () => {
 
   it('does not match non-Ollama endpoints with different casing', async () => {
     const appConfig = makeAppConfig([
-      { name: 'Together', baseURL: 'https://api.together.ai/v1', apiKey: 'together-key' },
+      {
+        name: 'Together',
+        baseURL: 'https://api.together.ai/v1',
+        apiKey: 'together-key',
+      },
     ]);
     const agents = await callAndCapture({
       summarizationConfig: { provider: 'together', model: 'mixtral' },
@@ -447,7 +495,11 @@ describe('custom-endpoint provider resolution', () => {
 
   it('leaves unrecognized names untouched when no matching custom endpoint exists', async () => {
     const appConfig = makeAppConfig([
-      { name: 'Ollama', baseURL: 'http://localhost:11434/v1', apiKey: 'ollama-key' },
+      {
+        name: 'Ollama',
+        baseURL: 'http://localhost:11434/v1',
+        apiKey: 'ollama-key',
+      },
     ]);
     const agents = await callAndCapture({
       summarizationConfig: { provider: 'nonexistent', model: 'foo' },
@@ -484,7 +536,11 @@ describe('custom-endpoint provider resolution', () => {
 
   it('keeps raw provider when apiKey is marked user_provided', async () => {
     const appConfig = makeAppConfig([
-      { name: 'Ollama', baseURL: 'http://localhost:11434/v1', apiKey: 'user_provided' },
+      {
+        name: 'Ollama',
+        baseURL: 'http://localhost:11434/v1',
+        apiKey: 'user_provided',
+      },
     ]);
     const agents = await callAndCapture({
       summarizationConfig: { provider: 'Ollama', model: 'llama3' },
@@ -543,7 +599,11 @@ describe('custom-endpoint provider resolution', () => {
 
   it('merges overrides alongside user-supplied parameters', async () => {
     const appConfig = makeAppConfig([
-      { name: 'Ollama', baseURL: 'http://localhost:11434/v1', apiKey: 'ollama-key' },
+      {
+        name: 'Ollama',
+        baseURL: 'http://localhost:11434/v1',
+        apiKey: 'ollama-key',
+      },
     ]);
     const agents = await callAndCapture({
       summarizationConfig: {
@@ -622,7 +682,11 @@ describe('custom-endpoint provider resolution', () => {
     process.env.PROXY = 'http://proxy.internal:3128';
     try {
       const appConfig = makeAppConfig([
-        { name: 'Ollama', baseURL: 'http://localhost:11434/v1', apiKey: 'ollama-key' },
+        {
+          name: 'Ollama',
+          baseURL: 'http://localhost:11434/v1',
+          apiKey: 'ollama-key',
+        },
       ]);
       const agents = await callAndCapture({
         summarizationConfig: { provider: 'Ollama', model: 'llama3' },
@@ -651,7 +715,11 @@ describe('custom-endpoint provider resolution', () => {
      * (dynamic headers, proxy/fetch options) with yaml-only config.
      */
     const appConfig = makeAppConfig([
-      { name: 'Ollama', baseURL: 'http://localhost:11434/v1', apiKey: 'ollama-key' },
+      {
+        name: 'Ollama',
+        baseURL: 'http://localhost:11434/v1',
+        apiKey: 'ollama-key',
+      },
     ]);
     const agents = await callAndCapture({
       agents: [makeAgent({ provider: 'openAI', endpoint: 'Ollama' })],
@@ -667,7 +735,11 @@ describe('custom-endpoint provider resolution', () => {
 
   it('skips overrides when endpoints differ only by case for Ollama', async () => {
     const appConfig = makeAppConfig([
-      { name: 'Ollama', baseURL: 'http://localhost:11434/v1', apiKey: 'ollama-key' },
+      {
+        name: 'Ollama',
+        baseURL: 'http://localhost:11434/v1',
+        apiKey: 'ollama-key',
+      },
     ]);
     const agents = await callAndCapture({
       agents: [makeAgent({ provider: 'openAI', endpoint: 'Ollama' })],
@@ -681,8 +753,16 @@ describe('custom-endpoint provider resolution', () => {
 
   it('applies overrides when summarization targets a different endpoint than the agent', async () => {
     const appConfig = makeAppConfig([
-      { name: 'Ollama', baseURL: 'http://localhost:11434/v1', apiKey: 'ollama-key' },
-      { name: 'Together', baseURL: 'https://api.together.ai/v1', apiKey: 'together-key' },
+      {
+        name: 'Ollama',
+        baseURL: 'http://localhost:11434/v1',
+        apiKey: 'ollama-key',
+      },
+      {
+        name: 'Together',
+        baseURL: 'https://api.together.ai/v1',
+        apiKey: 'together-key',
+      },
     ]);
     const agents = await callAndCapture({
       agents: [makeAgent({ provider: 'openAI', endpoint: 'Ollama' })],
@@ -742,7 +822,11 @@ describe('custom-endpoint provider resolution', () => {
      * must override the baseURL resolved from the endpoint config.
      */
     const appConfig = makeAppConfig([
-      { name: 'Ollama', baseURL: 'http://localhost:11434/v1', apiKey: 'ollama-key' },
+      {
+        name: 'Ollama',
+        baseURL: 'http://localhost:11434/v1',
+        apiKey: 'ollama-key',
+      },
     ]);
     const parameters: TestSummarizationParameters = {
       configuration: { baseURL: 'https://user-override.example.com/v1' },
@@ -770,7 +854,11 @@ describe('custom-endpoint provider resolution', () => {
      * defaults injected from the custom endpoint config.
      */
     const appConfig = makeAppConfig([
-      { name: 'Ollama', baseURL: 'http://localhost:11434/v1', apiKey: 'ollama-key' },
+      {
+        name: 'Ollama',
+        baseURL: 'http://localhost:11434/v1',
+        apiKey: 'ollama-key',
+      },
     ]);
     const agents = await callAndCapture({
       summarizationConfig: {
@@ -790,7 +878,11 @@ describe('custom-endpoint provider resolution', () => {
 
   it('does not leak model/modelName from getOpenAIConfig defaults', async () => {
     const appConfig = makeAppConfig([
-      { name: 'Ollama', baseURL: 'http://localhost:11434/v1', apiKey: 'ollama-key' },
+      {
+        name: 'Ollama',
+        baseURL: 'http://localhost:11434/v1',
+        apiKey: 'ollama-key',
+      },
     ]);
     const agents = await callAndCapture({
       summarizationConfig: { provider: 'Ollama', model: 'llama3' },

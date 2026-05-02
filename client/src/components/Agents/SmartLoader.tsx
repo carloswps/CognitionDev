@@ -1,5 +1,6 @@
-import { AgentListResponse } from 'librechat-data-provider';
-import React, { useState, useEffect } from 'react';
+import type { AgentListResponse } from 'librechat-data-provider';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 interface SmartLoaderProps {
   /** Whether the content is currently loading */

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
 import { useMultiSearch } from '@librechat/client';
-import { Root, Trigger, Content, Portal } from '@radix-ui/react-popover';
+import { Content, Portal, Root, Trigger } from '@radix-ui/react-popover';
+import type React from 'react';
+import { useState } from 'react';
 import type { Option } from '~/common';
 import MenuItem from '~/components/Chat/Menus/UI/MenuItem';
 import { useLocalize } from '~/hooks';

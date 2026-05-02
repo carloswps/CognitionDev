@@ -1,11 +1,23 @@
+import type { TConfig, TEndpointsConfig } from 'librechat-data-provider';
 import { EModelEndpoint, getEndpointField } from 'librechat-data-provider';
-import type { TEndpointsConfig, TConfig } from 'librechat-data-provider';
 import { getAvailableEndpoints, getEndpointsFilter, mapEndpoints } from './endpoints';
 
 const mockEndpointsConfig: TEndpointsConfig = {
-  [EModelEndpoint.openAI]: { type: undefined, iconURL: 'openAI_icon.png', order: 0 },
-  [EModelEndpoint.google]: { type: undefined, iconURL: 'google_icon.png', order: 1 },
-  Mistral: { type: EModelEndpoint.custom, iconURL: 'custom_icon.png', order: 2 },
+  [EModelEndpoint.openAI]: {
+    type: undefined,
+    iconURL: 'openAI_icon.png',
+    order: 0,
+  },
+  [EModelEndpoint.google]: {
+    type: undefined,
+    iconURL: 'google_icon.png',
+    order: 1,
+  },
+  Mistral: {
+    type: EModelEndpoint.custom,
+    iconURL: 'custom_icon.png',
+    order: 2,
+  },
 };
 
 describe('getEndpointField', () => {

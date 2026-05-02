@@ -126,7 +126,10 @@ const processDeleteRequest = async ({ req, files }) => {
   const promises = [];
 
   /** @type {Record<string, OpenAI | undefined>} */
-  const client = { [FileSources.openai]: undefined, [FileSources.azure]: undefined };
+  const client = {
+    [FileSources.openai]: undefined,
+    [FileSources.azure]: undefined,
+  };
   const initializeClients = async () => {
     if (appConfig.endpoints?.[EModelEndpoint.assistants]) {
       const openAIClient = await getOpenAIClient({
@@ -205,7 +208,14 @@ const processDeleteRequest = async ({ req, files }) => {
     }
 
     deletionMethods[source] = deleteFile;
-    enqueueDeleteOperation({ req, file, deleteFile, promises, resolvedFileIds, openai });
+    enqueueDeleteOperation({
+      req,
+      file,
+      deleteFile,
+      promises,
+      resolvedFileIds,
+      openai,
+    });
   }
 
   if (agentFiles.length > 0) {
@@ -222,7 +232,9 @@ const processDeleteRequest = async ({ req, files }) => {
 
   if (resolvedFileIds.length > 0) {
     try {
-      await db.removeAgentResourceFilesFromAllAgents({ file_ids: resolvedFileIds });
+      await db.removeAgentResourceFilesFromAllAgents({
+        file_ids: resolvedFileIds,
+      });
     } catch (error) {
       logger.error('Error cleaning up orphaned agent file references', error);
     }
@@ -257,7 +269,10 @@ const processFileURL = async ({ fileStrategy, userId, URL, fileName, basePath, c
       type = '',
       dimensions = {},
     } = (await saveURL({ userId, URL, fileName, basePath })) || {};
-    const filepath = await getFileURL({ fileName: `${userId}/${fileName}`, basePath });
+    const filepath = await getFileURL({
+      fileName: `${userId}/${fileName}`,
+      basePath,
+    });
     return await db.createFile(
       {
         user: userId,
@@ -479,7 +494,7 @@ const processAgentFileUpload = async ({ req, res, metadata }) => {
   const appConfig = req.config;
   const { agent_id, tool_resource, file_id, temp_file_id = null } = metadata;
 
-  let messageAttachment = !!metadata.message_file;
+  const messageAttachment = !!metadata.message_file;
 
   if (agent_id && !tool_resource && !messageAttachment) {
     throw new Error('No tool resource provided for agent file upload');
@@ -503,7 +518,10 @@ const processAgentFileUpload = async ({ req, res, metadata }) => {
       throw new Error('Code execution is not enabled for Agents');
     }
     const { handleFileUpload: uploadCodeEnvFile } = getStrategyFunctions(FileSources.execute_code);
-    const result = await loadAuthValues({ userId: req.user.id, authFields: [EnvVar.CODE_API_KEY] });
+    const result = await loadAuthValues({
+      userId: req.user.id,
+      authFields: [EnvVar.CODE_API_KEY],
+    });
     const stream = fs.createReadStream(file.path);
     const fileIdentifier = await uploadCodeEnvFile({
       req,
@@ -560,9 +578,10 @@ const processAgentFileUpload = async ({ req, res, metadata }) => {
         });
       }
       const result = await db.createFile(fileInfo, true);
-      return res
-        .status(200)
-        .json({ message: 'Agent file uploaded and processed successfully', ...result });
+      return res.status(200).json({
+        message: 'Agent file uploaded and processed successfully',
+        ...result,
+      });
     };
 
     const fileConfig = mergeFileConfig(appConfig.fileConfig);
@@ -729,7 +748,10 @@ const processAgentFileUpload = async ({ req, res, metadata }) => {
 
   const result = await db.createFile(fileInfo, true);
 
-  res.status(200).json({ message: 'Agent file uploaded and processed successfully', ...result });
+  res.status(200).json({
+    message: 'Agent file uploaded and processed successfully',
+    ...result,
+  });
 };
 
 /**
@@ -841,8 +863,13 @@ async function retrieveAndProcessFile({
     return null;
   }
 
-  let basename = _basename;
-  const processArgs = { openai, file_id, filename: basename, userId: client.req.user.id };
+  const basename = _basename;
+  const processArgs = {
+    openai,
+    file_id,
+    filename: basename,
+    userId: client.req.user.id,
+  };
 
   // If no basename provided, return only the file metadata
   if (!basename) {

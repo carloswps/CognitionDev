@@ -1,13 +1,14 @@
-import React, { useMemo, useState } from 'react';
 import * as Ariakit from '@ariakit/react';
-import { useTranslation } from 'react-i18next';
+import type { MenuItemProps } from '@librechat/client';
 import { DropdownPopup } from '@librechat/client';
 import { LocalStorageKeys } from 'librechat-data-provider';
-import { useFormContext, Controller } from 'react-hook-form';
-import type { MenuItemProps } from '@librechat/client';
+import type React from 'react';
 import type { ReactNode } from 'react';
-import { usePromptGroupsContext } from '~/Providers';
+import { useMemo, useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useCategories } from '~/hooks';
+import { usePromptGroupsContext } from '~/Providers';
 import { cn } from '~/utils';
 
 interface CategorySelectorProps {

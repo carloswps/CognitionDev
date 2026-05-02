@@ -6,17 +6,17 @@
  */
 import type { Response as ServerResponse } from 'express';
 import type {
+  FunctionCallItem,
+  FunctionCallOutputItem,
+  ItemStatus,
+  MessageItem,
+  OutputItem,
+  OutputTextContent,
+  ReasoningItem,
+  ReasoningTextContent,
   Response,
   ResponseContext,
   ResponseEvent,
-  OutputItem,
-  MessageItem,
-  FunctionCallItem,
-  FunctionCallOutputItem,
-  ReasoningItem,
-  OutputTextContent,
-  ReasoningTextContent,
-  ItemStatus,
   ResponseStatus,
 } from './types';
 
@@ -158,7 +158,9 @@ export function buildResponse(
           output_tokens: tracker.usage.outputTokens,
           total_tokens: tracker.usage.inputTokens + tracker.usage.outputTokens,
           input_tokens_details: { cached_tokens: tracker.usage.cachedTokens },
-          output_tokens_details: { reasoning_tokens: tracker.usage.reasoningTokens },
+          output_tokens_details: {
+            reasoning_tokens: tracker.usage.reasoningTokens,
+          },
         }
       : null,
     max_output_tokens: null,

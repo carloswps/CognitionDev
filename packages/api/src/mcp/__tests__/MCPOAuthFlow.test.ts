@@ -6,13 +6,13 @@
  */
 
 import { createHash } from 'crypto';
-import { Keyv } from 'keyv';
+import type { Keyv } from 'keyv';
 import { TokenExchangeMethodEnum } from 'librechat-data-provider';
-import { MCPTokenStorage, MCPOAuthHandler } from '~/mcp/oauth';
 import { FlowStateManager } from '~/flow/manager';
-import { createOAuthMCPServer, MockKeyv, InMemoryTokenStore } from './helpers/oauthTestServer';
-import type { OAuthTestServer } from './helpers/oauthTestServer';
 import type { MCPOAuthTokens } from '~/mcp/oauth';
+import { MCPOAuthHandler, MCPTokenStorage } from '~/mcp/oauth';
+import type { OAuthTestServer } from './helpers/oauthTestServer';
+import { createOAuthMCPServer, InMemoryTokenStore, MockKeyv } from './helpers/oauthTestServer';
 
 jest.mock('@librechat/data-schemas', () => ({
   logger: {
@@ -200,7 +200,9 @@ describe('MCP OAuth Flow — Real HTTP Server', () => {
       });
       try {
         const res = await fetch(`${noRefreshServer.url}.well-known/oauth-authorization-server`);
-        const metadata = (await res.json()) as { grant_types_supported: string[] };
+        const metadata = (await res.json()) as {
+          grant_types_supported: string[];
+        };
         expect(metadata.grant_types_supported).not.toContain('refresh_token');
       } finally {
         await noRefreshServer.close();

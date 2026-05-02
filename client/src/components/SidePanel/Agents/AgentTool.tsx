@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { useUpdateUserPluginsMutation } from 'librechat-data-provider/react-query';
 import {
-  OGDialog,
-  TrashIcon,
   CircleHelpIcon,
-  useToastContext,
-  OGDialogTrigger,
+  OGDialog,
   OGDialogTemplate,
+  OGDialogTrigger,
+  TrashIcon,
+  useToastContext,
 } from '@librechat/client';
 import type { TPlugin } from 'librechat-data-provider';
+import { useUpdateUserPluginsMutation } from 'librechat-data-provider/react-query';
+import React, { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import type { AgentForm } from '~/common';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
@@ -43,15 +43,26 @@ export default function AgentTool({
   const removeTool = (toolId: string) => {
     if (toolId) {
       updateUserPlugins.mutate(
-        { pluginKey: toolId, action: 'uninstall', auth: {}, isEntityTool: true },
+        {
+          pluginKey: toolId,
+          action: 'uninstall',
+          auth: {},
+          isEntityTool: true,
+        },
         {
           onError: (error: unknown) => {
-            showToast({ message: `Error while deleting the tool: ${error}`, status: 'error' });
+            showToast({
+              message: `Error while deleting the tool: ${error}`,
+              status: 'error',
+            });
           },
           onSuccess: () => {
             const remainingToolIds = getValues('tools')?.filter((id: string) => id !== toolId);
             setValue('tools', remainingToolIds);
-            showToast({ message: 'Tool deleted successfully', status: 'success' });
+            showToast({
+              message: 'Tool deleted successfully',
+              status: 'success',
+            });
           },
         },
       );
@@ -86,7 +97,11 @@ export default function AgentTool({
           )}
           <div
             className="grow px-2 py-1.5"
-            style={{ textOverflow: 'ellipsis', wordBreak: 'break-all', overflow: 'hidden' }}
+            style={{
+              textOverflow: 'ellipsis',
+              wordBreak: 'break-all',
+              overflow: 'hidden',
+            }}
           >
             {currentTool.name}
           </div>

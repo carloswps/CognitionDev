@@ -6,30 +6,24 @@ import { shouldResizeImage, supportsClientResize } from '../imageResize';
 
 // Mock browser APIs for testing
 Object.defineProperty(global, 'HTMLCanvasElement', {
-  value: function () {
-    return {
-      getContext: () => ({
-        drawImage: jest.fn(),
-      }),
-      toBlob: jest.fn(),
-    };
-  },
+  value: () => ({
+    getContext: () => ({
+      drawImage: jest.fn(),
+    }),
+    toBlob: jest.fn(),
+  }),
   writable: true,
 });
 
 Object.defineProperty(global, 'FileReader', {
-  value: function () {
-    return {
-      readAsDataURL: jest.fn(),
-    };
-  },
+  value: () => ({
+    readAsDataURL: jest.fn(),
+  }),
   writable: true,
 });
 
 Object.defineProperty(global, 'Image', {
-  value: function () {
-    return {};
-  },
+  value: () => ({}),
   writable: true,
 });
 
@@ -42,7 +36,7 @@ describe('imageResize utility', () => {
 
     it('should return false when HTMLCanvasElement is not available', () => {
       const originalCanvas = global.HTMLCanvasElement;
-      // @ts-ignore
+      // @ts-expect-error
       delete global.HTMLCanvasElement;
 
       const result = supportsClientResize();

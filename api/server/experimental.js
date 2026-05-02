@@ -224,7 +224,11 @@ if (cluster.isMaster) {
     const appConfig = await getAppConfig();
     initializeFileStorage(appConfig);
     await performStartupChecks(appConfig);
-    await updateInterfacePerms({ appConfig, getRoleByName, updateAccessPermissions });
+    await updateInterfacePerms({
+      appConfig,
+      getRoleByName,
+      updateAccessPermissions,
+    });
 
     /** Load index.html for SPA serving */
     const indexPath = path.join(appConfig.paths.dist, 'index.html');
@@ -340,7 +344,7 @@ if (cluster.isMaster) {
 
       const lang = req.cookies.lang || req.headers['accept-language']?.split(',')[0] || 'en-US';
       const saneLang = lang.replace(/"/g, '&quot;');
-      let updatedIndexHtml = indexHTML.replace(/lang="en-US"/g, `lang="${saneLang}"`);
+      const updatedIndexHtml = indexHTML.replace(/lang="en-US"/g, `lang="${saneLang}"`);
 
       res.type('html');
       res.send(updatedIndexHtml);
@@ -477,5 +481,7 @@ process.on('unhandledRejection', (reason) => {
     });
     return;
   }
-  logger.error('Unhandled promise rejection. The app will continue running.', { reason });
+  logger.error('Unhandled promise rejection. The app will continue running.', {
+    reason,
+  });
 });

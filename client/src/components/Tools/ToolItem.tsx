@@ -1,5 +1,5 @@
-import { XCircle, PlusCircleIcon, Wrench } from 'lucide-react';
-import type { TPlugin, AgentToolType } from 'librechat-data-provider';
+import type { AgentToolType, TPlugin } from 'librechat-data-provider';
+import { PlusCircleIcon, Wrench, XCircle } from 'lucide-react';
 import { useLocalize } from '~/hooks';
 
 type ToolItemProps = {

@@ -1,6 +1,6 @@
-import React from 'react';
 import { Button, TrashIcon } from '@librechat/client';
 import type { TFile } from 'librechat-data-provider';
+import React from 'react';
 
 type FileListItemProps = {
   file: TFile;

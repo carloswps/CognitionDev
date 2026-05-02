@@ -1,13 +1,14 @@
-import { useForm } from 'react-hook-form';
-import React, { useContext, useState } from 'react';
+import { Button, isDark, Spinner, ThemeContext } from '@librechat/client';
 import { Turnstile } from '@marsidev/react-turnstile';
-import { ThemeContext, Spinner, Button, isDark } from '@librechat/client';
-import { useNavigate, useOutletContext, useLocation } from 'react-router-dom';
-import { useRegisterUserMutation } from 'librechat-data-provider/react-query';
+import type { TError, TRegisterUser } from 'librechat-data-provider';
 import { loginPage } from 'librechat-data-provider';
-import type { TRegisterUser, TError } from 'librechat-data-provider';
+import { useRegisterUserMutation } from 'librechat-data-provider/react-query';
+import type React from 'react';
+import { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import type { TLoginLayoutContext } from '~/common';
-import { useLocalize, TranslationKeys } from '~/hooks';
+import { type TranslationKeys, useLocalize } from '~/hooks';
 import { ErrorMessage } from './ErrorMessage';
 
 const Registration: React.FC = () => {
@@ -114,7 +115,9 @@ const Registration: React.FC = () => {
               : 'com_auth_registration_success_insecure',
           ) +
             ' ' +
-            localize('com_auth_email_verification_redirecting', { 0: countdown.toString() })}
+            localize('com_auth_email_verification_redirecting', {
+              0: countdown.toString(),
+            })}
         </div>
       )}
       {!startupConfigError && !isFetching && (

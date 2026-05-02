@@ -1,25 +1,25 @@
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
-import {
-  Login,
-  VerifyEmail,
-  Registration,
-  ResetPassword,
-  ApiErrorWatcher,
-  TwoFactorScreen,
-  RequestPasswordReset,
-} from '~/components/Auth';
-import { MarketplaceProvider } from '~/components/Agents/MarketplaceContext';
 import AgentMarketplace from '~/components/Agents/Marketplace';
-import { OAuthSuccess, OAuthError } from '~/components/OAuth';
+import { MarketplaceProvider } from '~/components/Agents/MarketplaceContext';
+import {
+  ApiErrorWatcher,
+  Login,
+  Registration,
+  RequestPasswordReset,
+  ResetPassword,
+  TwoFactorScreen,
+  VerifyEmail,
+} from '~/components/Auth';
+import { OAuthError, OAuthSuccess } from '~/components/OAuth';
 import { AuthContextProvider } from '~/hooks/AuthContext';
-import RouteErrorBoundary from './RouteErrorBoundary';
-import StartupLayout from './Layouts/Startup';
-import LoginLayout from './Layouts/Login';
-import dashboardRoutes from './Dashboard';
-import ShareRoute from './ShareRoute';
 import ChatRoute from './ChatRoute';
-import Search from './Search';
+import dashboardRoutes from './Dashboard';
+import LoginLayout from './Layouts/Login';
+import StartupLayout from './Layouts/Startup';
 import Root from './Root';
+import RouteErrorBoundary from './RouteErrorBoundary';
+import Search from './Search';
+import ShareRoute from './ShareRoute';
 
 const AuthLayout = () => (
   <AuthContextProvider>

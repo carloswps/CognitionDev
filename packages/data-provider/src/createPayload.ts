@@ -1,6 +1,6 @@
-import type * as t from './types';
 import { EndpointURLs } from './config';
 import * as s from './schemas';
+import type * as t from './types';
 
 export default function createPayload(submission: t.TSubmission) {
   const {

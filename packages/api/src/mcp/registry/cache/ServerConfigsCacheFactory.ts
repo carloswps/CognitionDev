@@ -1,7 +1,7 @@
-import { ServerConfigsCacheRedisAggregateKey } from './ServerConfigsCacheRedisAggregateKey';
+import { cacheConfig } from '~/cache';
 import { ServerConfigsCacheInMemory } from './ServerConfigsCacheInMemory';
 import { ServerConfigsCacheRedis } from './ServerConfigsCacheRedis';
-import { cacheConfig } from '~/cache';
+import { ServerConfigsCacheRedisAggregateKey } from './ServerConfigsCacheRedisAggregateKey';
 
 export type ServerConfigsCache =
   | ServerConfigsCacheInMemory

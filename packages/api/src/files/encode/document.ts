@@ -1,20 +1,20 @@
 import { Providers } from '@librechat/agents';
-import {
-  isOpenAILikeProvider,
-  isBedrockDocumentType,
-  bedrockDocumentFormats,
-  isDocumentSupportedProvider,
-} from 'librechat-data-provider';
 import type { IMongoFile } from '@librechat/data-schemas';
+import {
+  bedrockDocumentFormats,
+  isBedrockDocumentType,
+  isDocumentSupportedProvider,
+  isOpenAILikeProvider,
+} from 'librechat-data-provider';
+import { validateBedrockDocument, validatePdf } from '~/files/validation';
 import type {
-  DocumentBlock,
   AnthropicDocumentBlock,
-  StrategyFunctions,
+  DocumentBlock,
   DocumentResult,
   ServerRequest,
+  StrategyFunctions,
 } from '~/types';
-import { validatePdf, validateBedrockDocument } from '~/files/validation';
-import { getFileStream, getConfiguredFileSizeLimit } from './utils';
+import { getConfiguredFileSizeLimit, getFileStream } from './utils';
 
 const ANTHROPIC_CITATION_TYPES = new Set([
   'application/pdf',
@@ -99,7 +99,12 @@ function formatDocumentBlock(
 export async function encodeAndFormatDocuments(
   req: ServerRequest,
   files: IMongoFile[],
-  params: { provider: Providers; endpoint?: string; useResponsesApi?: boolean; model?: string },
+  params: {
+    provider: Providers;
+    endpoint?: string;
+    useResponsesApi?: boolean;
+    model?: string;
+  },
   getStrategyFunctions: (source: string) => StrategyFunctions,
 ): Promise<DocumentResult> {
   const { provider, endpoint, useResponsesApi, model } = params;
@@ -125,7 +130,10 @@ export async function encodeAndFormatDocuments(
     return result;
   }
 
-  const configuredFileSizeLimit = getConfiguredFileSizeLimit(req, { provider, endpoint });
+  const configuredFileSizeLimit = getConfiguredFileSizeLimit(req, {
+    provider,
+    endpoint,
+  });
 
   const results = await Promise.allSettled(
     processableFiles.map((file) => {

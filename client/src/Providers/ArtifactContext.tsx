@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode, useCallback, useRef } from 'react';
+import { createContext, type ReactNode, useCallback, useContext, useRef } from 'react';
 
 type TArtifactContext = {
   getNextIndex: (skip: boolean) => number;

@@ -1,6 +1,6 @@
 export * from './cacheConfig';
-export * from './redisClients';
+export * from './cacheFactory';
 export * from './keyvFiles';
 export { default as keyvMongo } from './keyvMongo';
-export * from './cacheFactory';
+export * from './redisClients';
 export * from './redisUtils';

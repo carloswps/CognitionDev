@@ -1,6 +1,6 @@
 import { useRecoilValue } from 'recoil';
-import { BrowserVoiceDropdown, ExternalVoiceDropdown } from '~/components/Audio/Voices';
 import { TTSEndpoints } from '~/common';
+import { BrowserVoiceDropdown, ExternalVoiceDropdown } from '~/components/Audio/Voices';
 import store from '~/store';
 
 const voiceDropdownComponentsMap = {

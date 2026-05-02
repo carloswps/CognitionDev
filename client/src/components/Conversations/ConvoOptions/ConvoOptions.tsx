@@ -1,24 +1,24 @@
-import { useState, useId, useRef, memo, useCallback, useMemo } from 'react';
 import * as Ariakit from '@ariakit/react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { QueryKeys } from 'librechat-data-provider';
-import { useQueryClient } from '@tanstack/react-query';
 import { DropdownPopup, Spinner, useToastContext } from '@librechat/client';
-import { Ellipsis, Share2, CopyPlus, Archive, Pen, Trash } from 'lucide-react';
-import type { MouseEvent } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import type { TMessage } from 'librechat-data-provider';
+import { QueryKeys } from 'librechat-data-provider';
+import { Archive, CopyPlus, Ellipsis, Pen, Share2, Trash } from 'lucide-react';
+import type { MouseEvent } from 'react';
+import { memo, useCallback, useId, useMemo, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { NotificationSeverity } from '~/common';
 import {
-  useDuplicateConversationMutation,
-  useDeleteConversationMutation,
-  useGetStartupConfig,
   useArchiveConvoMutation,
+  useDeleteConversationMutation,
+  useDuplicateConversationMutation,
+  useGetStartupConfig,
 } from '~/data-provider';
 import { useLocalize, useNavigateToConvo, useNewConvo } from '~/hooks';
-import { NotificationSeverity } from '~/common';
 import { useChatContext } from '~/Providers';
+import { cn } from '~/utils';
 import DeleteButton from './DeleteButton';
 import ShareButton from './ShareButton';
-import { cn } from '~/utils';
 
 function ConvoOptions({
   conversationId,
@@ -126,7 +126,12 @@ function ConvoOptions({
       const messages = queryClient.getQueryData<TMessage[]>([QueryKeys.messages, convoId]);
       const thread_id = messages?.[messages.length - 1]?.thread_id;
       const endpoint = messages?.[messages.length - 1]?.endpoint;
-      deleteMutation.mutate({ conversationId: convoId, thread_id, endpoint, source: 'button' });
+      deleteMutation.mutate({
+        conversationId: convoId,
+        thread_id,
+        endpoint,
+        source: 'button',
+      });
     },
     [conversationId, deleteMutation, queryClient],
   );

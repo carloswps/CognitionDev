@@ -15,15 +15,15 @@
  * via active PENDING flow" describe block).
  */
 
-import { Keyv } from 'keyv';
-import { FlowStateManager, PENDING_STALE_MS } from '~/flow/manager';
 import type { Request, Response } from 'express';
+import type { Keyv } from 'keyv';
+import { FlowStateManager, PENDING_STALE_MS } from '~/flow/manager';
 import {
   generateOAuthCsrfToken,
-  OAUTH_SESSION_COOKIE,
-  validateOAuthSession,
   OAUTH_CSRF_COOKIE,
+  OAUTH_SESSION_COOKIE,
   validateOAuthCsrf,
+  validateOAuthSession,
 } from '~/oauth/csrf';
 import { MockKeyv } from './helpers/oauthTestServer';
 
@@ -90,7 +90,10 @@ describe('OAuth Callback CSRF Fallback', () => {
   beforeEach(() => {
     process.env.JWT_SECRET = 'test-secret-for-csrf';
     const store = new MockKeyv();
-    flowManager = new FlowStateManager(store as unknown as Keyv, { ttl: 300000, ci: true });
+    flowManager = new FlowStateManager(store as unknown as Keyv, {
+      ttl: 300000,
+      ci: true,
+    });
   });
 
   afterEach(() => {
@@ -134,7 +137,9 @@ describe('OAuth Callback CSRF Fallback', () => {
   describe('PENDING flow fallback (mechanism 3)', () => {
     it('should accept when a fresh PENDING flow exists and no cookies are present', async () => {
       const flowId = 'user1:test-server';
-      await flowManager.initFlow(flowId, 'mcp_oauth', { serverName: 'test-server' });
+      await flowManager.initFlow(flowId, 'mcp_oauth', {
+        serverName: 'test-server',
+      });
 
       const req = makeReq();
       const res = makeRes();
@@ -154,8 +159,12 @@ describe('OAuth Callback CSRF Fallback', () => {
 
     it('should reject when only a COMPLETED flow exists (not PENDING)', async () => {
       const flowId = 'user1:test-server';
-      await flowManager.initFlow(flowId, 'mcp_oauth', { serverName: 'test-server' });
-      await flowManager.completeFlow(flowId, 'mcp_oauth', { access_token: 'tok' } as never);
+      await flowManager.initFlow(flowId, 'mcp_oauth', {
+        serverName: 'test-server',
+      });
+      await flowManager.completeFlow(flowId, 'mcp_oauth', {
+        access_token: 'tok',
+      } as never);
 
       const req = makeReq();
       const res = makeRes();
@@ -178,12 +187,19 @@ describe('OAuth Callback CSRF Fallback', () => {
 
     it('should reject when PENDING flow is stale (older than PENDING_STALE_MS)', async () => {
       const flowId = 'user1:test-server';
-      await flowManager.initFlow(flowId, 'mcp_oauth', { serverName: 'test-server' });
+      await flowManager.initFlow(flowId, 'mcp_oauth', {
+        serverName: 'test-server',
+      });
 
       // Artificially age the flow past the staleness threshold
-      const store = (flowManager as unknown as { keyv: { get: (k: string) => Promise<unknown> } })
-        .keyv;
-      const flowState = (await store.get(`mcp_oauth:${flowId}`)) as { createdAt: number };
+      const store = (
+        flowManager as unknown as {
+          keyv: { get: (k: string) => Promise<unknown> };
+        }
+      ).keyv;
+      const flowState = (await store.get(`mcp_oauth:${flowId}`)) as {
+        createdAt: number;
+      };
       flowState.createdAt = Date.now() - PENDING_STALE_MS - 1000;
 
       const req = makeReq();
@@ -195,7 +211,9 @@ describe('OAuth Callback CSRF Fallback', () => {
 
     it('should accept PENDING flow that is just under the staleness threshold', async () => {
       const flowId = 'user1:test-server';
-      await flowManager.initFlow(flowId, 'mcp_oauth', { serverName: 'test-server' });
+      await flowManager.initFlow(flowId, 'mcp_oauth', {
+        serverName: 'test-server',
+      });
 
       // Flow was just created, well under threshold
       const req = makeReq();
@@ -209,7 +227,9 @@ describe('OAuth Callback CSRF Fallback', () => {
   describe('Priority ordering', () => {
     it('should prefer CSRF cookie over PENDING flow', async () => {
       const flowId = 'user1:test-server';
-      await flowManager.initFlow(flowId, 'mcp_oauth', { serverName: 'test-server' });
+      await flowManager.initFlow(flowId, 'mcp_oauth', {
+        serverName: 'test-server',
+      });
 
       const csrfToken = generateOAuthCsrfToken(flowId, 'test-secret-for-csrf');
       const req = makeReq({ [OAUTH_CSRF_COOKIE]: csrfToken });
@@ -221,7 +241,9 @@ describe('OAuth Callback CSRF Fallback', () => {
 
     it('should prefer session cookie over PENDING flow when CSRF is absent', async () => {
       const flowId = 'user1:test-server';
-      await flowManager.initFlow(flowId, 'mcp_oauth', { serverName: 'test-server' });
+      await flowManager.initFlow(flowId, 'mcp_oauth', {
+        serverName: 'test-server',
+      });
 
       const sessionToken = generateOAuthCsrfToken('user1', 'test-secret-for-csrf');
       const req = makeReq({ [OAUTH_SESSION_COOKIE]: sessionToken });

@@ -322,7 +322,10 @@ describe('Import Timestamp Ordering', () => {
                 id: 'msg-with-null-time',
                 author: { role: 'user' },
                 create_time: null, // Null timestamp
-                content: { content_type: 'text', parts: ['Message with null time'] },
+                content: {
+                  content_type: 'text',
+                  parts: ['Message with null time'],
+                },
                 metadata: {},
               },
               parent: 'root-node',
@@ -334,7 +337,10 @@ describe('Import Timestamp Ordering', () => {
                 id: 'msg-with-valid-time',
                 author: { role: 'assistant' },
                 create_time: convCreateTime + 10, // Valid timestamp
-                content: { content_type: 'text', parts: ['Message with valid time'] },
+                content: {
+                  content_type: 'text',
+                  parts: ['Message with valid time'],
+                },
                 metadata: {},
               },
               parent: 'msg-with-null-time',

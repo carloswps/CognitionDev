@@ -6,12 +6,16 @@ const mockIsEnabled = jest.fn();
 const mockGetOpenIdConfig = jest.fn();
 
 jest.mock('cookie');
-jest.mock('@librechat/api', () => ({ isEnabled: (...args) => mockIsEnabled(...args) }));
+jest.mock('@librechat/api', () => ({
+  isEnabled: (...args) => mockIsEnabled(...args),
+}));
 jest.mock('@librechat/data-schemas', () => ({ logger: mockLogger }));
 jest.mock('~/server/services/AuthService', () => ({
   logoutUser: (...args) => mockLogoutUser(...args),
 }));
-jest.mock('~/strategies', () => ({ getOpenIdConfig: () => mockGetOpenIdConfig() }));
+jest.mock('~/strategies', () => ({
+  getOpenIdConfig: () => mockGetOpenIdConfig(),
+}));
 
 const { logoutController } = require('./LogoutController');
 
@@ -49,7 +53,10 @@ beforeEach(() => {
     DOMAIN_CLIENT: 'https://app.example.com',
   };
   cookies.parse.mockReturnValue({ refreshToken: 'cookie-rt' });
-  mockLogoutUser.mockResolvedValue({ status: 200, message: 'Logout successful' });
+  mockLogoutUser.mockResolvedValue({
+    status: 200,
+    message: 'Logout successful',
+  });
   mockIsEnabled.mockReturnValue(true);
   mockGetOpenIdConfig.mockReturnValue({
     serverMetadata: () => ({
@@ -261,7 +268,12 @@ describe('LogoutController', () => {
     it('uses logout_hint when id_token makes URL exceed default limit (2000 chars)', async () => {
       const longIdToken = 'a'.repeat(3000);
       const req = buildReq({
-        user: { _id: 'user1', openidId: 'oid1', provider: 'openid', email: 'user@example.com' },
+        user: {
+          _id: 'user1',
+          openidId: 'oid1',
+          provider: 'openid',
+          email: 'user@example.com',
+        },
         session: {
           openidTokens: { refreshToken: 'srt', idToken: longIdToken },
           destroy: jest.fn(),
@@ -300,7 +312,12 @@ describe('LogoutController', () => {
       process.env.OPENID_MAX_LOGOUT_URL_LENGTH = '500';
       const mediumIdToken = 'a'.repeat(600);
       const req = buildReq({
-        user: { _id: 'user1', openidId: 'oid1', provider: 'openid', email: 'user@example.com' },
+        user: {
+          _id: 'user1',
+          openidId: 'oid1',
+          provider: 'openid',
+          email: 'user@example.com',
+        },
         session: {
           openidTokens: { refreshToken: 'srt', idToken: mediumIdToken },
           destroy: jest.fn(),
@@ -408,7 +425,12 @@ describe('LogoutController', () => {
       delete process.env.OPENID_CLIENT_ID;
       const longIdToken = 'a'.repeat(3000);
       const req = buildReq({
-        user: { _id: 'user1', openidId: 'oid1', provider: 'openid', email: 'user@example.com' },
+        user: {
+          _id: 'user1',
+          openidId: 'oid1',
+          provider: 'openid',
+          email: 'user@example.com',
+        },
         session: {
           openidTokens: { refreshToken: 'srt', idToken: longIdToken },
           destroy: jest.fn(),
@@ -434,7 +456,12 @@ describe('LogoutController', () => {
         openid_id_token: longCookieToken,
       });
       const req = buildReq({
-        user: { _id: 'user1', openidId: 'oid1', provider: 'openid', email: 'user@example.com' },
+        user: {
+          _id: 'user1',
+          openidId: 'oid1',
+          provider: 'openid',
+          email: 'user@example.com',
+        },
         session: { destroy: jest.fn() },
       });
       const res = buildRes();
@@ -477,7 +504,12 @@ describe('LogoutController', () => {
       const overToken = 'a'.repeat(tokenLength);
 
       const req = buildReq({
-        user: { _id: 'user1', openidId: 'oid1', provider: 'openid', email: 'user@example.com' },
+        user: {
+          _id: 'user1',
+          openidId: 'oid1',
+          provider: 'openid',
+          email: 'user@example.com',
+        },
         session: {
           openidTokens: { refreshToken: 'srt', idToken: overToken },
           destroy: jest.fn(),

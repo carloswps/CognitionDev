@@ -1,6 +1,6 @@
 import { logger } from '@librechat/data-schemas';
 import { CacheKeys, Time, ViolationTypes } from 'librechat-data-provider';
-import { standardCache, cacheConfig, ioredisClient } from '~/cache';
+import { cacheConfig, ioredisClient, standardCache } from '~/cache';
 import { isEnabled, math } from '~/utils';
 
 const { USE_REDIS } = cacheConfig;

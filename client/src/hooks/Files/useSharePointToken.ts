@@ -1,5 +1,5 @@
+import { useGetStartupConfig, useGraphTokenQuery } from '~/data-provider';
 import { useAuthContext } from '~/hooks/AuthContext';
-import { useGraphTokenQuery, useGetStartupConfig } from '~/data-provider';
 
 interface UseSharePointTokenProps {
   enabled?: boolean;

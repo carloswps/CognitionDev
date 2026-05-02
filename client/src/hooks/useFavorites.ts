@@ -1,10 +1,10 @@
-import { useEffect, useCallback, useRef } from 'react';
-import { useAtom } from 'jotai';
 import { useToastContext } from '@librechat/client';
-import type { Favorite } from '~/store/favorites';
+import { useAtom } from 'jotai';
+import { useCallback, useEffect, useRef } from 'react';
 import { useGetFavoritesQuery, useUpdateFavoritesMutation } from '~/data-provider';
-import { favoritesAtom } from '~/store';
 import { useLocalize } from '~/hooks';
+import { favoritesAtom } from '~/store';
+import type { Favorite } from '~/store/favorites';
 import { logger } from '~/utils';
 
 /** Maximum number of favorites allowed (must match backend MAX_FAVORITES) */
@@ -79,7 +79,9 @@ export default function useFavorites() {
         const { code, limit } = axiosError.response?.data ?? {};
 
         if (code === 'MAX_FAVORITES_EXCEEDED') {
-          return localize('com_ui_max_favorites_reached', { 0: String(limit ?? MAX_FAVORITES) });
+          return localize('com_ui_max_favorites_reached', {
+            0: String(limit ?? MAX_FAVORITES),
+          });
         }
       }
       return localize('com_ui_error');

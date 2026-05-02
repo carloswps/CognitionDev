@@ -1,8 +1,8 @@
-import React from 'react';
-import { Settings2 } from 'lucide-react';
 import { Button } from '@librechat/client';
-import { useLocalize } from '~/hooks';
+import { Settings2 } from 'lucide-react';
+import type React from 'react';
 import { Panel } from '~/common';
+import { useLocalize } from '~/hooks';
 
 interface AdvancedButtonProps {
   setActivePanel: (panel: Panel) => void;

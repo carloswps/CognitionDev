@@ -1231,8 +1231,16 @@ describe('getLLMConfig', () => {
 
       it('should respect model-specific maxOutputTokens for Claude 4.x models', () => {
         const testCases = [
-          { model: 'claude-sonnet-4-5', maxOutputTokens: 50000, expected: 50000 },
-          { model: 'claude-haiku-4-5', maxOutputTokens: 40000, expected: 40000 },
+          {
+            model: 'claude-sonnet-4-5',
+            maxOutputTokens: 50000,
+            expected: 50000,
+          },
+          {
+            model: 'claude-haiku-4-5',
+            maxOutputTokens: 40000,
+            expected: 40000,
+          },
           { model: 'claude-opus-4-1', maxOutputTokens: 20000, expected: 20000 },
         ];
 
@@ -1381,7 +1389,11 @@ describe('getLLMConfig', () => {
           { model: 'claude-3-opus', maxOutputTokens: 1, expected: 1 }, // min
           { model: 'claude-3-opus', maxOutputTokens: 8192, expected: 8192 }, // default for claude-3
           { model: 'claude-3-5-sonnet', maxOutputTokens: 1, expected: 1 }, // min
-          { model: 'claude-3-5-sonnet', maxOutputTokens: 200000, expected: 200000 }, // max for new
+          {
+            model: 'claude-3-5-sonnet',
+            maxOutputTokens: 200000,
+            expected: 200000,
+          }, // max for new
           { model: 'claude-3-7-sonnet', maxOutputTokens: 8192, expected: 8192 }, // default
         ];
 
@@ -1448,7 +1460,9 @@ describe('getLLMConfig', () => {
       });
 
       it('should handle topP/topK exclusion logic for Claude-3.7 models', () => {
-        const testCases: (t.AnthropicModelOptions & { shouldInclude: boolean })[] = [
+        const testCases: (t.AnthropicModelOptions & {
+          shouldInclude: boolean;
+        })[] = [
           // Claude-3.7 with thinking = true - should exclude topP/topK
           { model: 'claude-3-7-sonnet', thinking: true, shouldInclude: false },
           { model: 'claude-3.7-sonnet', thinking: true, shouldInclude: false },
@@ -1599,14 +1613,20 @@ describe('getLLMConfig', () => {
         const testCases = [
           { stop: [], expected: [] }, // empty array
           { stop: ['\\n'], expected: ['\\n'] }, // single item
-          { stop: ['\\n', 'Human:', 'Assistant:'], expected: ['\\n', 'Human:', 'Assistant:'] }, // multiple items
+          {
+            stop: ['\\n', 'Human:', 'Assistant:'],
+            expected: ['\\n', 'Human:', 'Assistant:'],
+          }, // multiple items
           { stop: null, expected: null }, // null
           { stop: undefined, expected: undefined }, // undefined
         ];
 
         testCases.forEach(({ stop, expected }) => {
           const result = getLLMConfig('test-key', {
-            modelOptions: { model: 'claude-3-opus', stop } as t.AnthropicModelOptions,
+            modelOptions: {
+              model: 'claude-3-opus',
+              stop,
+            } as t.AnthropicModelOptions,
           });
 
           if (expected === null || expected === undefined) {
@@ -1781,7 +1801,10 @@ describe('getLLMConfig', () => {
 
         testCases.forEach(({ stop, expected }) => {
           const result = getLLMConfig('test-key', {
-            modelOptions: { model: 'claude-3-opus', stop } as t.AnthropicModelOptions,
+            modelOptions: {
+              model: 'claude-3-opus',
+              stop,
+            } as t.AnthropicModelOptions,
           });
 
           expect(result.llmConfig.stopSequences).toEqual(expected);

@@ -1,16 +1,20 @@
 import type { GraphEdge } from 'librechat-data-provider';
 import {
+  collectEdgeAgentIds,
+  createEdgeCollector,
+  filterOrphanedEdges,
   getEdgeKey,
   getEdgeParticipants,
-  collectEdgeAgentIds,
-  filterOrphanedEdges,
-  createEdgeCollector,
 } from './edges';
 
 describe('edges utilities', () => {
   describe('getEdgeKey', () => {
     it('should create key from simple string from/to', () => {
-      const edge: GraphEdge = { from: 'agent_a', to: 'agent_b', edgeType: 'handoff' };
+      const edge: GraphEdge = {
+        from: 'agent_a',
+        to: 'agent_b',
+        edgeType: 'handoff',
+      };
       expect(getEdgeKey(edge)).toBe('agent_a=>agent_b::handoff');
     });
 
@@ -20,12 +24,20 @@ describe('edges utilities', () => {
     });
 
     it('should handle array from values by sorting', () => {
-      const edge: GraphEdge = { from: ['agent_b', 'agent_a'], to: 'agent_c', edgeType: 'handoff' };
+      const edge: GraphEdge = {
+        from: ['agent_b', 'agent_a'],
+        to: 'agent_c',
+        edgeType: 'handoff',
+      };
       expect(getEdgeKey(edge)).toBe('agent_a|agent_b=>agent_c::handoff');
     });
 
     it('should handle array to values by sorting', () => {
-      const edge: GraphEdge = { from: 'agent_a', to: ['agent_c', 'agent_b'], edgeType: 'handoff' };
+      const edge: GraphEdge = {
+        from: 'agent_a',
+        to: ['agent_c', 'agent_b'],
+        edgeType: 'handoff',
+      };
       expect(getEdgeKey(edge)).toBe('agent_a=>agent_b|agent_c::handoff');
     });
 
@@ -39,25 +51,45 @@ describe('edges utilities', () => {
     });
 
     it('should produce same key regardless of array order', () => {
-      const edge1: GraphEdge = { from: ['a', 'b', 'c'], to: 'd', edgeType: 'handoff' };
-      const edge2: GraphEdge = { from: ['c', 'a', 'b'], to: 'd', edgeType: 'handoff' };
+      const edge1: GraphEdge = {
+        from: ['a', 'b', 'c'],
+        to: 'd',
+        edgeType: 'handoff',
+      };
+      const edge2: GraphEdge = {
+        from: ['c', 'a', 'b'],
+        to: 'd',
+        edgeType: 'handoff',
+      };
       expect(getEdgeKey(edge1)).toBe(getEdgeKey(edge2));
     });
   });
 
   describe('getEdgeParticipants', () => {
     it('should return both from and to as participants', () => {
-      const edge: GraphEdge = { from: 'agent_a', to: 'agent_b', edgeType: 'handoff' };
+      const edge: GraphEdge = {
+        from: 'agent_a',
+        to: 'agent_b',
+        edgeType: 'handoff',
+      };
       expect(getEdgeParticipants(edge)).toEqual(['agent_a', 'agent_b']);
     });
 
     it('should handle array from values', () => {
-      const edge: GraphEdge = { from: ['agent_a', 'agent_b'], to: 'agent_c', edgeType: 'handoff' };
+      const edge: GraphEdge = {
+        from: ['agent_a', 'agent_b'],
+        to: 'agent_c',
+        edgeType: 'handoff',
+      };
       expect(getEdgeParticipants(edge)).toEqual(['agent_a', 'agent_b', 'agent_c']);
     });
 
     it('should handle array to values', () => {
-      const edge: GraphEdge = { from: 'agent_a', to: ['agent_b', 'agent_c'], edgeType: 'handoff' };
+      const edge: GraphEdge = {
+        from: 'agent_a',
+        to: ['agent_b', 'agent_c'],
+        edgeType: 'handoff',
+      };
       expect(getEdgeParticipants(edge)).toEqual(['agent_a', 'agent_b', 'agent_c']);
     });
 
@@ -92,7 +124,11 @@ describe('edges utilities', () => {
 
     it('should collect IDs from array from/to values', () => {
       const edges: GraphEdge[] = [
-        { from: ['agent_a', 'agent_b'], to: ['agent_c', 'agent_d'], edgeType: 'handoff' },
+        {
+          from: ['agent_a', 'agent_b'],
+          to: ['agent_c', 'agent_d'],
+          edgeType: 'handoff',
+        },
       ];
       expect(collectEdgeAgentIds(edges)).toEqual(
         new Set(['agent_a', 'agent_b', 'agent_c', 'agent_d']),

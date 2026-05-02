@@ -1,25 +1,25 @@
-import { memo, useMemo, useRef, useState } from 'react';
-import { Folder } from 'lucide-react';
 import * as Ariakit from '@ariakit/react';
-import { EModelEndpoint, EToolResources } from 'librechat-data-provider';
 import {
-  HoverCard,
-  DropdownPopup,
   AttachmentIcon,
   CircleHelpIcon,
-  SharePointIcon,
-  HoverCardPortal,
+  DropdownPopup,
+  HoverCard,
   HoverCardContent,
+  HoverCardPortal,
   HoverCardTrigger,
+  SharePointIcon,
 } from '@librechat/client';
+import { EModelEndpoint, EToolResources } from 'librechat-data-provider';
+import { Folder } from 'lucide-react';
+import { memo, useMemo, useRef, useState } from 'react';
 import type { ExtendedFile } from '~/common';
-import { useSharePointFileHandlingNoChatContext } from '~/hooks/Files/useSharePointFileHandling';
-import { useFileHandlingNoChatContext } from '~/hooks/Files/useFileHandling';
-import { useAgentFileConfig, useLocalize, useLazyEffect } from '~/hooks';
-import { SharePointPickerDialog } from '~/components/SharePoint';
-import FileRow from '~/components/Chat/Input/Files/FileRow';
-import { useGetStartupConfig } from '~/data-provider';
 import { ESide, isEphemeralAgent } from '~/common';
+import FileRow from '~/components/Chat/Input/Files/FileRow';
+import { SharePointPickerDialog } from '~/components/SharePoint';
+import { useGetStartupConfig } from '~/data-provider';
+import { useAgentFileConfig, useLazyEffect, useLocalize } from '~/hooks';
+import { useFileHandlingNoChatContext } from '~/hooks/Files/useFileHandling';
+import { useSharePointFileHandlingNoChatContext } from '~/hooks/Files/useSharePointFileHandling';
 
 function FileContext({
   agent_id,
@@ -51,7 +51,10 @@ function FileContext({
   const { handleSharePointFiles, isProcessing, downloadProgress } =
     useSharePointFileHandlingNoChatContext(
       {
-        additionalMetadata: { agent_id, tool_resource: EToolResources.file_search },
+        additionalMetadata: {
+          agent_id,
+          tool_resource: EToolResources.file_search,
+        },
         endpointOverride,
         endpointTypeOverride: endpointType,
         fileSetter: setFiles,

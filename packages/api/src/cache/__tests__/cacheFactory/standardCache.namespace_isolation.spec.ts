@@ -87,7 +87,9 @@ describe('standardCache - CONFIG_STORE vs TOOL_CACHE namespace isolation', () =>
     await configCache.set('STARTUP_CONFIG', { version: 'v2-green' });
     await toolCache.set('tools:global', { myTool: { type: 'function' } });
 
-    expect(await configCache.get('STARTUP_CONFIG')).toEqual({ version: 'v2-green' });
+    expect(await configCache.get('STARTUP_CONFIG')).toEqual({
+      version: 'v2-green',
+    });
     expect(await configCache.get('tools:global')).toBeUndefined();
 
     expect(await toolCache.get('STARTUP_CONFIG')).toBeUndefined();

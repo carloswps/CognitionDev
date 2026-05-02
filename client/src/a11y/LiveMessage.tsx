@@ -1,4 +1,5 @@
-import React, { useEffect, useContext } from 'react';
+import type React from 'react';
+import { useContext, useEffect } from 'react';
 import AnnouncerContext from '~/Providers/AnnouncerContext';
 
 interface LiveMessageProps {

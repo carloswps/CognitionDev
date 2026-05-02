@@ -1,28 +1,28 @@
-import { useMemo } from 'react';
-import { useGetModelsQuery } from 'librechat-data-provider/react-query';
-import {
-  Permissions,
-  alternateName,
-  PermissionBits,
-  EModelEndpoint,
-  PermissionTypes,
-  isAgentsEndpoint,
-  getConfigDefaults,
-  isAssistantsEndpoint,
-} from 'librechat-data-provider';
 import type { TAssistantsMap, TEndpointsConfig } from 'librechat-data-provider';
-import type { MentionOption } from '~/common';
 import {
-  useGetPresetsQuery,
+  alternateName,
+  EModelEndpoint,
+  getConfigDefaults,
+  isAgentsEndpoint,
+  isAssistantsEndpoint,
+  PermissionBits,
+  Permissions,
+  PermissionTypes,
+} from 'librechat-data-provider';
+import { useGetModelsQuery } from 'librechat-data-provider/react-query';
+import { useMemo } from 'react';
+import type { MentionOption } from '~/common';
+import { EndpointIcon } from '~/components/Endpoints';
+import {
   useGetEndpointsQuery,
-  useListAgentsQuery,
+  useGetPresetsQuery,
   useGetStartupConfig,
+  useListAgentsQuery,
 } from '~/data-provider';
 import useAssistantListMap from '~/hooks/Assistants/useAssistantListMap';
-import { useAgentsMapContext } from '~/Providers/AgentsMapContext';
-import { mapEndpoints, getPresetTitle } from '~/utils';
-import { EndpointIcon } from '~/components/Endpoints';
 import useHasAccess from '~/hooks/Roles/useHasAccess';
+import { useAgentsMapContext } from '~/Providers/AgentsMapContext';
+import { getPresetTitle, mapEndpoints } from '~/utils';
 
 const defaultInterface = getConfigDefaults().interface;
 

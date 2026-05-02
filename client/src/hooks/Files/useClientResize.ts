@@ -2,11 +2,11 @@ import { mergeFileConfig } from 'librechat-data-provider';
 import { useCallback } from 'react';
 import { useGetFileConfig } from '~/data-provider';
 import {
+  type ResizeOptions,
+  type ResizeResult,
   resizeImage,
   shouldResizeImage,
   supportsClientResize,
-  type ResizeOptions,
-  type ResizeResult,
 } from '~/utils/imageResize';
 
 /**

@@ -1,10 +1,10 @@
-import { memo, useState, useEffect } from 'react';
+import type { TAttachment, TAttachmentMetadata, TFile } from 'librechat-data-provider';
 import { imageExtRegex, Tools } from 'librechat-data-provider';
-import type { TAttachment, TFile, TAttachmentMetadata } from 'librechat-data-provider';
+import { memo, useEffect, useState } from 'react';
 import FileContainer from '~/components/Chat/Input/Files/FileContainer';
 import Image from '~/components/Chat/Messages/Content/Image';
-import { useAttachmentLink } from './LogLink';
 import { cn } from '~/utils';
+import { useAttachmentLink } from './LogLink';
 
 const FileAttachment = memo(({ attachment }: { attachment: Partial<TAttachment> }) => {
   const [isVisible, setIsVisible] = useState(false);

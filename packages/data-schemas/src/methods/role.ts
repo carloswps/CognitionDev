@@ -1,13 +1,13 @@
 import {
   CacheKeys,
-  SystemRoles,
-  roleDefaults,
   permissionsSchema,
   removeNullishValues,
+  roleDefaults,
+  SystemRoles,
 } from 'librechat-data-provider';
 import type { Model } from 'mongoose';
-import type { IRole, IUser } from '~/types';
 import logger from '~/config/winston';
+import type { IRole, IUser } from '~/types';
 
 const systemRoleValues = new Set<string>(Object.values(SystemRoles));
 
@@ -146,7 +146,9 @@ export function createRoleMethods(mongoose: typeof import('mongoose'), deps: Rol
         const targetName = updates.name ?? roleName;
         throw new RoleConflictError(`Role "${targetName}" already exists`);
       }
-      throw new Error(`Failed to update role: ${(error as Error).message}`, { cause: error });
+      throw new Error(`Failed to update role: ${(error as Error).message}`, {
+        cause: error,
+      });
     }
   }
 
@@ -182,7 +184,9 @@ export function createRoleMethods(mongoose: typeof import('mongoose'), deps: Rol
           string,
           Record<string, boolean>
         >) || {};
-      const updatedPermissions: Record<string, Record<string, boolean>> = { ...currentPermissions };
+      const updatedPermissions: Record<string, Record<string, boolean>> = {
+        ...currentPermissions,
+      };
       let hasChanges = false;
 
       const unsetFields: Record<string, number> = {};

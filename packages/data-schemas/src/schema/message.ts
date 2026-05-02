@@ -99,7 +99,10 @@ const messageSchema: Schema<IMessage> = new Schema(
       select: false,
       default: false,
     },
-    files: { type: [{ type: mongoose.Schema.Types.Mixed }], default: undefined },
+    files: {
+      type: [{ type: mongoose.Schema.Types.Mixed }],
+      default: undefined,
+    },
     content: {
       type: [{ type: mongoose.Schema.Types.Mixed }],
       default: undefined,
@@ -121,7 +124,10 @@ const messageSchema: Schema<IMessage> = new Schema(
       _id: false,
       default: undefined,
     },
-    attachments: { type: [{ type: mongoose.Schema.Types.Mixed }], default: undefined },
+    attachments: {
+      type: [{ type: mongoose.Schema.Types.Mixed }],
+      default: undefined,
+    },
     /*
     attachments: {
       type: [

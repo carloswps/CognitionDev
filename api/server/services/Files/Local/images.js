@@ -146,7 +146,7 @@ async function processLocalAvatar({ buffer, userId, manual, agentId }) {
   await fs.promises.writeFile(avatarPath, buffer);
 
   const isManual = manual === 'true';
-  let url = `${urlRoute}?manual=${isManual}`;
+  const url = `${urlRoute}?manual=${isManual}`;
 
   // Only update user record if this is a user avatar (manual === 'true')
   if (isManual && !agentId) {
@@ -156,4 +156,9 @@ async function processLocalAvatar({ buffer, userId, manual, agentId }) {
   return url;
 }
 
-module.exports = { uploadLocalImage, encodeImage, prepareImagesLocal, processLocalAvatar };
+module.exports = {
+  uploadLocalImage,
+  encodeImage,
+  prepareImagesLocal,
+  processLocalAvatar,
+};

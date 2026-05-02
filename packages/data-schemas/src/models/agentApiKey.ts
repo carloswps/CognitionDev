@@ -1,5 +1,5 @@
-import agentApiKeySchema, { IAgentApiKey } from '~/schema/agentApiKey';
 import { applyTenantIsolation } from '~/models/plugins/tenantIsolation';
+import agentApiKeySchema, { type IAgentApiKey } from '~/schema/agentApiKey';
 
 export function createAgentApiKeyModel(mongoose: typeof import('mongoose')) {
   applyTenantIsolation(agentApiKeySchema);

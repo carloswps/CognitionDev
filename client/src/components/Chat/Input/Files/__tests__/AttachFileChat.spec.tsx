@@ -1,9 +1,9 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { render, screen } from '@testing-library/react';
+import type { Agent, TEndpointsConfig } from 'librechat-data-provider';
 import { EModelEndpoint, mergeFileConfig } from 'librechat-data-provider';
-import type { TEndpointsConfig, Agent } from 'librechat-data-provider';
+import React from 'react';
+import { RecoilRoot } from 'recoil';
 import AttachFileChat from '../AttachFileChat';
 
 const mockEndpointsConfig: TEndpointsConfig = {
@@ -53,7 +53,9 @@ jest.mock('../AttachFile', () => {
   };
 });
 
-const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } },
+});
 
 function renderComponent(conversation: Record<string, unknown> | null, disableInputs = false) {
   return render(
@@ -99,7 +101,10 @@ describe('AttachFileChat', () => {
   describe('endpointType resolution for agents', () => {
     it('passes custom endpointType when agent provider is a custom endpoint', () => {
       mockAgentsMap = {
-        'agent-1': { provider: 'Moonshot', model_parameters: {} } as Partial<Agent>,
+        'agent-1': {
+          provider: 'Moonshot',
+          model_parameters: {},
+        } as Partial<Agent>,
       };
       renderComponent({ endpoint: EModelEndpoint.agents, agent_id: 'agent-1' });
       expect(mockAttachFileMenuProps.endpointType).toBe(EModelEndpoint.custom);
@@ -107,7 +112,10 @@ describe('AttachFileChat', () => {
 
     it('passes openAI endpointType when agent provider is openAI', () => {
       mockAgentsMap = {
-        'agent-1': { provider: EModelEndpoint.openAI, model_parameters: {} } as Partial<Agent>,
+        'agent-1': {
+          provider: EModelEndpoint.openAI,
+          model_parameters: {},
+        } as Partial<Agent>,
       };
       renderComponent({ endpoint: EModelEndpoint.agents, agent_id: 'agent-1' });
       expect(mockAttachFileMenuProps.endpointType).toBe(EModelEndpoint.openAI);
@@ -148,7 +156,10 @@ describe('AttachFileChat', () => {
       const directType = mockAttachFileMenuProps.endpointType;
 
       mockAgentsMap = {
-        'agent-1': { provider: 'Moonshot', model_parameters: {} } as Partial<Agent>,
+        'agent-1': {
+          provider: 'Moonshot',
+          model_parameters: {},
+        } as Partial<Agent>,
       };
       renderComponent({ endpoint: EModelEndpoint.agents, agent_id: 'agent-1' });
       const agentType = mockAttachFileMenuProps.endpointType;
@@ -192,7 +203,10 @@ describe('AttachFileChat', () => {
         },
       });
       mockAgentsMap = {
-        'agent-1': { provider: 'Moonshot', model_parameters: {} } as Partial<Agent>,
+        'agent-1': {
+          provider: 'Moonshot',
+          model_parameters: {},
+        } as Partial<Agent>,
       };
       renderComponent({ endpoint: EModelEndpoint.agents, agent_id: 'agent-1' });
       expect(screen.getByTestId('attach-file-menu')).toBeInTheDocument();
@@ -214,25 +228,37 @@ describe('AttachFileChat', () => {
   describe('endpointFileConfig resolution', () => {
     it('passes Moonshot-specific file config for agent with Moonshot provider', () => {
       mockAgentsMap = {
-        'agent-1': { provider: 'Moonshot', model_parameters: {} } as Partial<Agent>,
+        'agent-1': {
+          provider: 'Moonshot',
+          model_parameters: {},
+        } as Partial<Agent>,
       };
       renderComponent({ endpoint: EModelEndpoint.agents, agent_id: 'agent-1' });
-      const config = mockAttachFileMenuProps.endpointFileConfig as { fileLimit?: number };
+      const config = mockAttachFileMenuProps.endpointFileConfig as {
+        fileLimit?: number;
+      };
       expect(config?.fileLimit).toBe(5);
     });
 
     it('passes agents file config when agent has no specific provider config', () => {
       mockAgentsMap = {
-        'agent-1': { provider: EModelEndpoint.openAI, model_parameters: {} } as Partial<Agent>,
+        'agent-1': {
+          provider: EModelEndpoint.openAI,
+          model_parameters: {},
+        } as Partial<Agent>,
       };
       renderComponent({ endpoint: EModelEndpoint.agents, agent_id: 'agent-1' });
-      const config = mockAttachFileMenuProps.endpointFileConfig as { fileLimit?: number };
+      const config = mockAttachFileMenuProps.endpointFileConfig as {
+        fileLimit?: number;
+      };
       expect(config?.fileLimit).toBe(10);
     });
 
     it('passes agents file config when no agent provider', () => {
       renderComponent({ endpoint: EModelEndpoint.agents });
-      const config = mockAttachFileMenuProps.endpointFileConfig as { fileLimit?: number };
+      const config = mockAttachFileMenuProps.endpointFileConfig as {
+        fileLimit?: number;
+      };
       expect(config?.fileLimit).toBe(20);
     });
   });

@@ -1,8 +1,8 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import MemoryInfo from '../MemoryInfo';
 import type { MemoryArtifact } from 'librechat-data-provider';
+import MemoryInfo from '../MemoryInfo';
 
 // Mock the localize hook
 jest.mock('~/hooks', () => ({
@@ -39,7 +39,10 @@ describe('MemoryInfo', () => {
         {
           type: 'error',
           key: 'system',
-          value: JSON.stringify({ errorType: 'already_exceeded', tokenCount: 150 }),
+          value: JSON.stringify({
+            errorType: 'already_exceeded',
+            tokenCount: 150,
+          }),
         },
       ];
 
@@ -77,7 +80,10 @@ describe('MemoryInfo', () => {
         {
           type: 'error',
           key: 'system1',
-          value: JSON.stringify({ errorType: 'already_exceeded', tokenCount: 100 }),
+          value: JSON.stringify({
+            errorType: 'already_exceeded',
+            tokenCount: 100,
+          }),
         },
         {
           type: 'error',
@@ -161,7 +167,10 @@ describe('MemoryInfo', () => {
         {
           type: 'error',
           key: 'system',
-          value: JSON.stringify({ errorType: 'already_exceeded', tokenCount: 10 }),
+          value: JSON.stringify({
+            errorType: 'already_exceeded',
+            tokenCount: 10,
+          }),
         },
       ];
 

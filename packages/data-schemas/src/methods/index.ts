@@ -1,58 +1,65 @@
-import { createSessionMethods, DEFAULT_REFRESH_TOKEN_EXPIRY, type SessionMethods } from './session';
-import { createTokenMethods, type TokenMethods } from './token';
-import { createRoleMethods, RoleConflictError } from './role';
-import type { RoleMethods, RoleDeps } from './role';
-import { createUserMethods, DEFAULT_SESSION_EXPIRY, type UserMethods } from './user';
-import { createKeyMethods, type KeyMethods } from './key';
-import { createFileMethods, type FileMethods } from './file';
-/* Memories */
-import { createMemoryMethods, type MemoryMethods } from './memory';
-/* Agent Categories */
-import { createAgentCategoryMethods, type AgentCategoryMethods } from './agentCategory';
+/* Permissions */
+import { type AccessRoleMethods, createAccessRoleMethods } from './accessRole';
+import { type AclEntryMethods, createAclEntryMethods, permissionBitSupersets } from './aclEntry';
+/* Tier 1 — Simple CRUD */
+import { type ActionMethods, createActionMethods } from './action';
+/* Tier 5 — Agent */
+import { type AgentDeps, type AgentMethods, createAgentMethods } from './agent';
 /* Agent API Keys */
-import { createAgentApiKeyMethods, type AgentApiKeyMethods } from './agentApiKey';
+import { type AgentApiKeyMethods, createAgentApiKeyMethods } from './agentApiKey';
+/* Agent Categories */
+import { type AgentCategoryMethods, createAgentCategoryMethods } from './agentCategory';
+import { type AssistantMethods, createAssistantMethods } from './assistant';
+import { type BannerMethods, createBannerMethods } from './banner';
+import { type CategoriesMethods, createCategoriesMethods } from './categories';
+/* Config */
+import { type ConfigMethods, createConfigMethods } from './config';
+import { type ConversationMethods, createConversationMethods } from './conversation';
+/* Tier 2 — Moderate (service deps injected) */
+import { type ConversationTagMethods, createConversationTagMethods } from './conversationTag';
+import { createFileMethods, type FileMethods } from './file';
+import { createKeyMethods, type KeyMethods } from './key';
 /* MCP Servers */
 import { createMCPServerMethods, type MCPServerMethods } from './mcpServer';
+/* Memories */
+import { createMemoryMethods, type MemoryMethods } from './memory';
+import { createMessageMethods, type MessageMethods } from './message';
 /* Plugin Auth */
 import { createPluginAuthMethods, type PluginAuthMethods } from './pluginAuth';
-/* Permissions */
-import { createAccessRoleMethods, type AccessRoleMethods } from './accessRole';
-import { createUserGroupMethods, type UserGroupMethods } from './userGroup';
-import { createAclEntryMethods, permissionBitSupersets, type AclEntryMethods } from './aclEntry';
-import { createSystemGrantMethods, type SystemGrantMethods } from './systemGrant';
-import { createShareMethods, type ShareMethods } from './share';
-/* Tier 1 — Simple CRUD */
-import { createActionMethods, type ActionMethods } from './action';
-import { createAssistantMethods, type AssistantMethods } from './assistant';
-import { createBannerMethods, type BannerMethods } from './banner';
-import { createToolCallMethods, type ToolCallMethods } from './toolCall';
-import { createCategoriesMethods, type CategoriesMethods } from './categories';
 import { createPresetMethods, type PresetMethods } from './preset';
-/* Tier 2 — Moderate (service deps injected) */
-import { createConversationTagMethods, type ConversationTagMethods } from './conversationTag';
-import { createMessageMethods, type MessageMethods } from './message';
-import { createConversationMethods, type ConversationMethods } from './conversation';
+import { createPromptMethods, type PromptDeps, type PromptMethods } from './prompt';
+import type { RoleDeps, RoleMethods } from './role';
+import { createRoleMethods, RoleConflictError } from './role';
+import { createSessionMethods, DEFAULT_REFRESH_TOKEN_EXPIRY, type SessionMethods } from './session';
+import { createShareMethods, type ShareMethods } from './share';
+import { createSpendTokensMethods, type SpendTokensMethods } from './spendTokens';
+import { createSystemGrantMethods, type SystemGrantMethods } from './systemGrant';
+import { createTokenMethods, type TokenMethods } from './token';
+import { createToolCallMethods, type ToolCallMethods } from './toolCall';
+import { createTransactionMethods, type TransactionMethods } from './transaction';
 /* Tier 3 — Complex (heavier injection) */
 import {
-  createTxMethods,
-  type TxMethods,
-  type TxDeps,
-  tokenValues,
   cacheTokenValues,
-  premiumTokenValues,
+  createTxMethods,
   defaultRate,
+  premiumTokenValues,
+  type TxDeps,
+  type TxMethods,
+  tokenValues,
 } from './tx';
-import { createTransactionMethods, type TransactionMethods } from './transaction';
-import { createSpendTokensMethods, type SpendTokensMethods } from './spendTokens';
-import { createPromptMethods, type PromptMethods, type PromptDeps } from './prompt';
-/* Tier 5 — Agent */
-import { createAgentMethods, type AgentMethods, type AgentDeps } from './agent';
-/* Config */
-import { createConfigMethods, type ConfigMethods } from './config';
+import { createUserMethods, DEFAULT_SESSION_EXPIRY, type UserMethods } from './user';
+import { createUserGroupMethods, type UserGroupMethods } from './userGroup';
 
-export { RoleConflictError, DEFAULT_REFRESH_TOKEN_EXPIRY, DEFAULT_SESSION_EXPIRY };
-export { tokenValues, cacheTokenValues, premiumTokenValues, defaultRate };
-export { permissionBitSupersets };
+export {
+  cacheTokenValues,
+  DEFAULT_REFRESH_TOKEN_EXPIRY,
+  DEFAULT_SESSION_EXPIRY,
+  defaultRate,
+  permissionBitSupersets,
+  premiumTokenValues,
+  RoleConflictError,
+  tokenValues,
+};
 
 export type AllMethods = UserMethods &
   SessionMethods &
@@ -211,35 +218,35 @@ export function createMethods(
 }
 
 export type {
-  UserMethods,
-  SessionMethods,
-  TokenMethods,
-  RoleMethods,
-  KeyMethods,
-  FileMethods,
-  MemoryMethods,
-  AgentCategoryMethods,
-  AgentApiKeyMethods,
-  MCPServerMethods,
-  UserGroupMethods,
-  AclEntryMethods,
-  SystemGrantMethods,
-  ShareMethods,
   AccessRoleMethods,
-  PluginAuthMethods,
+  AclEntryMethods,
   ActionMethods,
+  AgentApiKeyMethods,
+  AgentCategoryMethods,
+  AgentMethods,
   AssistantMethods,
   BannerMethods,
-  ToolCallMethods,
   CategoriesMethods,
-  PresetMethods,
-  ConversationTagMethods,
-  MessageMethods,
-  ConversationMethods,
-  TxMethods,
-  TransactionMethods,
-  SpendTokensMethods,
-  PromptMethods,
-  AgentMethods,
   ConfigMethods,
+  ConversationMethods,
+  ConversationTagMethods,
+  FileMethods,
+  KeyMethods,
+  MCPServerMethods,
+  MemoryMethods,
+  MessageMethods,
+  PluginAuthMethods,
+  PresetMethods,
+  PromptMethods,
+  RoleMethods,
+  SessionMethods,
+  ShareMethods,
+  SpendTokensMethods,
+  SystemGrantMethods,
+  TokenMethods,
+  ToolCallMethods,
+  TransactionMethods,
+  TxMethods,
+  UserGroupMethods,
+  UserMethods,
 };

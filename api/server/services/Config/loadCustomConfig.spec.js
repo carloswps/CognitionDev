@@ -305,7 +305,11 @@ describe('loadCustomConfig', () => {
       const customParams = {
         defaultParamsEndpoint: 'google',
         paramDefinitions: [
-          { key: 'temperature', default: 0.7, range: { min: 0.1, max: 0.9, step: 0.1 } },
+          {
+            key: 'temperature',
+            default: 0.7,
+            range: { min: 0.1, max: 0.9, step: 0.1 },
+          },
           { key: 'pressure', component: 'textarea' },
         ],
       };

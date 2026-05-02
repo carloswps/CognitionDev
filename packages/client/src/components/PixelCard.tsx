@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { cn } from '~/utils';
 
 class Pixel {
@@ -139,9 +139,24 @@ const getEffectiveSpeed = (value: number, reducedMotion: boolean) => {
 const clamp = (n: number, min = 0, max = 1) => Math.min(Math.max(n, min), max);
 
 const VARIANTS = {
-  default: { gap: 5, speed: 35, colors: '#f8fafc,#f1f5f9,#cbd5e1', noFocus: false },
-  blue: { gap: 10, speed: 25, colors: '#e0f2fe,#7dd3fc,#0ea5e9', noFocus: false },
-  yellow: { gap: 3, speed: 20, colors: '#fef08a,#fde047,#eab308', noFocus: false },
+  default: {
+    gap: 5,
+    speed: 35,
+    colors: '#f8fafc,#f1f5f9,#cbd5e1',
+    noFocus: false,
+  },
+  blue: {
+    gap: 10,
+    speed: 25,
+    colors: '#e0f2fe,#7dd3fc,#0ea5e9',
+    noFocus: false,
+  },
+  yellow: {
+    gap: 3,
+    speed: 20,
+    colors: '#fef08a,#fde047,#eab308',
+    noFocus: false,
+  },
   pink: { gap: 6, speed: 80, colors: '#fecdd3,#fda4af,#e11d48', noFocus: true },
 } as const;
 
@@ -227,7 +242,7 @@ export default function PixelCard({
             p.isIdle = true;
           }
         } else {
-          // @ts-ignore dynamic dispatch
+          // @ts-expect-error dynamic dispatch
           p[method]();
         }
         if (!p.isIdle) {

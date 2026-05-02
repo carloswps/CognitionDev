@@ -1,3 +1,3 @@
-export * from './utils';
-export * from './theme';
 export { default as logger } from './logger';
+export * from './theme';
+export * from './utils';

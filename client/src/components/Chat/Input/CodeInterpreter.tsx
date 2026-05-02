@@ -1,8 +1,8 @@
-import React, { memo } from 'react';
-import { TerminalSquareIcon } from 'lucide-react';
 import { CheckboxButton } from '@librechat/client';
-import { PermissionTypes, Permissions } from 'librechat-data-provider';
-import { useLocalize, useHasAccess } from '~/hooks';
+import { Permissions, PermissionTypes } from 'librechat-data-provider';
+import { TerminalSquareIcon } from 'lucide-react';
+import React, { memo } from 'react';
+import { useHasAccess, useLocalize } from '~/hooks';
 import { useBadgeRowContext } from '~/Providers';
 
 function CodeInterpreter() {

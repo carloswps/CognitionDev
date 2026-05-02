@@ -1,18 +1,18 @@
-import { memo, Suspense, useMemo } from 'react';
-import { useRecoilValue } from 'recoil';
 import { DelayedRender } from '@librechat/client';
 import type { TMessage } from 'librechat-data-provider';
-import type { TMessageContentProps, TDisplayProps } from '~/common';
+import { memo, Suspense, useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
+import type { TDisplayProps, TMessageContentProps } from '~/common';
 import Error from '~/components/Messages/Content/Error';
-import { useMessageContext } from '~/Providers';
-import MarkdownLite from './MarkdownLite';
-import EditMessage from './EditMessage';
-import Thinking from './Parts/Thinking';
 import { useLocalize } from '~/hooks';
-import Container from './Container';
-import Markdown from './Markdown';
-import { cn } from '~/utils';
+import { useMessageContext } from '~/Providers';
 import store from '~/store';
+import { cn } from '~/utils';
+import Container from './Container';
+import EditMessage from './EditMessage';
+import Markdown from './Markdown';
+import MarkdownLite from './MarkdownLite';
+import Thinking from './Parts/Thinking';
 
 const ERROR_CONNECTION_TEXT = 'Error connecting to server, try refreshing the page.';
 const DELAYED_ERROR_TIMEOUT = 5500;

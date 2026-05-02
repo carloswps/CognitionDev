@@ -29,7 +29,10 @@ const buildOptions = async (endpoint, parsedBody) => {
   }
 
   if (typeof artifacts === 'string') {
-    endpointOption.artifactsPrompt = generateArtifactsPrompt({ endpoint, artifacts });
+    endpointOption.artifactsPrompt = generateArtifactsPrompt({
+      endpoint,
+      artifacts,
+    });
   }
 
   return endpointOption;

@@ -1,17 +1,17 @@
-import { logger } from '@librechat/data-schemas';
 import type { AppConfig } from '@librechat/data-schemas';
-import {
-  Tools,
-  Constants,
-  isAgentsEndpoint,
-  isEphemeralAgentId,
-  encodeEphemeralAgentId,
-} from 'librechat-data-provider';
+import { logger } from '@librechat/data-schemas';
 import type {
+  Agent,
   AgentModelParameters,
   TEphemeralAgent,
   TModelSpec,
-  Agent,
+} from 'librechat-data-provider';
+import {
+  Constants,
+  encodeEphemeralAgentId,
+  isAgentsEndpoint,
+  isEphemeralAgentId,
+  Tools,
 } from 'librechat-data-provider';
 import { getCustomEndpointConfig } from '~/app/config';
 
@@ -158,7 +158,10 @@ export async function loadAgent(
   }
 
   // Set version count from versions array length
-  const agentWithVersion = agent as Agent & { versions?: unknown[]; version?: number };
+  const agentWithVersion = agent as Agent & {
+    versions?: unknown[];
+    version?: number;
+  };
   agentWithVersion.version = agentWithVersion.versions ? agentWithVersion.versions.length : 0;
   return agent;
 }

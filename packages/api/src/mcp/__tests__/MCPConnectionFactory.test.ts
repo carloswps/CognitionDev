@@ -1,11 +1,11 @@
+import type { IUser, TokenMethods } from '@librechat/data-schemas';
 import { logger } from '@librechat/data-schemas';
-import type { TokenMethods, IUser } from '@librechat/data-schemas';
 import type { FlowStateManager } from '~/flow/manager';
-import type { MCPOAuthTokens } from '~/mcp/oauth';
-import type * as t from '~/mcp/types';
-import { MCPConnectionFactory } from '~/mcp/MCPConnectionFactory';
 import { MCPConnection } from '~/mcp/connection';
+import { MCPConnectionFactory } from '~/mcp/MCPConnectionFactory';
+import type { MCPOAuthTokens } from '~/mcp/oauth';
 import { MCPOAuthHandler, MCPTokenStorage } from '~/mcp/oauth';
+import type * as t from '~/mcp/types';
 import { processMCPEnv } from '~/utils';
 
 jest.mock('~/mcp/connection');
@@ -282,7 +282,10 @@ describe('MCPConnectionFactory', () => {
       expect(mockFlowManager.initFlow).toHaveBeenCalledWith(
         'flow123',
         'mcp_oauth',
-        expect.objectContaining({ ...mockFlowData.flowMetadata, tenantId: 'test-tenant' }),
+        expect.objectContaining({
+          ...mockFlowData.flowMetadata,
+          tenantId: 'test-tenant',
+        }),
       );
       const initCallOrder = mockFlowManager.initFlow.mock.invocationCallOrder[0];
       const oauthStartCallOrder = (oauthOptions.oauthStart as jest.Mock).mock
@@ -413,7 +416,9 @@ describe('MCPConnectionFactory', () => {
       expect(mockFlowManager.deleteFlow).not.toHaveBeenCalled();
       expect(mockConnectionInstance.emit).toHaveBeenCalledWith(
         'oauthFailed',
-        expect.objectContaining({ message: 'OAuth flow initiated - return early' }),
+        expect.objectContaining({
+          message: 'OAuth flow initiated - return early',
+        }),
       );
     });
 
@@ -820,8 +825,16 @@ describe('MCPConnectionFactory', () => {
 
   describe('discoverTools static method', () => {
     const mockTools = [
-      { name: 'tool1', description: 'First tool', inputSchema: { type: 'object' } },
-      { name: 'tool2', description: 'Second tool', inputSchema: { type: 'object' } },
+      {
+        name: 'tool1',
+        description: 'First tool',
+        inputSchema: { type: 'object' },
+      },
+      {
+        name: 'tool2',
+        description: 'Second tool',
+        inputSchema: { type: 'object' },
+      },
     ];
 
     it('should discover tools from a successfully connected server', async () => {

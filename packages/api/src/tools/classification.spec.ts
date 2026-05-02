@@ -1,12 +1,12 @@
-import type { AgentToolOptions } from 'librechat-data-provider';
 import type { GenericTool } from '@librechat/agents';
+import type { AgentToolOptions } from 'librechat-data-provider';
 import type { LCToolRegistry } from './classification';
 import {
-  buildToolRegistryFromAgentOptions,
+  agentHasDeferredTools,
   agentHasProgrammaticTools,
   buildToolClassification,
+  buildToolRegistryFromAgentOptions,
   getServerNameFromTool,
-  agentHasDeferredTools,
 } from './classification';
 
 describe('classification.ts', () => {
@@ -108,7 +108,14 @@ describe('classification.ts', () => {
   describe('agentHasProgrammaticTools', () => {
     it('should return true when registry has programmatic tools', () => {
       const registry: LCToolRegistry = new Map([
-        ['tool1', { name: 'tool1', allowed_callers: ['code_execution'], defer_loading: false }],
+        [
+          'tool1',
+          {
+            name: 'tool1',
+            allowed_callers: ['code_execution'],
+            defer_loading: false,
+          },
+        ],
       ]);
 
       expect(agentHasProgrammaticTools(registry)).toBe(true);
@@ -118,7 +125,11 @@ describe('classification.ts', () => {
       const registry: LCToolRegistry = new Map([
         [
           'tool1',
-          { name: 'tool1', allowed_callers: ['direct', 'code_execution'], defer_loading: false },
+          {
+            name: 'tool1',
+            allowed_callers: ['direct', 'code_execution'],
+            defer_loading: false,
+          },
         ],
       ]);
 

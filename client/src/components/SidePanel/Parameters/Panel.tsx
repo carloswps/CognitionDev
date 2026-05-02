@@ -1,21 +1,21 @@
-import React, { useMemo, useState, useEffect, useCallback } from 'react';
-import keyBy from 'lodash/keyBy';
-import { RotateCcw } from 'lucide-react';
+import type { TPreset } from 'librechat-data-provider';
 import {
   excludedKeys,
-  paramSettings,
-  getSettingsKeys,
   getEndpointField,
-  SettingDefinition,
+  getSettingsKeys,
+  paramSettings,
+  type SettingDefinition,
   tConvoUpdateSchema,
 } from 'librechat-data-provider';
-import type { TPreset } from 'librechat-data-provider';
+import keyBy from 'lodash/keyBy';
+import { RotateCcw } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { SaveAsPresetDialog } from '~/components/Endpoints';
-import { useSetIndexOptions, useLocalize } from '~/hooks';
 import { useGetEndpointsQuery } from '~/data-provider';
-import { componentMapping } from './components';
+import { useLocalize, useSetIndexOptions } from '~/hooks';
 import { useChatContext } from '~/Providers';
 import { logger } from '~/utils';
+import { componentMapping } from './components';
 
 export default function Parameters() {
   const localize = useLocalize();
@@ -177,7 +177,9 @@ export default function Parameters() {
           className="btn btn-neutral flex w-full items-center justify-center gap-2 px-4 py-2 text-sm"
         >
           <RotateCcw className="h-4 w-4" aria-hidden="true" />
-          {localize('com_ui_reset_var', { 0: localize('com_ui_model_parameters') })}
+          {localize('com_ui_reset_var', {
+            0: localize('com_ui_model_parameters'),
+          })}
         </button>
       </div>
       <div className="mt-2 flex justify-center">

@@ -1,10 +1,10 @@
 import type { AppConfig } from '~/types';
 import {
   createTempChatExpirationDate,
-  getTempChatRetentionHours,
   DEFAULT_RETENTION_HOURS,
-  MIN_RETENTION_HOURS,
+  getTempChatRetentionHours,
   MAX_RETENTION_HOURS,
+  MIN_RETENTION_HOURS,
 } from './tempChatRetention';
 
 describe('tempChatRetention', () => {

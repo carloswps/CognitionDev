@@ -17,11 +17,14 @@ const initializeClient = async ({ req, res, version }) => {
       name: EModelEndpoint.assistants,
     });
     checkUserKeyExpiry(expiresAt, EModelEndpoint.assistants);
-    userValues = await getUserKeyValues({ userId: req.user.id, name: EModelEndpoint.assistants });
+    userValues = await getUserKeyValues({
+      userId: req.user.id,
+      name: EModelEndpoint.assistants,
+    });
   }
 
-  let apiKey = userProvidesKey ? userValues.apiKey : ASSISTANTS_API_KEY;
-  let baseURL = userProvidesURL ? userValues.baseURL : ASSISTANTS_BASE_URL;
+  const apiKey = userProvidesKey ? userValues.apiKey : ASSISTANTS_API_KEY;
+  const baseURL = userProvidesURL ? userValues.baseURL : ASSISTANTS_BASE_URL;
 
   const opts = {
     defaultHeaders: {

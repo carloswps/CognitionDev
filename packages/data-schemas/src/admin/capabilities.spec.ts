@@ -1,23 +1,25 @@
-import { SystemCapabilities, isValidCapability } from './capabilities';
+import { isValidCapability, SystemCapabilities } from './capabilities';
 
 describe('isValidCapability', () => {
   it.each(Object.values(SystemCapabilities))('accepts base capability: %s', (cap) => {
     expect(isValidCapability(cap)).toBe(true);
   });
 
-  it.each(['manage:configs:endpoints', 'read:configs:registration', 'manage:configs:speech'])(
-    'accepts section-level capability: %s',
-    (cap) => {
-      expect(isValidCapability(cap)).toBe(true);
-    },
-  );
+  it.each([
+    'manage:configs:endpoints',
+    'read:configs:registration',
+    'manage:configs:speech',
+  ])('accepts section-level capability: %s', (cap) => {
+    expect(isValidCapability(cap)).toBe(true);
+  });
 
-  it.each(['assign:configs:user', 'assign:configs:group', 'assign:configs:role'])(
-    'accepts assignment capability: %s',
-    (cap) => {
-      expect(isValidCapability(cap)).toBe(true);
-    },
-  );
+  it.each([
+    'assign:configs:user',
+    'assign:configs:group',
+    'assign:configs:role',
+  ])('accepts assignment capability: %s', (cap) => {
+    expect(isValidCapability(cap)).toBe(true);
+  });
 
   it.each([
     '',

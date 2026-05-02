@@ -1,24 +1,25 @@
-import {
-  useRef,
-  useMemo,
-  useState,
-  useEffect,
-  useContext,
-  useCallback,
-  createContext,
-} from 'react';
-import { debounce } from 'lodash';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { useNavigate } from 'react-router-dom';
+import type * as t from 'librechat-data-provider';
 import {
   apiBaseUrl,
+  buildLoginRedirectUrl,
+  isSystemRoleName,
   SystemRoles,
   setTokenHeader,
-  isSystemRoleName,
-  buildLoginRedirectUrl,
 } from 'librechat-data-provider';
-import type * as t from 'librechat-data-provider';
+import { debounce } from 'lodash';
 import type { ReactNode } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import type { TAuthConfig, TAuthContext, TResError, TUserContext } from '~/common';
 import {
   useGetRole,
   useGetUserQuery,
@@ -26,10 +27,9 @@ import {
   useLogoutUserMutation,
   useRefreshTokenMutation,
 } from '~/data-provider';
-import { TAuthConfig, TUserContext, TAuthContext, TResError } from '~/common';
-import { SESSION_KEY, isSafeRedirect, getPostLoginRedirect } from '~/utils';
-import useTimeout from './useTimeout';
 import store from '~/store';
+import { getPostLoginRedirect, isSafeRedirect, SESSION_KEY } from '~/utils';
+import useTimeout from './useTimeout';
 
 const AuthContext = (import.meta.hot?.data?.__AuthContext ??
   createContext<TAuthContext | undefined>(undefined)) as React.Context<TAuthContext | undefined>;
@@ -98,7 +98,9 @@ const AuthContextProvider = ({
       }, 50),
     [navigate, setUser, setQueriesEnabled],
   );
-  const doSetError = useTimeout({ callback: (error) => setError(error as string | undefined) });
+  const doSetError = useTimeout({
+    callback: (error) => setError(error as string | undefined),
+  });
 
   const loginUser = useLoginUserMutation({
     onSuccess: (data: t.TLoginResponse) => {
@@ -108,7 +110,12 @@ const AuthContextProvider = ({
         return;
       }
       setError(undefined);
-      setUserContext({ token, isAuthenticated: true, user, redirect: '/c/new' });
+      setUserContext({
+        token,
+        isAuthenticated: true,
+        user,
+        redirect: '/c/new',
+      });
     },
     onError: (error: TResError | unknown) => {
       const resError = error as TResError;
@@ -309,4 +316,4 @@ const useAuthContext = () => {
   return context;
 };
 
-export { AuthContextProvider, useAuthContext, AuthContext };
+export { AuthContext, AuthContextProvider, useAuthContext };

@@ -119,7 +119,9 @@ describe('deleteUserMcpServers', () => {
       grantedBy: userId,
     });
 
-    mockGetMCPManager.mockReturnValue({ disconnectUserConnection: mockDisconnect });
+    mockGetMCPManager.mockReturnValue({
+      disconnectUserConnection: mockDisconnect,
+    });
 
     await deleteUserMcpServers(userId.toString());
 

@@ -1,13 +1,13 @@
-import { useState, useRef } from 'react';
 import { MCPIcon } from '@librechat/client';
-import { PermissionBits, hasPermissions } from 'librechat-data-provider';
+import { hasPermissions, PermissionBits } from 'librechat-data-provider';
+import { useRef, useState } from 'react';
 import type { MCPServerStatusIconProps } from '~/components/MCP/MCPServerStatusIcon';
 import type { MCPServerDefinition } from '~/hooks';
+import { useLocalize, useMCPServerManager } from '~/hooks';
+import { cn } from '~/utils';
+import MCPCardActions from './MCPCardActions';
 import MCPServerDialog from './MCPServerDialog';
 import { getStatusDotColor } from './MCPStatusBadge';
-import MCPCardActions from './MCPCardActions';
-import { useMCPServerManager, useLocalize } from '~/hooks';
-import { cn } from '~/utils';
 
 interface MCPServerCardProps {
   server: MCPServerDefinition;
@@ -54,7 +54,10 @@ export default function MCPServerCard({
      *  This ensures users can enter credentials before initialization attempts
      */
     if (hasCustomUserVars && serverStatus?.connectionState !== 'connected') {
-      onConfigClick({ stopPropagation: () => {}, preventDefault: () => {} } as React.MouseEvent);
+      onConfigClick({
+        stopPropagation: () => {},
+        preventDefault: () => {},
+      } as React.MouseEvent);
       return;
     }
     initializeServer(server.serverName);

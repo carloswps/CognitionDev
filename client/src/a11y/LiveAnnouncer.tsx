@@ -1,7 +1,8 @@
-import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { AnnounceOptions } from '~/common';
-import AnnouncerContext from '~/Providers/AnnouncerContext';
 import { useLocalize } from '~/hooks';
+import AnnouncerContext from '~/Providers/AnnouncerContext';
 import Announcer from './Announcer';
 
 interface LiveAnnouncerProps {

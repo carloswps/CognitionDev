@@ -1,19 +1,19 @@
-import React, { useMemo } from 'react';
 import { TooltipAnchor } from '@librechat/client';
 import { getConfigDefaults } from 'librechat-data-provider';
+import React, { useMemo } from 'react';
 import type { ModelSelectorProps } from '~/common';
-import {
-  renderModelSpecs,
-  renderEndpoints,
-  renderSearchResults,
-  renderCustomGroups,
-} from './components';
-import { ModelSelectorProvider, useModelSelectorContext } from './ModelSelectorContext';
-import { ModelSelectorChatProvider } from './ModelSelectorChatContext';
-import { getSelectedIcon, getDisplayValue } from './utils';
-import { CustomMenu as Menu } from './CustomMenu';
-import DialogManager from './DialogManager';
 import { useLocalize } from '~/hooks';
+import { CustomMenu as Menu } from './CustomMenu';
+import {
+  renderCustomGroups,
+  renderEndpoints,
+  renderModelSpecs,
+  renderSearchResults,
+} from './components';
+import DialogManager from './DialogManager';
+import { ModelSelectorChatProvider } from './ModelSelectorChatContext';
+import { ModelSelectorProvider, useModelSelectorContext } from './ModelSelectorContext';
+import { getDisplayValue, getSelectedIcon } from './utils';
 
 const defaultInterface = getConfigDefaults().interface;
 

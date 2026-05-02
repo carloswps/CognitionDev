@@ -1,13 +1,13 @@
-import { ThinkingDisplay } from '../src/schemas';
 import {
-  supportsAdaptiveThinking,
-  omitsThinkingByDefault,
-  resolveThinkingDisplay,
-  bedrockOutputParser,
   bedrockInputParser,
   bedrockInputSchema,
+  bedrockOutputParser,
+  omitsThinkingByDefault,
+  resolveThinkingDisplay,
+  supportsAdaptiveThinking,
   supportsContext1m,
 } from '../src/bedrock';
+import { ThinkingDisplay } from '../src/schemas';
 
 describe('supportsAdaptiveThinking', () => {
   test('should return true for claude-opus-4-6', () => {
@@ -325,7 +325,10 @@ describe('bedrockInputParser', () => {
       };
       const result = bedrockInputParser.parse(input) as Record<string, unknown>;
       const additionalFields = result.additionalModelRequestFields as Record<string, unknown>;
-      expect(additionalFields.thinking).toEqual({ type: 'adaptive', display: 'summarized' });
+      expect(additionalFields.thinking).toEqual({
+        type: 'adaptive',
+        display: 'summarized',
+      });
       expect(additionalFields.thinkingBudget).toBeUndefined();
       expect(additionalFields.anthropic_beta).toEqual([
         'output-128k-2025-02-19',
@@ -547,7 +550,10 @@ describe('bedrockInputParser', () => {
       };
       const result = bedrockInputParser.parse(input) as Record<string, unknown>;
       const additionalFields = result.additionalModelRequestFields as Record<string, unknown>;
-      expect(additionalFields.thinking).toEqual({ type: 'adaptive', display: 'summarized' });
+      expect(additionalFields.thinking).toEqual({
+        type: 'adaptive',
+        display: 'summarized',
+      });
       expect(additionalFields.output_config).toEqual({ effort: 'xhigh' });
       expect(additionalFields.effort).toBeUndefined();
     });
@@ -558,7 +564,10 @@ describe('bedrockInputParser', () => {
       };
       const result = bedrockInputParser.parse(input) as Record<string, unknown>;
       const additionalFields = result.additionalModelRequestFields as Record<string, unknown>;
-      expect(additionalFields.thinking).toEqual({ type: 'adaptive', display: 'summarized' });
+      expect(additionalFields.thinking).toEqual({
+        type: 'adaptive',
+        display: 'summarized',
+      });
     });
 
     test('should NOT set thinking.display for pre-Opus-4.7 adaptive models', () => {
@@ -582,7 +591,10 @@ describe('bedrockInputParser', () => {
         thinkingDisplay: ThinkingDisplay.summarized,
       }) as Record<string, unknown>;
       const additionalFields = result.additionalModelRequestFields as Record<string, unknown>;
-      expect(additionalFields.thinking).toEqual({ type: 'adaptive', display: 'summarized' });
+      expect(additionalFields.thinking).toEqual({
+        type: 'adaptive',
+        display: 'summarized',
+      });
       expect(additionalFields.thinkingDisplay).toBeUndefined();
     });
 
@@ -592,7 +604,10 @@ describe('bedrockInputParser', () => {
         thinkingDisplay: ThinkingDisplay.omitted,
       }) as Record<string, unknown>;
       const additionalFields = result.additionalModelRequestFields as Record<string, unknown>;
-      expect(additionalFields.thinking).toEqual({ type: 'adaptive', display: 'omitted' });
+      expect(additionalFields.thinking).toEqual({
+        type: 'adaptive',
+        display: 'omitted',
+      });
       expect(additionalFields.thinkingDisplay).toBeUndefined();
     });
 
@@ -706,7 +721,10 @@ describe('bedrockInputParser', () => {
         },
       }) as Record<string, unknown>;
       const amrf = result.additionalModelRequestFields as Record<string, unknown>;
-      expect(amrf.thinking).toEqual({ type: 'adaptive', display: 'summarized' });
+      expect(amrf.thinking).toEqual({
+        type: 'adaptive',
+        display: 'summarized',
+      });
     });
 
     test('should not include output_config when effort is unset (empty string)', () => {

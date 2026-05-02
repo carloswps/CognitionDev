@@ -14,12 +14,14 @@ function formatGoogleInputs(obj) {
   const formattedObj = {};
 
   for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    if (Object.hasOwn(obj, key)) {
       const value = obj[key];
 
       // Handle arrays
       if (Array.isArray(value)) {
-        formattedObj[key] = { list_val: value.map((item) => formatGoogleInputs(item)) };
+        formattedObj[key] = {
+          list_val: value.map((item) => formatGoogleInputs(item)),
+        };
       }
       // Handle objects
       else if (typeof value === 'object' && value !== null) {

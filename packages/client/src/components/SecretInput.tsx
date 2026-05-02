@@ -1,6 +1,6 @@
+import { Check, Copy, Eye, EyeOff } from 'lucide-react';
 import * as React from 'react';
-import { useState, useCallback } from 'react';
-import { Eye, EyeOff, Copy, Check } from 'lucide-react';
+import { useCallback, useState } from 'react';
 import { cn } from '~/utils';
 
 export interface SecretInputProps

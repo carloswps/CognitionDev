@@ -1,7 +1,7 @@
+import type { ResultReference, SearchRefType, ValidSource } from 'librechat-data-provider';
 import { createContext, useContext } from 'react';
-import type { SearchRefType, ValidSource, ResultReference } from 'librechat-data-provider';
-import type * as t from './types';
 import { useSearchContext } from '~/Providers';
+import type * as t from './types';
 
 export interface CitationContextType {
   hoveredCitationId: string | null;
@@ -71,7 +71,11 @@ export function useCitation({
 }
 
 export function useCompositeCitations(
-  citations: Array<{ turn: number; refType: SearchRefType | string; index: number }>,
+  citations: Array<{
+    turn: number;
+    refType: SearchRefType | string;
+    index: number;
+  }>,
 ): Array<t.Citation & t.Reference> {
   const { searchResults } = useSearchContext();
 

@@ -1,5 +1,5 @@
 import { Constants, isActionTool } from 'librechat-data-provider';
-import { Terminal, Globe, ImageIcon, ArrowRightLeft, FileSearch, Zap, Wrench } from 'lucide-react';
+import { ArrowRightLeft, FileSearch, Globe, ImageIcon, Terminal, Wrench, Zap } from 'lucide-react';
 import { cn } from '~/utils';
 
 export type ToolIconType =

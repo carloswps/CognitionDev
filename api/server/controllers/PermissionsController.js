@@ -124,8 +124,6 @@ const updateResourcePermissions = async (req, res) => {
           },
           error: error.message,
         });
-        // Continue with other principals instead of failing the entire operation
-        continue;
       }
     }
 
@@ -411,7 +409,7 @@ const searchPrincipals = async (req, res) => {
     }
 
     const localResults = await db.searchPrincipals(query.trim(), searchLimit, typeFilters);
-    let allPrincipals = [...localResults];
+    const allPrincipals = [...localResults];
 
     const useEntraId = entraIdPrincipalFeatureEnabled(req.user);
 

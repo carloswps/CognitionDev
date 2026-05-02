@@ -1,8 +1,8 @@
-import { Component, ErrorInfo, ReactNode, createRef } from 'react';
 import { RefreshCw } from 'lucide-react';
-import { Button } from '../Button';
-import { logger } from '~/utils';
+import { Component, createRef, type ErrorInfo, type ReactNode } from 'react';
 import { useLocalize } from '~/hooks';
+import { logger } from '~/utils';
+import { Button } from '../Button';
 
 /**
  * Error boundary specifically for DataTable component.

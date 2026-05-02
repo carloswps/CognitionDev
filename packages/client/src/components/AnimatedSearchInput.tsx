@@ -1,5 +1,5 @@
-import React from 'react';
 import { Search } from 'lucide-react';
+import type React from 'react';
 import { TranslationKeys, useLocalize } from '~/hooks';
 import { cn } from '~/utils';
 

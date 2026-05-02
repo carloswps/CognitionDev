@@ -1,10 +1,10 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import type React from 'react';
 
 import '@testing-library/jest-dom';
-import AgentGrid from '../AgentGrid';
-import type t from 'librechat-data-provider';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type t from 'librechat-data-provider';
+import AgentGrid from '../AgentGrid';
 
 // Mock the marketplace agent query hook
 jest.mock('~/data-provider/Agents', () => ({
@@ -625,7 +625,10 @@ describe('AgentGrid Integration with useGetMarketplaceAgentsQuery', () => {
         const fetchNextPage = jest.fn();
 
         mockUseMarketplaceAgentsInfiniteQuery.mockReturnValue(
-          createMockInfiniteQuery([firstPage], { fetchNextPage, hasNextPage: true }),
+          createMockInfiniteQuery([firstPage], {
+            fetchNextPage,
+            hasNextPage: true,
+          }),
         );
 
         const scrollElement = setupViewport(1200, 600); // Small viewport, content fills it

@@ -1,12 +1,12 @@
 import React from 'react';
-import remarkGfm from 'remark-gfm';
-import supersub from 'remark-supersub';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
+import remarkGfm from 'remark-gfm';
+import supersub from 'remark-supersub';
 import type { PluggableList } from 'unified';
-import { code, codeNoExecution, a, p } from './MarkdownComponents';
 import { CodeBlockProvider } from '~/Providers';
 import { langSubset } from '~/utils';
+import { a, code, codeNoExecution, p } from './MarkdownComponents';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -61,11 +61,11 @@ class MarkdownErrorBoundary extends React.Component<
         <CodeBlockProvider>
           <ReactMarkdown
             remarkPlugins={[
-              /** @ts-ignore */
+              /** @ts-expect-error */
               supersub,
               remarkGfm,
             ]}
-            /** @ts-ignore */
+            /** @ts-expect-error */
             rehypePlugins={rehypePlugins}
             components={
               {

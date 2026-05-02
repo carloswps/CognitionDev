@@ -241,10 +241,16 @@ describe('redactFormat', () => {
   });
 
   it('leaves info.message untouched for info and debug levels', () => {
-    const infoInfo = runFormat({ level: 'info', message: 'Bearer looksSensitive' });
+    const infoInfo = runFormat({
+      level: 'info',
+      message: 'Bearer looksSensitive',
+    });
     expect(infoInfo.message).toBe('Bearer looksSensitive');
 
-    const infoDebug = runFormat({ level: 'debug', message: 'Bearer looksSensitive' });
+    const infoDebug = runFormat({
+      level: 'debug',
+      message: 'Bearer looksSensitive',
+    });
     expect(infoDebug.message).toBe('Bearer looksSensitive');
   });
 });

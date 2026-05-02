@@ -1,6 +1,7 @@
-import throttle from 'lodash/throttle';
-import React, { useCallback, useEffect, useRef } from 'react';
 import type { FetchNextPageOptions, InfiniteQueryObserverResult } from '@tanstack/react-query';
+import throttle from 'lodash/throttle';
+import type React from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 export default function useNavScrolling<TData>({
   nextCursor,

@@ -522,7 +522,9 @@ describe('GraphApiService', () => {
       const result = await GraphApiService.getUserEntraGroups('token', 'user');
 
       expect(mockGraphClient.api).toHaveBeenCalledWith('/me/getMemberGroups');
-      expect(mockGraphClient.post).toHaveBeenCalledWith({ securityEnabledOnly: false });
+      expect(mockGraphClient.post).toHaveBeenCalledWith({
+        securityEnabledOnly: false,
+      });
 
       expect(result).toEqual(['group-1', 'group-2']);
     });

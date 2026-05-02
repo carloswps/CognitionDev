@@ -1,15 +1,15 @@
-import { useEffect, useMemo, useCallback, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useToastContext } from '@librechat/client';
 import type { MCPServerCreateParams } from 'librechat-data-provider';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   useCreateMCPServerMutation,
-  useUpdateMCPServerMutation,
   useDeleteMCPServerMutation,
+  useUpdateMCPServerMutation,
 } from '~/data-provider/MCP';
-import { useToastContext } from '@librechat/client';
+import type { MCPServerDefinition } from '~/hooks';
 import { useLocalize } from '~/hooks';
 import { extractServerNameFromUrl, isValidUrl, normalizeUrl } from '../utils/urlUtils';
-import type { MCPServerDefinition } from '~/hooks';
 
 // Auth type enum
 export enum AuthTypeEnum {
@@ -193,15 +193,21 @@ export function useMCPServerForm({ server, onSuccess, onClose }: UseMCPServerFor
           formData.auth.oauth_scope)
       ) {
         config.oauth = {
-          ...(formData.auth.oauth_client_id && { client_id: formData.auth.oauth_client_id }),
+          ...(formData.auth.oauth_client_id && {
+            client_id: formData.auth.oauth_client_id,
+          }),
           ...(formData.auth.oauth_client_secret && {
             client_secret: formData.auth.oauth_client_secret,
           }),
           ...(formData.auth.oauth_authorization_url && {
             authorization_url: formData.auth.oauth_authorization_url,
           }),
-          ...(formData.auth.oauth_token_url && { token_url: formData.auth.oauth_token_url }),
-          ...(formData.auth.oauth_scope && { scope: formData.auth.oauth_scope }),
+          ...(formData.auth.oauth_token_url && {
+            token_url: formData.auth.oauth_token_url,
+          }),
+          ...(formData.auth.oauth_scope && {
+            scope: formData.auth.oauth_scope,
+          }),
         };
       }
 
@@ -224,7 +230,10 @@ export function useMCPServerForm({ server, onSuccess, onClose }: UseMCPServerFor
       const params: MCPServerCreateParams = { config };
 
       const result = server
-        ? await updateMutation.mutateAsync({ serverName: server.serverName, data: params })
+        ? await updateMutation.mutateAsync({
+            serverName: server.serverName,
+            data: params,
+          })
         : await createMutation.mutateAsync(params);
 
       showToast({
@@ -240,7 +249,9 @@ export function useMCPServerForm({ server, onSuccess, onClose }: UseMCPServerFor
       let errorMessage = localize('com_ui_error');
 
       if (error && typeof error === 'object' && 'response' in error) {
-        const axiosError = error as { response?: { data?: { error?: string } } };
+        const axiosError = error as {
+          response?: { data?: { error?: string } };
+        };
         if (axiosError.response?.data?.error === 'MCP_INSPECTION_FAILED') {
           errorMessage = localize('com_ui_mcp_server_connection_failed');
         } else if (axiosError.response?.data?.error === 'MCP_DOMAIN_NOT_ALLOWED') {
@@ -281,7 +292,9 @@ export function useMCPServerForm({ server, onSuccess, onClose }: UseMCPServerFor
       let errorMessage = localize('com_ui_error');
 
       if (error && typeof error === 'object' && 'response' in error) {
-        const axiosError = error as { response?: { data?: { error?: string } } };
+        const axiosError = error as {
+          response?: { data?: { error?: string } };
+        };
         if (axiosError.response?.data?.error) {
           errorMessage = axiosError.response.data.error;
         }

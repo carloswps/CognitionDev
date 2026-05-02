@@ -1,8 +1,8 @@
-import mongoose, { Schema } from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { tenantStorage, runAsSystem, SYSTEM_TENANT_ID } from '~/config/tenantContext';
-import { applyTenantIsolation, _resetStrictCache } from '~/models/plugins/tenantIsolation';
-import { tenantSafeBulkWrite, _resetBulkWriteStrictCache } from './tenantBulkWrite';
+import mongoose, { Schema } from 'mongoose';
+import { runAsSystem, SYSTEM_TENANT_ID, tenantStorage } from '~/config/tenantContext';
+import { _resetStrictCache, applyTenantIsolation } from '~/models/plugins/tenantIsolation';
+import { _resetBulkWriteStrictCache, tenantSafeBulkWrite } from './tenantBulkWrite';
 
 let mongoServer: InstanceType<typeof MongoMemoryServer>;
 
@@ -254,7 +254,11 @@ describe('tenantSafeBulkWrite', () => {
       const Model = createTestModel('replaceOverwrite');
 
       await runAsSystem(async () => {
-        await Model.create({ name: 'conflict', value: 1, tenantId: 'tenant-a' });
+        await Model.create({
+          name: 'conflict',
+          value: 1,
+          tenantId: 'tenant-a',
+        });
       });
 
       await tenantStorage.run({ tenantId: 'tenant-a' }, async () => {
@@ -262,7 +266,11 @@ describe('tenantSafeBulkWrite', () => {
           {
             replaceOne: {
               filter: { name: 'conflict' },
-              replacement: { name: 'conflict', value: 2, tenantId: 'tenant-evil' } as ITestDoc,
+              replacement: {
+                name: 'conflict',
+                value: 2,
+                tenantId: 'tenant-evil',
+              } as ITestDoc,
             },
           },
         ]);
@@ -440,7 +448,11 @@ describe('tenantSafeBulkWrite', () => {
       const Model = createTestModel('noCtxStrip');
 
       await runAsSystem(async () => {
-        await Model.create({ name: 'no-ctx-strip', value: 1, tenantId: 'original' });
+        await Model.create({
+          name: 'no-ctx-strip',
+          value: 1,
+          tenantId: 'original',
+        });
       });
 
       await tenantSafeBulkWrite(Model, [

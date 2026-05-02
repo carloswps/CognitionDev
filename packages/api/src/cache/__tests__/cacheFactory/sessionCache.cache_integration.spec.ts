@@ -1,5 +1,5 @@
-import type { MemoryStore, SessionData } from 'express-session';
 import type { RedisStore as ConnectRedis } from 'connect-redis';
+import type { MemoryStore, SessionData } from 'express-session';
 
 interface TestSessionData {
   [key: string]: unknown;

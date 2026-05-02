@@ -1,35 +1,35 @@
-import { useMemo, useCallback, useEffect, useRef } from 'react';
-import { Plus } from 'lucide-react';
 import { SelectDropDown } from '@librechat/client';
-import {
-  Tools,
-  FileSources,
-  Capabilities,
-  EModelEndpoint,
-  LocalStorageKeys,
-  isImageVisionTool,
-  defaultAssistantFormValues,
-} from 'librechat-data-provider';
+import type { UseMutationResult } from '@tanstack/react-query';
 import type {
-  TPlugin,
   Assistant,
+  AssistantCreateParams,
   AssistantDocument,
   AssistantsEndpoint,
-  AssistantCreateParams,
+  TPlugin,
 } from 'librechat-data-provider';
+import {
+  Capabilities,
+  defaultAssistantFormValues,
+  EModelEndpoint,
+  FileSources,
+  isImageVisionTool,
+  LocalStorageKeys,
+  Tools,
+} from 'librechat-data-provider';
+import { Plus } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import type { UseFormReset } from 'react-hook-form';
 import type {
   Actions,
-  ExtendedFile,
   AssistantForm,
-  TAssistantOption,
+  ExtendedFile,
   LastSelectedModels,
+  TAssistantOption,
 } from '~/common';
-import type { UseMutationResult } from '@tanstack/react-query';
-import type { UseFormReset } from 'react-hook-form';
 import { useListAssistantsQuery } from '~/data-provider';
 import { useLocalize, useLocalStorage } from '~/hooks';
-import { cn, createDropdownSetter } from '~/utils';
 import { useFileMapContext } from '~/Providers';
+import { cn, createDropdownSetter } from '~/utils';
 
 const keys = new Set([
   'name',

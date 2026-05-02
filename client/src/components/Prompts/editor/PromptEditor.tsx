@@ -1,19 +1,19 @@
-import { useMemo, memo } from 'react';
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import supersub from 'remark-supersub';
+import { Button, TextareaAutosize, TooltipAnchor } from '@librechat/client';
+import { Check, EditIcon, FileText } from 'lucide-react';
+import { memo, useMemo } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
-import { EditIcon, FileText, Check } from 'lucide-react';
-import { Controller, useFormContext } from 'react-hook-form';
-import { TextareaAutosize, Button, TooltipAnchor } from '@librechat/client';
+import rehypeKatex from 'rehype-katex';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import supersub from 'remark-supersub';
 import type { PluggableList } from 'unified';
 import { codeNoExecution } from '~/components/Chat/Messages/Content/MarkdownComponents';
-import VariablesDropdown from './VariablesDropdown';
-import { PromptVariableGfm } from './Markdown';
-import { cn, langSubset } from '~/utils';
 import { useLocalize } from '~/hooks';
+import { cn, langSubset } from '~/utils';
+import { PromptVariableGfm } from './Markdown';
+import VariablesDropdown from './VariablesDropdown';
 
 type Props = {
   name: string;
@@ -118,14 +118,14 @@ const PromptEditor: React.FC<Props> = ({ name, isEditing, setIsEditing }) => {
                 ) : (
                   <ReactMarkdown
                     remarkPlugins={[
-                      /** @ts-ignore */
+                      /** @ts-expect-error */
                       supersub,
                       remarkGfm,
                       [remarkMath, { singleDollarTextMath: false }],
                     ]}
-                    /** @ts-ignore */
+                    /** @ts-expect-error */
                     rehypePlugins={rehypePlugins}
-                    /** @ts-ignore */
+                    /** @ts-expect-error */
                     components={{ p: PromptVariableGfm, code: codeNoExecution }}
                     className="markdown prose dark:prose-invert light w-full break-words text-text-primary"
                   >

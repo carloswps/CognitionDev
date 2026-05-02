@@ -1,5 +1,5 @@
-import type * as t from '~/mcp/types';
 import type { MCPConnection } from '~/mcp/connection';
+import type * as t from '~/mcp/types';
 import type { MCPServersRegistry as MCPServersRegistryType } from '../MCPServersRegistry';
 
 // Mock isLeader to always return true to avoid lock contention during parallel operations
@@ -215,7 +215,9 @@ describe('MCPServersInitializer Redis Integration Tests', () => {
       const keysToDelete: string[] = [];
 
       // Collect all keys first
-      for await (const key of keyvRedisClient.scanIterator({ MATCH: pattern })) {
+      for await (const key of keyvRedisClient.scanIterator({
+        MATCH: pattern,
+      })) {
         keysToDelete.push(key);
       }
 

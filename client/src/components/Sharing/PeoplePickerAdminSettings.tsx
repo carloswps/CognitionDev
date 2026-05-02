@@ -1,21 +1,21 @@
-import { useEffect, useState } from 'react';
 import * as Ariakit from '@ariakit/react';
-import { ShieldEllipsis } from 'lucide-react';
-import { useForm, Controller } from 'react-hook-form';
-import { Permissions, SystemRoles, PermissionTypes } from 'librechat-data-provider';
 import {
   Button,
-  Switch,
-  OGDialog,
   DropdownPopup,
-  OGDialogTitle,
+  OGDialog,
   OGDialogContent,
+  OGDialogTitle,
   OGDialogTrigger,
+  Switch,
   useToastContext,
 } from '@librechat/client';
-import type { Control, UseFormSetValue, UseFormGetValues } from 'react-hook-form';
+import { Permissions, PermissionTypes, SystemRoles } from 'librechat-data-provider';
+import { ShieldEllipsis } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import type { Control, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useUpdatePeoplePickerPermissionsMutation } from '~/data-provider';
-import { useLocalize, useAuthContext, useRoleSelector } from '~/hooks';
+import { useAuthContext, useLocalize, useRoleSelector } from '~/hooks';
 
 type FormValues = {
   [Permissions.VIEW_USERS]: boolean;
@@ -76,7 +76,10 @@ const PeoplePickerAdminSettings = () => {
       showToast({ status: 'success', message: localize('com_ui_saved') });
     },
     onError: () => {
-      showToast({ status: 'error', message: localize('com_ui_error_save_admin_settings') });
+      showToast({
+        status: 'error',
+        message: localize('com_ui_error_save_admin_settings'),
+      });
     },
   });
 
@@ -149,7 +152,9 @@ const PeoplePickerAdminSettings = () => {
       </OGDialogTrigger>
       <OGDialogContent className="w-full border-border-light bg-surface-primary text-text-primary lg:w-1/4">
         <OGDialogTitle>
-          {localize('com_ui_admin_settings_section', { section: localize('com_ui_people_picker') })}
+          {localize('com_ui_admin_settings_section', {
+            section: localize('com_ui_people_picker'),
+          })}
         </OGDialogTitle>
         <div className="p-2">
           {/* Role selection dropdown */}

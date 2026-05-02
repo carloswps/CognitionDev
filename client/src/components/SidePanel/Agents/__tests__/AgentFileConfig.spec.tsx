@@ -1,8 +1,8 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useForm, FormProvider } from 'react-hook-form';
-import { EModelEndpoint, mergeFileConfig, resolveEndpointType } from 'librechat-data-provider';
 import type { TEndpointsConfig } from 'librechat-data-provider';
+import { EModelEndpoint, mergeFileConfig, resolveEndpointType } from 'librechat-data-provider';
+import React from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import type { AgentForm } from '~/common';
 import useAgentFileConfig from '~/hooks/Agents/useAgentFileConfig';
 
@@ -15,7 +15,11 @@ const mockEndpointsConfig: TEndpointsConfig = {
   [EModelEndpoint.openAI]: { userProvide: false, order: 0 },
   [EModelEndpoint.agents]: { userProvide: false, order: 1 },
   Moonshot: { type: EModelEndpoint.custom, userProvide: false, order: 9999 },
-  'Some Endpoint': { type: EModelEndpoint.custom, userProvide: false, order: 9999 },
+  'Some Endpoint': {
+    type: EModelEndpoint.custom,
+    userProvide: false,
+    order: 9999,
+  },
 };
 
 const defaultFileConfig = mergeFileConfig({

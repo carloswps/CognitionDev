@@ -6,7 +6,11 @@ export default function RetrievalIcon() {
       viewBox="0 0 20 20"
       width="20"
       height="20"
-      style={{ width: '100%', height: '100%', transform: 'translate3d(0px, 0px, 0px)' }}
+      style={{
+        width: '100%',
+        height: '100%',
+        transform: 'translate3d(0px, 0px, 0px)',
+      }}
       preserveAspectRatio="xMidYMid meet"
     >
       <defs>

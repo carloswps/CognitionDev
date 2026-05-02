@@ -1,28 +1,28 @@
-import fs from 'fs';
-import { Readable } from 'stream';
-import { logger } from '@librechat/data-schemas';
-import { FileSources } from 'librechat-data-provider';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import type { GetObjectCommandInput } from '@aws-sdk/client-s3';
 import {
-  PutObjectCommand,
+  DeleteObjectCommand,
   GetObjectCommand,
   HeadObjectCommand,
-  DeleteObjectCommand,
+  PutObjectCommand,
 } from '@aws-sdk/client-s3';
-import type { GetObjectCommandInput } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { logger } from '@librechat/data-schemas';
+import fs from 'fs';
 import type { TFile } from 'librechat-data-provider';
-import type { ServerRequest } from '~/types';
-import type {
-  UploadFileParams,
-  SaveBufferParams,
-  BatchUpdateFn,
-  SaveURLParams,
-  GetURLParams,
-  UploadResult,
-  S3FileRef,
-} from '~/storage/types';
+import { FileSources } from 'librechat-data-provider';
+import type { Readable } from 'stream';
 import { initializeS3 } from '~/cdn/s3';
 import { deleteRagFile } from '~/files';
+import type {
+  BatchUpdateFn,
+  GetURLParams,
+  S3FileRef,
+  SaveBufferParams,
+  SaveURLParams,
+  UploadFileParams,
+  UploadResult,
+} from '~/storage/types';
+import type { ServerRequest } from '~/types';
 import { s3Config } from './s3Config';
 
 const {
@@ -65,7 +65,9 @@ export async function getS3URL({
       throw new Error('[getS3URL] S3 not initialized');
     }
 
-    return await getSignedUrl(s3, new GetObjectCommand(params), { expiresIn: s3UrlExpirySeconds });
+    return await getSignedUrl(s3, new GetObjectCommand(params), {
+      expiresIn: s3UrlExpirySeconds,
+    });
   } catch (error) {
     logger.error('[getS3URL] Error getting signed URL from S3:', (error as Error).message);
     throw error;

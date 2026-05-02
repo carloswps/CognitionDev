@@ -297,7 +297,10 @@ function getDefaultHandlers({
  */
 function writeAttachment(res, streamId, attachment) {
   if (streamId) {
-    GenerationJobManager.emitChunk(streamId, { event: 'attachment', data: attachment });
+    GenerationJobManager.emitChunk(streamId, {
+      event: 'attachment',
+      data: attachment,
+    });
   } else {
     res.write(`event: attachment\ndata: ${JSON.stringify(attachment)}\n\n`);
   }
@@ -742,7 +745,11 @@ const agentLogHandlerObj = { handle: agentLogHandler };
 function buildSummarizationHandlers({ isStreaming, res }) {
   if (!isStreaming) {
     const noop = { handle: () => {} };
-    return { on_summarize_start: noop, on_summarize_delta: noop, on_summarize_complete: noop };
+    return {
+      on_summarize_start: noop,
+      on_summarize_delta: noop,
+      on_summarize_complete: noop,
+    };
   }
   const writeEvent = (name) => ({
     handle: async (_event, data) => {

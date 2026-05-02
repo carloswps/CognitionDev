@@ -1,8 +1,8 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { EModelEndpoint, Providers } from 'librechat-data-provider';
+import React from 'react';
+import { RecoilRoot } from 'recoil';
 import AttachFileMenu from '../AttachFileMenu';
 
 jest.mock('~/hooks', () => ({
@@ -45,7 +45,11 @@ jest.mock('@librechat/client', () => {
             props.items.map((item, idx) =>
               R.createElement(
                 'button',
-                { key: idx, onClick: item.onClick, 'data-testid': `menu-item-${idx}` },
+                {
+                  key: idx,
+                  onClick: item.onClick,
+                  'data-testid': `menu-item-${idx}`,
+                },
                 item.label,
               ),
             ),
@@ -78,7 +82,9 @@ const mockUseSharePointFileHandlingNoChatContext = jest.requireMock(
 ).useSharePointFileHandlingNoChatContext;
 const mockUseGetStartupConfig = jest.requireMock('~/data-provider').useGetStartupConfig;
 
-const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } },
+});
 
 function setupMocks(overrides: { provider?: string } = {}) {
   const translations: Record<string, string> = {
@@ -97,7 +103,9 @@ function setupMocks(overrides: { provider?: string } = {}) {
     codeEnabled: false,
   });
   mockUseGetAgentsConfig.mockReturnValue({ agentsConfig: {} });
-  mockUseFileHandlingNoChatContext.mockReturnValue({ handleFileChange: jest.fn() });
+  mockUseFileHandlingNoChatContext.mockReturnValue({
+    handleFileChange: jest.fn(),
+  });
   const sharePointReturnValue = {
     handleSharePointFiles: jest.fn(),
     isProcessing: false,
@@ -106,7 +114,9 @@ function setupMocks(overrides: { provider?: string } = {}) {
   };
   mockUseSharePointFileHandling.mockReturnValue(sharePointReturnValue);
   mockUseSharePointFileHandlingNoChatContext.mockReturnValue(sharePointReturnValue);
-  mockUseGetStartupConfig.mockReturnValue({ data: { sharePointFilePickerEnabled: false } });
+  mockUseGetStartupConfig.mockReturnValue({
+    data: { sharePointFilePickerEnabled: false },
+  });
   mockUseAgentToolPermissions.mockReturnValue({
     fileSearchAllowedByAgent: false,
     codeAllowedByAgent: false,
@@ -185,14 +195,20 @@ describe('AttachFileMenu', () => {
 
     it('shows "Upload to Provider" for azureOpenAI with useResponsesApi', () => {
       setupMocks({ provider: EModelEndpoint.azureOpenAI });
-      renderMenu({ endpointType: EModelEndpoint.azureOpenAI, useResponsesApi: true });
+      renderMenu({
+        endpointType: EModelEndpoint.azureOpenAI,
+        useResponsesApi: true,
+      });
       openMenu();
       expect(screen.getByText('Upload to Provider')).toBeInTheDocument();
     });
 
     it('shows "Upload Image" for azureOpenAI without useResponsesApi', () => {
       setupMocks({ provider: EModelEndpoint.azureOpenAI });
-      renderMenu({ endpointType: EModelEndpoint.azureOpenAI, useResponsesApi: false });
+      renderMenu({
+        endpointType: EModelEndpoint.azureOpenAI,
+        useResponsesApi: false,
+      });
       openMenu();
       expect(screen.getByText('Upload Image')).toBeInTheDocument();
     });
@@ -343,7 +359,9 @@ describe('AttachFileMenu', () => {
     it('handles undefined endpoint and provider gracefully', () => {
       setupMocks();
       renderMenu({ endpoint: undefined, endpointType: undefined });
-      const button = screen.getByRole('button', { name: /attach file options/i });
+      const button = screen.getByRole('button', {
+        name: /attach file options/i,
+      });
       expect(button).toBeInTheDocument();
       fireEvent.click(button);
       expect(screen.getByText('Upload Image')).toBeInTheDocument();

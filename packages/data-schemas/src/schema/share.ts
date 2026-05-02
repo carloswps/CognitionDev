@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Types } from 'mongoose';
+import mongoose, { type Document, Schema, type Types } from 'mongoose';
 
 export interface ISharedLink extends Document {
   conversationId: string;
@@ -49,6 +49,11 @@ const shareSchema: Schema<ISharedLink> = new Schema(
   { timestamps: true },
 );
 
-shareSchema.index({ conversationId: 1, user: 1, targetMessageId: 1, tenantId: 1 });
+shareSchema.index({
+  conversationId: 1,
+  user: 1,
+  targetMessageId: 1,
+  tenantId: 1,
+});
 
 export default shareSchema;

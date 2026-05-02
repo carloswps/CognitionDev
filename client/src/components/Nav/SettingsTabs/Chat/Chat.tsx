@@ -1,11 +1,11 @@
 import { memo } from 'react';
+import store from '~/store';
 import { showThinkingAtom } from '~/store/showThinking';
+import ToggleSwitch from '../ToggleSwitch';
 import AdvancedPrompts from './AdvancedPrompts';
+import ChatDirection from './ChatDirection';
 import FontSizeSelector from './FontSizeSelector';
 import { ForkSettings } from './ForkSettings';
-import ChatDirection from './ChatDirection';
-import ToggleSwitch from '../ToggleSwitch';
-import store from '~/store';
 
 const toggleSwitchConfigs = [
   {

@@ -1,12 +1,12 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+import type React from 'react';
 import { RecoilRoot } from 'recoil';
-import { MCPUIResourceCarousel } from '../MCPUIResourceCarousel';
 import {
   useMessageContext,
   useOptionalMessagesConversation,
   useOptionalMessagesOperations,
 } from '~/Providers';
+import { MCPUIResourceCarousel } from '../MCPUIResourceCarousel';
 
 // Mock dependencies
 jest.mock('~/Providers');
@@ -55,7 +55,9 @@ describe('MCPUIResourceCarousel', () => {
 
   describe('multiple resource fetching', () => {
     it('should fetch resources by resourceIds across conversation messages', () => {
-      mockUseMessageContext.mockReturnValue({ messageId: 'msg-current' } as any);
+      mockUseMessageContext.mockReturnValue({
+        messageId: 'msg-current',
+      } as any);
       currentTestMessages = [
         {
           messageId: 'msg-origin',
@@ -224,7 +226,11 @@ describe('MCPUIResourceCarousel', () => {
 
       renderWithRecoil(
         <MCPUIResourceCarousel
-          node={{ properties: { resourceIds: ['id-a', 'id-a', 'id-b', 'id-b', 'id-a'] } }}
+          node={{
+            properties: {
+              resourceIds: ['id-a', 'id-a', 'id-b', 'id-b', 'id-a'],
+            },
+          }}
         />,
       );
 

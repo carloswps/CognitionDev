@@ -1,11 +1,11 @@
 import { z } from 'zod';
 import type { TModelSpecPreset } from './schemas';
 import {
-  EModelEndpoint,
-  tModelSpecPresetSchema,
-  eModelEndpointSchema,
-  AuthType,
+  type AuthType,
   authTypeSchema,
+  type EModelEndpoint,
+  eModelEndpointSchema,
+  tModelSpecPresetSchema,
 } from './schemas';
 
 export type TModelSpec = {

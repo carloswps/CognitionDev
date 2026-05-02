@@ -1,27 +1,27 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
-import * as Popover from '@radix-ui/react-popover';
 import { useToastContext } from '@librechat/client';
+import * as Popover from '@radix-ui/react-popover';
+import type { UseMutationResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
-import {
-  fileConfig as defaultFileConfig,
-  QueryKeys,
-  defaultOrderQuery,
-  mergeFileConfig,
-} from 'librechat-data-provider';
 import type {
-  Metadata,
   Assistant,
-  AssistantsEndpoint,
   AssistantCreateParams,
   AssistantListResponse,
+  AssistantsEndpoint,
+  Metadata,
 } from 'librechat-data-provider';
-import type { UseMutationResult } from '@tanstack/react-query';
-import { useUploadAssistantAvatarMutation, useGetFileConfig } from '~/data-provider';
-import { AssistantAvatar, NoImage, AvatarMenu } from './Images';
-import { useAssistantsMapContext } from '~/Providers';
+import {
+  fileConfig as defaultFileConfig,
+  defaultOrderQuery,
+  mergeFileConfig,
+  QueryKeys,
+} from 'librechat-data-provider';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useGetFileConfig, useUploadAssistantAvatarMutation } from '~/data-provider';
 // import { Spinner } from '@librechat/client';
 import { useLocalize } from '~/hooks';
+import { useAssistantsMapContext } from '~/Providers';
 import { formatBytes } from '~/utils';
+import { AssistantAvatar, AvatarMenu, NoImage } from './Images';
 
 function Avatar({
   endpoint,

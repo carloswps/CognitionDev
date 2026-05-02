@@ -1,26 +1,27 @@
-import React, { useState, useCallback } from 'react';
-import { LockIcon, Trash } from 'lucide-react';
-import { REGEXP_ONLY_DIGITS, REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 import {
-  InputOTPSeparator,
-  OGDialogContent,
-  OGDialogTrigger,
-  OGDialogHeader,
-  InputOTPGroup,
-  OGDialogTitle,
-  InputOTPSlot,
-  OGDialog,
-  InputOTP,
-  Spinner,
   Button,
-  Label,
   Input,
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+  Label,
+  OGDialog,
+  OGDialogContent,
+  OGDialogHeader,
+  OGDialogTitle,
+  OGDialogTrigger,
+  Spinner,
 } from '@librechat/client';
+import { REGEXP_ONLY_DIGITS, REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
 import type { TDeleteUserRequest } from 'librechat-data-provider';
+import { LockIcon, Trash } from 'lucide-react';
+import type React from 'react';
+import { useCallback, useState } from 'react';
+import type { LocalizeFunction } from '~/common';
 import { useDeleteUserMutation } from '~/data-provider';
-import { useAuthContext } from '~/hooks/AuthContext';
-import { LocalizeFunction } from '~/common';
 import { useLocalize } from '~/hooks';
+import { useAuthContext } from '~/hooks/AuthContext';
 import { cn } from '~/utils';
 
 const DeleteAccount = ({ disabled = false }: { title?: string; disabled?: boolean }) => {

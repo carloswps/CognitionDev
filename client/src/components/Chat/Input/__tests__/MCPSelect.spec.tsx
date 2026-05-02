@@ -1,6 +1,6 @@
-import React from 'react';
-import userEvent from '@testing-library/user-event';
 import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import type React from 'react';
 import MCPSelect from '../MCPSelect';
 
 const mockToggleServerSelection = jest.fn();
@@ -129,13 +129,20 @@ describe('MCPSelect', () => {
   });
 
   it('renders nothing when selectableServers is empty', () => {
-    mockMcpServerManager = { ...defaultMcpServerManager, selectableServers: [] };
+    mockMcpServerManager = {
+      ...defaultMcpServerManager,
+      selectableServers: [],
+    };
     const { container } = render(<MCPSelect />);
     expect(container.firstChild).toBeNull();
   });
 
   it('renders nothing when not pinned and no servers selected', () => {
-    mockMcpServerManager = { ...defaultMcpServerManager, isPinned: false, mcpValues: [] };
+    mockMcpServerManager = {
+      ...defaultMcpServerManager,
+      isPinned: false,
+      mcpValues: [],
+    };
     const { container } = render(<MCPSelect />);
     expect(container.firstChild).toBeNull();
   });

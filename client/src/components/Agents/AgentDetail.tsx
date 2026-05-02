@@ -1,19 +1,20 @@
-import React, { useRef } from 'react';
-import { Link, Pin, PinOff } from 'lucide-react';
+import { Button, OGDialog, OGDialogContent, useToastContext } from '@librechat/client';
 import { useQueryClient } from '@tanstack/react-query';
-import { OGDialog, OGDialogContent, Button, useToastContext } from '@librechat/client';
+import type t from 'librechat-data-provider';
 import {
-  QueryKeys,
+  type AgentListResponse,
   Constants,
   EModelEndpoint,
-  PermissionBits,
   LocalStorageKeys,
-  AgentListResponse,
+  PermissionBits,
+  QueryKeys,
 } from 'librechat-data-provider';
-import type t from 'librechat-data-provider';
-import { useLocalize, useDefaultConvo, useFavorites } from '~/hooks';
-import { renderAgentAvatar, clearMessagesCache } from '~/utils';
+import { Link, Pin, PinOff } from 'lucide-react';
+import type React from 'react';
+import { useRef } from 'react';
+import { useDefaultConvo, useFavorites, useLocalize } from '~/hooks';
 import { useChatContext } from '~/Providers';
+import { clearMessagesCache, renderAgentAvatar } from '~/utils';
 
 interface SupportContact {
   name?: string;
@@ -58,7 +59,10 @@ const AgentDetail: React.FC<AgentDetailProps> = ({ agent, isOpen, onClose }) => 
       if (listResp != null) {
         if (!listResp.data.some((a) => a.id === agent.id)) {
           const currentAgents = [agent, ...JSON.parse(JSON.stringify(listResp.data))];
-          queryClient.setQueryData<AgentListResponse>(keys, { ...listResp, data: currentAgents });
+          queryClient.setQueryData<AgentListResponse>(keys, {
+            ...listResp,
+            data: currentAgents,
+          });
         }
       }
 
@@ -72,7 +76,9 @@ const AgentDetail: React.FC<AgentDetailProps> = ({ agent, isOpen, onClose }) => 
         conversationId: Constants.NEW_CONVO as string,
         endpoint: EModelEndpoint.agents,
         agent_id: agent.id,
-        title: localize('com_agents_chat_with', { name: agent.name || localize('com_ui_agent') }),
+        title: localize('com_agents_chat_with', {
+          name: agent.name || localize('com_ui_agent'),
+        }),
       };
 
       const currentConvo = getDefaultConversation({

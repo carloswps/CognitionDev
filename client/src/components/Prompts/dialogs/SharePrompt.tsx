@@ -1,16 +1,16 @@
-import React from 'react';
-import { Share2Icon } from 'lucide-react';
 import { Button, TooltipAnchor } from '@librechat/client';
-import {
-  SystemRoles,
-  Permissions,
-  ResourceType,
-  PermissionBits,
-  PermissionTypes,
-} from 'librechat-data-provider';
 import type { TPromptGroup } from 'librechat-data-provider';
-import { useAuthContext, useHasAccess, useLocalize, useResourcePermissions } from '~/hooks';
+import {
+  PermissionBits,
+  Permissions,
+  PermissionTypes,
+  ResourceType,
+  SystemRoles,
+} from 'librechat-data-provider';
+import { Share2Icon } from 'lucide-react';
+import React from 'react';
 import { GenericGrantAccessDialog } from '~/components/Sharing';
+import { useAuthContext, useHasAccess, useLocalize, useResourcePermissions } from '~/hooks';
 
 const SharePrompt = React.memo(
   ({ group, disabled }: { group?: TPromptGroup; disabled: boolean }) => {

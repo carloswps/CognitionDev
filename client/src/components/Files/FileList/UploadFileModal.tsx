@@ -1,5 +1,5 @@
-import React, { useState, ChangeEvent } from 'react';
 import { Button, Dialog, DialogContent, DialogHeader, DialogTitle, Input } from '@librechat/client';
+import React, { type ChangeEvent, useState } from 'react';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
 
