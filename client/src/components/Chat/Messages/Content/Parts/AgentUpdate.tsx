@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react';
-import { EModelEndpoint } from 'librechat-data-provider';
 import type { TMessage } from 'librechat-data-provider';
+import { EModelEndpoint } from 'librechat-data-provider';
+import type React from 'react';
+import { useMemo } from 'react';
 import MessageIcon from '~/components/Share/MessageIcon';
-import { useAgentsMapContext } from '~/Providers';
 import { useLocalize } from '~/hooks';
+import { useAgentsMapContext } from '~/Providers';
 
 interface AgentUpdateProps {
   currentAgentId: string;

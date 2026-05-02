@@ -1,18 +1,18 @@
-import { logger } from '@librechat/data-schemas';
-import { ContentTypes, isAgentsEndpoint } from 'librechat-data-provider';
+import type { BaseMessage } from '@langchain/core/messages';
+import type { MessageContentComplex } from '@librechat/agents';
 import {
-  labelContentByAgent,
+  estimateAnthropicImageTokens,
+  estimateOpenAIImageTokens,
   extractImageDimensions,
   getTokenCountForMessage,
-  estimateOpenAIImageTokens,
-  estimateAnthropicImageTokens,
+  labelContentByAgent,
 } from '@librechat/agents';
-import type { MessageContentComplex } from '@librechat/agents';
+import { logger } from '@librechat/data-schemas';
 import type { Agent, TMessage } from 'librechat-data-provider';
-import type { BaseMessage } from '@langchain/core/messages';
+import { ContentTypes, isAgentsEndpoint } from 'librechat-data-provider';
 import type { ServerRequest } from '~/types';
-import Tokenizer from '~/utils/tokenizer';
 import { logAxiosError } from '~/utils';
+import Tokenizer from '~/utils/tokenizer';
 
 export const omitTitleOptions = new Set([
   'stream',
@@ -48,7 +48,12 @@ const URL_DOCUMENT_FALLBACK_TOKENS = 2000;
 type ContentBlock = {
   type?: string;
   image_url?: string | { url?: string };
-  source?: { type?: string; data?: string; media_type?: string; content?: unknown[] };
+  source?: {
+    type?: string;
+    data?: string;
+    media_type?: string;
+    content?: unknown[];
+  };
   source_type?: string;
   mime_type?: string;
   data?: string;
@@ -267,7 +272,7 @@ export function countFormattedMessageTokens(
 export function createTokenCounter(encoding: Parameters<typeof Tokenizer.getTokenCount>[1]) {
   const isClaude = encoding === 'claude';
   const countTokens = (text: string) => Tokenizer.getTokenCount(text, encoding);
-  return function (message: BaseMessage) {
+  return (message: BaseMessage) => {
     const count = getTokenCountForMessage(
       message,
       countTokens,

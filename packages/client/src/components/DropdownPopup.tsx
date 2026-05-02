@@ -1,5 +1,5 @@
-import React from 'react';
 import * as Ariakit from '@ariakit/react';
+import type React from 'react';
 import type * as t from '~/common';
 import { cn } from '~/utils';
 import './Dropdown.css';
@@ -40,7 +40,11 @@ const DropdownPopup: React.FC<DropdownProps> = ({
   mountByState,
   ...props
 }) => {
-  const menu = Ariakit.useMenuStore({ open: isOpen, setOpen: setIsOpen, focusLoop });
+  const menu = Ariakit.useMenuStore({
+    open: isOpen,
+    setOpen: setIsOpen,
+    focusLoop,
+  });
   if (mountByState) {
     return (
       <Ariakit.MenuProvider store={menu}>

@@ -1,19 +1,19 @@
-import React, { useCallback, useMemo, memo } from 'react';
 import { useAtomValue } from 'jotai';
-import { useRecoilValue } from 'recoil';
 import type { TMessage } from 'librechat-data-provider';
-import type { TMessageProps, TMessageIcon, TMessageChatContext } from '~/common';
-import { cn, getHeaderPrefixForScreenReader, getMessageAriaLabel } from '~/utils';
+import React, { memo, useCallback, useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
+import type { TMessageChatContext, TMessageIcon, TMessageProps } from '~/common';
 import MessageContent from '~/components/Chat/Messages/Content/MessageContent';
-import { useLocalize, useMessageActions, useContentMetadata } from '~/hooks';
-import PlaceholderRow from '~/components/Chat/Messages/ui/PlaceholderRow';
-import SiblingSwitch from '~/components/Chat/Messages/SiblingSwitch';
 import HoverButtons from '~/components/Chat/Messages/HoverButtons';
 import MessageIcon from '~/components/Chat/Messages/MessageIcon';
+import SiblingSwitch from '~/components/Chat/Messages/SiblingSwitch';
 import SubRow from '~/components/Chat/Messages/SubRow';
-import { fontSizeAtom } from '~/store/fontSize';
+import PlaceholderRow from '~/components/Chat/Messages/ui/PlaceholderRow';
+import { useContentMetadata, useLocalize, useMessageActions } from '~/hooks';
 import { MessageContext } from '~/Providers';
 import store from '~/store';
+import { fontSizeAtom } from '~/store/fontSize';
+import { cn, getHeaderPrefixForScreenReader, getMessageAriaLabel } from '~/utils';
 
 type MessageRenderProps = {
   message?: TMessage;

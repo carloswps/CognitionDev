@@ -1,5 +1,5 @@
-import { useState, useCallback, useMemo } from 'react';
-import { EModelEndpoint } from 'librechat-data-provider';
+import type { EModelEndpoint } from 'librechat-data-provider';
+import { useCallback, useMemo, useState } from 'react';
 
 export const useKeyDialog = () => {
   const [keyDialogOpen, setKeyDialogOpen] = useState(false);

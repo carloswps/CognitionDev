@@ -63,8 +63,8 @@ jest.mock('~/hooks/Roles/useHasAccess', () =>
   }),
 );
 
-import React from 'react';
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
+import type React from 'react';
 import useHandleKeyUp from './useHandleKeyUp';
 
 const makeTextAreaRef = (value = '', selectionStart?: number) => {
@@ -78,7 +78,10 @@ const makeTextAreaRef = (value = '', selectionStart?: number) => {
 };
 
 const makeKeyEvent = (key: string) =>
-  ({ key, preventDefault: jest.fn() }) as unknown as React.KeyboardEvent<HTMLTextAreaElement>;
+  ({
+    key,
+    preventDefault: jest.fn(),
+  }) as unknown as React.KeyboardEvent<HTMLTextAreaElement>;
 
 const renderUseHandleKeyUp = (
   textAreaRef: React.RefObject<HTMLTextAreaElement>,

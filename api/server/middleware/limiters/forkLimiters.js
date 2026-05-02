@@ -66,9 +66,7 @@ const createForkLimiters = () => {
     windowMs: forkUserWindowMs,
     max: forkUserMax,
     handler: createForkHandler(false),
-    keyGenerator: function (req) {
-      return req.user?.id;
-    },
+    keyGenerator: (req) => req.user?.id,
     store: limiterCache('fork_user_limiter'),
   };
 

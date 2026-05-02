@@ -1,6 +1,6 @@
-import { useRecoilState } from 'recoil';
+import { Dropdown, ESide, InfoHoverCard, Switch } from '@librechat/client';
 import { ForkOptions } from 'librechat-data-provider';
-import { Dropdown, Switch, InfoHoverCard, ESide } from '@librechat/client';
+import { useRecoilState } from 'recoil';
 import { useLocalize } from '~/hooks';
 import store from '~/store';
 
@@ -12,8 +12,14 @@ export const ForkSettings = () => {
 
   const forkOptions = [
     { value: ForkOptions.DIRECT_PATH, label: localize('com_ui_fork_visible') },
-    { value: ForkOptions.INCLUDE_BRANCHES, label: localize('com_ui_fork_branches') },
-    { value: ForkOptions.TARGET_LEVEL, label: localize('com_ui_fork_all_target') },
+    {
+      value: ForkOptions.INCLUDE_BRANCHES,
+      label: localize('com_ui_fork_branches'),
+    },
+    {
+      value: ForkOptions.TARGET_LEVEL,
+      label: localize('com_ui_fork_all_target'),
+    },
   ];
 
   return (

@@ -1,10 +1,10 @@
+import { Spinner, useToastContext } from '@librechat/client';
 import { useEffect, useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
-import { Spinner, useToastContext } from '@librechat/client';
 import MinimalMessagesWrapper from '~/components/Chat/Messages/MinimalMessages';
-import { useNavScrolling, useLocalize, useAuthContext } from '~/hooks';
 import SearchMessage from '~/components/Chat/Messages/SearchMessage';
 import { useMessagesInfiniteQuery } from '~/data-provider';
+import { useAuthContext, useLocalize, useNavScrolling } from '~/hooks';
 import { useFileMapContext } from '~/Providers';
 import store from '~/store';
 
@@ -60,7 +60,10 @@ export default function Search() {
 
   useEffect(() => {
     if (isError && searchQuery) {
-      showToast({ message: 'An error occurred during search', status: 'error' });
+      showToast({
+        message: 'An error occurred during search',
+        status: 'error',
+      });
     }
   }, [isError, searchQuery, showToast]);
 

@@ -1,16 +1,16 @@
-import { useState, useRef, useEffect } from 'react';
+import type { AssistantsEndpoint } from 'librechat-data-provider';
 import {
+  getEndpointFileConfig,
   mergeFileConfig,
   retrievalMimeTypes,
-  getEndpointFileConfig,
 } from 'librechat-data-provider';
-import type { AssistantsEndpoint } from 'librechat-data-provider';
+import { useEffect, useRef, useState } from 'react';
 import type { ExtendedFile } from '~/common';
 import FileRow from '~/components/Chat/Input/Files/FileRow';
 import { useGetFileConfig } from '~/data-provider';
+import { useLocalize } from '~/hooks';
 import { useFileHandling } from '~/hooks/Files';
 import { useChatContext } from '~/Providers';
-import { useLocalize } from '~/hooks';
 
 const CodeInterpreterFiles = ({ children }: { children: React.ReactNode }) => {
   const localize = useLocalize();

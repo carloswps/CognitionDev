@@ -1,14 +1,14 @@
-import {
-  OCRStrategy,
-  FileSources,
-  EModelEndpoint,
-  EImageOutputType,
-  AgentCapabilities,
-  defaultSocialLogins,
-  validateAzureGroups,
-  defaultAgentCapabilities,
-} from 'librechat-data-provider';
 import type { TCustomConfig } from 'librechat-data-provider';
+import {
+  AgentCapabilities,
+  defaultAgentCapabilities,
+  defaultSocialLogins,
+  EImageOutputType,
+  EModelEndpoint,
+  FileSources,
+  OCRStrategy,
+  validateAzureGroups,
+} from 'librechat-data-provider';
 
 jest.mock('@librechat/data-schemas', () => ({
   ...jest.requireActual('@librechat/data-schemas'),

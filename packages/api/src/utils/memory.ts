@@ -1,7 +1,7 @@
 import { logger } from '@librechat/data-schemas';
-import { GenerationJobManager } from '~/stream';
-import { OAuthReconnectionManager } from '~/mcp/oauth/OAuthReconnectionManager';
 import { MCPManager } from '~/mcp/MCPManager';
+import { OAuthReconnectionManager } from '~/mcp/oauth/OAuthReconnectionManager';
+import { GenerationJobManager } from '~/stream';
 
 type ConnectionStats = ReturnType<InstanceType<typeof MCPManager>['getConnectionStats']>;
 type TrackerStats = ReturnType<InstanceType<typeof OAuthReconnectionManager>['getTrackerStats']>;
@@ -147,4 +147,10 @@ function stop(): void {
   logger.info('[MemDiag] Stopped memory diagnostics');
 }
 
-export const memoryDiagnostics = { start, stop, forceGC, getSnapshots, collectSnapshot };
+export const memoryDiagnostics = {
+  start,
+  stop,
+  forceGC,
+  getSnapshots,
+  collectSnapshot,
+};

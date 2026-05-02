@@ -445,7 +445,7 @@ const updateAgentHandler = async (req, res) => {
       }
     }
 
-    let updatedAgent =
+    const updatedAgent =
       Object.keys(updateData).length > 0
         ? await db.updateAgent({ id }, updateData, {
             updatingUserId: req.user.id,
@@ -847,13 +847,16 @@ const uploadAgentAvatarHandler = async (req, res) => {
       source: fileStrategy,
     };
 
-    let _avatar = existingAgent.avatar;
+    const _avatar = existingAgent.avatar;
 
     if (_avatar && _avatar.source) {
       const { deleteFile } = getStrategyFunctions(_avatar.source);
       try {
         await deleteFile(req, { filepath: _avatar.filepath });
-        await db.deleteFileByFilter({ user: req.user.id, filepath: _avatar.filepath });
+        await db.deleteFileByFilter({
+          user: req.user.id,
+          filepath: _avatar.filepath,
+        });
       } catch (error) {
         logger.error('[/:agent_id/avatar] Error deleting old avatar', error);
       }

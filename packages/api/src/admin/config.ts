@@ -1,14 +1,14 @@
+import type { AppConfig, ConfigSection, IConfig } from '@librechat/data-schemas';
 import { logger } from '@librechat/data-schemas';
+import type { Response } from 'express';
+import type { TCustomConfig } from 'librechat-data-provider';
 import {
-  PrincipalType,
-  PrincipalModel,
   INTERFACE_PERMISSION_FIELDS,
   PERMISSION_SUB_KEYS,
+  PrincipalModel,
+  PrincipalType,
 } from 'librechat-data-provider';
-import type { TCustomConfig } from 'librechat-data-provider';
-import type { AppConfig, ConfigSection, IConfig } from '@librechat/data-schemas';
-import type { Types, ClientSession } from 'mongoose';
-import type { Response } from 'express';
+import type { ClientSession, Types } from 'mongoose';
 import type { CapabilityUser } from '~/middleware/capabilities';
 import type { ServerRequest } from '~/types/http';
 
@@ -323,7 +323,9 @@ export function createAdminConfigHandlers(deps: AdminConfigDeps) {
             );
           }
         }
-        filteredOverrides = { ...(overrides as Record<string, unknown>) } as Partial<TCustomConfig>;
+        filteredOverrides = {
+          ...(overrides as Record<string, unknown>),
+        } as Partial<TCustomConfig>;
         if (Object.keys(filteredIface).length > 0) {
           (filteredOverrides as Record<string, unknown>).interface = filteredIface;
         } else {
@@ -395,16 +397,16 @@ export function createAdminConfigHandlers(deps: AdminConfigDeps) {
       }
 
       if (entries.length > MAX_PATCH_ENTRIES) {
-        return res
-          .status(400)
-          .json({ error: `entries array exceeds maximum of ${MAX_PATCH_ENTRIES}` });
+        return res.status(400).json({
+          error: `entries array exceeds maximum of ${MAX_PATCH_ENTRIES}`,
+        });
       }
 
       for (const entry of entries) {
         if (!isValidFieldPath(entry.fieldPath)) {
-          return res
-            .status(400)
-            .json({ error: `Invalid or unsafe field path: ${entry.fieldPath}` });
+          return res.status(400).json({
+            error: `Invalid or unsafe field path: ${entry.fieldPath}`,
+          });
         }
       }
 
@@ -455,7 +457,9 @@ export function createAdminConfigHandlers(deps: AdminConfigDeps) {
 
       const existing =
         priority == null
-          ? await findConfigByPrincipal(principalType, principalId, { includeInactive: true })
+          ? await findConfigByPrincipal(principalType, principalId, {
+              includeInactive: true,
+            })
           : null;
 
       const config = await patchConfigFields(

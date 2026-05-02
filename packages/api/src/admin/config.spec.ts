@@ -1,4 +1,4 @@
-import { isValidFieldPath, getTopLevelSection } from './config';
+import { getTopLevelSection, isValidFieldPath } from './config';
 
 describe('isValidFieldPath', () => {
   it('accepts simple dot paths', () => {

@@ -1,3 +1,6 @@
-export { default as TermsAndConditionsModal } from './TermsAndConditionsModal';
+export type {
+  AdminSettingsDialogProps,
+  PermissionConfig,
+} from './AdminSettingsDialog';
 export { default as AdminSettingsDialog } from './AdminSettingsDialog';
-export type { PermissionConfig, AdminSettingsDialogProps } from './AdminSettingsDialog';
+export { default as TermsAndConditionsModal } from './TermsAndConditionsModal';

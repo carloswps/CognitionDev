@@ -42,7 +42,7 @@ describe('Server Configuration', () => {
   /** Mocked fs.readFileSync for index.html */
   const originalReadFileSync = fs.readFileSync;
   beforeAll(() => {
-    fs.readFileSync = function (filepath, options) {
+    fs.readFileSync = (filepath, options) => {
       if (filepath.includes('index.html')) {
         return '<!DOCTYPE html><html><head><title>LibreChat</title></head><body><div id="root"></div></body></html>';
       }

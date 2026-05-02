@@ -1,9 +1,10 @@
 /* eslint-disable i18next/no-literal-string */
-import React from 'react';
+
 import { render, waitFor } from '@testing-library/react';
+import React from 'react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
-import useAuthRedirect from '../useAuthRedirect';
 import { useAuthContext } from '~/hooks';
+import useAuthRedirect from '../useAuthRedirect';
 
 // Polyfill Request for React Router in test environment
 if (typeof Request === 'undefined') {

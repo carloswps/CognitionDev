@@ -1,9 +1,9 @@
-import { renderHook, act, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import {
-  useDebounced,
-  useOptimizedRowSelection,
   useColumnStyles,
+  useDebounced,
   useKeyboardNavigation,
+  useOptimizedRowSelection,
 } from './DataTable.hooks';
 import type { TableColumn } from './DataTable.types';
 
@@ -208,7 +208,11 @@ describe('DataTable Hooks', () => {
 
     it('should handle mobile vs desktop sizes', () => {
       const columns: TableColumn<{ name: string }, string>[] = [
-        { accessorKey: 'name', header: 'Name', meta: { size: 200, mobileSize: 150 } },
+        {
+          accessorKey: 'name',
+          header: 'Name',
+          meta: { size: 200, mobileSize: 150 },
+        },
       ];
 
       // Desktop

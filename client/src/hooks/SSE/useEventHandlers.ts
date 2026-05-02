@@ -1,47 +1,47 @@
-import { useCallback, useRef } from 'react';
-import { v4 } from 'uuid';
-import { useSetRecoilState } from 'recoil';
+import type { InfiniteData } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import {
-  QueryKeys,
-  Constants,
-  EndpointURLs,
-  ContentTypes,
-  tPresetSchema,
-  tMessageSchema,
-  tConvoUpdateSchema,
-  isAssistantsEndpoint,
-} from 'librechat-data-provider';
 import type {
-  TMessage,
-  TConversation,
   EventSubmission,
+  TConversation,
+  TMessage,
   TStartupConfig,
 } from 'librechat-data-provider';
-import type { TResData, TFinalResData, ConvoGenerator } from '~/common';
-import type { InfiniteData } from '@tanstack/react-query';
-import type { SetterOrUpdater, Resetter } from 'recoil';
-import type { ConversationCursorData } from '~/utils';
 import {
-  logger,
-  setDraft,
-  scrollToEnd,
-  getAllContentText,
-  addConvoToAllQueries,
-  updateConvoInAllQueries,
-  removeConvoFromAllQueries,
-  findConversationInInfinite,
-} from '~/utils';
-import { startupConfigKey, queueTitleGeneration } from '~/data-provider';
+  Constants,
+  ContentTypes,
+  EndpointURLs,
+  isAssistantsEndpoint,
+  QueryKeys,
+  tConvoUpdateSchema,
+  tMessageSchema,
+  tPresetSchema,
+} from 'librechat-data-provider';
+import { useCallback, useRef } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import type { Resetter, SetterOrUpdater } from 'recoil';
+import { useSetRecoilState } from 'recoil';
+import { v4 } from 'uuid';
+import type { ConvoGenerator, TFinalResData, TResData } from '~/common';
+import { MESSAGE_UPDATE_INTERVAL } from '~/common';
+import { queueTitleGeneration, startupConfigKey } from '~/data-provider';
+import { useApplyAgentTemplate } from '~/hooks/Agents';
+import { useAuthContext } from '~/hooks/AuthContext';
 import useAttachmentHandler from '~/hooks/SSE/useAttachmentHandler';
 import useContentHandler from '~/hooks/SSE/useContentHandler';
 import useStepHandler from '~/hooks/SSE/useStepHandler';
-import { useApplyAgentTemplate } from '~/hooks/Agents';
-import { useAuthContext } from '~/hooks/AuthContext';
-import { MESSAGE_UPDATE_INTERVAL } from '~/common';
 import { useLiveAnnouncer } from '~/Providers';
 import store from '~/store';
+import type { ConversationCursorData } from '~/utils';
+import {
+  addConvoToAllQueries,
+  findConversationInInfinite,
+  getAllContentText,
+  logger,
+  removeConvoFromAllQueries,
+  scrollToEnd,
+  setDraft,
+  updateConvoInAllQueries,
+} from '~/utils';
 
 type TSyncData = {
   sync: boolean;
@@ -187,7 +187,10 @@ export default function useEventHandlers({
   const { conversationId: paramId } = useParams();
   const { token } = useAuthContext();
 
-  const { contentHandler, resetContentHandler } = useContentHandler({ setMessages, getMessages });
+  const { contentHandler, resetContentHandler } = useContentHandler({
+    setMessages,
+    getMessages,
+  });
   const { stepHandler, clearStepMaps, syncStepMessage } = useStepHandler({
     setMessages,
     getMessages,
@@ -512,7 +515,10 @@ export default function useEventHandlers({
           setFinalMessages(currentConvoId, isNewChat ? [] : [...messages]);
           setDraft({ id: currentConvoId, value: requestMessage?.text });
           if (isNewChat) {
-            navigate(`/c/${Constants.NEW_CONVO}`, { replace: true, state: { focusChat: true } });
+            navigate(`/c/${Constants.NEW_CONVO}`, {
+              replace: true,
+              state: { focusChat: true },
+            });
           }
           return;
         }
@@ -821,7 +827,9 @@ export default function useEventHandlers({
         setMessages([...submission.messages, submission.userMessage, errorResponse]);
         if (newConversation) {
           newConversation({
-            template: { conversationId: conversationId || errorResponse.conversationId || v4() },
+            template: {
+              conversationId: conversationId || errorResponse.conversationId || v4(),
+            },
             preset: tPresetSchema.parse(submission.conversation),
           });
         }

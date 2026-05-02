@@ -1,15 +1,15 @@
-import { useState, useMemo, useEffect, useCallback } from 'react';
-import { useRecoilValue } from 'recoil';
-import { ChevronDown } from 'lucide-react';
+import type { Agents, FunctionToolCall, TMessageContentParts } from 'librechat-data-provider';
 import { ContentTypes, ToolCallTypes } from 'librechat-data-provider';
-import type { TMessageContentParts, Agents, FunctionToolCall } from 'librechat-data-provider';
-import type { PartWithIndex } from './ParallelContent';
+import { ChevronDown } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import type { TranslationKeys } from '~/hooks';
-import { StackedToolIcons, getMCPServerName } from './ToolOutput';
-import { useLocalize, useExpandCollapse } from '~/hooks';
+import { useExpandCollapse, useLocalize } from '~/hooks';
 import { useMCPIconMap } from '~/hooks/MCP';
-import { cn } from '~/utils';
 import store from '~/store';
+import { cn } from '~/utils';
+import type { PartWithIndex } from './ParallelContent';
+import { getMCPServerName, StackedToolIcons } from './ToolOutput';
 
 /** Maps tool names to translation keys — resolved via localize() at render time. */
 const FRIENDLY_NAME_KEYS: Record<string, TranslationKeys> = {
@@ -47,11 +47,17 @@ function getToolMeta(part: TMessageContentParts): ToolMeta | null {
 
   if (toolCall.type === ToolCallTypes.CODE_INTERPRETER) {
     const ci = (toolCall as { code_interpreter?: { outputs?: unknown[] } }).code_interpreter;
-    return { name: 'code_interpreter', hasOutput: (ci?.outputs?.length ?? 0) > 0 };
+    return {
+      name: 'code_interpreter',
+      hasOutput: (ci?.outputs?.length ?? 0) > 0,
+    };
   }
 
   if (toolCall.type === ToolCallTypes.RETRIEVAL || toolCall.type === ToolCallTypes.FILE_SEARCH) {
-    return { name: 'file_search', hasOutput: !!(toolCall as { output?: string }).output };
+    return {
+      name: 'file_search',
+      hasOutput: !!(toolCall as { output?: string }).output,
+    };
   }
 
   if (toolCall.type === ToolCallTypes.FUNCTION && ToolCallTypes.FUNCTION in toolCall) {

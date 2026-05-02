@@ -1,8 +1,8 @@
 import React from 'react';
-import { useMessageProcess, useMemoizedChatContext } from '~/hooks';
 import type { TMessageProps } from '~/common';
-import MessageRender from './ui/MessageRender';
+import { useMemoizedChatContext, useMessageProcess } from '~/hooks';
 import MultiMessage from './MultiMessage';
+import MessageRender from './ui/MessageRender';
 
 const MessageContainer = React.memo(function MessageContainer({
   handleScroll,

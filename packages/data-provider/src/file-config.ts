@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import type { EndpointFileConfig, FileConfig } from './types/files';
 import { EModelEndpoint, isAgentsEndpoint, isDocumentSupportedProvider } from './schemas';
+import type { EndpointFileConfig, FileConfig } from './types/files';
 import { normalizeEndpointName } from './utils';
 
 export const supportsFiles = {
@@ -444,9 +444,8 @@ export const fileConfig = {
   stt: {
     supportedMimeTypes: defaultSTTMimeTypes,
   },
-  checkType: function (fileType: string, supportedTypes: RegExp[] = supportedMimeTypes) {
-    return supportedTypes.some((regex) => regex.test(fileType));
-  },
+  checkType: (fileType: string, supportedTypes: RegExp[] = supportedMimeTypes) =>
+    supportedTypes.some((regex) => regex.test(fileType)),
 };
 
 const supportedMimeTypesSchema = z.array(z.string()).optional();

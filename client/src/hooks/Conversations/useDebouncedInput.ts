@@ -1,5 +1,6 @@
 import debounce from 'lodash/debounce';
-import React, { useState, useCallback, useMemo } from 'react';
+import type React from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import type { SetterOrUpdater } from 'recoil';
 import type { TSetOption } from '~/common';
 import { defaultDebouncedDelay } from '~/common';

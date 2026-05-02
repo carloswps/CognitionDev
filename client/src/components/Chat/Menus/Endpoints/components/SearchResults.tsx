@@ -1,13 +1,13 @@
-import React, { Fragment } from 'react';
 import { VisuallyHidden } from '@ariakit/react';
-import { CheckCircle2, EarthIcon } from 'lucide-react';
-import { isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
 import type { TModelSpec } from 'librechat-data-provider';
+import { isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
+import { CheckCircle2, EarthIcon } from 'lucide-react';
+import React, { Fragment } from 'react';
 import type { Endpoint } from '~/common';
-import { useModelSelectorContext } from '../ModelSelectorContext';
-import { CustomMenuItem as MenuItem } from '../CustomMenu';
-import SpecIcon from './SpecIcon';
 import { cn } from '~/utils';
+import { CustomMenuItem as MenuItem } from '../CustomMenu';
+import { useModelSelectorContext } from '../ModelSelectorContext';
+import SpecIcon from './SpecIcon';
 
 interface SearchResultsProps {
   results: (TModelSpec | Endpoint)[] | null;

@@ -11,7 +11,9 @@ const getProfileDetails = ({ profile }) => ({
 });
 
 const facebookLogin = socialLogin('facebook', getProfileDetails);
-const facebookAdminLogin = socialLogin('facebook', getProfileDetails, { existingUsersOnly: true });
+const facebookAdminLogin = socialLogin('facebook', getProfileDetails, {
+  existingUsersOnly: true,
+});
 
 const getFacebookConfig = (callbackURL) => ({
   clientID: process.env.FACEBOOK_CLIENT_ID,

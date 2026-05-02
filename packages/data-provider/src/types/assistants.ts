@@ -1,9 +1,9 @@
 import type { OpenAPIV3 } from 'openapi-types';
-import type { AssistantsEndpoint, AgentProvider } from 'src/schemas';
+import type { ArtifactModes } from 'src/artifacts';
+import type { AgentProvider, AssistantsEndpoint } from 'src/schemas';
 import type { Agents, GraphEdge } from './agents';
-import type { ContentTypes } from './runs';
 import type { TFile } from './files';
-import { ArtifactModes } from 'src/artifacts';
+import type { ContentTypes } from './runs';
 
 export type Schema = OpenAPIV3.SchemaObject & { description?: string };
 export type Reference = OpenAPIV3.ReferenceObject & { description?: string };
@@ -559,7 +559,10 @@ export type TMessageContentParts =
       ) &
         PartMetadata;
     } & ContentMetadata)
-  | ({ type: ContentTypes.IMAGE_FILE; image_file: ImageFile & PartMetadata } & ContentMetadata)
+  | ({
+      type: ContentTypes.IMAGE_FILE;
+      image_file: ImageFile & PartMetadata;
+    } & ContentMetadata)
   | (SummaryContentPart & ContentMetadata)
   | (Agents.AgentUpdate & ContentMetadata)
   | (Agents.MessageContentImageUrl & ContentMetadata)

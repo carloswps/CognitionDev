@@ -82,13 +82,14 @@ describe('createSSRFSafeUndiciConnect', () => {
     mockDnsResult('93.184.216.34', 4);
     const connect = createSSRFSafeUndiciConnect();
 
-    const result = await new Promise<{ err: NodeJS.ErrnoException | null; address: string }>(
-      (resolve) => {
-        connect.lookup('example.com', {}, (err, address) => {
-          resolve({ err, address: address as string });
-        });
-      },
-    );
+    const result = await new Promise<{
+      err: NodeJS.ErrnoException | null;
+      address: string;
+    }>((resolve) => {
+      connect.lookup('example.com', {}, (err, address) => {
+        resolve({ err, address: address as string });
+      });
+    });
 
     expect(result.err).toBeNull();
     expect(result.address).toBe('93.184.216.34');

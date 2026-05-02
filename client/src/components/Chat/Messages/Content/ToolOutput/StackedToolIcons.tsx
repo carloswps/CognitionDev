@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import ToolIcon, { getToolIconType, getMCPServerName } from './ToolIcon';
-import type { ToolIconType } from './ToolIcon';
 import { cn } from '~/utils';
+import type { ToolIconType } from './ToolIcon';
+import ToolIcon, { getMCPServerName, getToolIconType } from './ToolIcon';
 
 interface ResolvedIcon {
   key: string;

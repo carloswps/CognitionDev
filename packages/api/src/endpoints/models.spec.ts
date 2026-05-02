@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { Time, EModelEndpoint, defaultModels } from 'librechat-data-provider';
+import { defaultModels, EModelEndpoint, Time } from 'librechat-data-provider';
 import {
   fetchModels,
-  splitAndTrim,
-  getOpenAIModels,
-  getGoogleModels,
-  getBedrockModels,
   getAnthropicModels,
+  getBedrockModels,
+  getGoogleModels,
+  getOpenAIModels,
+  splitAndTrim,
 } from './models';
 
 jest.mock('axios');

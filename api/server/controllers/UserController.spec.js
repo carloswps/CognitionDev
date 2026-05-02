@@ -124,7 +124,9 @@ describe('deleteUserController', () => {
 
   it('should return 200 on successful deletion', async () => {
     const userId = new mongoose.Types.ObjectId();
-    const req = { user: { id: userId.toString(), _id: userId, email: 'test@test.com' } };
+    const req = {
+      user: { id: userId.toString(), _id: userId, email: 'test@test.com' },
+    };
 
     await deleteUserController(req, mockRes);
 
@@ -154,9 +156,15 @@ describe('deleteUserController', () => {
 
   it('should handle user that exists in no groups', async () => {
     const userId = new mongoose.Types.ObjectId();
-    await Group.create({ name: 'Empty', memberIds: ['someone-else'], source: 'local' });
+    await Group.create({
+      name: 'Empty',
+      memberIds: ['someone-else'],
+      source: 'local',
+    });
 
-    const req = { user: { id: userId.toString(), _id: userId, email: 'no-groups@test.com' } };
+    const req = {
+      user: { id: userId.toString(), _id: userId, email: 'no-groups@test.com' },
+    };
     await deleteUserController(req, mockRes);
 
     expect(mockRes.status).toHaveBeenCalledWith(200);
@@ -174,7 +182,9 @@ describe('deleteUserController', () => {
       source: 'local',
     });
 
-    const req = { user: { id: userIdStr, _id: userId, email: 'dupe@test.com' } };
+    const req = {
+      user: { id: userIdStr, _id: userId, email: 'dupe@test.com' },
+    };
     await deleteUserController(req, mockRes);
 
     const group = await Group.findOne({ name: 'Dupes' }).lean();
@@ -185,7 +195,9 @@ describe('deleteUserController', () => {
     const userId = new mongoose.Types.ObjectId();
     deleteConvos.mockRejectedValueOnce(new Error('no convos'));
 
-    const req = { user: { id: userId.toString(), _id: userId, email: 'convos@test.com' } };
+    const req = {
+      user: { id: userId.toString(), _id: userId, email: 'convos@test.com' },
+    };
     await deleteUserController(req, mockRes);
 
     expect(mockRes.status).toHaveBeenCalledWith(200);
@@ -197,11 +209,15 @@ describe('deleteUserController', () => {
     const { deleteMessages } = require('~/models');
     deleteMessages.mockRejectedValueOnce(new Error('db down'));
 
-    const req = { user: { id: userId.toString(), _id: userId, email: 'fail@test.com' } };
+    const req = {
+      user: { id: userId.toString(), _id: userId, email: 'fail@test.com' },
+    };
     await deleteUserController(req, mockRes);
 
     expect(mockRes.status).toHaveBeenCalledWith(500);
-    expect(mockRes.json).toHaveBeenCalledWith({ message: 'Something went wrong.' });
+    expect(mockRes.json).toHaveBeenCalledWith({
+      message: 'Something went wrong.',
+    });
   });
 
   it('should use string user.id (not ObjectId user._id) for memberIds removal', async () => {
@@ -215,7 +231,9 @@ describe('deleteUserController', () => {
       source: 'local',
     });
 
-    const req = { user: { id: userIdStr, _id: userId, email: 'stringcheck@test.com' } };
+    const req = {
+      user: { id: userIdStr, _id: userId, email: 'stringcheck@test.com' },
+    };
     await deleteUserController(req, mockRes);
 
     const group = await Group.findOne({ name: 'StringCheck' }).lean();

@@ -44,8 +44,14 @@ async function spendCollectedUsage({
     {
       spendTokens: db.spendTokens,
       spendStructuredTokens: db.spendStructuredTokens,
-      pricing: { getMultiplier: db.getMultiplier, getCacheMultiplier: db.getCacheMultiplier },
-      bulkWriteOps: { insertMany: db.bulkInsertTransactions, updateBalance: db.updateBalance },
+      pricing: {
+        getMultiplier: db.getMultiplier,
+        getCacheMultiplier: db.getCacheMultiplier,
+      },
+      bulkWriteOps: {
+        insertMany: db.bulkInsertTransactions,
+        updateBalance: db.updateBalance,
+      },
     },
     {
       user: userId,
@@ -168,17 +174,15 @@ async function abortMessage(req, res) {
   res.send(JSON.stringify(finalEvent));
 }
 
-const handleAbort = function () {
-  return async function (req, res) {
-    try {
-      if (isEnabled(process.env.LIMIT_CONCURRENT_MESSAGES)) {
-        await clearPendingReq({ userId: req.user.id });
-      }
-      return await abortMessage(req, res);
-    } catch (err) {
-      logger.error('[abortMessage] handleAbort error', err);
+const handleAbort = () => async (req, res) => {
+  try {
+    if (isEnabled(process.env.LIMIT_CONCURRENT_MESSAGES)) {
+      await clearPendingReq({ userId: req.user.id });
     }
-  };
+    return await abortMessage(req, res);
+  } catch (err) {
+    logger.error('[abortMessage] handleAbort error', err);
+  }
 };
 
 /**

@@ -7,8 +7,8 @@
  * would have been passed to spendTokens/spendStructuredTokens.
  */
 import type { UsageMetadata } from '../stream/interfaces/IJobStore';
-import type { RecordUsageDeps, RecordUsageParams } from './usage';
 import type { BulkWriteDeps, PricingFns } from './transactions';
+import type { RecordUsageDeps, RecordUsageParams } from './usage';
 import { recordCollectedUsage } from './usage';
 
 describe('recordCollectedUsage — bulk path parity', () => {
@@ -53,7 +53,10 @@ describe('recordCollectedUsage — bulk path parity', () => {
 
   describe('basic functionality', () => {
     it('should return undefined if collectedUsage is empty', async () => {
-      const result = await recordCollectedUsage(deps, { ...baseParams, collectedUsage: [] });
+      const result = await recordCollectedUsage(deps, {
+        ...baseParams,
+        collectedUsage: [],
+      });
       expect(result).toBeUndefined();
       expect(mockInsertMany).not.toHaveBeenCalled();
       expect(mockSpendTokens).not.toHaveBeenCalled();
@@ -73,7 +76,10 @@ describe('recordCollectedUsage — bulk path parity', () => {
         { input_tokens: 100, output_tokens: 50, model: 'gpt-4' },
       ];
 
-      const result = await recordCollectedUsage(deps, { ...baseParams, collectedUsage });
+      const result = await recordCollectedUsage(deps, {
+        ...baseParams,
+        collectedUsage,
+      });
 
       expect(result).toEqual({ input_tokens: 100, output_tokens: 50 });
       expect(mockSpendTokens).not.toHaveBeenCalled();
@@ -98,7 +104,10 @@ describe('recordCollectedUsage — bulk path parity', () => {
         { input_tokens: 200, output_tokens: 60, model: 'gpt-4' },
       ] as UsageMetadata[];
 
-      const result = await recordCollectedUsage(deps, { ...baseParams, collectedUsage });
+      const result = await recordCollectedUsage(deps, {
+        ...baseParams,
+        collectedUsage,
+      });
 
       expect(result).toEqual({ input_tokens: 100, output_tokens: 110 });
       expect(mockInsertMany).toHaveBeenCalledTimes(1);
@@ -115,7 +124,10 @@ describe('recordCollectedUsage — bulk path parity', () => {
         { input_tokens: 180, output_tokens: 20, model: 'gpt-4' },
       ];
 
-      const result = await recordCollectedUsage(deps, { ...baseParams, collectedUsage });
+      const result = await recordCollectedUsage(deps, {
+        ...baseParams,
+        collectedUsage,
+      });
 
       expect(result?.output_tokens).toBe(100); // 50 + 30 + 20
       expect(result?.input_tokens).toBe(100); // first entry's input
@@ -134,7 +146,10 @@ describe('recordCollectedUsage — bulk path parity', () => {
         { input_tokens: 80, output_tokens: 40, model: 'gpt-4' },
       ];
 
-      const result = await recordCollectedUsage(deps, { ...baseParams, collectedUsage });
+      const result = await recordCollectedUsage(deps, {
+        ...baseParams,
+        collectedUsage,
+      });
 
       expect(result?.output_tokens).toBe(90); // 50 + 40
       expect(result?.output_tokens).toBeGreaterThan(0);
@@ -148,7 +163,10 @@ describe('recordCollectedUsage — bulk path parity', () => {
         { input_tokens: 50, output_tokens: 30, model: 'gpt-4' },
       ];
 
-      const result = await recordCollectedUsage(deps, { ...baseParams, collectedUsage });
+      const result = await recordCollectedUsage(deps, {
+        ...baseParams,
+        collectedUsage,
+      });
 
       expect(result?.output_tokens).toBeGreaterThan(0);
       expect(result?.output_tokens).toBe(130); // 100 + 30
@@ -161,7 +179,10 @@ describe('recordCollectedUsage — bulk path parity', () => {
         { input_tokens: 80, output_tokens: 40, model: 'claude-3' },
       ];
 
-      const result = await recordCollectedUsage(deps, { ...baseParams, collectedUsage });
+      const result = await recordCollectedUsage(deps, {
+        ...baseParams,
+        collectedUsage,
+      });
 
       expect(result?.output_tokens).toBe(150); // 50 + 60 + 40
       expect(mockInsertMany).toHaveBeenCalledTimes(1);
@@ -182,7 +203,10 @@ describe('recordCollectedUsage — bulk path parity', () => {
         },
       ];
 
-      const result = await recordCollectedUsage(deps, { ...baseParams, collectedUsage });
+      const result = await recordCollectedUsage(deps, {
+        ...baseParams,
+        collectedUsage,
+      });
 
       expect(result?.input_tokens).toBe(130); // 100 + 20 + 10
       expect(mockInsertMany).toHaveBeenCalledTimes(1);
@@ -210,7 +234,10 @@ describe('recordCollectedUsage — bulk path parity', () => {
         },
       ];
 
-      const result = await recordCollectedUsage(deps, { ...baseParams, collectedUsage });
+      const result = await recordCollectedUsage(deps, {
+        ...baseParams,
+        collectedUsage,
+      });
 
       expect(result?.input_tokens).toBe(140); // 100 + 25 + 15
       expect(mockInsertMany).toHaveBeenCalledTimes(1);
@@ -238,7 +265,10 @@ describe('recordCollectedUsage — bulk path parity', () => {
         { input_tokens: 200, output_tokens: 20, model: 'gpt-4' },
       ];
 
-      const result = await recordCollectedUsage(deps, { ...baseParams, collectedUsage });
+      const result = await recordCollectedUsage(deps, {
+        ...baseParams,
+        collectedUsage,
+      });
 
       expect(result?.output_tokens).toBe(100); // 50 + 30 + 20
       expect(mockInsertMany).toHaveBeenCalledTimes(1);
@@ -303,7 +333,10 @@ describe('recordCollectedUsage — bulk path parity', () => {
         { input_tokens: 257440, output_tokens: 2217, model: 'claude-opus' },
       ];
 
-      const result = await recordCollectedUsage(deps, { ...baseParams, collectedUsage });
+      const result = await recordCollectedUsage(deps, {
+        ...baseParams,
+        collectedUsage,
+      });
 
       expect(result?.input_tokens).toBe(31596);
       expect(result?.output_tokens).toBe(3006); // 151+150+295+193+2217
@@ -336,7 +369,10 @@ describe('recordCollectedUsage — bulk path parity', () => {
         },
       ];
 
-      const result = await recordCollectedUsage(deps, { ...baseParams, collectedUsage });
+      const result = await recordCollectedUsage(deps, {
+        ...baseParams,
+        collectedUsage,
+      });
 
       expect(result?.input_tokens).toBe(31596); // 788 + 30808 + 0
       expect(result?.output_tokens).toBe(537); // 163 + 149 + 225
@@ -354,7 +390,10 @@ describe('recordCollectedUsage — bulk path parity', () => {
         { input_tokens: 100, output_tokens: 50, model: 'gpt-4' },
       ];
 
-      const result = await recordCollectedUsage(deps, { ...baseParams, collectedUsage });
+      const result = await recordCollectedUsage(deps, {
+        ...baseParams,
+        collectedUsage,
+      });
 
       expect(result).toEqual({ input_tokens: 100, output_tokens: 50 });
     });
@@ -365,7 +404,9 @@ describe('recordCollectedUsage — bulk path parity', () => {
       const collectedUsage: UsageMetadata[] = [
         { input_tokens: 100, output_tokens: 50, model: 'gpt-4' },
       ];
-      const endpointTokenConfig = { 'gpt-4': { prompt: 0.01, completion: 0.03, context: 8192 } };
+      const endpointTokenConfig = {
+        'gpt-4': { prompt: 0.01, completion: 0.03, context: 8192 },
+      };
 
       await recordCollectedUsage(deps, {
         ...baseParams,

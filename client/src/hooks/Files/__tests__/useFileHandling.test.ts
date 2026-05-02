@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { Constants, EModelEndpoint, getEndpointFileConfig } from 'librechat-data-provider';
 
 beforeAll(() => {
@@ -72,7 +72,10 @@ jest.mock('~/utils/heicConverter', () => ({
 jest.mock('../useClientResize', () => ({
   __esModule: true,
   default: jest.fn(() => ({
-    resizeImageIfNeeded: jest.fn(async (file: File) => ({ file, resized: false })),
+    resizeImageIfNeeded: jest.fn(async (file: File) => ({
+      file,
+      resized: false,
+    })),
   })),
 }));
 

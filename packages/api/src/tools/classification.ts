@@ -5,25 +5,25 @@
  * @module packages/api/src/tools/classification
  */
 
-import { logger } from '@librechat/data-schemas';
-import { Constants } from 'librechat-data-provider';
-import {
-  EnvVar,
-  createToolSearch,
-  ToolSearchToolDefinition,
-  createProgrammaticToolCallingTool,
-  ProgrammaticToolCallingDefinition,
-} from '@librechat/agents';
-import type { AgentToolOptions } from 'librechat-data-provider';
 import type {
-  LCToolRegistry,
-  JsonSchemaType,
   AllowedCaller,
   GenericTool,
+  JsonSchemaType,
   LCTool,
+  LCToolRegistry,
 } from '@librechat/agents';
+import {
+  createProgrammaticToolCallingTool,
+  createToolSearch,
+  EnvVar,
+  ProgrammaticToolCallingDefinition,
+  ToolSearchToolDefinition,
+} from '@librechat/agents';
+import { logger } from '@librechat/data-schemas';
+import type { AgentToolOptions } from 'librechat-data-provider';
+import { Constants } from 'librechat-data-provider';
 
-export type { LCTool, LCToolRegistry, AllowedCaller, JsonSchemaType };
+export type { AllowedCaller, JsonSchemaType, LCTool, LCToolRegistry };
 
 export interface ToolDefinition {
   name: string;
@@ -304,7 +304,12 @@ export async function buildToolClassification(
     logger.debug(
       `[buildToolClassification] Agent ${agentId} has no programmatic or deferred tools, skipping PTC/ToolSearch`,
     );
-    return { toolRegistry, toolDefinitions, additionalTools, hasDeferredTools: false };
+    return {
+      toolRegistry,
+      toolDefinitions,
+      additionalTools,
+      hasDeferredTools: false,
+    };
   }
 
   /** Tool search uses local mode (no API key needed) */
@@ -362,7 +367,12 @@ export async function buildToolClassification(
 
     if (!codeApiKey) {
       logger.warn('[buildToolClassification] PTC configured but CODE_API_KEY not available');
-      return { toolRegistry, toolDefinitions, additionalTools, hasDeferredTools };
+      return {
+        toolRegistry,
+        toolDefinitions,
+        additionalTools,
+        hasDeferredTools,
+      };
     }
 
     const ptcTool = createProgrammaticToolCallingTool({ apiKey: codeApiKey });

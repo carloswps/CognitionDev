@@ -1,7 +1,7 @@
-import { PermissionTypes, Permissions } from 'librechat-data-provider';
 import type { DeepPartial } from 'librechat-data-provider';
+import { Permissions, PermissionTypes } from 'librechat-data-provider';
 import type { Document } from 'mongoose';
-import { CursorPaginationParams } from '~/common';
+import type { CursorPaginationParams } from '~/common';
 
 export interface IRole extends Document {
   name: string;

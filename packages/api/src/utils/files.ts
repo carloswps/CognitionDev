@@ -1,7 +1,7 @@
-import path from 'path';
 import crypto from 'node:crypto';
 import { createReadStream } from 'fs';
 import { readFile, stat } from 'fs/promises';
+import path from 'path';
 
 const USER_FACING_UPLOAD_ERRORS = [
   'Invalid file format',
@@ -182,6 +182,9 @@ export async function readJsonFile<T = unknown>(
   filePath: string,
   options: Omit<ReadFileOptions, 'encoding'> = {},
 ): Promise<T> {
-  const { content } = await readFileAsString(filePath, { ...options, encoding: 'utf8' });
+  const { content } = await readFileAsString(filePath, {
+    ...options,
+    encoding: 'utf8',
+  });
   return JSON.parse(content);
 }

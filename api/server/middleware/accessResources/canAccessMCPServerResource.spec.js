@@ -346,7 +346,9 @@ describe('canAccessMCPServerResource middleware', () => {
 
     test('should support combined permissions', async () => {
       const viewAndEdit = 1 | 2; // 3
-      const middleware = canAccessMCPServerResource({ requiredPermission: viewAndEdit });
+      const middleware = canAccessMCPServerResource({
+        requiredPermission: viewAndEdit,
+      });
       await middleware(req, res, next);
       expect(next).toHaveBeenCalled();
     });
@@ -413,7 +415,9 @@ describe('canAccessMCPServerResource middleware', () => {
       req.params.serverName = mcpServer.serverName;
 
       // Test view access
-      const viewMiddleware = canAccessMCPServerResource({ requiredPermission: 1 });
+      const viewMiddleware = canAccessMCPServerResource({
+        requiredPermission: 1,
+      });
       await viewMiddleware(req, res, next);
       expect(next).toHaveBeenCalled();
       jest.clearAllMocks();
@@ -430,7 +434,9 @@ describe('canAccessMCPServerResource middleware', () => {
       });
 
       // Test edit access
-      const editMiddleware = canAccessMCPServerResource({ requiredPermission: 2 });
+      const editMiddleware = canAccessMCPServerResource({
+        requiredPermission: 2,
+      });
       await editMiddleware(req, res, next);
       expect(next).toHaveBeenCalled();
     });

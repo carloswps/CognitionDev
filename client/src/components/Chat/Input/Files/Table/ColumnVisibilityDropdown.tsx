@@ -1,9 +1,9 @@
-import { useState, useId, useMemo } from 'react';
-import { ListFilter } from 'lucide-react';
 import * as Menu from '@ariakit/react/menu';
-import { useReactTable } from '@tanstack/react-table';
 import { DropdownPopup } from '@librechat/client';
-import { useLocalize, TranslationKeys } from '~/hooks';
+import type { useReactTable } from '@tanstack/react-table';
+import { ListFilter } from 'lucide-react';
+import { useId, useMemo, useState } from 'react';
+import { type TranslationKeys, useLocalize } from '~/hooks';
 import { cn } from '~/utils';
 
 interface ColumnVisibilityDropdownProps<TData> {

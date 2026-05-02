@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { createConversationTagMethods } from './conversationTag';
+import mongoose from 'mongoose';
 import { createModels } from '~/models';
 import type { IConversationTag } from '~/schema/conversationTag';
 import type { IConversation } from '..';
+import { createConversationTagMethods } from './conversationTag';
 
 jest.mock('~/config/winston', () => ({
   error: jest.fn(),
@@ -53,9 +53,24 @@ describe('ConversationTag model - $pullAll operations', () => {
       await ConversationTag.create({ tag: 'work', user: userId, position: 1 });
 
       await Conversation.create([
-        { conversationId: 'conv1', user: userId, endpoint: 'openAI', tags: ['work', 'important'] },
-        { conversationId: 'conv2', user: userId, endpoint: 'openAI', tags: ['work'] },
-        { conversationId: 'conv3', user: userId, endpoint: 'openAI', tags: ['personal'] },
+        {
+          conversationId: 'conv1',
+          user: userId,
+          endpoint: 'openAI',
+          tags: ['work', 'important'],
+        },
+        {
+          conversationId: 'conv2',
+          user: userId,
+          endpoint: 'openAI',
+          tags: ['work'],
+        },
+        {
+          conversationId: 'conv3',
+          user: userId,
+          endpoint: 'openAI',
+          tags: ['personal'],
+        },
       ]);
 
       await deleteConversationTag(userId, 'work');
@@ -103,18 +118,40 @@ describe('ConversationTag model - $pullAll operations', () => {
     it('should not affect conversations of other users', async () => {
       const otherUser = new mongoose.Types.ObjectId().toString();
 
-      await ConversationTag.create({ tag: 'shared-name', user: userId, position: 1 });
-      await ConversationTag.create({ tag: 'shared-name', user: otherUser, position: 1 });
+      await ConversationTag.create({
+        tag: 'shared-name',
+        user: userId,
+        position: 1,
+      });
+      await ConversationTag.create({
+        tag: 'shared-name',
+        user: otherUser,
+        position: 1,
+      });
 
       await Conversation.create([
-        { conversationId: 'mine', user: userId, endpoint: 'openAI', tags: ['shared-name'] },
-        { conversationId: 'theirs', user: otherUser, endpoint: 'openAI', tags: ['shared-name'] },
+        {
+          conversationId: 'mine',
+          user: userId,
+          endpoint: 'openAI',
+          tags: ['shared-name'],
+        },
+        {
+          conversationId: 'theirs',
+          user: otherUser,
+          endpoint: 'openAI',
+          tags: ['shared-name'],
+        },
       ]);
 
       await deleteConversationTag(userId, 'shared-name');
 
-      const myConvo = await Conversation.findOne({ conversationId: 'mine' }).lean();
-      const theirConvo = await Conversation.findOne({ conversationId: 'theirs' }).lean();
+      const myConvo = await Conversation.findOne({
+        conversationId: 'mine',
+      }).lean();
+      const theirConvo = await Conversation.findOne({
+        conversationId: 'theirs',
+      }).lean();
 
       expect(myConvo?.tags).toEqual([]);
       expect(theirConvo?.tags).toEqual(['shared-name']);

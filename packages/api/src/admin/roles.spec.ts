@@ -1,7 +1,7 @@
-import { Types } from 'mongoose';
-import { PrincipalType, SystemRoles } from 'librechat-data-provider';
 import type { IRole, IUser } from '@librechat/data-schemas';
 import type { Response } from 'express';
+import { PrincipalType, SystemRoles } from 'librechat-data-provider';
+import { Types } from 'mongoose';
 import type { ServerRequest } from '~/types/http';
 import type { AdminRolesDeps } from './roles';
 import { createAdminRolesHandlers } from './roles';
@@ -10,7 +10,12 @@ const { RoleConflictError } = jest.requireActual('@librechat/data-schemas');
 
 jest.mock('@librechat/data-schemas', () => ({
   ...jest.requireActual('@librechat/data-schemas'),
-  logger: { error: jest.fn(), warn: jest.fn(), info: jest.fn(), debug: jest.fn() },
+  logger: {
+    error: jest.fn(),
+    warn: jest.fn(),
+    info: jest.fn(),
+    debug: jest.fn(),
+  },
 }));
 
 const validUserId = new Types.ObjectId().toString();
@@ -94,7 +99,12 @@ describe('createAdminRolesHandlers', () => {
       await handlers.listRoles(req, res);
 
       expect(status).toHaveBeenCalledWith(200);
-      expect(json).toHaveBeenCalledWith({ roles, total: 1, limit: 50, offset: 0 });
+      expect(json).toHaveBeenCalledWith({
+        roles,
+        total: 1,
+        limit: 50,
+        offset: 0,
+      });
       expect(deps.listRoles).toHaveBeenCalledWith({ limit: 50, offset: 0 });
     });
 
@@ -110,7 +120,12 @@ describe('createAdminRolesHandlers', () => {
       await handlers.listRoles(req, res);
 
       expect(status).toHaveBeenCalledWith(200);
-      expect(json).toHaveBeenCalledWith({ roles: [], total: 100, limit: 25, offset: 50 });
+      expect(json).toHaveBeenCalledWith({
+        roles: [],
+        total: 100,
+        limit: 25,
+        offset: 50,
+      });
       expect(deps.listRoles).toHaveBeenCalledWith({ limit: 25, offset: 50 });
     });
 
@@ -165,7 +180,9 @@ describe('createAdminRolesHandlers', () => {
     });
 
     it('returns 500 on error', async () => {
-      const deps = createDeps({ listRoles: jest.fn().mockRejectedValue(new Error('db down')) });
+      const deps = createDeps({
+        listRoles: jest.fn().mockRejectedValue(new Error('db down')),
+      });
       const handlers = createAdminRolesHandlers(deps);
       const { req, res, status, json } = createReqRes();
 
@@ -179,9 +196,13 @@ describe('createAdminRolesHandlers', () => {
   describe('getRole', () => {
     it('returns role with 200', async () => {
       const role = mockRole();
-      const deps = createDeps({ getRoleByName: jest.fn().mockResolvedValue(role) });
+      const deps = createDeps({
+        getRoleByName: jest.fn().mockResolvedValue(role),
+      });
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { name: 'editor' } });
+      const { req, res, status, json } = createReqRes({
+        params: { name: 'editor' },
+      });
 
       await handlers.getRole(req, res);
 
@@ -190,9 +211,13 @@ describe('createAdminRolesHandlers', () => {
     });
 
     it('returns 404 when role not found', async () => {
-      const deps = createDeps({ getRoleByName: jest.fn().mockResolvedValue(null) });
+      const deps = createDeps({
+        getRoleByName: jest.fn().mockResolvedValue(null),
+      });
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { name: 'nonexistent' } });
+      const { req, res, status, json } = createReqRes({
+        params: { name: 'nonexistent' },
+      });
 
       await handlers.getRole(req, res);
 
@@ -205,7 +230,9 @@ describe('createAdminRolesHandlers', () => {
         getRoleByName: jest.fn().mockRejectedValue(new Error('db down')),
       });
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { name: 'editor' } });
+      const { req, res, status, json } = createReqRes({
+        params: { name: 'editor' },
+      });
 
       await handlers.getRole(req, res);
 
@@ -217,7 +244,9 @@ describe('createAdminRolesHandlers', () => {
   describe('createRole', () => {
     it('creates role and returns 201', async () => {
       const role = mockRole();
-      const deps = createDeps({ createRoleByName: jest.fn().mockResolvedValue(role) });
+      const deps = createDeps({
+        createRoleByName: jest.fn().mockResolvedValue(role),
+      });
       const handlers = createAdminRolesHandlers(deps);
       const { req, res, status, json } = createReqRes({
         body: { name: 'editor', description: 'Can edit' },
@@ -235,9 +264,13 @@ describe('createAdminRolesHandlers', () => {
     });
 
     it('passes provided permissions to createRoleByName', async () => {
-      const perms = { chat: { read: true, write: false } } as unknown as IRole['permissions'];
+      const perms = {
+        chat: { read: true, write: false },
+      } as unknown as IRole['permissions'];
       const role = mockRole({ permissions: perms });
-      const deps = createDeps({ createRoleByName: jest.fn().mockResolvedValue(role) });
+      const deps = createDeps({
+        createRoleByName: jest.fn().mockResolvedValue(role),
+      });
       const handlers = createAdminRolesHandlers(deps);
       const { req, res, status, json } = createReqRes({
         body: { name: 'editor', permissions: perms },
@@ -268,7 +301,9 @@ describe('createAdminRolesHandlers', () => {
     it('returns 400 when name is whitespace-only', async () => {
       const deps = createDeps();
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ body: { name: '   ' } });
+      const { req, res, status, json } = createReqRes({
+        body: { name: '   ' },
+      });
 
       await handlers.createRole(req, res);
 
@@ -279,24 +314,32 @@ describe('createAdminRolesHandlers', () => {
     it('returns 400 when name contains control characters', async () => {
       const deps = createDeps();
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ body: { name: 'bad\x00name' } });
+      const { req, res, status, json } = createReqRes({
+        body: { name: 'bad\x00name' },
+      });
 
       await handlers.createRole(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'name contains invalid characters' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'name contains invalid characters',
+      });
       expect(deps.createRoleByName).not.toHaveBeenCalled();
     });
 
     it('returns 400 when name is a reserved path segment', async () => {
       const deps = createDeps();
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ body: { name: 'members' } });
+      const { req, res, status, json } = createReqRes({
+        body: { name: 'members' },
+      });
 
       await handlers.createRole(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'name is a reserved path segment' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'name is a reserved path segment',
+      });
       expect(deps.createRoleByName).not.toHaveBeenCalled();
     });
 
@@ -310,7 +353,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.createRole(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'name must not exceed 500 characters' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'name must not exceed 500 characters',
+      });
       expect(deps.createRoleByName).not.toHaveBeenCalled();
     });
 
@@ -337,12 +382,16 @@ describe('createAdminRolesHandlers', () => {
           .mockRejectedValue(new RoleConflictError('Role "editor" already exists')),
       });
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ body: { name: 'editor' } });
+      const { req, res, status, json } = createReqRes({
+        body: { name: 'editor' },
+      });
 
       await handlers.createRole(req, res);
 
       expect(status).toHaveBeenCalledWith(409);
-      expect(json).toHaveBeenCalledWith({ error: 'Role "editor" already exists' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Role "editor" already exists',
+      });
     });
 
     it('returns 409 when name is reserved system role', async () => {
@@ -354,7 +403,9 @@ describe('createAdminRolesHandlers', () => {
           ),
       });
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ body: { name: 'ADMIN' } });
+      const { req, res, status, json } = createReqRes({
+        body: { name: 'ADMIN' },
+      });
 
       await handlers.createRole(req, res);
 
@@ -369,7 +420,9 @@ describe('createAdminRolesHandlers', () => {
         createRoleByName: jest.fn().mockRejectedValue(new Error('db crash')),
       });
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ body: { name: 'editor' } });
+      const { req, res, status, json } = createReqRes({
+        body: { name: 'editor' },
+      });
 
       await handlers.createRole(req, res);
 
@@ -401,7 +454,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.createRole(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'description must be a string' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'description must be a string',
+      });
       expect(deps.createRoleByName).not.toHaveBeenCalled();
     });
 
@@ -415,7 +470,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.createRole(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'permissions must be an object' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'permissions must be an object',
+      });
       expect(deps.createRoleByName).not.toHaveBeenCalled();
     });
   });
@@ -437,7 +494,9 @@ describe('createAdminRolesHandlers', () => {
 
       expect(status).toHaveBeenCalledWith(200);
       expect(json).toHaveBeenCalledWith({ role });
-      expect(deps.updateRoleByName).toHaveBeenCalledWith('editor', { name: 'senior-editor' });
+      expect(deps.updateRoleByName).toHaveBeenCalledWith('editor', {
+        name: 'senior-editor',
+      });
     });
 
     it('trims name before storage', async () => {
@@ -454,7 +513,9 @@ describe('createAdminRolesHandlers', () => {
 
       await handlers.updateRole(req, res);
 
-      expect(deps.updateRoleByName).toHaveBeenCalledWith('editor', { name: 'trimmed' });
+      expect(deps.updateRoleByName).toHaveBeenCalledWith('editor', {
+        name: 'trimmed',
+      });
     });
 
     it('migrates users before renaming role', async () => {
@@ -524,7 +585,10 @@ describe('createAdminRolesHandlers', () => {
     });
 
     it('renames and updates description in a single request', async () => {
-      const role = mockRole({ name: 'senior-editor', description: 'Updated desc' });
+      const role = mockRole({
+        name: 'senior-editor',
+        description: 'Updated desc',
+      });
       const deps = createDeps({
         getRoleByName: jest.fn().mockResolvedValueOnce(mockRole()).mockResolvedValueOnce(null),
         updateRoleByName: jest.fn().mockResolvedValue(role),
@@ -572,7 +636,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.updateRole(req, res);
 
       expect(status).toHaveBeenCalledWith(403);
-      expect(json).toHaveBeenCalledWith({ error: 'Cannot use a reserved system role name' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Cannot use a reserved system role name',
+      });
     });
 
     it('returns 409 when target name already exists', async () => {
@@ -588,7 +654,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.updateRole(req, res);
 
       expect(status).toHaveBeenCalledWith(409);
-      expect(json).toHaveBeenCalledWith({ error: 'Role "viewer" already exists' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Role "viewer" already exists',
+      });
     });
 
     it('returns 400 when name is empty string', async () => {
@@ -602,7 +670,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.updateRole(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'name must be a non-empty string' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'name must be a non-empty string',
+      });
       expect(deps.getRoleByName).not.toHaveBeenCalled();
     });
 
@@ -617,7 +687,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.updateRole(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'name must be a non-empty string' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'name must be a non-empty string',
+      });
     });
 
     it('returns 400 when name exceeds max length', async () => {
@@ -631,12 +703,16 @@ describe('createAdminRolesHandlers', () => {
       await handlers.updateRole(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'name must not exceed 500 characters' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'name must not exceed 500 characters',
+      });
       expect(deps.getRoleByName).not.toHaveBeenCalled();
     });
 
     it('returns 404 when role not found', async () => {
-      const deps = createDeps({ getRoleByName: jest.fn().mockResolvedValue(null) });
+      const deps = createDeps({
+        getRoleByName: jest.fn().mockResolvedValue(null),
+      });
       const handlers = createAdminRolesHandlers(deps);
       const { req, res, status, json } = createReqRes({
         params: { name: 'nonexistent' },
@@ -829,7 +905,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.updateRole(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'description must be a string' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'description must be a string',
+      });
       expect(deps.getRoleByName).not.toHaveBeenCalled();
     });
   });
@@ -838,7 +916,9 @@ describe('createAdminRolesHandlers', () => {
     it('updates permissions and returns 200 with updated role', async () => {
       const role = mockRole();
       const updatedRole = mockRole({
-        permissions: { chat: { read: true, write: true } } as IRole['permissions'],
+        permissions: {
+          chat: { read: true, write: true },
+        } as IRole['permissions'],
       });
       const deps = createDeps({
         getRoleByName: jest.fn().mockResolvedValueOnce(role).mockResolvedValueOnce(updatedRole),
@@ -868,7 +948,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.updateRolePermissions(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'permissions object is required' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'permissions object is required',
+      });
     });
 
     it('returns 400 when permissions is an array', async () => {
@@ -882,11 +964,15 @@ describe('createAdminRolesHandlers', () => {
       await handlers.updateRolePermissions(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'permissions object is required' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'permissions object is required',
+      });
     });
 
     it('returns 404 when role not found', async () => {
-      const deps = createDeps({ getRoleByName: jest.fn().mockResolvedValue(null) });
+      const deps = createDeps({
+        getRoleByName: jest.fn().mockResolvedValue(null),
+      });
       const handlers = createAdminRolesHandlers(deps);
       const { req, res, status, json } = createReqRes({
         params: { name: 'nonexistent' },
@@ -913,7 +999,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.updateRolePermissions(req, res);
 
       expect(status).toHaveBeenCalledWith(500);
-      expect(json).toHaveBeenCalledWith({ error: 'Failed to update role permissions' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Failed to update role permissions',
+      });
     });
   });
 
@@ -921,7 +1009,9 @@ describe('createAdminRolesHandlers', () => {
     it('deletes role and returns 200', async () => {
       const deps = createDeps();
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { name: 'editor' } });
+      const { req, res, status, json } = createReqRes({
+        params: { name: 'editor' },
+      });
 
       await handlers.deleteRole(req, res);
 
@@ -953,7 +1043,11 @@ describe('createAdminRolesHandlers', () => {
       const handlers = createAdminRolesHandlers(deps);
       const { req, res, status } = createReqRes({
         params: { name: 'editor' },
-        user: { _id: new Types.ObjectId(), role: 'admin', tenantId: 'tenant-1' },
+        user: {
+          _id: new Types.ObjectId(),
+          role: 'admin',
+          tenantId: 'tenant-1',
+        },
       });
 
       await handlers.deleteRole(req, res);
@@ -965,9 +1059,13 @@ describe('createAdminRolesHandlers', () => {
     });
 
     it('does not clean up when role not found', async () => {
-      const deps = createDeps({ deleteRoleByName: jest.fn().mockResolvedValue(null) });
+      const deps = createDeps({
+        deleteRoleByName: jest.fn().mockResolvedValue(null),
+      });
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status } = createReqRes({ params: { name: 'nonexistent' } });
+      const { req, res, status } = createReqRes({
+        params: { name: 'nonexistent' },
+      });
 
       await handlers.deleteRole(req, res);
 
@@ -982,7 +1080,9 @@ describe('createAdminRolesHandlers', () => {
         deleteGrantsForPrincipal: jest.fn().mockRejectedValue(new Error('cleanup failed')),
       });
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { name: 'editor' } });
+      const { req, res, status, json } = createReqRes({
+        params: { name: 'editor' },
+      });
 
       await handlers.deleteRole(req, res);
 
@@ -997,7 +1097,9 @@ describe('createAdminRolesHandlers', () => {
         deleteGrantsForPrincipal: jest.fn().mockRejectedValue(new Error('grant cleanup failed')),
       });
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { name: 'editor' } });
+      const { req, res, status, json } = createReqRes({
+        params: { name: 'editor' },
+      });
 
       await handlers.deleteRole(req, res);
 
@@ -1008,7 +1110,9 @@ describe('createAdminRolesHandlers', () => {
     it('returns 403 for system role', async () => {
       const deps = createDeps();
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { name: SystemRoles.ADMIN } });
+      const { req, res, status, json } = createReqRes({
+        params: { name: SystemRoles.ADMIN },
+      });
 
       await handlers.deleteRole(req, res);
 
@@ -1018,9 +1122,13 @@ describe('createAdminRolesHandlers', () => {
     });
 
     it('returns 404 when role not found', async () => {
-      const deps = createDeps({ deleteRoleByName: jest.fn().mockResolvedValue(null) });
+      const deps = createDeps({
+        deleteRoleByName: jest.fn().mockResolvedValue(null),
+      });
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { name: 'nonexistent' } });
+      const { req, res, status, json } = createReqRes({
+        params: { name: 'nonexistent' },
+      });
 
       await handlers.deleteRole(req, res);
 
@@ -1033,7 +1141,9 @@ describe('createAdminRolesHandlers', () => {
         deleteRoleByName: jest.fn().mockRejectedValue(new Error('db down')),
       });
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { name: 'editor' } });
+      const { req, res, status, json } = createReqRes({
+        params: { name: 'editor' },
+      });
 
       await handlers.deleteRole(req, res);
 
@@ -1051,11 +1161,16 @@ describe('createAdminRolesHandlers', () => {
         countUsersByRole: jest.fn().mockResolvedValue(1),
       });
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { name: 'editor' } });
+      const { req, res, status, json } = createReqRes({
+        params: { name: 'editor' },
+      });
 
       await handlers.getRoleMembers(req, res);
 
-      expect(deps.listUsersByRole).toHaveBeenCalledWith('editor', { limit: 50, offset: 0 });
+      expect(deps.listUsersByRole).toHaveBeenCalledWith('editor', {
+        limit: 50,
+        offset: 0,
+      });
       expect(deps.countUsersByRole).toHaveBeenCalledWith('editor');
       expect(status).toHaveBeenCalledWith(200);
       const response = json.mock.calls[0][0];
@@ -1084,7 +1199,10 @@ describe('createAdminRolesHandlers', () => {
 
       await handlers.getRoleMembers(req, res);
 
-      expect(deps.listUsersByRole).toHaveBeenCalledWith('editor', { limit: 10, offset: 20 });
+      expect(deps.listUsersByRole).toHaveBeenCalledWith('editor', {
+        limit: 10,
+        offset: 20,
+      });
     });
 
     it('clamps limit to 200', async () => {
@@ -1100,7 +1218,10 @@ describe('createAdminRolesHandlers', () => {
 
       await handlers.getRoleMembers(req, res);
 
-      expect(deps.listUsersByRole).toHaveBeenCalledWith('editor', { limit: 200, offset: 0 });
+      expect(deps.listUsersByRole).toHaveBeenCalledWith('editor', {
+        limit: 200,
+        offset: 0,
+      });
     });
 
     it('does not include joinedAt in response', async () => {
@@ -1125,18 +1246,29 @@ describe('createAdminRolesHandlers', () => {
         countUsersByRole: jest.fn().mockResolvedValue(0),
       });
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { name: 'editor' } });
+      const { req, res, status, json } = createReqRes({
+        params: { name: 'editor' },
+      });
 
       await handlers.getRoleMembers(req, res);
 
       expect(status).toHaveBeenCalledWith(200);
-      expect(json).toHaveBeenCalledWith({ members: [], total: 0, limit: 50, offset: 0 });
+      expect(json).toHaveBeenCalledWith({
+        members: [],
+        total: 0,
+        limit: 50,
+        offset: 0,
+      });
     });
 
     it('returns 404 when role not found', async () => {
-      const deps = createDeps({ getRoleByName: jest.fn().mockResolvedValue(null) });
+      const deps = createDeps({
+        getRoleByName: jest.fn().mockResolvedValue(null),
+      });
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { name: 'nonexistent' } });
+      const { req, res, status, json } = createReqRes({
+        params: { name: 'nonexistent' },
+      });
 
       await handlers.getRoleMembers(req, res);
 
@@ -1150,12 +1282,16 @@ describe('createAdminRolesHandlers', () => {
         listUsersByRole: jest.fn().mockRejectedValue(new Error('db down')),
       });
       const handlers = createAdminRolesHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { name: 'editor' } });
+      const { req, res, status, json } = createReqRes({
+        params: { name: 'editor' },
+      });
 
       await handlers.getRoleMembers(req, res);
 
       expect(status).toHaveBeenCalledWith(500);
-      expect(json).toHaveBeenCalledWith({ error: 'Failed to get role members' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Failed to get role members',
+      });
     });
   });
 
@@ -1173,7 +1309,9 @@ describe('createAdminRolesHandlers', () => {
 
       await handlers.addRoleMember(req, res);
 
-      expect(deps.updateUser).toHaveBeenCalledWith(validUserId, { role: 'editor' });
+      expect(deps.updateUser).toHaveBeenCalledWith(validUserId, {
+        role: 'editor',
+      });
       expect(status).toHaveBeenCalledWith(200);
       expect(json).toHaveBeenCalledWith({ success: true });
     });
@@ -1225,7 +1363,9 @@ describe('createAdminRolesHandlers', () => {
     });
 
     it('returns 404 when role not found', async () => {
-      const deps = createDeps({ getRoleByName: jest.fn().mockResolvedValue(null) });
+      const deps = createDeps({
+        getRoleByName: jest.fn().mockResolvedValue(null),
+      });
       const handlers = createAdminRolesHandlers(deps);
       const { req, res, status, json } = createReqRes({
         params: { name: 'nonexistent' },
@@ -1270,7 +1410,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.addRoleMember(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'Cannot remove the last admin user' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Cannot remove the last admin user',
+      });
       expect(deps.updateUser).not.toHaveBeenCalled();
     });
 
@@ -1290,7 +1432,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.addRoleMember(req, res);
 
       expect(status).toHaveBeenCalledWith(200);
-      expect(deps.updateUser).toHaveBeenCalledWith(validUserId, { role: 'editor' });
+      expect(deps.updateUser).toHaveBeenCalledWith(validUserId, {
+        role: 'editor',
+      });
     });
 
     it('rolls back assignment when post-write admin count is zero', async () => {
@@ -1309,9 +1453,13 @@ describe('createAdminRolesHandlers', () => {
       await handlers.addRoleMember(req, res);
 
       expect(deps.updateUser).toHaveBeenCalledTimes(2);
-      expect(deps.updateUser).toHaveBeenLastCalledWith(validUserId, { role: SystemRoles.ADMIN });
+      expect(deps.updateUser).toHaveBeenLastCalledWith(validUserId, {
+        role: SystemRoles.ADMIN,
+      });
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'Cannot remove the last admin user' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Cannot remove the last admin user',
+      });
     });
 
     it('returns 403 when adding to a non-ADMIN system role', async () => {
@@ -1345,7 +1493,9 @@ describe('createAdminRolesHandlers', () => {
 
       await handlers.addRoleMember(req, res);
 
-      expect(deps.updateUser).toHaveBeenCalledWith(validUserId, { role: SystemRoles.ADMIN });
+      expect(deps.updateUser).toHaveBeenCalledWith(validUserId, {
+        role: SystemRoles.ADMIN,
+      });
       expect(status).toHaveBeenCalledWith(200);
       expect(json).toHaveBeenCalledWith({ success: true });
     });
@@ -1382,7 +1532,9 @@ describe('createAdminRolesHandlers', () => {
 
       await handlers.removeRoleMember(req, res);
 
-      expect(deps.updateUser).toHaveBeenCalledWith(validUserId, { role: SystemRoles.USER });
+      expect(deps.updateUser).toHaveBeenCalledWith(validUserId, {
+        role: SystemRoles.USER,
+      });
       expect(status).toHaveBeenCalledWith(200);
       expect(json).toHaveBeenCalledWith({ success: true });
     });
@@ -1397,7 +1549,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.removeRoleMember(req, res);
 
       expect(status).toHaveBeenCalledWith(403);
-      expect(json).toHaveBeenCalledWith({ error: 'Cannot remove members from a system role' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Cannot remove members from a system role',
+      });
       expect(deps.getRoleByName).not.toHaveBeenCalled();
     });
 
@@ -1416,7 +1570,9 @@ describe('createAdminRolesHandlers', () => {
     });
 
     it('returns 404 when role not found', async () => {
-      const deps = createDeps({ getRoleByName: jest.fn().mockResolvedValue(null) });
+      const deps = createDeps({
+        getRoleByName: jest.fn().mockResolvedValue(null),
+      });
       const handlers = createAdminRolesHandlers(deps);
       const { req, res, status, json } = createReqRes({
         params: { name: 'nonexistent', userId: validUserId },
@@ -1458,7 +1614,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.removeRoleMember(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'User is not a member of this role' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'User is not a member of this role',
+      });
       expect(deps.updateUser).not.toHaveBeenCalled();
     });
 
@@ -1476,7 +1634,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.removeRoleMember(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'Cannot remove the last admin user' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Cannot remove the last admin user',
+      });
       expect(deps.updateUser).not.toHaveBeenCalled();
     });
 
@@ -1495,7 +1655,9 @@ describe('createAdminRolesHandlers', () => {
 
       expect(status).toHaveBeenCalledWith(200);
       expect(json).toHaveBeenCalledWith({ success: true });
-      expect(deps.updateUser).toHaveBeenCalledWith(validUserId, { role: SystemRoles.USER });
+      expect(deps.updateUser).toHaveBeenCalledWith(validUserId, {
+        role: SystemRoles.USER,
+      });
     });
 
     it('rolls back removal when post-write check finds zero admins', async () => {
@@ -1512,7 +1674,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.removeRoleMember(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'Cannot remove the last admin user' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Cannot remove the last admin user',
+      });
       expect(deps.updateUser).toHaveBeenCalledTimes(2);
       expect(deps.updateUser).toHaveBeenNthCalledWith(1, validUserId, {
         role: SystemRoles.USER,
@@ -1540,7 +1704,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.removeRoleMember(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'Cannot remove the last admin user' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Cannot remove the last admin user',
+      });
       expect(deps.updateUser).toHaveBeenCalledTimes(2);
     });
 
@@ -1558,7 +1724,9 @@ describe('createAdminRolesHandlers', () => {
       await handlers.removeRoleMember(req, res);
 
       expect(status).toHaveBeenCalledWith(500);
-      expect(json).toHaveBeenCalledWith({ error: 'Failed to remove role member' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Failed to remove role member',
+      });
     });
   });
 });

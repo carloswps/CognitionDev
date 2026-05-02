@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import VersionContent from '../VersionContent';
-import { VersionContext } from '../VersionPanel';
+import type { VersionContext } from '../VersionPanel';
 
 const mockRestore = 'Restore';
 
@@ -82,12 +82,16 @@ describe('VersionContent', () => {
     expect(getText1('Error loading versions')).toBeInTheDocument();
     unmount2();
 
-    const { getByText: getText2, unmount: unmount3 } = renderTest({ selectedAgentId: '' });
+    const { getByText: getText2, unmount: unmount3 } = renderTest({
+      selectedAgentId: '',
+    });
     expect(getText2('No agent selected')).toBeInTheDocument();
     unmount3();
 
     const emptyContext = { ...mockContext, versions: [], versionIds: [] };
-    const { getByText: getText3, unmount: unmount4 } = renderTest({ versionContext: emptyContext });
+    const { getByText: getText3, unmount: unmount4 } = renderTest({
+      versionContext: emptyContext,
+    });
     expect(getText3('No versions available')).toBeInTheDocument();
     unmount4();
 

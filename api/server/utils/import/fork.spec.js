@@ -74,13 +74,48 @@ const mockMessages = [
     text: 'Root message 2',
     createdAt: '2021-01-01',
   },
-  { messageId: '2', parentMessageId: '1', text: 'Child of 1', createdAt: '2021-01-02' },
-  { messageId: '3', parentMessageId: '1', text: 'Child of 1', createdAt: '2021-01-03' },
-  { messageId: '4', parentMessageId: '2', text: 'Child of 2', createdAt: '2021-01-04' },
-  { messageId: '5', parentMessageId: '2', text: 'Child of 2', createdAt: '2021-01-05' },
-  { messageId: '6', parentMessageId: '3', text: 'Child of 3', createdAt: '2021-01-06' },
-  { messageId: '7', parentMessageId: '3', text: 'Child of 3', createdAt: '2021-01-07' },
-  { messageId: '8', parentMessageId: '7', text: 'Child of 7', createdAt: '2021-01-07' },
+  {
+    messageId: '2',
+    parentMessageId: '1',
+    text: 'Child of 1',
+    createdAt: '2021-01-02',
+  },
+  {
+    messageId: '3',
+    parentMessageId: '1',
+    text: 'Child of 1',
+    createdAt: '2021-01-03',
+  },
+  {
+    messageId: '4',
+    parentMessageId: '2',
+    text: 'Child of 2',
+    createdAt: '2021-01-04',
+  },
+  {
+    messageId: '5',
+    parentMessageId: '2',
+    text: 'Child of 2',
+    createdAt: '2021-01-05',
+  },
+  {
+    messageId: '6',
+    parentMessageId: '3',
+    text: 'Child of 3',
+    createdAt: '2021-01-06',
+  },
+  {
+    messageId: '7',
+    parentMessageId: '3',
+    text: 'Child of 3',
+    createdAt: '2021-01-07',
+  },
+  {
+    messageId: '8',
+    parentMessageId: '7',
+    text: 'Child of 7',
+    createdAt: '2021-01-07',
+  },
 ];
 
 const mockConversation = { convoId: 'abc123', title: 'Original Title' };
@@ -360,7 +395,11 @@ describe('getMessagesUpToTargetLevel', () => {
 
   test('should correctly handle single message with non-matching ID', async () => {
     const singleMessage = [
-      { messageId: '30', parentMessageId: Constants.NO_PARENT, text: 'Message 30' },
+      {
+        messageId: '30',
+        parentMessageId: Constants.NO_PARENT,
+        text: 'Message 30',
+      },
     ];
     const result = getMessagesUpToTargetLevel(singleMessage, '31');
     expect(result).toEqual([]);
@@ -379,7 +418,11 @@ describe('getMessagesUpToTargetLevel', () => {
 
   test('should return all messages when all are interconnected and target is deep in hierarchy', async () => {
     const interconnectedMessages = [
-      { messageId: '50', parentMessageId: Constants.NO_PARENT, text: 'Root Message' },
+      {
+        messageId: '50',
+        parentMessageId: Constants.NO_PARENT,
+        text: 'Root Message',
+      },
       { messageId: '51', parentMessageId: '50', text: 'Child Level 1' },
       { messageId: '52', parentMessageId: '51', text: 'Child Level 2' },
       { messageId: '53', parentMessageId: '52', text: 'Child Level 3' },
@@ -392,8 +435,16 @@ describe('getMessagesUpToTargetLevel', () => {
 
 describe('getAllMessagesUpToParent', () => {
   const mockMessages = [
-    { messageId: '11', parentMessageId: Constants.NO_PARENT, text: 'Message 11' },
-    { messageId: '12', parentMessageId: Constants.NO_PARENT, text: 'Message 12' },
+    {
+      messageId: '11',
+      parentMessageId: Constants.NO_PARENT,
+      text: 'Message 11',
+    },
+    {
+      messageId: '12',
+      parentMessageId: Constants.NO_PARENT,
+      text: 'Message 12',
+    },
     { messageId: '13', parentMessageId: '11', text: 'Message 13' },
     { messageId: '14', parentMessageId: '12', text: 'Message 14' },
     { messageId: '15', parentMessageId: '13', text: 'Message 15' },
@@ -418,8 +469,16 @@ describe('getAllMessagesUpToParent', () => {
   test('should handle single level tree (no parents)', async () => {
     const result = getAllMessagesUpToParent(
       [
-        { messageId: '11', parentMessageId: Constants.NO_PARENT, text: 'Message 11' },
-        { messageId: '12', parentMessageId: Constants.NO_PARENT, text: 'Message 12' },
+        {
+          messageId: '11',
+          parentMessageId: Constants.NO_PARENT,
+          text: 'Message 11',
+        },
+        {
+          messageId: '12',
+          parentMessageId: Constants.NO_PARENT,
+          text: 'Message 12',
+        },
       ],
       '11',
     );
@@ -496,8 +555,16 @@ describe('getAllMessagesUpToParent', () => {
 
 describe('getMessagesForConversation', () => {
   const mockMessages = [
-    { messageId: '11', parentMessageId: Constants.NO_PARENT, text: 'Message 11' },
-    { messageId: '12', parentMessageId: Constants.NO_PARENT, text: 'Message 12' },
+    {
+      messageId: '11',
+      parentMessageId: Constants.NO_PARENT,
+      text: 'Message 11',
+    },
+    {
+      messageId: '12',
+      parentMessageId: Constants.NO_PARENT,
+      text: 'Message 12',
+    },
     { messageId: '13', parentMessageId: '11', text: 'Message 13' },
     { messageId: '14', parentMessageId: '12', text: 'Message 14' },
     { messageId: '15', parentMessageId: '13', text: 'Message 15' },
@@ -576,7 +643,12 @@ describe('getMessagesForConversation', () => {
   test('should stop at summary if option is enabled', async () => {
     const messagesWithSummary = [
       ...mockMessagesComplex,
-      { messageId: '11', parentMessageId: '7', text: 'Message 11', summary: 'Summary for 11' },
+      {
+        messageId: '11',
+        parentMessageId: '7',
+        text: 'Message 11',
+        summary: 'Summary for 11',
+      },
     ];
 
     const result = BaseClient.getMessagesForConversation({

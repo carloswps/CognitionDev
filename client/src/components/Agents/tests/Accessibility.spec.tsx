@@ -1,12 +1,12 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import CategoryTabs from '../CategoryTabs';
-import AgentGrid from '../AgentGrid';
+import { fireEvent, render, screen } from '@testing-library/react';
+import type * as t from 'librechat-data-provider';
+import type React from 'react';
 import AgentCard from '../AgentCard';
-import SearchBar from '../SearchBar';
+import AgentGrid from '../AgentGrid';
+import CategoryTabs from '../CategoryTabs';
 import ErrorDisplay from '../ErrorDisplay';
-import * as t from 'librechat-data-provider';
+import SearchBar from '../SearchBar';
 
 // Mock matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -228,7 +228,9 @@ describe('Accessibility Improvements', () => {
         />,
       );
 
-      const promotedTab = screen.getByRole('tab', { name: /Top Picks category/ });
+      const promotedTab = screen.getByRole('tab', {
+        name: /Top Picks category/,
+      });
 
       // Test arrow key navigation
       fireEvent.keyDown(promotedTab, { key: 'ArrowRight' });
@@ -255,7 +257,9 @@ describe('Accessibility Improvements', () => {
         />,
       );
 
-      const promotedTab = screen.getByRole('tab', { name: /Top Picks category/ });
+      const promotedTab = screen.getByRole('tab', {
+        name: /Top Picks category/,
+      });
       const allTab = screen.getByRole('tab', { name: /All category/ });
 
       // Active tab should be focusable

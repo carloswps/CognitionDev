@@ -1,5 +1,5 @@
-import transactionSchema, { ITransaction } from '~/schema/transaction';
 import { applyTenantIsolation } from '~/models/plugins/tenantIsolation';
+import transactionSchema, { type ITransaction } from '~/schema/transaction';
 
 export function createTransactionModel(mongoose: typeof import('mongoose')) {
   applyTenantIsolation(transactionSchema);

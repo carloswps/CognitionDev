@@ -1,13 +1,14 @@
-import React, { useEffect, useCallback, useRef, useState } from 'react';
 import throttle from 'lodash/throttle';
-import { visit } from 'unist-util-visit';
-import { useSetRecoilState } from 'recoil';
+import type React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import type { Pluggable } from 'unified';
+import { visit } from 'unist-util-visit';
 import type { Artifact } from '~/common';
-import { useMessageContext, useArtifactContext } from '~/Providers';
-import { logger, extractContent, isArtifactRoute } from '~/utils';
+import { useArtifactContext, useMessageContext } from '~/Providers';
 import { artifactsState } from '~/store/artifacts';
+import { extractContent, isArtifactRoute, logger } from '~/utils';
 import ArtifactButton from './ArtifactButton';
 
 export const artifactPlugin: Pluggable = () => {

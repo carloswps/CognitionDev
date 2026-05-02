@@ -1,10 +1,11 @@
-import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
+import { CheckMark, Clipboard } from '@librechat/client';
 import copy from 'copy-to-clipboard';
-import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
-import { Clipboard, CheckMark } from '@librechat/client';
-import { MIN_ZOOM, MAX_ZOOM } from './useMermaidZoom';
+import { RotateCcw, ZoomIn, ZoomOut } from 'lucide-react';
+import type React from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useLocalize } from '~/hooks';
 import cn from '~/utils/cn';
+import { MAX_ZOOM, MIN_ZOOM } from './useMermaidZoom';
 
 interface ZoomControlsProps {
   zoom: number;

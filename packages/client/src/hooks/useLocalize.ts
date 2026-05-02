@@ -1,7 +1,7 @@
+import type { TOptions } from 'i18next';
 import { useCallback } from 'react';
-import { TOptions } from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { resources } from '~/locales/i18n';
+import type { resources } from '~/locales/i18n';
 
 export type TranslationKeys = keyof typeof resources.en.translation;
 

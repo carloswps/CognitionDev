@@ -1,14 +1,14 @@
-import reactRouter from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
-import { render, waitFor, screen } from 'test/layout-test-utils';
-import * as mockDataProvider from 'librechat-data-provider/react-query';
 import type { TStartupConfig } from 'librechat-data-provider';
-import * as miscDataProvider from '~/data-provider/Misc/queries';
-import * as endpointQueries from '~/data-provider/Endpoints/queries';
+import * as mockDataProvider from 'librechat-data-provider/react-query';
+import reactRouter from 'react-router-dom';
+import { render, screen, waitFor } from 'test/layout-test-utils';
+import AuthLayout from '~/components/Auth/AuthLayout';
+import Registration from '~/components/Auth/Registration';
 import * as authMutations from '~/data-provider/Auth/mutations';
 import * as authQueries from '~/data-provider/Auth/queries';
-import Registration from '~/components/Auth/Registration';
-import AuthLayout from '~/components/Auth/AuthLayout';
+import * as endpointQueries from '~/data-provider/Endpoints/queries';
+import * as miscDataProvider from '~/data-provider/Misc/queries';
 
 jest.mock('librechat-data-provider/react-query');
 
@@ -66,26 +66,26 @@ const setup = ({
 } = {}) => {
   const mockUseRegisterUserMutation = jest
     .spyOn(mockDataProvider, 'useRegisterUserMutation')
-    //@ts-ignore - we don't need all parameters of the QueryObserverSuccessResult
+    //@ts-expect-error - we don't need all parameters of the QueryObserverSuccessResult
     .mockReturnValue(useRegisterUserMutationReturnValue);
   const mockUseGetUserQuery = jest
     .spyOn(authQueries, 'useGetUserQuery')
-    //@ts-ignore - we don't need all parameters of the QueryObserverSuccessResult
+    //@ts-expect-error - we don't need all parameters of the QueryObserverSuccessResult
     .mockReturnValue(useGetUserQueryReturnValue);
   const mockUseGetStartupConfig = jest
     .spyOn(endpointQueries, 'useGetStartupConfig')
-    //@ts-ignore - we don't need all parameters of the QueryObserverSuccessResult
+    //@ts-expect-error - we don't need all parameters of the QueryObserverSuccessResult
     .mockReturnValue(useGetStartupConfigReturnValue);
   const mockUseRefreshTokenMutation = jest
     .spyOn(authMutations, 'useRefreshTokenMutation')
-    //@ts-ignore - we don't need all parameters of the QueryObserverSuccessResult
+    //@ts-expect-error - we don't need all parameters of the QueryObserverSuccessResult
     .mockReturnValue(useRefreshTokenMutationReturnValue);
   const mockUseOutletContext = jest.spyOn(reactRouter, 'useOutletContext').mockReturnValue({
     startupConfig: useGetStartupConfigReturnValue.data,
   });
   const mockUseGetBannerQuery = jest
     .spyOn(miscDataProvider, 'useGetBannerQuery')
-    //@ts-ignore - we don't need all parameters of the QueryObserverSuccessResult
+    //@ts-expect-error - we don't need all parameters of the QueryObserverSuccessResult
     .mockReturnValue(useGetBannerQueryReturnValue);
   const renderResult = render(
     <AuthLayout
@@ -159,7 +159,7 @@ test('renders registration form', () => {
 // test('calls registerUser.mutate on registration', async () => {
 //   const mutate = jest.fn();
 //   const { getByTestId, getByRole, history } = setup({
-//     // @ts-ignore - we don't need all parameters of the QueryObserverResult
+//     // @ts-expect-error - we don't need all parameters of the QueryObserverResult
 //     useLoginUserReturnValue: {
 //       isLoading: false,
 //       mutate: mutate,

@@ -1,5 +1,5 @@
-import keySchema, { IKey } from '~/schema/key';
 import { applyTenantIsolation } from '~/models/plugins/tenantIsolation';
+import keySchema, { type IKey } from '~/schema/key';
 
 export function createKeyModel(mongoose: typeof import('mongoose')) {
   applyTenantIsolation(keySchema);

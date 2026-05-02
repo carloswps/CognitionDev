@@ -34,7 +34,9 @@ describe('FavoritesController', () => {
       const res = makeRes();
       await updateFavoritesController(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({ message: 'Favorites data is required' });
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'Favorites data is required',
+      });
       expect(updateUser).not.toHaveBeenCalled();
     });
 
@@ -43,11 +45,15 @@ describe('FavoritesController', () => {
       const res = makeRes();
       await updateFavoritesController(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({ message: 'Favorites must be an array' });
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'Favorites must be an array',
+      });
     });
 
     it('rejects favorites over MAX_FAVORITES with 400 + code', async () => {
-      const favorites = Array.from({ length: 51 }, (_, i) => ({ agentId: `agent-${i}` }));
+      const favorites = Array.from({ length: 51 }, (_, i) => ({
+        agentId: `agent-${i}`,
+      }));
       const req = makeReq({ favorites });
       const res = makeRes();
       await updateFavoritesController(req, res);
@@ -66,15 +72,21 @@ describe('FavoritesController', () => {
       const res = makeRes();
       await updateFavoritesController(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({ message: 'agentId exceeds maximum length of 256' });
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'agentId exceeds maximum length of 256',
+      });
     });
 
     it('rejects oversized model', async () => {
-      const req = makeReq({ favorites: [{ model: 'm'.repeat(257), endpoint: 'openai' }] });
+      const req = makeReq({
+        favorites: [{ model: 'm'.repeat(257), endpoint: 'openai' }],
+      });
       const res = makeRes();
       await updateFavoritesController(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({ message: 'model exceeds maximum length of 256' });
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'model exceeds maximum length of 256',
+      });
     });
   });
 
@@ -96,7 +108,9 @@ describe('FavoritesController', () => {
       const res = makeRes();
       await updateFavoritesController(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({ message: 'spec must be a non-empty string' });
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'spec must be a non-empty string',
+      });
     });
 
     it('rejects empty string spec with 400', async () => {
@@ -104,7 +118,9 @@ describe('FavoritesController', () => {
       const res = makeRes();
       await updateFavoritesController(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({ message: 'spec must be a non-empty string' });
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'spec must be a non-empty string',
+      });
     });
 
     it('rejects oversized spec with 400', async () => {
@@ -112,7 +128,9 @@ describe('FavoritesController', () => {
       const res = makeRes();
       await updateFavoritesController(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith({ message: 'spec exceeds maximum length of 256' });
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'spec exceeds maximum length of 256',
+      });
     });
 
     it('allows undefined/null spec (treated as absent)', async () => {
@@ -197,7 +215,9 @@ describe('FavoritesController', () => {
     });
 
     it('rejects agentId with stray endpoint field (no model)', async () => {
-      const req = makeReq({ favorites: [{ agentId: 'a1', endpoint: 'openai' }] });
+      const req = makeReq({
+        favorites: [{ agentId: 'a1', endpoint: 'openai' }],
+      });
       const res = makeRes();
       await updateFavoritesController(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
@@ -253,7 +273,9 @@ describe('FavoritesController', () => {
       const res = makeRes();
       await updateFavoritesController(req, res);
       expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith({ message: 'Internal server error' });
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'Internal server error',
+      });
     });
   });
 

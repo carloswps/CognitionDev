@@ -1,7 +1,7 @@
-import { visit } from 'unist-util-visit';
 import type { Node } from 'unist';
+import { visit } from 'unist-util-visit';
+import { CLEANUP_REGEX, COMPOSITE_REGEX, SPAN_REGEX, STANDALONE_PATTERN } from '~/utils/citations';
 import type { Citation, CitationNode } from './types';
-import { SPAN_REGEX, STANDALONE_PATTERN, CLEANUP_REGEX, COMPOSITE_REGEX } from '~/utils/citations';
 
 /**
  * Checks if a standalone marker is truly standalone (not inside a composite block).

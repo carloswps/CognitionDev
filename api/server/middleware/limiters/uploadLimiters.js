@@ -68,9 +68,7 @@ const createFileLimiters = () => {
     windowMs: fileUploadUserWindowMs,
     max: fileUploadUserMax,
     handler: createFileUploadHandler(false),
-    keyGenerator: function (req) {
-      return req.user?.id;
-    },
+    keyGenerator: (req) => req.user?.id,
     store: limiterCache('file_upload_user_limiter'),
   };
 

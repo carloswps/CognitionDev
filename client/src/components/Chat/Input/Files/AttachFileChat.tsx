@@ -1,19 +1,19 @@
-import { memo, useMemo } from 'react';
+import type { TConversation } from 'librechat-data-provider';
 import {
   Constants,
-  supportsFiles,
-  mergeFileConfig,
-  isAgentsEndpoint,
-  resolveEndpointType,
-  isAssistantsEndpoint,
   getEndpointFileConfig,
+  isAgentsEndpoint,
+  isAssistantsEndpoint,
+  mergeFileConfig,
+  resolveEndpointType,
+  supportsFiles,
 } from 'librechat-data-provider';
-import type { TConversation } from 'librechat-data-provider';
+import { memo, useMemo } from 'react';
 import type { ExtendedFile, FileSetter } from '~/common';
-import { useGetFileConfig, useGetEndpointsQuery, useGetAgentByIdQuery } from '~/data-provider';
+import { useGetAgentByIdQuery, useGetEndpointsQuery, useGetFileConfig } from '~/data-provider';
 import { useAgentsMapContext } from '~/Providers';
-import AttachFileMenu from './AttachFileMenu';
 import AttachFile from './AttachFile';
+import AttachFileMenu from './AttachFileMenu';
 
 function AttachFileChat({
   disableInputs,

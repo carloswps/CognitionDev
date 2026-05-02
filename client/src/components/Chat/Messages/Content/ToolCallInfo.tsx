@@ -1,13 +1,13 @@
-import { useState, useMemo } from 'react';
-import { ChevronDown } from 'lucide-react';
-import { Tools } from 'librechat-data-provider';
 import { UIResourceRenderer } from '@mcp-ui/client';
 import type { TAttachment, UIResource } from 'librechat-data-provider';
+import { Tools } from 'librechat-data-provider';
+import { ChevronDown } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { useExpandCollapse, useLocalize } from '~/hooks';
 import { useOptionalMessagesOperations } from '~/Providers';
-import { useLocalize, useExpandCollapse } from '~/hooks';
-import UIResourceCarousel from './UIResourceCarousel';
-import { handleUIAction, cn } from '~/utils';
+import { cn, handleUIAction } from '~/utils';
 import { OutputRenderer } from './ToolOutput';
+import UIResourceCarousel from './UIResourceCarousel';
 
 function isSimpleObject(obj: unknown): obj is Record<string, string | number | boolean | null> {
   if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) {

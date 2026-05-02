@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
-import { setTokenHeader } from './headers-helpers';
+import axios, { type AxiosError, type AxiosRequestConfig } from 'axios';
 import * as endpoints from './api-endpoints';
+import { setTokenHeader } from './headers-helpers';
 import type * as t from './types';
 
 async function _get<T>(url: string, options?: AxiosRequestConfig): Promise<T> {
@@ -62,7 +62,10 @@ async function _patch(url: string, data?: any) {
 }
 
 let isRefreshing = false;
-let failedQueue: { resolve: (value?: any) => void; reject: (reason?: any) => void }[] = [];
+let failedQueue: {
+  resolve: (value?: any) => void;
+  reject: (reason?: any) => void;
+}[] = [];
 
 const refreshToken = (retry?: boolean): Promise<t.TRefreshTokenResponse | undefined> =>
   _post(endpoints.refreshToken(retry));

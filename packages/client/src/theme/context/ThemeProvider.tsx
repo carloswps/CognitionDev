@@ -1,5 +1,14 @@
-import React, { createContext, useContext, useEffect, useMemo, useCallback, useState, useRef } from 'react';
-import { IThemeRGB } from '../types';
+import type React from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import type { IThemeRGB } from '../types';
 import applyTheme from '../utils/applyTheme';
 
 const THEME_KEY = 'color-theme';

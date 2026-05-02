@@ -1,23 +1,24 @@
+export type {
+  StreamServices,
+  StreamServicesConfig,
+} from './createStreamServices';
+export { createStreamServices } from './createStreamServices';
 export {
   GenerationJobManager,
   GenerationJobManagerClass,
   type GenerationJobManagerOptions,
 } from './GenerationJobManager';
-
-export type {
-  SerializableJobData,
-  IEventTransport,
-  UsageMetadata,
-  AbortResult,
-  JobStatus,
-  IJobStore,
-} from './interfaces/IJobStore';
-
-export { createStreamServices } from './createStreamServices';
-export type { StreamServicesConfig, StreamServices } from './createStreamServices';
+export { InMemoryEventTransport } from './implementations/InMemoryEventTransport';
 
 // Implementations (for advanced use cases)
 export { InMemoryJobStore } from './implementations/InMemoryJobStore';
-export { InMemoryEventTransport } from './implementations/InMemoryEventTransport';
-export { RedisJobStore } from './implementations/RedisJobStore';
 export { RedisEventTransport } from './implementations/RedisEventTransport';
+export { RedisJobStore } from './implementations/RedisJobStore';
+export type {
+  AbortResult,
+  IEventTransport,
+  IJobStore,
+  JobStatus,
+  SerializableJobData,
+  UsageMetadata,
+} from './interfaces/IJobStore';

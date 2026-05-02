@@ -1,5 +1,5 @@
+import { type EModelEndpoint, getEndpointField } from 'librechat-data-provider';
 import React from 'react';
-import { EModelEndpoint, getEndpointField } from 'librechat-data-provider';
 import { SetKeyDialog } from '~/components/Input/SetKeyDialog';
 
 interface DialogManagerProps {

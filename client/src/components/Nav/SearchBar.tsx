@@ -1,13 +1,14 @@
-import React, { forwardRef, useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import debounce from 'lodash/debounce';
-import { useRecoilState } from 'recoil';
-import { Search, X } from 'lucide-react';
-import { QueryKeys } from 'librechat-data-provider';
 import { useQueryClient } from '@tanstack/react-query';
+import { QueryKeys } from 'librechat-data-provider';
+import debounce from 'lodash/debounce';
+import { Search, X } from 'lucide-react';
+import type React from 'react';
+import { forwardRef, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import { useLocalize, useNewConvo } from '~/hooks';
-import { cn } from '~/utils';
 import store from '~/store';
+import { cn } from '~/utils';
 
 type SearchBarProps = {
   isSmallScreen?: boolean;
@@ -77,7 +78,11 @@ const SearchBar = forwardRef((props: SearchBarProps, ref: React.Ref<HTMLDivEleme
   const debouncedSetDebouncedQuery = useMemo(
     () =>
       debounce((value: string) => {
-        setSearchState((prev) => ({ ...prev, debouncedQuery: value, isTyping: false }));
+        setSearchState((prev) => ({
+          ...prev,
+          debouncedQuery: value,
+          isTyping: false,
+        }));
         sendRequest(value);
       }, 500),
     [setSearchState, sendRequest],

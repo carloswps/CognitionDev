@@ -60,7 +60,11 @@ describe('SearchResults', () => {
   });
 
   it('marks model as selected when endpoint and model match with no active spec', () => {
-    mockSelectedValues = { endpoint: 'anthropic', model: 'claude-opus-4-6', modelSpec: '' };
+    mockSelectedValues = {
+      endpoint: 'anthropic',
+      model: 'claude-opus-4-6',
+      modelSpec: '',
+    };
     render(
       <SearchResults results={[anthropicEndpoint]} localize={localize} searchValue="claude" />,
     );

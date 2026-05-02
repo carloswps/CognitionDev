@@ -1,15 +1,15 @@
-import { useState, useRef } from 'react';
 import { useAtomValue } from 'jotai';
-import { useRecoilValue } from 'recoil';
-import { CSSTransition } from 'react-transition-group';
 import type { TMessage } from 'librechat-data-provider';
-import { useScreenshot, useMessageScrolling, useLocalize } from '~/hooks';
+import { useRef, useState } from 'react';
+import { CSSTransition } from 'react-transition-group';
+import { useRecoilValue } from 'recoil';
 import ScrollToBottom from '~/components/Messages/ScrollToBottom';
+import { useLocalize, useMessageScrolling, useScreenshot } from '~/hooks';
 import { MessagesViewProvider } from '~/Providers';
-import { fontSizeAtom } from '~/store/fontSize';
-import MultiMessage from './MultiMessage';
-import { cn } from '~/utils';
 import store from '~/store';
+import { fontSizeAtom } from '~/store/fontSize';
+import { cn } from '~/utils';
+import MultiMessage from './MultiMessage';
 
 function MessagesViewContent({
   messagesTree: _messagesTree,

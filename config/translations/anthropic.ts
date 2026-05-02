@@ -1,6 +1,6 @@
-import Anthropic from '@anthropic-ai/sdk';
 import type * as a from '@anthropic-ai/sdk';
-import { parseParamFromPrompt, genTranslationPrompt } from '~/app/clients/prompts/titlePrompts';
+import Anthropic from '@anthropic-ai/sdk';
+import { genTranslationPrompt, parseParamFromPrompt } from '~/app/clients/prompts/titlePrompts';
 
 /**
  * Get the initialized Anthropic client.
@@ -52,7 +52,7 @@ export async function translateKeyPhrase({ key, baselineTranslation, translation
         {
           type: 'text',
           text,
-          /* @ts-ignore */
+          /* @ts-expect-error */
           cache_control: { type: 'ephemeral' },
         },
       ],

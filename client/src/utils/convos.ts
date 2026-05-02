@@ -1,17 +1,16 @@
-import { QueryClient } from '@tanstack/react-query';
-import { LocalStorageKeys, QueryKeys } from 'librechat-data-provider';
+import type { InfiniteData, QueryClient } from '@tanstack/react-query';
 import {
   format,
-  isToday,
-  subDays,
   getYear,
+  isToday,
+  isWithinInterval,
   parseISO,
   startOfDay,
   startOfYear,
-  isWithinInterval,
+  subDays,
 } from 'date-fns';
-import type { TConversation, GroupedConversations } from 'librechat-data-provider';
-import type { InfiniteData } from '@tanstack/react-query';
+import type { GroupedConversations, TConversation } from 'librechat-data-provider';
+import { LocalStorageKeys, QueryKeys } from 'librechat-data-provider';
 
 // Date group helpers
 export const dateKeys = {
@@ -192,7 +191,10 @@ export function addConversationToInfinitePages(
   return {
     ...data,
     pages: [
-      { ...data.pages[0], conversations: [newConversation, ...data.pages[0].conversations] },
+      {
+        ...data.pages[0],
+        conversations: [newConversation, ...data.pages[0].conversations],
+      },
       ...data.pages.slice(1),
     ],
   };
@@ -289,7 +291,11 @@ export function updateConvoFieldsInfinite(
       ),
     };
   } else {
-    const patched = { ...found, ...updatedConversation, updatedAt: new Date().toISOString() };
+    const patched = {
+      ...found,
+      ...updatedConversation,
+      updatedAt: new Date().toISOString(),
+    };
     const pages = data.pages.map((page) => ({
       ...page,
       conversations: page.conversations.filter((c) => c.conversationId !== patched.conversationId),

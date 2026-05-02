@@ -1,7 +1,7 @@
-import { StepTypes } from 'librechat-data-provider';
+import type { StandardGraph } from '@librechat/agents';
+import type { Cluster, Redis } from 'ioredis';
 import type { Agents } from 'librechat-data-provider';
-import type { Redis, Cluster } from 'ioredis';
-import { StandardGraph } from '@librechat/agents';
+import { StepTypes } from 'librechat-data-provider';
 
 /** Suppress winston Console transport output (survives jest.resetModules) */
 jest.spyOn(console, 'log').mockImplementation();
@@ -124,7 +124,10 @@ describe('RedisJobStore Integration Tests', () => {
       const streamId = `test-stream-${Date.now()}`;
       await store.createJob(streamId, 'user-1', streamId);
 
-      await store.updateJob(streamId, { status: 'complete', completedAt: Date.now() });
+      await store.updateJob(streamId, {
+        status: 'complete',
+        completedAt: Date.now(),
+      });
 
       const job = await store.getJob(streamId);
       expect(job?.status).toBe('complete');
@@ -146,7 +149,10 @@ describe('RedisJobStore Integration Tests', () => {
       await store.createJob(streamId, 'user-1', streamId);
 
       // Add some chunks
-      await store.appendChunk(streamId, { event: 'on_message_delta', data: { text: 'Hello' } });
+      await store.appendChunk(streamId, {
+        event: 'on_message_delta',
+        data: { text: 'Hello' },
+      });
 
       await store.deleteJob(streamId);
 
@@ -183,7 +189,10 @@ describe('RedisJobStore Integration Tests', () => {
       expect(jobFromInstance2?.streamId).toBe(streamId);
 
       // Instance 1 updates job
-      await instance1.updateJob(streamId, { sender: 'TestAgent', syncSent: true });
+      await instance1.updateJob(streamId, {
+        sender: 'TestAgent',
+        syncSent: true,
+      });
 
       // Instance 2 should see the update
       const updatedJob = await instance2.getJob(streamId);
@@ -226,11 +235,17 @@ describe('RedisJobStore Integration Tests', () => {
         },
         {
           event: 'on_message_delta',
-          data: { id: 'step-1', delta: { content: { type: 'text', text: 'Hello, ' } } },
+          data: {
+            id: 'step-1',
+            delta: { content: { type: 'text', text: 'Hello, ' } },
+          },
         },
         {
           event: 'on_message_delta',
-          data: { id: 'step-1', delta: { content: { type: 'text', text: 'world!' } } },
+          data: {
+            id: 'step-1',
+            delta: { content: { type: 'text', text: 'world!' } },
+          },
         },
       ];
 
@@ -267,7 +282,12 @@ describe('RedisJobStore Integration Tests', () => {
 
       // Instance 1 saves run steps
       const runSteps: Partial<Agents.RunStep>[] = [
-        { id: 'step-1', runId: 'run-1', type: StepTypes.MESSAGE_CREATION, index: 0 },
+        {
+          id: 'step-1',
+          runId: 'run-1',
+          type: StepTypes.MESSAGE_CREATION,
+          index: 0,
+        },
         { id: 'step-2', runId: 'run-1', type: StepTypes.TOOL_CALLS, index: 1 },
       ];
 
@@ -311,19 +331,31 @@ describe('RedisJobStore Integration Tests', () => {
         },
         {
           event: 'on_message_delta',
-          data: { id: 'step-1', delta: { content: { type: 'text', text: 'The ' } } },
+          data: {
+            id: 'step-1',
+            delta: { content: { type: 'text', text: 'The ' } },
+          },
         },
         {
           event: 'on_message_delta',
-          data: { id: 'step-1', delta: { content: { type: 'text', text: 'quick ' } } },
+          data: {
+            id: 'step-1',
+            delta: { content: { type: 'text', text: 'quick ' } },
+          },
         },
         {
           event: 'on_message_delta',
-          data: { id: 'step-1', delta: { content: { type: 'text', text: 'brown ' } } },
+          data: {
+            id: 'step-1',
+            delta: { content: { type: 'text', text: 'brown ' } },
+          },
         },
         {
           event: 'on_message_delta',
-          data: { id: 'step-1', delta: { content: { type: 'text', text: 'fox.' } } },
+          data: {
+            id: 'step-1',
+            delta: { content: { type: 'text', text: 'fox.' } },
+          },
         },
       ];
 
@@ -366,13 +398,18 @@ describe('RedisJobStore Integration Tests', () => {
         },
         {
           event: 'on_reasoning_delta',
-          data: { id: 'step-1', delta: { content: { type: 'think', think: 'Let me think...' } } },
+          data: {
+            id: 'step-1',
+            delta: { content: { type: 'think', think: 'Let me think...' } },
+          },
         },
         {
           event: 'on_reasoning_delta',
           data: {
             id: 'step-1',
-            delta: { content: { type: 'think', think: ' about this problem.' } },
+            delta: {
+              content: { type: 'think', think: ' about this problem.' },
+            },
           },
         },
         {
@@ -386,7 +423,10 @@ describe('RedisJobStore Integration Tests', () => {
         },
         {
           event: 'on_message_delta',
-          data: { id: 'step-2', delta: { content: { type: 'text', text: 'The answer is 42.' } } },
+          data: {
+            id: 'step-2',
+            delta: { content: { type: 'text', text: 'The answer is 42.' } },
+          },
         },
       ];
 
@@ -683,7 +723,10 @@ describe('RedisJobStore Integration Tests', () => {
       await store.createJob(streamId2, userId, streamId2);
 
       // Complete one job
-      await store.updateJob(streamId1, { status: 'complete', completedAt: Date.now() });
+      await store.updateJob(streamId1, {
+        status: 'complete',
+        completedAt: Date.now(),
+      });
 
       // Get active jobs - should only return the running one
       const activeJobs = await store.getActiveJobIdsByUser(userId);
@@ -709,7 +752,10 @@ describe('RedisJobStore Integration Tests', () => {
 
       // Create a job and abort it
       await store.createJob(streamId, userId, streamId);
-      await store.updateJob(streamId, { status: 'aborted', completedAt: Date.now() });
+      await store.updateJob(streamId, {
+        status: 'aborted',
+        completedAt: Date.now(),
+      });
 
       // Get active jobs - should be empty
       const activeJobs = await store.getActiveJobIdsByUser(userId);
@@ -846,7 +892,10 @@ describe('RedisJobStore Integration Tests', () => {
       expect(activeJobs).toContain(streamId);
 
       // Instance 1 completes the job
-      await instance1.updateJob(streamId, { status: 'complete', completedAt: Date.now() });
+      await instance1.updateJob(streamId, {
+        status: 'complete',
+        completedAt: Date.now(),
+      });
 
       // Instance 2 should no longer see the job as active
       const activeJobsAfter = await instance2.getActiveJobIdsByUser(userId);
@@ -1009,7 +1058,10 @@ describe('RedisJobStore Integration Tests', () => {
       let members = await ioredisClient.smembers(userKey);
       expect(members).toContain(streamId);
 
-      await store.updateJob(streamId, { status: 'complete', completedAt: Date.now() });
+      await store.updateJob(streamId, {
+        status: 'complete',
+        completedAt: Date.now(),
+      });
 
       // Directly check the Redis set — without calling getActiveJobIdsByUser (which self-heals)
       members = await ioredisClient.smembers(userKey);
@@ -1036,7 +1088,10 @@ describe('RedisJobStore Integration Tests', () => {
       let members = await ioredisClient.smembers(userKey);
       expect(members).toContain(streamId);
 
-      await store.updateJob(streamId, { status: 'aborted', completedAt: Date.now() });
+      await store.updateJob(streamId, {
+        status: 'aborted',
+        completedAt: Date.now(),
+      });
 
       members = await ioredisClient.smembers(userKey);
       expect(members).not.toContain(streamId);
@@ -1157,7 +1212,9 @@ describe('RedisJobStore Integration Tests', () => {
       const afterDelete = await ioredisClient.exists(jobKey);
       expect(afterDelete).toBe(0);
 
-      await store.updateJob(streamId, { finalEvent: JSON.stringify({ final: true }) });
+      await store.updateJob(streamId, {
+        finalEvent: JSON.stringify({ final: true }),
+      });
 
       const afterUpdate = await ioredisClient.exists(jobKey);
       expect(afterUpdate).toBe(0);
@@ -1180,7 +1237,9 @@ describe('RedisJobStore Integration Tests', () => {
       const jobKey = `stream:{${streamId}}:job`;
 
       await Promise.all([
-        store.updateJob(streamId, { finalEvent: JSON.stringify({ final: true }) }),
+        store.updateJob(streamId, {
+          finalEvent: JSON.stringify({ final: true }),
+        }),
         store.deleteJob(streamId),
       ]);
 
@@ -1257,7 +1316,10 @@ describe('RedisJobStore Integration Tests', () => {
       });
       await instance1.appendChunk(streamId, {
         event: 'on_message_delta',
-        data: { id: 'step-1', delta: { content: { type: 'text', text: 'From Redis' } } },
+        data: {
+          id: 'step-1',
+          delta: { content: { type: 'text', text: 'From Redis' } },
+        },
       });
 
       // Save run steps to Redis
@@ -1455,11 +1517,17 @@ describe('RedisJobStore Integration Tests', () => {
         },
         {
           event: 'on_message_delta',
-          data: { id: 'step-1', delta: { content: { type: 'text', text: 'Hello ' } } },
+          data: {
+            id: 'step-1',
+            delta: { content: { type: 'text', text: 'Hello ' } },
+          },
         },
         {
           event: 'on_message_delta',
-          data: { id: 'step-1', delta: { content: { type: 'text', text: 'world!' } } },
+          data: {
+            id: 'step-1',
+            delta: { content: { type: 'text', text: 'world!' } },
+          },
         },
       ];
 

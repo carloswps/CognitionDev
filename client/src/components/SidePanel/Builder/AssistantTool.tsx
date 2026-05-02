@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { useUpdateUserPluginsMutation } from 'librechat-data-provider/react-query';
 import {
-  OGDialog,
-  OGDialogTrigger,
   Label,
+  OGDialog,
   OGDialogTemplate,
+  OGDialogTrigger,
   TrashIcon,
   useToastContext,
 } from '@librechat/client';
 import type { TPlugin } from 'librechat-data-provider';
+import { useUpdateUserPluginsMutation } from 'librechat-data-provider/react-query';
+import React, { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
 
@@ -32,15 +32,26 @@ export default function AssistantTool({
   const removeTool = (tool: string) => {
     if (tool) {
       updateUserPlugins.mutate(
-        { pluginKey: tool, action: 'uninstall', auth: null, isEntityTool: true },
+        {
+          pluginKey: tool,
+          action: 'uninstall',
+          auth: null,
+          isEntityTool: true,
+        },
         {
           onError: (error: unknown) => {
-            showToast({ message: `Error while deleting the tool: ${error}`, status: 'error' });
+            showToast({
+              message: `Error while deleting the tool: ${error}`,
+              status: 'error',
+            });
           },
           onSuccess: () => {
             const fns = getValues('functions').filter((fn) => fn !== tool);
             setValue('functions', fns);
-            showToast({ message: 'Tool deleted successfully', status: 'success' });
+            showToast({
+              message: 'Tool deleted successfully',
+              status: 'success',
+            });
           },
         },
       );
@@ -66,13 +77,20 @@ export default function AssistantTool({
             <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full">
               <div
                 className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-full bg-center bg-no-repeat dark:bg-white/20"
-                style={{ backgroundImage: `url(${currentTool.icon})`, backgroundSize: 'cover' }}
+                style={{
+                  backgroundImage: `url(${currentTool.icon})`,
+                  backgroundSize: 'cover',
+                }}
               />
             </div>
           )}
           <div
             className="h-9 grow px-3 py-2"
-            style={{ textOverflow: 'ellipsis', wordBreak: 'break-all', overflow: 'hidden' }}
+            style={{
+              textOverflow: 'ellipsis',
+              wordBreak: 'break-all',
+              overflow: 'hidden',
+            }}
           >
             {currentTool.name}
           </div>

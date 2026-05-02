@@ -1,8 +1,8 @@
 import { MCPIcon } from '@librechat/client';
-import { PermissionTypes, Permissions } from 'librechat-data-provider';
+import { Permissions, PermissionTypes } from 'librechat-data-provider';
 import type { MCPServerStatusIconProps } from '~/components/MCP/MCPServerStatusIcon';
 import type { MCPServerDefinition } from '~/hooks';
-import { useLocalize, useHasAccess } from '~/hooks';
+import { useHasAccess, useLocalize } from '~/hooks';
 import MCPServerCard from './MCPServerCard';
 
 interface MCPServerListProps {

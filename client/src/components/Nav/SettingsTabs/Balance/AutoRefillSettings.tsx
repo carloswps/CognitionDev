@@ -1,6 +1,6 @@
-import React from 'react';
-import { Label, InfoHoverCard, ESide } from '@librechat/client';
-import { TranslationKeys, useLocalize } from '~/hooks';
+import { ESide, InfoHoverCard, Label } from '@librechat/client';
+import type React from 'react';
+import { type TranslationKeys, useLocalize } from '~/hooks';
 
 interface AutoRefillSettingsProps {
   lastRefill: Date;

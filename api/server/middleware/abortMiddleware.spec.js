@@ -42,7 +42,10 @@ jest.mock('@librechat/api', () => ({
 
 jest.mock('librechat-data-provider', () => ({
   isAssistantsEndpoint: jest.fn().mockReturnValue(false),
-  ErrorTypes: { INVALID_REQUEST: 'INVALID_REQUEST', NO_SYSTEM_MESSAGES: 'NO_SYSTEM_MESSAGES' },
+  ErrorTypes: {
+    INVALID_REQUEST: 'INVALID_REQUEST',
+    NO_SYSTEM_MESSAGES: 'NO_SYSTEM_MESSAGES',
+  },
 }));
 
 jest.mock('~/app/clients/prompts', () => ({
@@ -165,7 +168,11 @@ describe('abortMiddleware - spendCollectedUsage', () => {
 
     it('should handle real-world parallel agent abort scenario', async () => {
       const collectedUsage = [
-        { input_tokens: 31596, output_tokens: 151, model: 'gemini-3-flash-preview' },
+        {
+          input_tokens: 31596,
+          output_tokens: 151,
+          model: 'gemini-3-flash-preview',
+        },
         { input_tokens: 28000, output_tokens: 120, model: 'gpt-5.2' },
       ];
 

@@ -1,16 +1,17 @@
-import React, { useRef } from 'react';
 import {
   Label,
   Listbox,
-  Transition,
   ListboxButton,
   ListboxOption,
   ListboxOptions,
+  Transition,
 } from '@headlessui/react';
-import type { Option, OptionWithIcon, DropdownValueSetter } from '~/common';
-import { useMultiSearch } from './MultiSearch';
+import type React from 'react';
+import { useRef } from 'react';
+import type { DropdownValueSetter, Option, OptionWithIcon } from '~/common';
 import { CheckMark } from '~/svgs';
 import { cn } from '~/utils';
+import { useMultiSearch } from './MultiSearch';
 
 type SelectDropDownProps = {
   id?: string;

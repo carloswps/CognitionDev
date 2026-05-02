@@ -1,13 +1,13 @@
+import { useToastContext } from '@librechat/client';
 import { ChevronLeft } from 'lucide-react';
 import { useCallback, useMemo } from 'react';
-import { useToastContext } from '@librechat/client';
-import { useGetAgentByIdQuery, useRevertAgentVersionMutation } from '~/data-provider';
-import type { AgentWithVersions, VersionContext } from './types';
-import { isActiveVersion } from './isActiveVersion';
-import { useAgentPanelContext } from '~/Providers';
-import VersionContent from './VersionContent';
-import { useLocalize } from '~/hooks';
 import { Panel } from '~/common';
+import { useGetAgentByIdQuery, useRevertAgentVersionMutation } from '~/data-provider';
+import { useLocalize } from '~/hooks';
+import { useAgentPanelContext } from '~/Providers';
+import { isActiveVersion } from './isActiveVersion';
+import type { AgentWithVersions, VersionContext } from './types';
+import VersionContent from './VersionContent';
 
 export default function VersionPanel() {
   const localize = useLocalize();

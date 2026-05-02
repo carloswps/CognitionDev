@@ -52,7 +52,9 @@ export function redactServerSecrets(config: ParsedServerConfig): Partial<ParsedS
     safe.apiKey = {
       source: config.apiKey.source,
       authorization_type: config.apiKey.authorization_type,
-      ...(config.apiKey.custom_header && { custom_header: config.apiKey.custom_header }),
+      ...(config.apiKey.custom_header && {
+        custom_header: config.apiKey.custom_header,
+      }),
     };
   }
 

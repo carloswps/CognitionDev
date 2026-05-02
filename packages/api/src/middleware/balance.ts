@@ -1,15 +1,15 @@
-import { logger } from '@librechat/data-schemas';
 import type {
-  IBalanceUpdate,
-  BalanceConfig,
   AppConfig,
-  ObjectId,
+  BalanceConfig,
   IBalance,
+  IBalanceUpdate,
   IUser,
+  ObjectId,
 } from '@librechat/data-schemas';
+import { logger } from '@librechat/data-schemas';
 import type { NextFunction, Request as ServerRequest, Response as ServerResponse } from 'express';
-import type { BalanceUpdateFields } from '~/types';
 import { getBalanceConfig } from '~/app/config';
+import type { BalanceUpdateFields } from '~/types';
 
 export interface BalanceMiddlewareOptions {
   getAppConfig: (options?: {

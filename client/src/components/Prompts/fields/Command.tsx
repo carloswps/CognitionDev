@@ -1,7 +1,7 @@
 import { Input } from '@librechat/client';
-import { SquareSlash } from 'lucide-react';
 import { Constants } from 'librechat-data-provider';
-import { useState, useEffect } from 'react';
+import { SquareSlash } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useLocalize } from '~/hooks';
 
 const Command = ({

@@ -1,8 +1,8 @@
-import { useRecoilState } from 'recoil';
 import { Switch } from '@librechat/client';
+import { useRecoilState } from 'recoil';
 import { useLocalize } from '~/hooks';
-import { cn } from '~/utils';
 import store from '~/store';
+import { cn } from '~/utils';
 
 export default function AlwaysMakeProd({
   onCheckedChange,

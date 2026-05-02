@@ -1,12 +1,12 @@
-import { logger, tenantStorage, SYSTEM_TENANT_ID } from '@librechat/data-schemas';
+import type { AppConfig, IRole } from '@librechat/data-schemas';
+import { logger, SYSTEM_TENANT_ID, tenantStorage } from '@librechat/data-schemas';
 import {
-  SystemRoles,
-  Permissions,
-  roleDefaults,
-  PermissionTypes,
   getConfigDefaults,
+  Permissions,
+  PermissionTypes,
+  roleDefaults,
+  SystemRoles,
 } from 'librechat-data-provider';
-import type { IRole, AppConfig } from '@librechat/data-schemas';
 import { isMemoryEnabled } from '~/memory/config';
 
 /**
@@ -73,7 +73,11 @@ export async function updateInterfacePermissions({
 }): Promise<void> {
   if (tenantId && tenantId !== SYSTEM_TENANT_ID) {
     return tenantStorage.run({ tenantId }, async () =>
-      updateInterfacePermissions({ appConfig, getRoleByName, updateAccessPermissions }),
+      updateInterfacePermissions({
+        appConfig,
+        getRoleByName,
+        updateAccessPermissions,
+      }),
     );
   }
 
@@ -536,7 +540,10 @@ export async function updateInterfacePermissions({
           `Role '${roleName}': Backfilling missing share fields for '${permType}': ${Object.keys(missingFields).join(', ')}`,
         );
         // Merge into any update already queued by addPermissionIfNeeded, or create a new entry
-        permissionsToUpdate[permType] = { ...permissionsToUpdate[permType], ...missingFields };
+        permissionsToUpdate[permType] = {
+          ...permissionsToUpdate[permType],
+          ...missingFields,
+        };
       }
     }
 

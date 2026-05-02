@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { useGetSearchEnabledQuery } from '~/data-provider';
-import { logger } from '~/utils';
 import store from '~/store';
+import { logger } from '~/utils';
 
 export default function useSearchEnabled(isAuthenticated: boolean) {
   const setSearch = useSetRecoilState(store.search);
-  const searchEnabledQuery = useGetSearchEnabledQuery({ enabled: isAuthenticated });
+  const searchEnabledQuery = useGetSearchEnabledQuery({
+    enabled: isAuthenticated,
+  });
 
   useEffect(() => {
     if (searchEnabledQuery.data === true) {

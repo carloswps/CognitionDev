@@ -1,12 +1,13 @@
-import React, { useMemo, useState, useEffect, useRef, useCallback } from 'react';
-import debounce from 'lodash/debounce';
-import MonacoEditor from '@monaco-editor/react';
 import type { Monaco } from '@monaco-editor/react';
+import MonacoEditor from '@monaco-editor/react';
+import debounce from 'lodash/debounce';
 import type { editor } from 'monaco-editor';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Artifact } from '~/common';
-import { useMutationState, useCodeState } from '~/Providers/EditorContext';
-import { useArtifactsContext } from '~/Providers';
 import { useEditArtifact } from '~/data-provider';
+import { useArtifactsContext } from '~/Providers';
+import { useCodeState, useMutationState } from '~/Providers/EditorContext';
 
 const LANG_MAP: Record<string, string> = {
   javascript: 'javascript',
@@ -241,8 +242,15 @@ export const ArtifactCodeEditor = function ArtifactCodeEditor({
       };
       JsxEmit: { React: number };
     };
-    const diagnosticsOff = { noSemanticValidation: true, noSyntaxValidation: true };
-    const compilerBase = { allowNonTsExtensions: true, allowJs: true, jsx: JsxEmit.React };
+    const diagnosticsOff = {
+      noSemanticValidation: true,
+      noSyntaxValidation: true,
+    };
+    const compilerBase = {
+      allowNonTsExtensions: true,
+      allowJs: true,
+      jsx: JsxEmit.React,
+    };
     typescriptDefaults.setDiagnosticsOptions(diagnosticsOff);
     javascriptDefaults.setDiagnosticsOptions(diagnosticsOff);
     typescriptDefaults.setCompilerOptions(compilerBase);

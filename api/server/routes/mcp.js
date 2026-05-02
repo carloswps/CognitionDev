@@ -87,7 +87,11 @@ router.get('/:serverName/oauth/initiate', requireJwtAuth, setOAuthSession, async
       return res.status(403).json({ error: 'User mismatch' });
     }
 
-    logger.debug('[MCP OAuth] Initiate request', { serverName, userId, flowId });
+    logger.debug('[MCP OAuth] Initiate request', {
+      serverName,
+      userId,
+      flowId,
+    });
 
     const flowsCache = getLogStores(CacheKeys.FLOWS);
     const flowManager = getFlowStateManager(flowsCache);
@@ -119,7 +123,10 @@ router.get('/:serverName/oauth/initiate', requireJwtAuth, setOAuthSession, async
       oauthConfig,
     );
 
-    logger.debug('[MCP OAuth] OAuth flow initiated', { oauthFlowId, authorizationUrl });
+    logger.debug('[MCP OAuth] OAuth flow initiated', {
+      oauthFlowId,
+      authorizationUrl,
+    });
 
     await MCPOAuthHandler.storeStateMapping(flowMetadata.state, oauthFlowId, flowManager);
     setOAuthCsrfCookie(res, oauthFlowId, OAUTH_CSRF_COOKIE_PATH);
@@ -626,7 +633,10 @@ router.get('/connection/status', requireJwtAuth, async (req, res) => {
 
     const { mcpConfig, appConnections, userConnections, oauthServers } = await getMCPSetupData(
       user.id,
-      { role: user.role, tenantId: getTenantId() },
+      {
+        role: user.role,
+        tenantId: getTenantId(),
+      },
     );
     const connectionStatus = {};
 
@@ -676,13 +686,16 @@ router.get('/connection/status/:serverName', requireJwtAuth, async (req, res) =>
 
     const { mcpConfig, appConnections, userConnections, oauthServers } = await getMCPSetupData(
       user.id,
-      { role: user.role, tenantId: getTenantId() },
+      {
+        role: user.role,
+        tenantId: getTenantId(),
+      },
     );
 
     if (!mcpConfig[serverName]) {
-      return res
-        .status(404)
-        .json({ error: `MCP server '${serverName}' not found in configuration` });
+      return res.status(404).json({
+        error: `MCP server '${serverName}' not found in configuration`,
+      });
     }
 
     const serverStatus = await getServerConnectionStatus(

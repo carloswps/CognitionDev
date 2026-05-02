@@ -1,5 +1,5 @@
-import ToggleSwitch from '../../ToggleSwitch';
 import store from '~/store';
+import ToggleSwitch from '../../ToggleSwitch';
 
 export default function SpeechToTextSwitch({
   onCheckedChange,

@@ -1,5 +1,5 @@
-import { useReactTable, flexRender, getCoreRowModel } from '@tanstack/react-table';
 import type { ColumnDef } from '@tanstack/react-table';
+import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

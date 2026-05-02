@@ -1,12 +1,12 @@
-import { memo, useMemo, useState, useCallback, useRef, useId, useEffect } from 'react';
+import { CheckMark, Clipboard, TooltipAnchor } from '@librechat/client';
 import { useAtomValue } from 'jotai';
-import { Clipboard, CheckMark, TooltipAnchor } from '@librechat/client';
-import { ScrollText, ChevronDown, ChevronUp } from 'lucide-react';
-import type { MouseEvent, FocusEvent } from 'react';
 import type { SummaryContentPart } from 'librechat-data-provider';
-import { fontSizeAtom } from '~/store/fontSize';
-import { useMessageContext } from '~/Providers';
+import { ChevronDown, ChevronUp, ScrollText } from 'lucide-react';
+import type { FocusEvent, MouseEvent } from 'react';
+import { memo, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useLocalize } from '~/hooks';
+import { useMessageContext } from '~/Providers';
+import { fontSizeAtom } from '~/store/fontSize';
 import { cn } from '~/utils';
 
 type SummaryProps = Pick<

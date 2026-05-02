@@ -1,25 +1,26 @@
-import React, { useRef, useState, useEffect, useMemo, useCallback } from 'react';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { ArrowUp, ArrowDown, ArrowDownUp } from 'lucide-react';
 import {
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
-  type SortingState,
-  type VisibilityState,
   type ColumnDef,
+  flexRender,
+  getCoreRowModel,
   type Row,
+  type SortingState,
   type Table as TTable,
+  useReactTable,
+  type VisibilityState,
 } from '@tanstack/react-table';
-import type { DataTableProps, ProcessedDataRow } from './DataTable.types';
-import { SelectionCheckbox, MemoizedTableRow, SkeletonRows } from './DataTableComponents';
-import { Table, TableBody, TableHead, TableHeader, TableCell, TableRow } from '../Table';
-import { useDebounced, useOptimizedRowSelection } from './DataTable.hooks';
-import { useMediaQuery, useLocalize } from '~/hooks';
-import { DataTableSearch } from './DataTableSearch';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { ArrowDown, ArrowDownUp, ArrowUp } from 'lucide-react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useLocalize, useMediaQuery } from '~/hooks';
+import { Spinner } from '~/svgs';
 import { cn, logger } from '~/utils';
 import { Label } from '../Label';
-import { Spinner } from '~/svgs';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../Table';
+import { useDebounced, useOptimizedRowSelection } from './DataTable.hooks';
+import type { DataTableProps, ProcessedDataRow } from './DataTable.types';
+import { MemoizedTableRow, SelectionCheckbox, SkeletonRows } from './DataTableComponents';
+import { DataTableSearch } from './DataTableSearch';
 
 function DataTable<TData extends Record<string, unknown>, TValue>({
   columns,

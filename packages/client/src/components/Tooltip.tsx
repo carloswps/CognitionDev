@@ -1,7 +1,7 @@
-import DOMPurify from 'dompurify';
 import * as Ariakit from '@ariakit/react';
-import { memo, forwardRef, useCallback, useMemo } from 'react';
+import DOMPurify from 'dompurify';
 import { AnimatePresence, motion } from 'framer-motion';
+import { forwardRef, memo, useCallback, useMemo } from 'react';
 import { cn } from '~/utils';
 import './Tooltip.css';
 

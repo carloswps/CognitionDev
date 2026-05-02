@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
 import { AuthType } from 'librechat-data-provider';
-import SearchApiKeyDialog from '~/components/SidePanel/Agents/Search/ApiKeyDialog';
+import React, { useMemo } from 'react';
 import CodeApiKeyDialog from '~/components/SidePanel/Agents/Code/ApiKeyDialog';
+import SearchApiKeyDialog from '~/components/SidePanel/Agents/Search/ApiKeyDialog';
 import { useBadgeRowContext } from '~/Providers';
 
 function ToolDialogs() {

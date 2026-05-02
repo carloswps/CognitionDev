@@ -1,13 +1,13 @@
 import { webSearchAuth } from '@librechat/data-schemas';
-import { SafeSearchTypes, AuthType } from 'librechat-data-provider';
 import type {
+  RerankerTypes,
   ScraperProviders,
-  TWebSearchConfig,
   SearchProviders,
   TCustomConfig,
-  RerankerTypes,
+  TWebSearchConfig,
 } from 'librechat-data-provider';
-import { loadWebSearchAuth, extractWebSearchEnvVars } from './web';
+import { AuthType, SafeSearchTypes } from 'librechat-data-provider';
+import { extractWebSearchEnvVars, loadWebSearchAuth } from './web';
 
 // Mock the extractVariableName function
 jest.mock('../utils', () => ({
@@ -226,7 +226,9 @@ describe('web.ts', () => {
 
     it('should handle optional fields correctly', async () => {
       // Create a config without the optional firecrawlApiUrl
-      const configWithoutOptional = { ...webSearchConfig } as Partial<TWebSearchConfig>;
+      const configWithoutOptional = {
+        ...webSearchConfig,
+      } as Partial<TWebSearchConfig>;
       delete configWithoutOptional.firecrawlApiUrl;
 
       mockLoadAuthValues.mockImplementation(({ authFields, optional }) => {

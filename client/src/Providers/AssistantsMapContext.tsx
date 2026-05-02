@@ -1,5 +1,6 @@
 import { createContext, useContext } from 'react';
-import { useAssistantsMap } from '~/hooks/Assistants';
+import type { useAssistantsMap } from '~/hooks/Assistants';
+
 type AssistantsMapContextType = ReturnType<typeof useAssistantsMap>;
 
 export const AssistantsMapContext = createContext<AssistantsMapContextType>(

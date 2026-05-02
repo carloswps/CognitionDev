@@ -1,21 +1,22 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { ArrowUpDown, ArrowUp, ArrowDown, Database } from 'lucide-react';
-import { FileSources, FileContext } from 'librechat-data-provider';
+
 import {
+  AzureMinimalIcon,
   Button,
   Checkbox,
-  useMediaQuery,
-  TooltipAnchor,
-  AzureMinimalIcon,
   OpenAIMinimalIcon,
+  TooltipAnchor,
+  useMediaQuery,
 } from '@librechat/client';
 import type { ColumnDef } from '@tanstack/react-table';
 import type { TFile } from 'librechat-data-provider';
-import ImagePreview from '~/components/Chat/Input/Files/ImagePreview';
+import { FileContext, FileSources } from 'librechat-data-provider';
+import { ArrowDown, ArrowUp, ArrowUpDown, Database } from 'lucide-react';
 import FilePreview from '~/components/Chat/Input/Files/FilePreview';
-import { TranslationKeys, useLocalize } from '~/hooks';
-import { SortFilterHeader } from './SortFilterHeader';
+import ImagePreview from '~/components/Chat/Input/Files/ImagePreview';
+import { type TranslationKeys, useLocalize } from '~/hooks';
 import { formatDate, getFileType } from '~/utils';
+import { SortFilterHeader } from './SortFilterHeader';
 
 const contextMap: Record<any, TranslationKeys> = {
   [FileContext.avatar]: 'com_ui_avatar',

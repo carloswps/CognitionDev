@@ -1,7 +1,7 @@
-import { TokenExchangeMethodEnum } from 'librechat-data-provider';
-import type { MCPOptions } from 'librechat-data-provider';
 import type { AuthorizationServerMetadata } from '@modelcontextprotocol/sdk/shared/auth.js';
-import { MCPOAuthFlowMetadata, MCPOAuthHandler, MCPOAuthTokens } from '~/mcp/oauth';
+import type { MCPOptions } from 'librechat-data-provider';
+import { TokenExchangeMethodEnum } from 'librechat-data-provider';
+import { type MCPOAuthFlowMetadata, MCPOAuthHandler, type MCPOAuthTokens } from '~/mcp/oauth';
 
 jest.mock('@librechat/data-schemas', () => ({
   logger: {
@@ -32,15 +32,15 @@ jest.mock('../../mcp/oauth/resourceHint', () => ({
 }));
 
 import {
-  startAuthorization,
   discoverAuthorizationServerMetadata,
   discoverOAuthProtectedResourceMetadata,
-  registerClient,
   exchangeAuthorization,
+  registerClient,
+  startAuthorization,
 } from '@modelcontextprotocol/sdk/client/auth.js';
-import { MCPTokenStorage } from '../../mcp/oauth/tokens';
+import type { FlowStateManager } from '../../flow/manager';
 import { probeResourceMetadataHint } from '../../mcp/oauth/resourceHint';
-import { FlowStateManager } from '../../flow/manager';
+import { MCPTokenStorage } from '../../mcp/oauth/tokens';
 
 const mockStartAuthorization = startAuthorization as jest.MockedFunction<typeof startAuthorization>;
 const mockDiscoverAuthorizationServerMetadata =
@@ -998,7 +998,10 @@ describe('MCPOAuthHandler - Configurable OAuth Metadata', () => {
     beforeEach(() => {
       jest.clearAllMocks();
       global.fetch = mockFetch as unknown as typeof fetch;
-      mockFetch.mockResolvedValue({ ok: true, json: async () => ({}) } as Response);
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: async () => ({}),
+      } as Response);
       mockDiscoverAuthorizationServerMetadata.mockResolvedValue({
         issuer: 'http://example.com',
         authorization_endpoint: 'http://example.com/auth',
@@ -1018,7 +1021,12 @@ describe('MCPOAuthHandler - Configurable OAuth Metadata', () => {
     it('passes headers to client registration', async () => {
       mockRegisterClient.mockImplementation(async (_, options) => {
         await options.fetchFn?.('http://example.com/register', {});
-        return { client_id: 'test', redirect_uris: [], logo_uri: undefined, tos_uri: undefined };
+        return {
+          client_id: 'test',
+          redirect_uris: [],
+          logo_uri: undefined,
+          tos_uri: undefined,
+        };
       });
 
       await MCPOAuthHandler.initiateOAuthFlow(
@@ -1073,7 +1081,11 @@ describe('MCPOAuthHandler - Configurable OAuth Metadata', () => {
 
       mockExchangeAuthorization.mockImplementation(async (_, options) => {
         await options.fetchFn?.('http://example.com/token', {});
-        return { access_token: 'test-token', token_type: 'Bearer', expires_in: 3600 };
+        return {
+          access_token: 'test-token',
+          token_type: 'Bearer',
+          expires_in: 3600,
+        };
       });
 
       await MCPOAuthHandler.completeOAuthFlow('test-flow-id', 'test-auth-code', mockFlowManager, {
@@ -1098,7 +1110,10 @@ describe('MCPOAuthHandler - Configurable OAuth Metadata', () => {
         {
           serverName: 'test-server',
           serverUrl: 'http://example.com',
-          clientInfo: { client_id: 'test-client', client_secret: 'test-secret' },
+          clientInfo: {
+            client_id: 'test-client',
+            client_secret: 'test-secret',
+          },
         },
         { foo: 'bar' },
         {},
@@ -1167,7 +1182,11 @@ describe('MCPOAuthHandler - Configurable OAuth Metadata', () => {
           method: 'POST',
           body,
         });
-        return { access_token: 'test-token', token_type: 'Bearer', expires_in: 3600 };
+        return {
+          access_token: 'test-token',
+          token_type: 'Bearer',
+          expires_in: 3600,
+        };
       });
 
       await MCPOAuthHandler.completeOAuthFlow('test-flow', 'test-auth-code', mockFlowManager, {});
@@ -1234,7 +1253,11 @@ describe('MCPOAuthHandler - Configurable OAuth Metadata', () => {
           method: 'POST',
           body,
         });
-        return { access_token: 'test-token', token_type: 'Bearer', expires_in: 3600 };
+        return {
+          access_token: 'test-token',
+          token_type: 'Bearer',
+          expires_in: 3600,
+        };
       });
 
       await MCPOAuthHandler.completeOAuthFlow('test-flow', 'test-auth-code', mockFlowManager, {});
@@ -1282,7 +1305,11 @@ describe('MCPOAuthHandler - Configurable OAuth Metadata', () => {
           method: 'POST',
           body,
         });
-        return { access_token: 'test-token', token_type: 'Bearer', expires_in: 3600 };
+        return {
+          access_token: 'test-token',
+          token_type: 'Bearer',
+          expires_in: 3600,
+        };
       });
 
       await MCPOAuthHandler.completeOAuthFlow('test-flow', 'test-auth-code', mockFlowManager, {});
@@ -1418,7 +1445,10 @@ describe('MCPOAuthHandler - Configurable OAuth Metadata', () => {
     beforeEach(() => {
       jest.clearAllMocks();
       global.fetch = mockFetch as unknown as typeof fetch;
-      mockFetch.mockResolvedValue({ ok: true, json: async () => ({}) } as Response);
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: async () => ({}),
+      } as Response);
       process.env.DOMAIN_SERVER = 'http://localhost:3080';
     });
 
@@ -2170,7 +2200,10 @@ describe('MCPOAuthHandler - Configurable OAuth Metadata', () => {
     beforeEach(() => {
       jest.clearAllMocks();
       global.fetch = mockFetch as unknown as typeof fetch;
-      mockFetch.mockResolvedValue({ ok: true, json: async () => ({}) } as Response);
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: async () => ({}),
+      } as Response);
     });
 
     afterAll(() => {

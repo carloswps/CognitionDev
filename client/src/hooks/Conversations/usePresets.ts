@@ -1,25 +1,25 @@
-import filenamify from 'filenamify';
-import exportFromJSON from 'export-from-json';
 import { useToastContext } from '@librechat/client';
-import { QueryKeys } from 'librechat-data-provider';
 import { useQueryClient } from '@tanstack/react-query';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useRecoilState, useSetRecoilState, useRecoilValue } from 'recoil';
+import exportFromJSON from 'export-from-json';
+import filenamify from 'filenamify';
+import type { TEndpointsConfig, TPreset } from 'librechat-data-provider';
+import { QueryKeys } from 'librechat-data-provider';
 import { useCreatePresetMutation, useGetModelsQuery } from 'librechat-data-provider/react-query';
-import type { TPreset, TEndpointsConfig } from 'librechat-data-provider';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { NotificationSeverity } from '~/common';
 import {
-  useUpdatePresetMutation,
   useDeletePresetMutation,
   useGetPresetsQuery,
+  useUpdatePresetMutation,
 } from '~/data-provider';
-import { cleanupPreset, removeUnavailableTools, getConvoSwitchLogic } from '~/utils';
-import useGetConversation from '~/hooks/Conversations/useGetConversation';
-import useDefaultConvo from '~/hooks/Conversations/useDefaultConvo';
-import { useAuthContext } from '~/hooks/AuthContext';
-import { NotificationSeverity } from '~/common';
-import useNewConvo from '~/hooks/useNewConvo';
 import { useLocalize } from '~/hooks';
+import { useAuthContext } from '~/hooks/AuthContext';
+import useDefaultConvo from '~/hooks/Conversations/useDefaultConvo';
+import useGetConversation from '~/hooks/Conversations/useGetConversation';
+import useNewConvo from '~/hooks/useNewConvo';
 import store from '~/store';
+import { cleanupPreset, getConvoSwitchLogic, removeUnavailableTools } from '~/utils';
 
 export default function usePresets(index = 0) {
   const localize = useLocalize();
@@ -35,7 +35,9 @@ export default function usePresets(index = 0) {
   const availableTools = useRecoilValue(store.availableTools);
   const setPresetModalVisible = useSetRecoilState(store.presetModalVisible);
   const [_defaultPreset, setDefaultPreset] = useRecoilState(store.defaultPreset);
-  const presetsQuery = useGetPresetsQuery({ enabled: !!user && isAuthenticated });
+  const presetsQuery = useGetPresetsQuery({
+    enabled: !!user && isAuthenticated,
+  });
   const preset = useRecoilValue(store.presetByIndex(index));
   const setPreset = useSetRecoilState(store.presetByIndex(index));
   const conversationId = useRecoilValue(store.conversationIdByIndex(index));
@@ -64,7 +66,11 @@ export default function usePresets(index = 0) {
     }
     setDefaultPreset(defaultPreset);
     if (!conversationId || conversationId === 'new') {
-      newConversation({ preset: defaultPreset, modelsData, disableParams: true });
+      newConversation({
+        preset: defaultPreset,
+        modelsData,
+        disableParams: true,
+      });
     }
     hasLoaded.current = true;
     // dependencies are stable and only needed once
@@ -158,7 +164,10 @@ export default function usePresets(index = 0) {
   };
 
   const onFileSelected = (jsonData: Record<string, unknown>) => {
-    const jsonPreset = { ...cleanupPreset({ preset: jsonData }), presetId: null };
+    const jsonPreset = {
+      ...cleanupPreset({ preset: jsonData }),
+      presetId: null,
+    };
     importPreset(jsonPreset);
   };
 
@@ -225,7 +234,11 @@ export default function usePresets(index = 0) {
       return;
     }
 
-    newConversation({ preset: newPreset, keepAddedConvos: isModular, disableParams });
+    newConversation({
+      preset: newPreset,
+      keepAddedConvos: isModular,
+      disableParams,
+    });
   };
 
   const onChangePreset = (preset: TPreset) => {

@@ -1,5 +1,5 @@
+import { ESide, InfoHoverCard, Switch } from '@librechat/client';
 import { useRecoilState } from 'recoil';
-import { Switch, InfoHoverCard, ESide } from '@librechat/client';
 import { useLocalize } from '~/hooks';
 import store from '~/store';
 

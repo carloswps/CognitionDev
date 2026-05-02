@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import type { Agent, TModelSpec } from 'librechat-data-provider';
 import type { FavoriteModel } from '~/store/favorites';
 import FavoriteItem from '../FavoriteItem';
@@ -88,7 +88,9 @@ describe('FavoriteItem', () => {
       const onSelectEndpoint = jest.fn();
       render(<FavoriteItem type="agent" item={baseAgent} onSelectEndpoint={onSelectEndpoint} />);
       fireEvent.click(screen.getByTestId('favorite-item'));
-      expect(onSelectEndpoint).toHaveBeenCalledWith('agents', { agent_id: 'agent-123' });
+      expect(onSelectEndpoint).toHaveBeenCalledWith('agents', {
+        agent_id: 'agent-123',
+      });
     });
   });
 
@@ -108,7 +110,9 @@ describe('FavoriteItem', () => {
       const onSelectEndpoint = jest.fn();
       render(<FavoriteItem type="model" item={baseModel} onSelectEndpoint={onSelectEndpoint} />);
       fireEvent.click(screen.getByTestId('favorite-item'));
-      expect(onSelectEndpoint).toHaveBeenCalledWith('openai', { model: 'gpt-5' });
+      expect(onSelectEndpoint).toHaveBeenCalledWith('openai', {
+        model: 'gpt-5',
+      });
     });
   });
 
@@ -122,7 +126,9 @@ describe('FavoriteItem', () => {
     it('has aria-label formatted as "<label> (com_ui_model_spec)"', () => {
       render(<FavoriteItem type="spec" item={baseSpec} />);
       expect(
-        screen.getByRole('button', { name: 'My Model Spec (com_ui_model_spec)' }),
+        screen.getByRole('button', {
+          name: 'My Model Spec (com_ui_model_spec)',
+        }),
       ).toBeInTheDocument();
     });
 

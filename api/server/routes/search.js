@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.use(requireJwtAuth);
 
-router.get('/enable', async function (req, res) {
+router.get('/enable', async (req, res) => {
   if (!isEnabled(process.env.SEARCH)) {
     return res.send(false);
   }

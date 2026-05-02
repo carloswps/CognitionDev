@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { ErrorTypes, registerPage } from 'librechat-data-provider';
 import { OpenIDIcon, useToastContext } from '@librechat/client';
-import { useOutletContext, useSearchParams, useLocation } from 'react-router-dom';
+import { ErrorTypes, registerPage } from 'librechat-data-provider';
+import { useEffect, useState } from 'react';
+import { useLocation, useOutletContext, useSearchParams } from 'react-router-dom';
 import type { TLoginLayoutContext } from '~/common';
-import { getLoginError, persistRedirectToSession } from '~/utils';
 import { ErrorMessage } from '~/components/Auth/ErrorMessage';
 import SocialButton from '~/components/Auth/SocialButton';
-import { useAuthContext } from '~/hooks/AuthContext';
 import { useLocalize } from '~/hooks';
+import { useAuthContext } from '~/hooks/AuthContext';
+import { getLoginError, persistRedirectToSession } from '~/utils';
 import LoginForm from './LoginForm';
 
 interface LoginLocationState {
@@ -75,7 +75,9 @@ function Login() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4">
         <p className="text-lg font-semibold">
-          {localize('com_ui_redirecting_to_provider', { 0: startupConfig.openidLabel })}
+          {localize('com_ui_redirecting_to_provider', {
+            0: startupConfig.openidLabel,
+          })}
         </p>
         <div className="mt-4">
           <SocialButton

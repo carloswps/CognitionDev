@@ -1,41 +1,41 @@
-import { useState, useCallback, useMemo, useRef } from 'react';
-import { ArrowUpLeft } from 'lucide-react';
 import {
-  Table,
   Button,
-  TableRow,
-  TableHead,
+  FilterInput,
+  Table,
   TableBody,
   TableCell,
-  FilterInput,
+  TableHead,
   TableHeader,
+  TableRow,
   useToastContext,
 } from '@librechat/client';
 import {
+  type ColumnDef,
+  type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
-  type ColumnDef,
   type SortingState,
+  useReactTable,
   type VisibilityState,
-  type ColumnFiltersState,
 } from '@tanstack/react-table';
+import type { TFile } from 'librechat-data-provider';
 import {
+  checkOpenAIStorage,
+  fileConfig as defaultFileConfig,
+  getEndpointFileConfig,
+  isAssistantsEndpoint,
   megabyte,
   mergeFileConfig,
-  checkOpenAIStorage,
-  isAssistantsEndpoint,
-  getEndpointFileConfig,
-  fileConfig as defaultFileConfig,
 } from 'librechat-data-provider';
-import type { TFile } from 'librechat-data-provider';
+import { ArrowUpLeft } from 'lucide-react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { MyFilesModal } from '~/components/Chat/Input/Files/MyFilesModal';
-import { useFileMapContext, useChatContext } from '~/Providers';
-import { useLocalize, useUpdateFiles } from '~/hooks';
 import { useGetFileConfig } from '~/data-provider';
+import { useLocalize, useUpdateFiles } from '~/hooks';
+import { useChatContext, useFileMapContext } from '~/Providers';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -47,7 +47,10 @@ export default function DataTable<TData, TValue>({ columns, data }: DataTablePro
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [{ pageIndex, pageSize }, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
+  const [{ pageIndex, pageSize }, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   const [showFilesModal, setShowFilesModal] = useState(false);
   const manageFilesRef = useRef<HTMLButtonElement>(null);
 

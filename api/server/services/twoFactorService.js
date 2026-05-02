@@ -199,15 +199,27 @@ const verifyOTPOrBackupCode = async ({ user, token, backupCode, persistBackupUse
   if (token) {
     const secret = await getTOTPSecret(user.totpSecret);
     if (!secret) {
-      return { verified: false, status: 400, message: '2FA secret is missing or corrupted' };
+      return {
+        verified: false,
+        status: 400,
+        message: '2FA secret is missing or corrupted',
+      };
     }
     const ok = await verifyTOTP(secret, token);
     return ok
       ? { verified: true }
-      : { verified: false, status: 401, message: 'Invalid token or backup code' };
+      : {
+          verified: false,
+          status: 401,
+          message: 'Invalid token or backup code',
+        };
   }
 
-  const ok = await verifyBackupCode({ user, backupCode, persist: persistBackupUse });
+  const ok = await verifyBackupCode({
+    user,
+    backupCode,
+    persist: persistBackupUse,
+  });
   return ok
     ? { verified: true }
     : { verified: false, status: 401, message: 'Invalid token or backup code' };
@@ -244,7 +256,9 @@ const getTOTPSecret = async (storedSecret) => {
  */
 const generate2FATempToken = (userId) => {
   const { sign } = require('jsonwebtoken');
-  return sign({ userId, twoFAPending: true }, process.env.JWT_SECRET, { expiresIn: '5m' });
+  return sign({ userId, twoFAPending: true }, process.env.JWT_SECRET, {
+    expiresIn: '5m',
+  });
 };
 
 module.exports = {

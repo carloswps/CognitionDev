@@ -1,7 +1,7 @@
 import type { TConversationTag } from 'librechat-data-provider';
-import BookmarkEmptyState from './BookmarkEmptyState';
-import BookmarkCard from './BookmarkCard';
 import { useLocalize } from '~/hooks';
+import BookmarkCard from './BookmarkCard';
+import BookmarkEmptyState from './BookmarkEmptyState';
 
 interface BookmarkListProps {
   bookmarks: TConversationTag[];

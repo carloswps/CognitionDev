@@ -1,5 +1,5 @@
-import { mcpUIResourcePlugin, UI_RESOURCE_MARKER } from '../plugin';
 import type { Node } from 'unist';
+import { mcpUIResourcePlugin, UI_RESOURCE_MARKER } from '../plugin';
 import type { UIResourceNode } from '../types';
 
 describe('mcpUIResourcePlugin', () => {
@@ -27,7 +27,10 @@ describe('mcpUIResourcePlugin', () => {
 
       const children = (tree as any).children;
       expect(children).toHaveLength(2);
-      expect(children[0]).toEqual({ type: 'text', value: 'Here is a resource ' });
+      expect(children[0]).toEqual({
+        type: 'text',
+        value: 'Here is a resource ',
+      });
       expect(children[1].type).toBe('mcp-ui-resource');
       expect(children[1].data.hProperties).toMatchObject({
         resourceId: 'abc123',
@@ -55,7 +58,9 @@ describe('mcpUIResourcePlugin', () => {
       processTree(tree);
 
       const children = (tree as any).children;
-      expect(children[1].data.hProperties).toMatchObject({ resourceId: 'a3f2b8c1d4' });
+      expect(children[1].data.hProperties).toMatchObject({
+        resourceId: 'a3f2b8c1d4',
+      });
     });
   });
 
@@ -124,7 +129,10 @@ describe('mcpUIResourcePlugin', () => {
 
       const children = (tree as any).children;
       expect(children).toHaveLength(1);
-      expect(children[0]).toEqual({ type: 'text', value: `${UI_RESOURCE_MARKER}{}` });
+      expect(children[0]).toEqual({
+        type: 'text',
+        value: `${UI_RESOURCE_MARKER}{}`,
+      });
     });
   });
 

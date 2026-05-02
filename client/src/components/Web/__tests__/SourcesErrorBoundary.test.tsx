@@ -1,8 +1,9 @@
 /**
  * @jest-environment @happy-dom/jest-environment
  */
+
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import SourcesErrorBoundary from '../SourcesErrorBoundary';
 
@@ -55,7 +56,9 @@ describe('SourcesErrorBoundary - NEW COMPONENT test', () => {
       </SourcesErrorBoundary>,
     );
 
-    const refreshButton = screen.getByRole('button', { name: 'Reload the page' });
+    const refreshButton = screen.getByRole('button', {
+      name: 'Reload the page',
+    });
     fireEvent.click(refreshButton);
 
     expect(reloadSpy).toHaveBeenCalled();

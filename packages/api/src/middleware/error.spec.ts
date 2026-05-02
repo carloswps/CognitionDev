@@ -1,7 +1,7 @@
 import { logger } from '@librechat/data-schemas';
-import { ErrorController } from './error';
 import type { Request, Response } from 'express';
-import type { ValidationError, MongoServerError, CustomError } from '~/types';
+import type { CustomError, MongoServerError, ValidationError } from '~/types';
+import { ErrorController } from './error';
 
 // Mock the logger
 jest.mock('@librechat/data-schemas', () => ({
@@ -172,7 +172,9 @@ describe('ErrorController', () => {
       ErrorController(customError, mockReq, mockRes, mockNext);
 
       expect(mockRes.status).toHaveBeenCalledWith(422);
-      expect(mockRes.send).toHaveBeenCalledWith({ error: 'Unprocessable entity' });
+      expect(mockRes.send).toHaveBeenCalledWith({
+        error: 'Unprocessable entity',
+      });
     });
 
     it('should handle error with statusCode but no body', () => {

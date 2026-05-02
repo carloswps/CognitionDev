@@ -1,17 +1,17 @@
 import type { InfiniteData } from '@tanstack/react-query';
-import type {
-  TConversationTag,
-  EModelEndpoint,
-  TConversation,
-  TSharedLink,
-  TAttachment,
-  TMessage,
-  TBanner,
-} from './schemas';
-import type { SettingDefinition } from './generate';
 import type { TMinimalFeedback } from './feedback';
-import type { ContentTypes } from './types/runs';
+import type { SettingDefinition } from './generate';
+import type {
+  EModelEndpoint,
+  TAttachment,
+  TBanner,
+  TConversation,
+  TConversationTag,
+  TMessage,
+  TSharedLink,
+} from './schemas';
 import type { Agent } from './types/assistants';
+import type { ContentTypes } from './types/runs';
 
 export * from './schemas';
 
@@ -146,7 +146,9 @@ export type TSubmission = {
   addedConvo?: TConversation;
 };
 
-export type EventSubmission = Omit<TSubmission, 'initialResponse'> & { initialResponse: TMessage };
+export type EventSubmission = Omit<TSubmission, 'initialResponse'> & {
+  initialResponse: TMessage;
+};
 
 export type TPluginAction = {
   pluginKey: string;
@@ -548,7 +550,12 @@ export type TPromptGroup = {
 
 export type TCreatePrompt = {
   prompt: Pick<TPrompt, 'prompt' | 'type'> & { groupId?: string };
-  group?: { name: string; category?: string; oneliner?: string; command?: string };
+  group?: {
+    name: string;
+    category?: string;
+    oneliner?: string;
+    command?: string;
+  };
 };
 
 export type TCreatePromptRecord = TCreatePrompt & Pick<TPromptGroup, 'author' | 'authorName'>;

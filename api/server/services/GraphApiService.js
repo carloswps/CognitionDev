@@ -116,7 +116,7 @@ const searchEntraIdPrincipals = async (accessToken, sub, query, type = 'all', li
       return [];
     }
     const graphClient = await createGraphClient(accessToken, sub);
-    let allResults = [];
+    const allResults = [];
 
     if (type === 'users' || type === 'all') {
       const contactResults = await searchContacts(graphClient, query, limit);
@@ -411,7 +411,7 @@ const searchContacts = async (graphClient, query, limit = 10) => {
     // Reason: Search only for OrganizationUser (person) type, not groups
     const filter = "personType/subclass eq 'OrganizationUser'";
 
-    let apiCall = graphClient
+    const apiCall = graphClient
       .api('/me/people')
       .search(`"${query}"`)
       .select(

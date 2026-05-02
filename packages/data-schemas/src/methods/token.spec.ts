@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
+import tokenSchema from '~/schema/token';
 import type * as t from '~/types';
 import { createTokenMethods } from './token';
-import tokenSchema from '~/schema/token';
 
 /** Mocking logger */
 jest.mock('~/config/winston', () => ({
@@ -542,7 +542,9 @@ describe('Token Methods - Detailed Tests', () => {
     });
 
     test('should delete only tokens matching specific identifier', async () => {
-      const result = await methods.deleteTokens({ identifier: 'oauth-identifier-456' });
+      const result = await methods.deleteTokens({
+        identifier: 'oauth-identifier-456',
+      });
 
       expect(result.deletedCount).toBe(1);
 
@@ -667,7 +669,9 @@ describe('Token Methods - Detailed Tests', () => {
     });
 
     test('should handle deletion when no tokens match', async () => {
-      const result = await methods.deleteTokens({ token: 'non-existent-token' });
+      const result = await methods.deleteTokens({
+        token: 'non-existent-token',
+      });
 
       expect(result.deletedCount).toBe(0);
 
@@ -708,12 +712,16 @@ describe('Token Methods - Detailed Tests', () => {
       ]);
 
       // User 2 verifies their email - only their token should be deleted
-      const result = await methods.deleteTokens({ token: 'email-verify-token-2' });
+      const result = await methods.deleteTokens({
+        token: 'email-verify-token-2',
+      });
 
       expect(result.deletedCount).toBe(1);
 
       // Verify other users' tokens still exist
-      const remainingTokens = await Token.find({ token: { $regex: /^email-verify-token-/ } });
+      const remainingTokens = await Token.find({
+        token: { $regex: /^email-verify-token-/ },
+      });
       expect(remainingTokens).toHaveLength(2);
       expect(remainingTokens.find((t) => t.token === 'email-verify-token-1')).toBeDefined();
       expect(remainingTokens.find((t) => t.token === 'email-verify-token-3')).toBeDefined();
@@ -739,9 +747,15 @@ describe('Token Methods - Detailed Tests', () => {
 
     describe('findToken email normalization', () => {
       test('should find token by email with different case (case-insensitive)', async () => {
-        const foundUpper = await methods.findToken({ email: 'JOHN.DOE@EXAMPLE.COM' });
-        const foundMixed = await methods.findToken({ email: 'John.Doe@Example.COM' });
-        const foundLower = await methods.findToken({ email: 'john.doe@example.com' });
+        const foundUpper = await methods.findToken({
+          email: 'JOHN.DOE@EXAMPLE.COM',
+        });
+        const foundMixed = await methods.findToken({
+          email: 'John.Doe@Example.COM',
+        });
+        const foundLower = await methods.findToken({
+          email: 'john.doe@example.com',
+        });
 
         expect(foundUpper).toBeDefined();
         expect(foundUpper?.token).toBe('norm-token-1');
@@ -754,8 +768,12 @@ describe('Token Methods - Detailed Tests', () => {
       });
 
       test('should find token by email with leading/trailing whitespace', async () => {
-        const foundWithSpaces = await methods.findToken({ email: '  john.doe@example.com  ' });
-        const foundWithTabs = await methods.findToken({ email: '\tjohn.doe@example.com\t' });
+        const foundWithSpaces = await methods.findToken({
+          email: '  john.doe@example.com  ',
+        });
+        const foundWithTabs = await methods.findToken({
+          email: '\tjohn.doe@example.com\t',
+        });
 
         expect(foundWithSpaces).toBeDefined();
         expect(foundWithSpaces?.token).toBe('norm-token-1');
@@ -765,7 +783,9 @@ describe('Token Methods - Detailed Tests', () => {
       });
 
       test('should find token by email with both case difference and whitespace', async () => {
-        const found = await methods.findToken({ email: '  JOHN.DOE@EXAMPLE.COM  ' });
+        const found = await methods.findToken({
+          email: '  JOHN.DOE@EXAMPLE.COM  ',
+        });
 
         expect(found).toBeDefined();
         expect(found?.token).toBe('norm-token-1');
@@ -784,7 +804,9 @@ describe('Token Methods - Detailed Tests', () => {
 
     describe('deleteTokens email normalization', () => {
       test('should delete token by email with different case', async () => {
-        const result = await methods.deleteTokens({ email: 'JOHN.DOE@EXAMPLE.COM' });
+        const result = await methods.deleteTokens({
+          email: 'JOHN.DOE@EXAMPLE.COM',
+        });
 
         expect(result.deletedCount).toBe(1);
 
@@ -793,7 +815,9 @@ describe('Token Methods - Detailed Tests', () => {
       });
 
       test('should delete token by email with whitespace', async () => {
-        const result = await methods.deleteTokens({ email: '  john.doe@example.com  ' });
+        const result = await methods.deleteTokens({
+          email: '  john.doe@example.com  ',
+        });
 
         expect(result.deletedCount).toBe(1);
 
@@ -802,7 +826,9 @@ describe('Token Methods - Detailed Tests', () => {
       });
 
       test('should delete token by email with case and whitespace combined', async () => {
-        const result = await methods.deleteTokens({ email: '  John.Doe@EXAMPLE.COM  ' });
+        const result = await methods.deleteTokens({
+          email: '  John.Doe@EXAMPLE.COM  ',
+        });
 
         expect(result.deletedCount).toBe(1);
 
@@ -820,7 +846,9 @@ describe('Token Methods - Detailed Tests', () => {
           expiresAt: new Date(Date.now() + 3600000),
         });
 
-        const result = await methods.deleteTokens({ email: 'JOHN.DOE@EXAMPLE.COM' });
+        const result = await methods.deleteTokens({
+          email: 'JOHN.DOE@EXAMPLE.COM',
+        });
 
         expect(result.deletedCount).toBe(1);
 
@@ -858,7 +886,9 @@ describe('Token Methods - Detailed Tests', () => {
         expect(found?.token).toBe('verification-token');
 
         // Should delete the token despite case mismatch
-        const deleted = await methods.deleteTokens({ email: emailFromProvider });
+        const deleted = await methods.deleteTokens({
+          email: emailFromProvider,
+        });
         expect(deleted.deletedCount).toBe(1);
       });
 

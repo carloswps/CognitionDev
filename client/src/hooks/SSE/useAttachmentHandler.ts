@@ -1,14 +1,14 @@
-import { useSetRecoilState } from 'recoil';
 import type { QueryClient } from '@tanstack/react-query';
-import { QueryKeys, Tools } from 'librechat-data-provider';
 import type {
-  MemoriesResponse,
   EventSubmission,
+  MemoriesResponse,
   TAttachment,
   TFile,
 } from 'librechat-data-provider';
-import { handleMemoryArtifact } from '~/utils/memory';
+import { QueryKeys, Tools } from 'librechat-data-provider';
+import { useSetRecoilState } from 'recoil';
 import store from '~/store';
+import { handleMemoryArtifact } from '~/utils/memory';
 
 export default function useAttachmentHandler(queryClient?: QueryClient) {
   const setAttachmentsMap = useSetRecoilState(store.messageAttachmentsMap);

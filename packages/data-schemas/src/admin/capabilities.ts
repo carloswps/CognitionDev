@@ -1,9 +1,9 @@
 import { ResourceType } from 'librechat-data-provider';
 import type {
   BaseSystemCapability,
-  SystemCapability,
-  ConfigSection,
   CapabilityCategory,
+  ConfigSection,
+  SystemCapability,
 } from '~/types/admin';
 
 // ---------------------------------------------------------------------------

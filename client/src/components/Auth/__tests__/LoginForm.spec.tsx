@@ -1,10 +1,10 @@
-import { render, getByTestId } from 'test/layout-test-utils';
 import userEvent from '@testing-library/user-event';
 import type { TStartupConfig } from 'librechat-data-provider';
-import * as endpointQueries from '~/data-provider/Endpoints/queries';
-import * as miscDataProvider from '~/data-provider/Misc/queries';
+import { getByTestId, render } from 'test/layout-test-utils';
 import * as authMutations from '~/data-provider/Auth/mutations';
 import * as authQueries from '~/data-provider/Auth/queries';
+import * as endpointQueries from '~/data-provider/Endpoints/queries';
+import * as miscDataProvider from '~/data-provider/Misc/queries';
 import Login from '../LoginForm';
 
 jest.mock('librechat-data-provider/react-query');
@@ -73,23 +73,23 @@ const setup = ({
 } = {}) => {
   const mockUseLoginUser = jest
     .spyOn(authMutations, 'useLoginUserMutation')
-    //@ts-ignore - we don't need all parameters of the QueryObserverSuccessResult
+    //@ts-expect-error - we don't need all parameters of the QueryObserverSuccessResult
     .mockReturnValue(useLoginUserReturnValue);
   const mockUseGetUserQuery = jest
     .spyOn(authQueries, 'useGetUserQuery')
-    //@ts-ignore - we don't need all parameters of the QueryObserverSuccessResult
+    //@ts-expect-error - we don't need all parameters of the QueryObserverSuccessResult
     .mockReturnValue(useGetUserQueryReturnValue);
   const mockUseGetStartupConfig = jest
     .spyOn(endpointQueries, 'useGetStartupConfig')
-    //@ts-ignore - we don't need all parameters of the QueryObserverSuccessResult
+    //@ts-expect-error - we don't need all parameters of the QueryObserverSuccessResult
     .mockReturnValue(useGetStartupConfigReturnValue);
   const mockUseRefreshTokenMutation = jest
     .spyOn(authMutations, 'useRefreshTokenMutation')
-    //@ts-ignore - we don't need all parameters of the QueryObserverSuccessResult
+    //@ts-expect-error - we don't need all parameters of the QueryObserverSuccessResult
     .mockReturnValue(useRefreshTokenMutationReturnValue);
   const mockUseGetBannerQuery = jest
     .spyOn(miscDataProvider, 'useGetBannerQuery')
-    //@ts-ignore - we don't need all parameters of the QueryObserverSuccessResult
+    //@ts-expect-error - we don't need all parameters of the QueryObserverSuccessResult
     .mockReturnValue(useGetBannerQueryReturnValue);
   return {
     mockUseLoginUser,
@@ -124,7 +124,10 @@ test('submits login form', async () => {
   await userEvent.type(passwordInput, 'password');
   await userEvent.click(submitButton);
 
-  expect(mockLogin).toHaveBeenCalledWith({ email: 'test@example.com', password: 'password' });
+  expect(mockLogin).toHaveBeenCalledWith({
+    email: 'test@example.com',
+    password: 'password',
+  });
 });
 
 test('displays validation error messages', async () => {

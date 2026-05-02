@@ -232,7 +232,10 @@ describe('MCP Tool Authorization', () => {
 
     test('should pass configServers to getAllServerConfigs and allow config-override servers', async () => {
       const configServers = {
-        'config-override-server': { type: 'sse', url: 'https://override.example.com' },
+        'config-override-server': {
+          type: 'sse',
+          url: 'https://override.example.com',
+        },
       };
       mockGetAllServerConfigs.mockResolvedValue({
         'config-override-server': configServers['config-override-server'],
@@ -639,7 +642,11 @@ describe('MCP Tool Authorization', () => {
     test('should keep authorized MCP tools after revert', async () => {
       await Agent.updateOne(
         { id: existingAgentId },
-        { $set: { 'versions.0.tools': ['web_search', `tool${d}authorizedServer`] } },
+        {
+          $set: {
+            'versions.0.tools': ['web_search', `tool${d}authorizedServer`],
+          },
+        },
       );
 
       mockReq.user.id = existingAgentAuthorId.toString();

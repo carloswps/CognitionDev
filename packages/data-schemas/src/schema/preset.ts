@@ -1,7 +1,7 @@
-import { Schema, Document } from 'mongoose';
+import { type Document, Schema } from 'mongoose';
 import { conversationPreset } from './defaults';
 
-// @ts-ignore
+// @ts-expect-error
 export interface IPreset extends Document {
   presetId: string;
   title: string;

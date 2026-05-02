@@ -82,7 +82,7 @@ Please specify a correct \`imageOutputType\` value (case-sensitive).
     );
   }
   if (!result.success) {
-    let errorMessage = `Invalid custom config file at ${configPath}:
+    const errorMessage = `Invalid custom config file at ${configPath}:
 ${JSON.stringify(result.error, null, 2)}`;
 
     logger.error(errorMessage);

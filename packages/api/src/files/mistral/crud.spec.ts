@@ -3,9 +3,9 @@ jest.mock('fs');
 jest.mock('form-data', () => {
   return jest.fn().mockImplementation(() => ({
     append: jest.fn(),
-    getHeaders: jest
-      .fn()
-      .mockReturnValue({ 'content-type': 'multipart/form-data; boundary=---boundary' }),
+    getHeaders: jest.fn().mockReturnValue({
+      'content-type': 'multipart/form-data; boundary=---boundary',
+    }),
     getBuffer: jest.fn().mockReturnValue(Buffer.from('mock-form-data')),
     getLength: jest.fn().mockReturnValue(100),
   }));
@@ -49,25 +49,25 @@ jest.mock('~/utils/files', () => ({
   readFileAsBuffer: jest.fn(),
 }));
 
-import * as fs from 'fs';
+import { logger as mockLogger } from '@librechat/data-schemas';
 import axios from 'axios';
+import * as fs from 'fs';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import type { Readable } from 'stream';
 import type {
   MistralFileUploadResponse,
   MistralSignedUrlResponse,
-  ServerRequest,
   OCRResult,
+  ServerRequest,
 } from '~/types';
-import { logger as mockLogger } from '@librechat/data-schemas';
 import { readFileAsBuffer } from '~/utils/files';
 import {
-  uploadDocumentToMistral,
-  uploadAzureMistralOCR,
   deleteMistralFile,
-  uploadMistralOCR,
   getSignedUrl,
   performOCR,
+  uploadAzureMistralOCR,
+  uploadDocumentToMistral,
+  uploadMistralOCR,
 } from './crud';
 
 interface MockReadStream extends Partial<Readable> {
@@ -1724,7 +1724,9 @@ describe('MistralOCR Service', () => {
 
     beforeEach(() => {
       // Reset the HttpsProxyAgent mock to its default implementation
-      (HttpsProxyAgent as unknown as jest.Mock).mockImplementation((url) => ({ proxyUrl: url }));
+      (HttpsProxyAgent as unknown as jest.Mock).mockImplementation((url) => ({
+        proxyUrl: url,
+      }));
       // Clear any previous axios mock calls
       mockAxios.post!.mockClear();
       mockAxios.get!.mockClear();
@@ -2109,7 +2111,9 @@ describe('MistralOCR Service', () => {
         bytes: Buffer.from('mock-file-content').length,
       });
       // Reset the HttpsProxyAgent mock to its default implementation for Azure tests
-      (HttpsProxyAgent as unknown as jest.Mock).mockImplementation((url) => ({ proxyUrl: url }));
+      (HttpsProxyAgent as unknown as jest.Mock).mockImplementation((url) => ({
+        proxyUrl: url,
+      }));
       // Clean up any PROXY env var from previous tests
       delete process.env.PROXY;
       // Reset axios mocks completely to clear any queued responses

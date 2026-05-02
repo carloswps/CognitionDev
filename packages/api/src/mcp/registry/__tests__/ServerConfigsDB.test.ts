@@ -1,12 +1,12 @@
-import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import {
-  ResourceType,
   AccessRoleIds,
-  PrincipalType,
   PermissionBits,
   PrincipalModel,
+  PrincipalType,
+  ResourceType,
 } from 'librechat-data-provider';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
 import type { ParsedServerConfig } from '~/mcp/types';
 
 type ServerConfigsDBType = import('../db/ServerConfigsDB').ServerConfigsDB;
@@ -214,7 +214,9 @@ describe('ServerConfigsDB', () => {
 
       // Verify the secret is encrypted in DB (not plaintext)
       const MCPServer = mongoose.models.MCPServer;
-      const server = await MCPServer.findOne({ serverName: created.serverName });
+      const server = await MCPServer.findOne({
+        serverName: created.serverName,
+      });
       expect(server?.config?.oauth?.client_secret).not.toBe('new-secret');
 
       // Verify the secret is decrypted to the new value when accessed via get()
@@ -231,7 +233,9 @@ describe('ServerConfigsDB', () => {
 
       // Verify the secret is encrypted in DB (not plaintext)
       const MCPServer = mongoose.models.MCPServer;
-      const server = await MCPServer.findOne({ serverName: created.serverName });
+      const server = await MCPServer.findOne({
+        serverName: created.serverName,
+      });
       expect(server?.config?.oauth?.client_secret).not.toBe('plaintext-secret');
 
       // Verify the secret is decrypted when accessed via get()
@@ -280,7 +284,9 @@ describe('ServerConfigsDB', () => {
 
       // Verify the key is encrypted in DB (not plaintext)
       const MCPServer = mongoose.models.MCPServer;
-      const server = await MCPServer.findOne({ serverName: created.serverName });
+      const server = await MCPServer.findOne({
+        serverName: created.serverName,
+      });
       expect(server?.config?.apiKey?.key).not.toBe('my-secret-api-key');
       expect(server?.config?.apiKey?.source).toBe('admin');
       expect(server?.config?.apiKey?.authorization_type).toBe('bearer');
@@ -588,7 +594,9 @@ describe('ServerConfigsDB', () => {
       };
       const created = await serverConfigsDB.add('temp-name', config, userId);
 
-      const maliciousUpdate: ParsedServerConfig & { headers?: Record<string, string> } = {
+      const maliciousUpdate: ParsedServerConfig & {
+        headers?: Record<string, string>;
+      } = {
         type: 'sse',
         url: 'https://example.com/mcp',
         title: 'Update Test Server',
@@ -702,7 +710,9 @@ describe('ServerConfigsDB', () => {
       await serverConfigsDB.remove(created.serverName, userId);
 
       const MCPServer = mongoose.models.MCPServer;
-      const server = await MCPServer.findOne({ serverName: created.serverName });
+      const server = await MCPServer.findOne({
+        serverName: created.serverName,
+      });
       expect(server).toBeNull();
     });
 
@@ -1381,7 +1391,11 @@ describe('ServerConfigsDB', () => {
       const MCPServer = mongoose.models.MCPServer;
       await MCPServer.updateOne(
         { serverName: created.serverName },
-        { $set: { 'config.oauth.client_secret': 'invalid:corrupted:encrypted:value' } },
+        {
+          $set: {
+            'config.oauth.client_secret': 'invalid:corrupted:encrypted:value',
+          },
+        },
       );
 
       // Get should return config without the secret (graceful degradation)

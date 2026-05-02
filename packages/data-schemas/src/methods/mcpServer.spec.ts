@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import type { MCPOptions } from 'librechat-data-provider';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
+import mcpServerSchema from '~/schema/mcpServer';
 import type * as t from '~/types';
 import { createMCPServerMethods } from './mcpServer';
-import mcpServerSchema from '~/schema/mcpServer';
 
 let mongoServer: MongoMemoryServer;
 let MCPServer: mongoose.Model<t.MCPServerDocument>;
@@ -40,7 +40,10 @@ describe('MCPServer Model Tests', () => {
   describe('createMCPServer', () => {
     test('should create server with title and generate slug from title', async () => {
       const config = createSSEConfig('My Test Server', 'A test server');
-      const server = await methods.createMCPServer({ config, author: authorId });
+      const server = await methods.createMCPServer({
+        config,
+        author: authorId,
+      });
 
       expect(server).toBeDefined();
       expect(server.serverName).toBe('my-test-server');
@@ -56,7 +59,10 @@ describe('MCPServer Model Tests', () => {
         type: 'sse',
         url: 'https://example.com/mcp',
       };
-      const server = await methods.createMCPServer({ config, author: authorId });
+      const server = await methods.createMCPServer({
+        config,
+        author: authorId,
+      });
 
       expect(server).toBeDefined();
       expect(server.serverName).toMatch(/^mcp-[a-zA-Z0-9_-]{16}$/);
@@ -65,14 +71,20 @@ describe('MCPServer Model Tests', () => {
 
     test('should handle title with special characters', async () => {
       const config = createSSEConfig('My @#$% Server!!! 123');
-      const server = await methods.createMCPServer({ config, author: authorId });
+      const server = await methods.createMCPServer({
+        config,
+        author: authorId,
+      });
 
       expect(server.serverName).toBe('my-server-123');
     });
 
     test('should handle title with only spaces and special chars', async () => {
       const config = createSSEConfig('   @#$%   ');
-      const server = await methods.createMCPServer({ config, author: authorId });
+      const server = await methods.createMCPServer({
+        config,
+        author: authorId,
+      });
 
       // Should fallback to 'mcp-server'
       expect(server.serverName).toBe('mcp-server');
@@ -80,7 +92,10 @@ describe('MCPServer Model Tests', () => {
 
     test('should handle title with multiple spaces', async () => {
       const config = createSSEConfig('My    Multiple   Spaces   Server');
-      const server = await methods.createMCPServer({ config, author: authorId });
+      const server = await methods.createMCPServer({
+        config,
+        author: authorId,
+      });
 
       expect(server.serverName).toBe('my-multiple-spaces-server');
     });
@@ -103,7 +118,10 @@ describe('MCPServer Model Tests', () => {
         args: ['server.js'],
         title: 'Stdio Server',
       };
-      const server = await methods.createMCPServer({ config, author: authorId });
+      const server = await methods.createMCPServer({
+        config,
+        author: authorId,
+      });
 
       expect(server.serverName).toBe('stdio-server');
       expect(server.config.type).toBe('stdio');
@@ -120,7 +138,10 @@ describe('MCPServer Model Tests', () => {
       });
 
       const config = createSSEConfig('Test Server');
-      const server = await methods.createMCPServer({ config, author: authorId });
+      const server = await methods.createMCPServer({
+        config,
+        author: authorId,
+      });
 
       expect(server.serverName).toBe('test-server');
     });
@@ -790,7 +811,10 @@ describe('MCPServer Model Tests', () => {
     test('should handle very long titles', async () => {
       const longTitle = 'A'.repeat(200) + ' Server';
       const config = createSSEConfig(longTitle);
-      const server = await methods.createMCPServer({ config, author: authorId });
+      const server = await methods.createMCPServer({
+        config,
+        author: authorId,
+      });
 
       expect(server).toBeDefined();
       expect(server.serverName).toBe('a'.repeat(200) + '-server');
@@ -799,7 +823,10 @@ describe('MCPServer Model Tests', () => {
     test('should handle unicode in title', async () => {
       // Unicode characters should be stripped, leaving only alphanumeric
       const config = createSSEConfig('Serveur Français 日本語');
-      const server = await methods.createMCPServer({ config, author: authorId });
+      const server = await methods.createMCPServer({
+        config,
+        author: authorId,
+      });
 
       expect(server.serverName).toBe('serveur-franais');
     });
@@ -810,7 +837,10 @@ describe('MCPServer Model Tests', () => {
         url: 'https://example.com/mcp',
         title: '',
       };
-      const server = await methods.createMCPServer({ config, author: authorId });
+      const server = await methods.createMCPServer({
+        config,
+        author: authorId,
+      });
 
       // Empty title should fallback to nanoid
       expect(server.serverName).toMatch(/^mcp-[a-zA-Z0-9_-]{16}$/);
@@ -818,7 +848,10 @@ describe('MCPServer Model Tests', () => {
 
     test('should handle whitespace-only title', async () => {
       const config = createSSEConfig('   ');
-      const server = await methods.createMCPServer({ config, author: authorId });
+      const server = await methods.createMCPServer({
+        config,
+        author: authorId,
+      });
 
       // Whitespace-only title after trimming results in fallback
       expect(server.serverName).toBe('mcp-server');

@@ -463,7 +463,7 @@ class BaseClient {
      */
     const parentMessageId = isEdited ? head : userMessage.messageId;
     this.parentMessageId = parentMessageId;
-    let {
+    const {
       prompt: payload,
       tokenCountMap,
       promptTokens,
@@ -672,7 +672,10 @@ class BaseClient {
   }
 
   async loadHistory(conversationId, parentMessageId = null) {
-    logger.debug('[BaseClient] Loading history:', { conversationId, parentMessageId });
+    logger.debug('[BaseClient] Loading history:', {
+      conversationId,
+      parentMessageId,
+    });
 
     const messages = (await db.getMessages({ conversationId })) ?? [];
 
@@ -767,7 +770,9 @@ class BaseClient {
         user,
         ...(hasAddedConvo && { addedConvo: true }),
       },
-      { context: 'api/app/clients/BaseClient.js - saveMessageToDatabase #saveMessage' },
+      {
+        context: 'api/app/clients/BaseClient.js - saveMessageToDatabase #saveMessage',
+      },
     );
 
     if (this.skipSaveConvo) {
@@ -976,7 +981,7 @@ class BaseClient {
 
     const processValue = (value) => {
       if (Array.isArray(value)) {
-        for (let item of value) {
+        for (const item of value) {
           if (
             !item ||
             !item.type ||
@@ -1023,7 +1028,7 @@ class BaseClient {
     };
 
     let numTokens = tokensPerMessage;
-    for (let [key, value] of Object.entries(message)) {
+    for (const [key, value] of Object.entries(message)) {
       processValue(value);
 
       if (key === 'name') {

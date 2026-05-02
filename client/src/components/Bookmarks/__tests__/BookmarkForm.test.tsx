@@ -1,8 +1,9 @@
-import React, { createRef } from 'react';
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import type React from 'react';
+import { createRef } from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import BookmarkForm from '../BookmarkForm';
 import type { TConversationTag } from 'librechat-data-provider';
+import BookmarkForm from '../BookmarkForm';
 
 const mockMutate = jest.fn();
 const mockShowToast = jest.fn();
@@ -141,10 +142,14 @@ describe('BookmarkForm - Bookmark Editing', () => {
         />,
       );
 
-      const descriptionInput = screen.getByRole('textbox', { name: /description/i });
+      const descriptionInput = screen.getByRole('textbox', {
+        name: /description/i,
+      });
 
       await act(async () => {
-        fireEvent.change(descriptionInput, { target: { value: 'Updated description' } });
+        fireEvent.change(descriptionInput, {
+          target: { value: 'Updated description' },
+        });
       });
 
       await act(async () => {
@@ -351,10 +356,14 @@ describe('BookmarkForm - Bookmark Editing', () => {
         />,
       );
 
-      const descriptionInput = screen.getByRole('textbox', { name: /description/i });
+      const descriptionInput = screen.getByRole('textbox', {
+        name: /description/i,
+      });
 
       await act(async () => {
-        fireEvent.change(descriptionInput, { target: { value: 'New description' } });
+        fireEvent.change(descriptionInput, {
+          target: { value: 'New description' },
+        });
       });
 
       await act(async () => {
@@ -441,10 +450,14 @@ describe('BookmarkForm - Bookmark Editing', () => {
         />,
       );
 
-      const descriptionInput = screen.getByRole('textbox', { name: /description/i });
+      const descriptionInput = screen.getByRole('textbox', {
+        name: /description/i,
+      });
 
       await act(async () => {
-        fireEvent.change(descriptionInput, { target: { value: 'Updated description' } });
+        fireEvent.change(descriptionInput, {
+          target: { value: 'Updated description' },
+        });
       });
 
       await act(async () => {

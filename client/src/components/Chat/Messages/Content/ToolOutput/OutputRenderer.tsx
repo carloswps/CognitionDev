@@ -1,5 +1,5 @@
-import { useState, useMemo, useCallback } from 'react';
 import copy from 'copy-to-clipboard';
+import { useCallback, useMemo, useState } from 'react';
 import CopyButton from '~/components/Messages/Content/CopyButton';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
@@ -44,7 +44,12 @@ function extractText(raw: string): ExtractedText {
   }
 
   if (isError(trimmed)) {
-    return { text: cleanError(trimmed), rawError: trimmed, error: true, isJson: false };
+    return {
+      text: cleanError(trimmed),
+      rawError: trimmed,
+      error: true,
+      isJson: false,
+    };
   }
 
   if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
@@ -61,7 +66,12 @@ function extractText(raw: string): ExtractedText {
             .join('\n')
             .trim();
           if (isError(joined)) {
-            return { text: cleanError(joined), rawError: joined, error: true, isJson: false };
+            return {
+              text: cleanError(joined),
+              rawError: joined,
+              error: true,
+              isJson: false,
+            };
           }
           return { text: joined, rawError: '', error: false, isJson: false };
         }

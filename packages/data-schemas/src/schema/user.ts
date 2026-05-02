@@ -1,6 +1,6 @@
-import { Schema } from 'mongoose';
 import { SystemRoles } from 'librechat-data-provider';
-import { IUser } from '~/types';
+import { Schema } from 'mongoose';
+import type { IUser } from '~/types';
 
 // Session sub-schema
 const SessionSchema = new Schema(

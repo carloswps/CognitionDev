@@ -206,7 +206,11 @@ async function uploadFileToFirebase({ req, file, file_id }) {
   const userId = req.user.id;
   const fileName = `${file_id}__${path.basename(inputFilePath)}`;
   try {
-    const downloadURL = await saveBufferToFirebase({ userId, buffer: inputBuffer, fileName });
+    const downloadURL = await saveBufferToFirebase({
+      userId,
+      buffer: inputBuffer,
+      fileName,
+    });
     return { filepath: downloadURL, bytes };
   } catch (err) {
     logger.error('[uploadFileToFirebase] Error saving file buffer to Firebase:', err);

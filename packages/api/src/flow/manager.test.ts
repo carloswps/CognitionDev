@@ -1,6 +1,6 @@
-import { Keyv } from 'keyv';
+import type { Keyv } from 'keyv';
 import { FlowStateManager } from './manager';
-import { FlowState } from './types';
+import type { FlowState } from './types';
 
 jest.mock('@librechat/data-schemas', () => ({
   ...jest.requireActual('@librechat/data-schemas'),
@@ -41,7 +41,10 @@ describe('FlowStateManager', () => {
   beforeEach(() => {
     store = new MockKeyv();
     // Type assertion here since we know our mock implements the necessary methods
-    flowManager = new FlowStateManager(store as unknown as Keyv, { ttl: 30000, ci: true });
+    flowManager = new FlowStateManager(store as unknown as Keyv, {
+      ttl: 30000,
+      ci: true,
+    });
   });
 
   afterEach(() => {
@@ -230,7 +233,12 @@ describe('FlowStateManager', () => {
     const flowKey = `${type}:${flowId}`;
 
     it('deletes an existing flow', async () => {
-      await store.set(flowKey, { type, status: 'PENDING', metadata: {}, createdAt: Date.now() });
+      await store.set(flowKey, {
+        type,
+        status: 'PENDING',
+        metadata: {},
+        createdAt: Date.now(),
+      });
       expect(await store.get(flowKey)).toBeDefined();
 
       const result = await flowManager.deleteFlow(flowId, type);
@@ -516,9 +524,10 @@ describe('FlowStateManager', () => {
           result: { access_token: 'test', expires_at: expiredSecondsAgo },
         } as FlowState<TokenResult>);
 
-        const handlerSpy = jest
-          .fn()
-          .mockResolvedValue({ access_token: 'new', expires_at: Date.now() + 3600000 });
+        const handlerSpy = jest.fn().mockResolvedValue({
+          access_token: 'new',
+          expires_at: Date.now() + 3600000,
+        });
         await tokenFlowManager.createFlowWithHandler(flowId, type, handlerSpy);
 
         expect(handlerSpy).toHaveBeenCalled();
@@ -536,9 +545,10 @@ describe('FlowStateManager', () => {
           result: { access_token: 'test', expires_at: sept2001Seconds },
         } as FlowState<TokenResult>);
 
-        const handlerSpy = jest
-          .fn()
-          .mockResolvedValue({ access_token: 'new', expires_at: Date.now() + 3600000 });
+        const handlerSpy = jest.fn().mockResolvedValue({
+          access_token: 'new',
+          expires_at: Date.now() + 3600000,
+        });
         await tokenFlowManager.createFlowWithHandler(flowId, type, handlerSpy);
 
         expect(handlerSpy).toHaveBeenCalled();
@@ -556,9 +566,10 @@ describe('FlowStateManager', () => {
           result: { access_token: 'test', expires_at: year2000Seconds },
         } as FlowState<TokenResult>);
 
-        const handlerSpy = jest
-          .fn()
-          .mockResolvedValue({ access_token: 'new', expires_at: Date.now() + 3600000 });
+        const handlerSpy = jest.fn().mockResolvedValue({
+          access_token: 'new',
+          expires_at: Date.now() + 3600000,
+        });
         await tokenFlowManager.createFlowWithHandler(flowId, type, handlerSpy);
 
         expect(handlerSpy).toHaveBeenCalled();
@@ -576,9 +587,10 @@ describe('FlowStateManager', () => {
           result: { access_token: 'test', expires_at: may2033Seconds },
         } as FlowState<TokenResult>);
 
-        const handlerSpy = jest
-          .fn()
-          .mockResolvedValue({ access_token: 'new', expires_at: Date.now() + 3600000 });
+        const handlerSpy = jest.fn().mockResolvedValue({
+          access_token: 'new',
+          expires_at: Date.now() + 3600000,
+        });
         const resultPromise = tokenFlowManager.createFlowWithHandler(flowId, type, handlerSpy);
 
         await new Promise((resolve) => setTimeout(resolve, 500));
@@ -599,9 +611,10 @@ describe('FlowStateManager', () => {
           result: { access_token: 'test', expires_at: justBelowThreshold },
         } as FlowState<TokenResult>);
 
-        const handlerSpy = jest
-          .fn()
-          .mockResolvedValue({ access_token: 'new', expires_at: Date.now() + 3600000 });
+        const handlerSpy = jest.fn().mockResolvedValue({
+          access_token: 'new',
+          expires_at: Date.now() + 3600000,
+        });
         const resultPromise = tokenFlowManager.createFlowWithHandler(flowId, type, handlerSpy);
 
         await new Promise((resolve) => setTimeout(resolve, 500));
@@ -624,9 +637,10 @@ describe('FlowStateManager', () => {
           result: { access_token: 'test', expires_at: expiredMsAgo },
         } as FlowState<TokenResult>);
 
-        const handlerSpy = jest
-          .fn()
-          .mockResolvedValue({ access_token: 'new', expires_at: Date.now() + 3600000 });
+        const handlerSpy = jest.fn().mockResolvedValue({
+          access_token: 'new',
+          expires_at: Date.now() + 3600000,
+        });
         await tokenFlowManager.createFlowWithHandler(flowId, type, handlerSpy);
 
         expect(handlerSpy).toHaveBeenCalled();
@@ -644,9 +658,10 @@ describe('FlowStateManager', () => {
           result: { access_token: 'test', expires_at: sept2001Ms },
         } as FlowState<TokenResult>);
 
-        const handlerSpy = jest
-          .fn()
-          .mockResolvedValue({ access_token: 'new', expires_at: Date.now() + 3600000 });
+        const handlerSpy = jest.fn().mockResolvedValue({
+          access_token: 'new',
+          expires_at: Date.now() + 3600000,
+        });
         await tokenFlowManager.createFlowWithHandler(flowId, type, handlerSpy);
 
         expect(handlerSpy).toHaveBeenCalled();
@@ -664,9 +679,10 @@ describe('FlowStateManager', () => {
           result: { access_token: 'test', expires_at: exactlyAtThreshold },
         } as FlowState<TokenResult>);
 
-        const handlerSpy = jest
-          .fn()
-          .mockResolvedValue({ access_token: 'new', expires_at: Date.now() + 3600000 });
+        const handlerSpy = jest.fn().mockResolvedValue({
+          access_token: 'new',
+          expires_at: Date.now() + 3600000,
+        });
         await tokenFlowManager.createFlowWithHandler(flowId, type, handlerSpy);
 
         expect(handlerSpy).toHaveBeenCalled();
@@ -684,9 +700,10 @@ describe('FlowStateManager', () => {
           result: { access_token: 'test', expires_at: justAboveThreshold },
         } as FlowState<TokenResult>);
 
-        const handlerSpy = jest
-          .fn()
-          .mockResolvedValue({ access_token: 'new', expires_at: Date.now() + 3600000 });
+        const handlerSpy = jest.fn().mockResolvedValue({
+          access_token: 'new',
+          expires_at: Date.now() + 3600000,
+        });
         await tokenFlowManager.createFlowWithHandler(flowId, type, handlerSpy);
 
         expect(handlerSpy).toHaveBeenCalled();
@@ -704,9 +721,10 @@ describe('FlowStateManager', () => {
           result: { access_token: 'test', expires_at: may2033Ms },
         } as FlowState<TokenResult>);
 
-        const handlerSpy = jest
-          .fn()
-          .mockResolvedValue({ access_token: 'new', expires_at: Date.now() + 3600000 });
+        const handlerSpy = jest.fn().mockResolvedValue({
+          access_token: 'new',
+          expires_at: Date.now() + 3600000,
+        });
         const resultPromise = tokenFlowManager.createFlowWithHandler(flowId, type, handlerSpy);
 
         await new Promise((resolve) => setTimeout(resolve, 500));
@@ -726,12 +744,16 @@ describe('FlowStateManager', () => {
           status: 'COMPLETED',
           metadata: {},
           createdAt: Date.now() - 5000,
-          result: { access_token: 'google_token', expires_at: googleStyleExpiry },
+          result: {
+            access_token: 'google_token',
+            expires_at: googleStyleExpiry,
+          },
         } as FlowState<TokenResult>);
 
-        const handlerSpy = jest
-          .fn()
-          .mockResolvedValue({ access_token: 'new', expires_at: Date.now() + 7200000 });
+        const handlerSpy = jest.fn().mockResolvedValue({
+          access_token: 'new',
+          expires_at: Date.now() + 7200000,
+        });
         const resultPromise = tokenFlowManager.createFlowWithHandler(flowId, type, handlerSpy);
 
         await new Promise((resolve) => setTimeout(resolve, 500));
@@ -751,9 +773,10 @@ describe('FlowStateManager', () => {
           result: { access_token: 'oidc_token', expires_at: oidcStyleExpiry },
         } as FlowState<TokenResult>);
 
-        const handlerSpy = jest
-          .fn()
-          .mockResolvedValue({ access_token: 'new', expires_at: Date.now() + 7200000 });
+        const handlerSpy = jest.fn().mockResolvedValue({
+          access_token: 'new',
+          expires_at: Date.now() + 7200000,
+        });
         const resultPromise = tokenFlowManager.createFlowWithHandler(flowId, type, handlerSpy);
 
         await new Promise((resolve) => setTimeout(resolve, 500));
@@ -770,12 +793,16 @@ describe('FlowStateManager', () => {
           status: 'COMPLETED',
           metadata: {},
           createdAt: Date.now() - 70000,
-          result: { access_token: 'expired_google', expires_at: expiredGoogleStyle },
+          result: {
+            access_token: 'expired_google',
+            expires_at: expiredGoogleStyle,
+          },
         } as FlowState<TokenResult>);
 
-        const handlerSpy = jest
-          .fn()
-          .mockResolvedValue({ access_token: 'new', expires_at: Date.now() + 3600000 });
+        const handlerSpy = jest.fn().mockResolvedValue({
+          access_token: 'new',
+          expires_at: Date.now() + 3600000,
+        });
         await tokenFlowManager.createFlowWithHandler(flowId, type, handlerSpy);
 
         expect(handlerSpy).toHaveBeenCalled();
@@ -789,12 +816,16 @@ describe('FlowStateManager', () => {
           status: 'COMPLETED',
           metadata: {},
           createdAt: Date.now() - 70000,
-          result: { access_token: 'expired_oidc', expires_at: expiredOidcStyle },
+          result: {
+            access_token: 'expired_oidc',
+            expires_at: expiredOidcStyle,
+          },
         } as FlowState<TokenResult>);
 
-        const handlerSpy = jest
-          .fn()
-          .mockResolvedValue({ access_token: 'new', expires_at: Date.now() + 3600000 });
+        const handlerSpy = jest.fn().mockResolvedValue({
+          access_token: 'new',
+          expires_at: Date.now() + 3600000,
+        });
         await tokenFlowManager.createFlowWithHandler(flowId, type, handlerSpy);
 
         expect(handlerSpy).toHaveBeenCalled();
@@ -832,9 +863,10 @@ describe('FlowStateManager', () => {
           result: { access_token: 'test', expires_at: SECONDS_THRESHOLD },
         } as FlowState<TokenResult>);
 
-        const handlerSpy = jest
-          .fn()
-          .mockResolvedValue({ access_token: 'new', expires_at: Date.now() + 3600000 });
+        const handlerSpy = jest.fn().mockResolvedValue({
+          access_token: 'new',
+          expires_at: Date.now() + 3600000,
+        });
         await tokenFlowManager.createFlowWithHandler(flowId, type, handlerSpy);
 
         expect(handlerSpy).toHaveBeenCalled();

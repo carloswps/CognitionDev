@@ -1,32 +1,32 @@
-import React, { useState } from 'react';
-import { useForm, FormProvider } from 'react-hook-form';
-import { EModelEndpoint, alternateName, isAssistantsEndpoint } from 'librechat-data-provider';
 import {
-  useRevokeUserKeyMutation,
-  useRevokeAllUserKeysMutation,
-} from 'librechat-data-provider/react-query';
-import {
-  Label,
   Button,
-  Spinner,
-  OGDialog,
   Dropdown,
-  OGDialogTitle,
-  OGDialogHeader,
-  OGDialogFooter,
+  Label,
+  OGDialog,
   OGDialogContent,
-  useToastContext,
+  OGDialogFooter,
+  OGDialogHeader,
+  OGDialogTitle,
   OGDialogTrigger,
+  Spinner,
+  useToastContext,
 } from '@librechat/client';
+import { alternateName, EModelEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
+import {
+  useRevokeAllUserKeysMutation,
+  useRevokeUserKeyMutation,
+} from 'librechat-data-provider/react-query';
+import React, { useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import type { TDialogProps } from '~/common';
-import { useUserKey, useLocalize } from '~/hooks';
 import { NotificationSeverity } from '~/common';
+import { useLocalize, useUserKey } from '~/hooks';
+import { logger } from '~/utils';
 import CustomConfig from './CustomEndpoint';
 import GoogleConfig from './GoogleConfig';
+import HelpText from './HelpText';
 import OpenAIConfig from './OpenAIConfig';
 import OtherConfig from './OtherConfig';
-import HelpText from './HelpText';
-import { logger } from '~/utils';
 
 const endpointComponents = {
   [EModelEndpoint.google]: GoogleConfig,

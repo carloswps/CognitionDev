@@ -1,15 +1,20 @@
-import { Types } from 'mongoose';
-import { PrincipalType } from 'librechat-data-provider';
-import { SystemCapabilities, expandImplications } from '@librechat/data-schemas';
 import type { ISystemGrant } from '@librechat/data-schemas';
+import { expandImplications, SystemCapabilities } from '@librechat/data-schemas';
 import type { Response } from 'express';
+import { PrincipalType } from 'librechat-data-provider';
+import { Types } from 'mongoose';
 import type { ServerRequest } from '~/types/http';
 import type { AdminGrantsDeps } from './grants';
 import { createAdminGrantsHandlers } from './grants';
 
 jest.mock('@librechat/data-schemas', () => ({
   ...jest.requireActual('@librechat/data-schemas'),
-  logger: { error: jest.fn(), warn: jest.fn(), info: jest.fn(), debug: jest.fn() },
+  logger: {
+    error: jest.fn(),
+    warn: jest.fn(),
+    info: jest.fn(),
+    debug: jest.fn(),
+  },
 }));
 
 const validObjectId = new Types.ObjectId().toString();
@@ -148,7 +153,9 @@ describe('createAdminGrantsHandlers', () => {
     it('passes limit and offset from query params', async () => {
       const deps = createDeps();
       const handlers = createAdminGrantsHandlers(deps);
-      const { req, res } = createReqRes({ query: { limit: '10', offset: '20' } });
+      const { req, res } = createReqRes({
+        query: { limit: '10', offset: '20' },
+      });
 
       await handlers.listGrants(req, res);
 
@@ -161,7 +168,11 @@ describe('createAdminGrantsHandlers', () => {
       const deps = createDeps();
       const handlers = createAdminGrantsHandlers(deps);
       const { req, res } = createReqRes({
-        user: { _id: new Types.ObjectId(), role: 'admin', tenantId: 'tenant-1' },
+        user: {
+          _id: new Types.ObjectId(),
+          role: 'admin',
+          tenantId: 'tenant-1',
+        },
       });
 
       await handlers.listGrants(req, res);
@@ -214,7 +225,10 @@ describe('createAdminGrantsHandlers', () => {
 
     it('uses cached principals when available', async () => {
       const cachedPrincipals = [
-        { principalType: PrincipalType.USER, principalId: new Types.ObjectId() },
+        {
+          principalType: PrincipalType.USER,
+          principalId: new Types.ObjectId(),
+        },
         { principalType: PrincipalType.ROLE, principalId: 'admin' },
       ];
       const deps = createDeps({
@@ -235,7 +249,10 @@ describe('createAdminGrantsHandlers', () => {
   describe('getEffectiveCapabilities', () => {
     it('uses cached principals when available', async () => {
       const cachedPrincipals = [
-        { principalType: PrincipalType.USER, principalId: new Types.ObjectId() },
+        {
+          principalType: PrincipalType.USER,
+          principalId: new Types.ObjectId(),
+        },
         { principalType: PrincipalType.ROLE, principalId: 'admin' },
       ];
       const deps = createDeps({
@@ -253,7 +270,9 @@ describe('createAdminGrantsHandlers', () => {
     });
 
     it('returns expanded capabilities for the user', async () => {
-      const manageRolesGrant = mockGrant({ capability: SystemCapabilities.MANAGE_ROLES });
+      const manageRolesGrant = mockGrant({
+        capability: SystemCapabilities.MANAGE_ROLES,
+      });
       const deps = createDeps({
         getCapabilitiesForPrincipals: jest.fn().mockResolvedValue([manageRolesGrant]),
       });
@@ -309,7 +328,11 @@ describe('createAdminGrantsHandlers', () => {
       const deps = createDeps();
       const handlers = createAdminGrantsHandlers(deps);
       const { req, res } = createReqRes({
-        user: { _id: new Types.ObjectId(), role: 'admin', tenantId: 'tenant-1' },
+        user: {
+          _id: new Types.ObjectId(),
+          role: 'admin',
+          tenantId: 'tenant-1',
+        },
       });
 
       await handlers.getEffectiveCapabilities(req, res);
@@ -354,10 +377,15 @@ describe('createAdminGrantsHandlers', () => {
     });
 
     it('deduplicates capabilities across principals', async () => {
-      const readUsersGrant = mockGrant({ capability: SystemCapabilities.READ_USERS });
+      const readUsersGrant = mockGrant({
+        capability: SystemCapabilities.READ_USERS,
+      });
       const deps = createDeps({
         getUserPrincipals: jest.fn().mockResolvedValue([
-          { principalType: PrincipalType.USER, principalId: new Types.ObjectId() },
+          {
+            principalType: PrincipalType.USER,
+            principalId: new Types.ObjectId(),
+          },
           { principalType: PrincipalType.ROLE, principalId: 'editor' },
         ]),
         getCapabilitiesForPrincipals: jest.fn().mockResolvedValue([readUsersGrant, readUsersGrant]),
@@ -376,8 +404,12 @@ describe('createAdminGrantsHandlers', () => {
     });
 
     it('deduplicates when user holds both parent and implied capability', async () => {
-      const manageGrant = mockGrant({ capability: SystemCapabilities.MANAGE_ROLES });
-      const readGrant = mockGrant({ capability: SystemCapabilities.READ_ROLES });
+      const manageGrant = mockGrant({
+        capability: SystemCapabilities.MANAGE_ROLES,
+      });
+      const readGrant = mockGrant({
+        capability: SystemCapabilities.READ_ROLES,
+      });
       const deps = createDeps({
         getCapabilitiesForPrincipals: jest.fn().mockResolvedValue([manageGrant, readGrant]),
       });
@@ -416,7 +448,9 @@ describe('createAdminGrantsHandlers', () => {
       await handlers.getEffectiveCapabilities(req, res);
 
       expect(status).toHaveBeenCalledWith(500);
-      expect(json).toHaveBeenCalledWith({ error: 'Failed to get effective capabilities' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Failed to get effective capabilities',
+      });
     });
 
     it('returns 500 when getCapabilitiesForPrincipals throws', async () => {
@@ -429,7 +463,9 @@ describe('createAdminGrantsHandlers', () => {
       await handlers.getEffectiveCapabilities(req, res);
 
       expect(status).toHaveBeenCalledWith(500);
-      expect(json).toHaveBeenCalledWith({ error: 'Failed to get effective capabilities' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Failed to get effective capabilities',
+      });
     });
   });
 
@@ -460,7 +496,10 @@ describe('createAdminGrantsHandlers', () => {
       const deps = createDeps();
       const handlers = createAdminGrantsHandlers(deps);
       const { req, res, status, json } = createReqRes({
-        params: { principalType: PrincipalType.GROUP, principalId: validObjectId },
+        params: {
+          principalType: PrincipalType.GROUP,
+          principalId: validObjectId,
+        },
       });
 
       await handlers.getPrincipalGrants(req, res);
@@ -473,7 +512,10 @@ describe('createAdminGrantsHandlers', () => {
       const deps = createDeps();
       const handlers = createAdminGrantsHandlers(deps);
       const { req, res, status, json } = createReqRes({
-        params: { principalType: PrincipalType.USER, principalId: validObjectId },
+        params: {
+          principalType: PrincipalType.USER,
+          principalId: validObjectId,
+        },
       });
 
       await handlers.getPrincipalGrants(req, res);
@@ -489,7 +531,11 @@ describe('createAdminGrantsHandlers', () => {
       const handlers = createAdminGrantsHandlers(deps);
       const { req, res } = createReqRes({
         params: { principalType: PrincipalType.ROLE, principalId: 'editor' },
-        user: { _id: new Types.ObjectId(), role: 'admin', tenantId: 'tenant-1' },
+        user: {
+          _id: new Types.ObjectId(),
+          role: 'admin',
+          tenantId: 'tenant-1',
+        },
       });
 
       await handlers.getPrincipalGrants(req, res);
@@ -534,7 +580,10 @@ describe('createAdminGrantsHandlers', () => {
       });
       const handlers = createAdminGrantsHandlers(deps);
       const { req, res, status } = createReqRes({
-        params: { principalType: PrincipalType.ROLE, principalId: 'custom-role-name' },
+        params: {
+          principalType: PrincipalType.ROLE,
+          principalId: 'custom-role-name',
+        },
       });
 
       await handlers.getPrincipalGrants(req, res);
@@ -599,7 +648,9 @@ describe('createAdminGrantsHandlers', () => {
 
     it('assigns a grant and returns 201', async () => {
       const grant = mockGrant();
-      const deps = createDeps({ grantCapability: jest.fn().mockResolvedValue(grant) });
+      const deps = createDeps({
+        grantCapability: jest.fn().mockResolvedValue(grant),
+      });
       const handlers = createAdminGrantsHandlers(deps);
       const { req, res, status, json } = createReqRes({ body: validBody });
 
@@ -620,7 +671,10 @@ describe('createAdminGrantsHandlers', () => {
       const userId = new Types.ObjectId();
       const deps = createDeps();
       const handlers = createAdminGrantsHandlers(deps);
-      const { req, res } = createReqRes({ body: validBody, user: { _id: userId, role: 'admin' } });
+      const { req, res } = createReqRes({
+        body: validBody,
+        user: { _id: userId, role: 'admin' },
+      });
 
       await handlers.assignGrant(req, res);
 
@@ -634,7 +688,11 @@ describe('createAdminGrantsHandlers', () => {
       const handlers = createAdminGrantsHandlers(deps);
       const { req, res } = createReqRes({
         body: validBody,
-        user: { _id: new Types.ObjectId(), role: 'admin', tenantId: 'tenant-1' },
+        user: {
+          _id: new Types.ObjectId(),
+          role: 'admin',
+          tenantId: 'tenant-1',
+        },
       });
 
       await handlers.assignGrant(req, res);
@@ -670,7 +728,9 @@ describe('createAdminGrantsHandlers', () => {
     });
 
     it('accepts config assignment capabilities', async () => {
-      const grant = mockGrant({ capability: 'assign:configs:group' as ISystemGrant['capability'] });
+      const grant = mockGrant({
+        capability: 'assign:configs:group' as ISystemGrant['capability'],
+      });
       const deps = createDeps({
         grantCapability: jest.fn().mockResolvedValue(grant),
         getHeldCapabilities: jest
@@ -704,7 +764,10 @@ describe('createAdminGrantsHandlers', () => {
       const deps = createDeps();
       const handlers = createAdminGrantsHandlers(deps);
       const { req, res, status, json } = createReqRes({
-        body: { principalId: 'editor', capability: SystemCapabilities.READ_USERS },
+        body: {
+          principalId: 'editor',
+          capability: SystemCapabilities.READ_USERS,
+        },
       });
 
       await handlers.assignGrant(req, res);
@@ -730,7 +793,10 @@ describe('createAdminGrantsHandlers', () => {
       const deps = createDeps();
       const handlers = createAdminGrantsHandlers(deps);
       const { req, res, status, json } = createReqRes({
-        body: { principalType: PrincipalType.ROLE, capability: SystemCapabilities.READ_USERS },
+        body: {
+          principalType: PrincipalType.ROLE,
+          capability: SystemCapabilities.READ_USERS,
+        },
       });
 
       await handlers.assignGrant(req, res);
@@ -808,7 +874,9 @@ describe('createAdminGrantsHandlers', () => {
       await handlers.assignGrant(req, res);
 
       expect(status).toHaveBeenCalledWith(403);
-      expect(json).toHaveBeenCalledWith({ error: 'Cannot grant a capability you do not possess' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Cannot grant a capability you do not possess',
+      });
       expect(deps.grantCapability).not.toHaveBeenCalled();
     });
 
@@ -943,7 +1011,9 @@ describe('createAdminGrantsHandlers', () => {
       await handlers.assignGrant(req, res);
 
       expect(status).toHaveBeenCalledWith(500);
-      expect(json).toHaveBeenCalledWith({ error: 'Grant operation returned no result' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Grant operation returned no result',
+      });
     });
 
     it('returns 500 on unexpected error', async () => {
@@ -1003,7 +1073,11 @@ describe('createAdminGrantsHandlers', () => {
       const handlers = createAdminGrantsHandlers(deps);
       const { req, res } = createReqRes({
         params: validParams,
-        user: { _id: new Types.ObjectId(), role: 'admin', tenantId: 'tenant-1' },
+        user: {
+          _id: new Types.ObjectId(),
+          role: 'admin',
+          tenantId: 'tenant-1',
+        },
       });
 
       await handlers.revokeGrant(req, res);

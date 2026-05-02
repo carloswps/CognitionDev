@@ -1,20 +1,20 @@
-import { useEffect } from 'react';
-import { Search, X } from 'lucide-react';
-import { useFormContext } from 'react-hook-form';
-import { isAgentsEndpoint } from 'librechat-data-provider';
-import { Dialog, DialogPanel, DialogTitle, Description } from '@headlessui/react';
-import { useUpdateUserPluginsMutation } from 'librechat-data-provider/react-query';
+import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import type {
   AssistantsEndpoint,
   EModelEndpoint,
-  TPluginAction,
-  TPlugin,
   TError,
+  TPlugin,
+  TPluginAction,
 } from 'librechat-data-provider';
+import { isAgentsEndpoint } from 'librechat-data-provider';
+import { useUpdateUserPluginsMutation } from 'librechat-data-provider/react-query';
+import { Search, X } from 'lucide-react';
+import { useEffect } from 'react';
+import { useFormContext } from 'react-hook-form';
 import type { AgentForm, ToolDialogProps } from '~/common';
-import { PluginPagination, PluginAuthForm } from '~/components/Plugins/Store';
-import { useAgentPanelContext } from '~/Providers/AgentPanelContext';
+import { PluginAuthForm, PluginPagination } from '~/components/Plugins/Store';
 import { useLocalize, usePluginDialogHelpers } from '~/hooks';
+import { useAgentPanelContext } from '~/Providers/AgentPanelContext';
 import ToolItem from './ToolItem';
 
 function ToolSelectDialog({

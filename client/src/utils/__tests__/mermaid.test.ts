@@ -1,8 +1,8 @@
 import {
-  fixSubgraphTitleContrast,
   artifactFlowchartConfig,
-  inlineFlowchartConfig,
+  fixSubgraphTitleContrast,
   getMermaidFiles,
+  inlineFlowchartConfig,
 } from '~/utils/mermaid';
 
 const makeSvg = (clusters: string): Element => {

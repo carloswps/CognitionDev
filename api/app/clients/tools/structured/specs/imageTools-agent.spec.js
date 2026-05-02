@@ -26,7 +26,12 @@ jest.mock('undici', () => ({
   fetch: jest.fn(),
 }));
 jest.mock('@librechat/data-schemas', () => ({
-  logger: { info: jest.fn(), warn: jest.fn(), debug: jest.fn(), error: jest.fn() },
+  logger: {
+    info: jest.fn(),
+    warn: jest.fn(),
+    debug: jest.fn(),
+    error: jest.fn(),
+  },
 }));
 jest.mock('path', () => ({
   resolve: jest.fn(),
@@ -125,7 +130,9 @@ describe('image tools - agent mode ToolMessage format', () => {
 
     it('invoke() returns ToolMessage with error string in content when API fails', async () => {
       OpenAI.mockImplementation(() => ({
-        images: { generate: jest.fn().mockRejectedValue(new Error('API error')) },
+        images: {
+          generate: jest.fn().mockRejectedValue(new Error('API error')),
+        },
       }));
 
       const dalle = new DALLE3({ isAgent: true });
@@ -151,7 +158,10 @@ describe('image tools - agent mode ToolMessage format', () => {
       jest.useFakeTimers();
       axios.post.mockResolvedValue({ data: { id: 'task-123' } });
       axios.get.mockResolvedValue({
-        data: { status: 'Ready', result: { sample: 'https://example.com/image.png' } },
+        data: {
+          status: 'Ready',
+          result: { sample: 'https://example.com/image.png' },
+        },
       });
       fetch.mockResolvedValue({
         arrayBuffer: () => Promise.resolve(Buffer.from(FAKE_BASE64, 'base64')),
@@ -240,7 +250,12 @@ describe('image tools - agent mode ToolMessage format', () => {
       axios.post.mockResolvedValue({
         data: {
           images: [FAKE_BASE64],
-          info: JSON.stringify({ height: 1024, width: 1024, seed: 42, infotexts: [] }),
+          info: JSON.stringify({
+            height: 1024,
+            width: 1024,
+            seed: 42,
+            infotexts: [],
+          }),
         },
       });
     });
@@ -260,9 +275,16 @@ describe('image tools - agent mode ToolMessage format', () => {
     });
 
     it('invoke() returns ToolMessage with base64 in artifact, not serialized in content', async () => {
-      const sd = new StableDiffusionAPI({ isAgent: true, override: true, userId: 'user-1' });
+      const sd = new StableDiffusionAPI({
+        isAgent: true,
+        override: true,
+        userId: 'user-1',
+      });
       const result = await sd.invoke(
-        makeToolCall('stable-diffusion', { prompt: 'a box', negative_prompt: '' }),
+        makeToolCall('stable-diffusion', {
+          prompt: 'a box',
+          negative_prompt: '',
+        }),
       );
 
       expect(result).toBeInstanceOf(ToolMessage);
@@ -280,9 +302,16 @@ describe('image tools - agent mode ToolMessage format', () => {
     it('invoke() returns ToolMessage with error string in content when API fails', async () => {
       axios.post.mockRejectedValue(new Error('Connection refused'));
 
-      const sd = new StableDiffusionAPI({ isAgent: true, override: true, userId: 'user-1' });
+      const sd = new StableDiffusionAPI({
+        isAgent: true,
+        override: true,
+        userId: 'user-1',
+      });
       const result = await sd.invoke(
-        makeToolCall('stable-diffusion', { prompt: 'a box', negative_prompt: '' }),
+        makeToolCall('stable-diffusion', {
+          prompt: 'a box',
+          negative_prompt: '',
+        }),
       );
 
       expect(result).toBeInstanceOf(ToolMessage);

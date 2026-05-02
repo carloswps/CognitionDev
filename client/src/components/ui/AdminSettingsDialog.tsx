@@ -1,21 +1,21 @@
-import { useEffect, useState } from 'react';
 import * as Ariakit from '@ariakit/react';
-import { ShieldEllipsis } from 'lucide-react';
-import { useForm, Controller } from 'react-hook-form';
-import { Permissions, SystemRoles } from 'librechat-data-provider';
 import {
-  OGDialog,
-  OGDialogTitle,
-  OGDialogContent,
-  OGDialogTrigger,
   Button,
-  Switch,
   DropdownPopup,
+  OGDialog,
+  OGDialogContent,
+  OGDialogTitle,
+  OGDialogTrigger,
+  Switch,
 } from '@librechat/client';
-import type { Control, UseFormSetValue, UseFormGetValues } from 'react-hook-form';
 import type { PermissionTypes } from 'librechat-data-provider';
+import { Permissions, SystemRoles } from 'librechat-data-provider';
+import { ShieldEllipsis } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import type { Control, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
+import { useAuthContext, useLocalize, useRoleSelector } from '~/hooks';
 import type { TranslationKeys } from '~/hooks/useLocalize';
-import { useLocalize, useAuthContext, useRoleSelector } from '~/hooks';
 
 type FormValues = Record<Permissions, boolean>;
 
@@ -172,7 +172,9 @@ const AdminSettingsDialog: React.FC<AdminSettingsDialogProps> = ({
           }
         >
           <OGDialogTitle>
-            {localize('com_ui_admin_settings_section', { section: localize(sectionKey) })}
+            {localize('com_ui_admin_settings_section', {
+              section: localize(sectionKey),
+            })}
           </OGDialogTitle>
 
           {/* Role selection dropdown */}

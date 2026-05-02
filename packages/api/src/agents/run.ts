@@ -1,32 +1,32 @@
-import { logger } from '@librechat/data-schemas';
-import { Run, Providers, Constants } from '@librechat/agents';
-import {
-  KnownEndpoints,
-  extractEnvVariable,
-  providerEndpointMap,
-  normalizeEndpointName,
-} from 'librechat-data-provider';
+import type { BaseMessage } from '@langchain/core/messages';
 import type {
-  SummarizationConfig as AgentSummarizationConfig,
-  MultiAgentGraphConfig,
-  ContextPruningConfig,
-  OpenAIClientOptions,
-  StandardGraphConfig,
-  LCToolRegistry,
   AgentInputs,
+  SummarizationConfig as AgentSummarizationConfig,
+  ContextPruningConfig,
   GenericTool,
-  RunConfig,
   IState,
   LCTool,
+  LCToolRegistry,
+  MultiAgentGraphConfig,
+  OpenAIClientOptions,
+  RunConfig,
+  StandardGraphConfig,
 } from '@librechat/agents';
-import type { Agent, SummarizationConfig } from 'librechat-data-provider';
-import type { BaseMessage } from '@langchain/core/messages';
+import { Constants, Providers, Run } from '@librechat/agents';
 import type { AppConfig, IUser } from '@librechat/data-schemas';
-import type * as t from '~/types';
+import { logger } from '@librechat/data-schemas';
+import type { Agent, SummarizationConfig } from 'librechat-data-provider';
+import {
+  extractEnvVariable,
+  KnownEndpoints,
+  normalizeEndpointName,
+  providerEndpointMap,
+} from 'librechat-data-provider';
 import { getProviderConfig } from '~/endpoints/config/providers';
 import { getOpenAIConfig } from '~/endpoints/openai/config';
-import { resolveHeaders, createSafeUser } from '~/utils/env';
+import type * as t from '~/types';
 import { isUserProvided } from '~/utils/common';
+import { createSafeUser, resolveHeaders } from '~/utils/env';
 
 /** Expected shape of JSON tool search results */
 interface ToolSearchJsonResult {
@@ -215,7 +215,10 @@ function mergeParameters(
   overrides: SummarizationClientOverrides,
   userParams: SummarizationConfig['parameters'],
 ): Record<string, unknown> {
-  const merged: Record<string, unknown> = { ...overrides, ...(userParams ?? {}) };
+  const merged: Record<string, unknown> = {
+    ...overrides,
+    ...(userParams ?? {}),
+  };
   const userConfiguration = (userParams as Record<string, unknown> | undefined)?.configuration;
   if (isPlainObject(overrides.configuration) && isPlainObject(userConfiguration)) {
     merged.configuration = { ...overrides.configuration, ...userConfiguration };

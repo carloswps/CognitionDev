@@ -114,7 +114,13 @@ describe('duplicateAgentHandler — action domain extraction', () => {
       model: 'gpt-4',
       tools: [],
       actions: [`secure.api.com${actionDelimiter}act_secret`],
-      versions: [{ name: 'Sensitive Agent', createdAt: new Date(), updatedAt: new Date() }],
+      versions: [
+        {
+          name: 'Sensitive Agent',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
     });
 
     await mongoose.models.Action.create({

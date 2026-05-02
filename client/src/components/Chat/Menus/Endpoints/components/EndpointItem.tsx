@@ -1,17 +1,21 @@
-import { useMemo } from 'react';
 import { VisuallyHidden } from '@ariakit/react';
 import { Spinner, TooltipAnchor } from '@librechat/client';
-import { CheckCircle2, MousePointerClick, SettingsIcon } from 'lucide-react';
-import { EModelEndpoint, isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
 import type { TModelSpec } from 'librechat-data-provider';
+import {
+  type EModelEndpoint,
+  isAgentsEndpoint,
+  isAssistantsEndpoint,
+} from 'librechat-data-provider';
+import { CheckCircle2, MousePointerClick, SettingsIcon } from 'lucide-react';
+import { useMemo } from 'react';
 import type { Endpoint } from '~/common';
-import { CustomMenu as Menu, CustomMenuItem as MenuItem } from '../CustomMenu';
-import { useModelSelectorContext } from '../ModelSelectorContext';
-import { renderEndpointModels } from './EndpointModelItem';
-import { ModelSpecItem } from './ModelSpecItem';
-import { filterModels } from '../utils';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
+import { CustomMenu as Menu, CustomMenuItem as MenuItem } from '../CustomMenu';
+import { useModelSelectorContext } from '../ModelSelectorContext';
+import { filterModels } from '../utils';
+import { renderEndpointModels } from './EndpointModelItem';
+import { ModelSpecItem } from './ModelSpecItem';
 
 interface EndpointItemProps {
   endpoint: Endpoint;
@@ -179,7 +183,9 @@ export function EndpointItem({ endpoint, endpointIndex }: EndpointItemProps) {
     const placeholder =
       isAgentsEndpoint(endpoint.value) || isAssistantsEndpoint(endpoint.value)
         ? localize('com_endpoint_search_var', { 0: endpoint.label })
-        : localize('com_endpoint_search_endpoint_models', { 0: endpoint.label });
+        : localize('com_endpoint_search_endpoint_models', {
+            0: endpoint.label,
+          });
     return (
       <Menu
         id={`endpoint-${endpoint.value}-menu`}
@@ -225,7 +231,9 @@ export function EndpointItem({ endpoint, endpointIndex }: EndpointItemProps) {
           )}
           {isAssistantsNotLoaded && (
             <TooltipAnchor
-              description={localize('com_ui_click_to_view_var', { 0: endpoint.label })}
+              description={localize('com_ui_click_to_view_var', {
+                0: endpoint.label,
+              })}
               side="top"
               render={
                 <span className="flex items-center">

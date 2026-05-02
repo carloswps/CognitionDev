@@ -1,10 +1,10 @@
-import { primeResources } from './resources';
+import type { AppConfig, IUser } from '@librechat/data-schemas';
 import { logger } from '@librechat/data-schemas';
-import { EModelEndpoint, EToolResources, AgentCapabilities } from 'librechat-data-provider';
-import type { TAgentsEndpoint, TFile } from 'librechat-data-provider';
-import type { IUser, AppConfig } from '@librechat/data-schemas';
 import type { Request as ServerRequest } from 'express';
-import type { TGetFiles, TFilterFilesByAgentAccess } from './resources';
+import type { TAgentsEndpoint, TFile } from 'librechat-data-provider';
+import { AgentCapabilities, EModelEndpoint, EToolResources } from 'librechat-data-provider';
+import type { TFilterFilesByAgentAccess, TGetFiles } from './resources';
+import { primeResources } from './resources';
 
 // Mock logger
 jest.mock('@librechat/data-schemas', () => ({

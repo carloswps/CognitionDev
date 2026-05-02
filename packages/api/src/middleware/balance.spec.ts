@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import { logger, balanceSchema } from '@librechat/data-schemas';
-import type { NextFunction, Request as ServerRequest, Response as ServerResponse } from 'express';
 import type { IBalance, IBalanceUpdate } from '@librechat/data-schemas';
+import { balanceSchema, logger } from '@librechat/data-schemas';
+import type { NextFunction, Request as ServerRequest, Response as ServerResponse } from 'express';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
 import { createSetBalanceConfig } from './balance';
 
 jest.mock('@librechat/data-schemas', () => ({
@@ -635,39 +635,43 @@ describe('createSetBalanceConfig', () => {
   });
 
   describe('Integration with Different refillIntervalUnits', () => {
-    test.each(['seconds', 'minutes', 'hours', 'days', 'weeks', 'months'])(
-      'should handle refillIntervalUnit: %s',
-      async (unit) => {
-        const userId = new mongoose.Types.ObjectId();
+    test.each([
+      'seconds',
+      'minutes',
+      'hours',
+      'days',
+      'weeks',
+      'months',
+    ])('should handle refillIntervalUnit: %s', async (unit) => {
+      const userId = new mongoose.Types.ObjectId();
 
-        const getAppConfig = jest.fn().mockResolvedValue({
-          balance: {
-            enabled: true,
+      const getAppConfig = jest.fn().mockResolvedValue({
+        balance: {
+          enabled: true,
 
-            startBalance: 1000,
-            autoRefillEnabled: true,
-            refillIntervalValue: 10,
-            refillIntervalUnit: unit,
-            refillAmount: 100,
-          },
-        });
+          startBalance: 1000,
+          autoRefillEnabled: true,
+          refillIntervalValue: 10,
+          refillIntervalUnit: unit,
+          refillAmount: 100,
+        },
+      });
 
-        const middleware = createSetBalanceConfig({
-          getAppConfig,
-          findBalanceByUser,
-          upsertBalanceFields,
-        });
+      const middleware = createSetBalanceConfig({
+        getAppConfig,
+        findBalanceByUser,
+        upsertBalanceFields,
+      });
 
-        const req = createMockRequest(userId);
-        const res = createMockResponse();
+      const req = createMockRequest(userId);
+      const res = createMockResponse();
 
-        await middleware(req as ServerRequest, res as ServerResponse, mockNext);
+      await middleware(req as ServerRequest, res as ServerResponse, mockNext);
 
-        const balanceRecord = await Balance.findOne({ user: userId });
-        expect(balanceRecord?.refillIntervalUnit).toBe(unit);
-        expect(balanceRecord?.refillIntervalValue).toBe(10);
-        expect(balanceRecord?.lastRefill).toBeInstanceOf(Date);
-      },
-    );
+      const balanceRecord = await Balance.findOne({ user: userId });
+      expect(balanceRecord?.refillIntervalUnit).toBe(unit);
+      expect(balanceRecord?.refillIntervalValue).toBe(10);
+      expect(balanceRecord?.lastRefill).toBeInstanceOf(Date);
+    });
   });
 });

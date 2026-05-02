@@ -2,7 +2,7 @@ import type { RedisStore } from 'rate-limit-redis';
 
 describe('limiterCache', () => {
   let originalEnv: NodeJS.ProcessEnv;
-  let testStore: RedisStore | undefined = undefined;
+  let testStore: RedisStore | undefined;
 
   beforeEach(() => {
     originalEnv = { ...process.env };

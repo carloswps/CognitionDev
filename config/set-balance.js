@@ -58,7 +58,7 @@ const connect = require('./connect');
     console.purple(`Found user: ${user.email}`);
   }
 
-  let balance = await Balance.findOne({ user: user._id }).lean();
+  const balance = await Balance.findOne({ user: user._id }).lean();
   if (!balance) {
     console.purple('User has no balance!');
   } else {

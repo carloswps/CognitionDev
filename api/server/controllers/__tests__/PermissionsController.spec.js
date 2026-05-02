@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
-const mockLogger = { error: jest.fn(), warn: jest.fn(), info: jest.fn(), debug: jest.fn() };
+const mockLogger = {
+  error: jest.fn(),
+  warn: jest.fn(),
+  info: jest.fn(),
+  debug: jest.fn(),
+};
 
 jest.mock('@librechat/data-schemas', () => ({
   logger: mockLogger,
@@ -46,7 +51,10 @@ jest.mock('~/server/services/GraphApiService', () => ({
 const { updateResourcePermissions } = require('../PermissionsController');
 
 const createMockReq = (overrides = {}) => ({
-  params: { resourceType: ResourceType.AGENT, resourceId: '507f1f77bcf86cd799439011' },
+  params: {
+    resourceType: ResourceType.AGENT,
+    resourceId: '507f1f77bcf86cd799439011',
+  },
   body: { updated: [], removed: [], public: false },
   user: { id: 'user-1', role: 'USER' },
   headers: { authorization: '' },
@@ -102,7 +110,10 @@ describe('PermissionsController', () => {
 
     it('removes agent from revoked users favorites on REMOTE_AGENT resource type', async () => {
       const req = createMockReq({
-        params: { resourceType: ResourceType.REMOTE_AGENT, resourceId: agentObjectId },
+        params: {
+          resourceType: ResourceType.REMOTE_AGENT,
+          resourceId: agentObjectId,
+        },
         body: {
           updated: [],
           removed: [{ type: PrincipalType.USER, id: revokedUserId }],
@@ -125,7 +136,12 @@ describe('PermissionsController', () => {
         granted: [],
         updated: [],
         revoked: [{ type: PrincipalType.USER, id: validId }],
-        errors: [{ principal: { type: PrincipalType.USER, id: invalidId }, error: 'Invalid ID' }],
+        errors: [
+          {
+            principal: { type: PrincipalType.USER, id: invalidId },
+            error: 'Invalid ID',
+          },
+        ],
       });
 
       const req = createMockReq({
@@ -180,7 +196,10 @@ describe('PermissionsController', () => {
       });
 
       const req = createMockReq({
-        params: { resourceType: ResourceType.PROMPTGROUP, resourceId: agentObjectId },
+        params: {
+          resourceType: ResourceType.PROMPTGROUP,
+          resourceId: agentObjectId,
+        },
         body: {
           updated: [],
           removed: [{ type: PrincipalType.USER, id: revokedUserId }],

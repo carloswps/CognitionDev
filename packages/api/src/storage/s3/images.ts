@@ -1,11 +1,11 @@
-import fs from 'fs';
-import path from 'path';
-import sharp from 'sharp';
-import { logger } from '@librechat/data-schemas';
 import type { IUser } from '@librechat/data-schemas';
+import { logger } from '@librechat/data-schemas';
+import fs from 'fs';
 import type { TFile } from 'librechat-data-provider';
+import path from 'path';
 import type { FormatEnum } from 'sharp';
-import type { UploadImageParams, ImageUploadResult, ProcessAvatarParams } from '~/storage/types';
+import sharp from 'sharp';
+import type { ImageUploadResult, ProcessAvatarParams, UploadImageParams } from '~/storage/types';
 import { saveBufferToS3 } from './crud';
 import { s3Config } from './s3Config';
 
@@ -123,7 +123,12 @@ export class S3ImageService {
         ? `agent-${agentId}-avatar-${timestamp}.${extension}`
         : `avatar-${timestamp}.${extension}`;
 
-      const downloadURL = await saveBufferToS3({ userId, buffer, fileName, basePath });
+      const downloadURL = await saveBufferToS3({
+        userId,
+        buffer,
+        fileName,
+        basePath,
+      });
 
       if (manual === 'true' && !agentId) {
         await this.deps.updateUser(userId, { avatar: downloadURL });

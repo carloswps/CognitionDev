@@ -1,11 +1,11 @@
-import mongoose from 'mongoose';
 import { PrincipalType } from 'librechat-data-provider';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
+import groupSchema from '~/schema/group';
+import roleSchema from '~/schema/role';
+import userSchema from '~/schema/user';
 import type * as t from '~/types';
 import { createUserGroupMethods } from './userGroup';
-import groupSchema from '~/schema/group';
-import userSchema from '~/schema/user';
-import roleSchema from '~/schema/role';
 
 /** Mocking logger */
 jest.mock('~/config/winston', () => ({

@@ -18,7 +18,9 @@ export const mcpValuesAtomFamily = atomFamily((conversationId: string | null) =>
   const key = conversationId ?? Constants.NEW_CONVO;
   const storageKey = `${LocalStorageKeys.LAST_MCP_}${key}`;
 
-  return atomWithStorage<string[]>(storageKey, [], mcpTabIsolatedStorage, { getOnInit: true });
+  return atomWithStorage<string[]>(storageKey, [], mcpTabIsolatedStorage, {
+    getOnInit: true,
+  });
 });
 
 /**

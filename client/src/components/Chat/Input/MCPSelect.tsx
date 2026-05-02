@@ -1,10 +1,10 @@
-import React, { memo, useMemo } from 'react';
 import * as Ariakit from '@ariakit/react';
-import { ChevronDown } from 'lucide-react';
-import { PermissionTypes, Permissions } from 'librechat-data-provider';
 import { TooltipAnchor } from '@librechat/client';
-import MCPServerMenuItem from '~/components/MCP/MCPServerMenuItem';
+import { Permissions, PermissionTypes } from 'librechat-data-provider';
+import { ChevronDown } from 'lucide-react';
+import React, { memo, useMemo } from 'react';
 import MCPConfigDialog from '~/components/MCP/MCPConfigDialog';
+import MCPServerMenuItem from '~/components/MCP/MCPServerMenuItem';
 import StackedMCPIcons from '~/components/MCP/StackedMCPIcons';
 import { useHasAccess, useLocalize } from '~/hooks';
 import { useBadgeRowContext } from '~/Providers';

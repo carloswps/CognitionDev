@@ -50,9 +50,10 @@ describe('Conversation Import - Multer File Size Limits', () => {
       const app = createImportApp(limit);
       const oversized = Buffer.alloc(limit + 512, 'x');
 
-      const res = await request(app)
-        .post('/import')
-        .attach('file', oversized, { filename: 'import.json', contentType: 'application/json' });
+      const res = await request(app).post('/import').attach('file', oversized, {
+        filename: 'import.json',
+        contentType: 'application/json',
+      });
 
       expect(res.status).toBe(413);
       expect(res.body.message).toBe('File exceeds the maximum allowed size');
@@ -63,9 +64,10 @@ describe('Conversation Import - Multer File Size Limits', () => {
       const app = createImportApp(limit);
       const valid = Buffer.from(JSON.stringify({ title: 'test' }));
 
-      const res = await request(app)
-        .post('/import')
-        .attach('file', valid, { filename: 'import.json', contentType: 'application/json' });
+      const res = await request(app).post('/import').attach('file', valid, {
+        filename: 'import.json',
+        contentType: 'application/json',
+      });
 
       expect(res.status).toBe(201);
       expect(res.body.message).toBe('success');
@@ -76,9 +78,10 @@ describe('Conversation Import - Multer File Size Limits', () => {
       const app = createImportApp(limit);
       const boundary = Buffer.alloc(limit + 1, 'a');
 
-      const res = await request(app)
-        .post('/import')
-        .attach('file', boundary, { filename: 'import.json', contentType: 'application/json' });
+      const res = await request(app).post('/import').attach('file', boundary, {
+        filename: 'import.json',
+        contentType: 'application/json',
+      });
 
       expect(res.status).toBe(413);
     });
@@ -88,9 +91,10 @@ describe('Conversation Import - Multer File Size Limits', () => {
       const app = createImportApp(limit);
       const underLimit = Buffer.alloc(limit - 1, 'b');
 
-      const res = await request(app)
-        .post('/import')
-        .attach('file', underLimit, { filename: 'import.json', contentType: 'application/json' });
+      const res = await request(app).post('/import').attach('file', underLimit, {
+        filename: 'import.json',
+        contentType: 'application/json',
+      });
 
       expect(res.status).toBe(201);
     });

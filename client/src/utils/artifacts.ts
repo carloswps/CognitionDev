@@ -1,10 +1,10 @@
-import dedent from 'dedent';
-import { shadcnComponents } from 'librechat-data-provider';
 import type {
-  SandpackProviderProps,
   SandpackPredefinedTemplate,
+  SandpackProviderProps,
 } from '@codesandbox/sandpack-react';
+import dedent from 'dedent';
 import type { TStartupConfig } from 'librechat-data-provider';
+import { shadcnComponents } from 'librechat-data-provider';
 
 const artifactFilename = {
   'application/vnd.react': 'App.tsx',

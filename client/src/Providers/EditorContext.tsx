@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useMemo } from 'react';
+import type React from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 
 /**
  * Mutation state context - for components that need to know about save/edit status

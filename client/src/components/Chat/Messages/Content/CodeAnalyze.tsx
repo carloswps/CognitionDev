@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
 import { Terminal } from 'lucide-react';
-import { useProgress, useLocalize } from '~/hooks';
-import ProgressText from './ProgressText';
-import MarkdownLite from './MarkdownLite';
-import { cn } from '~/utils';
+import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { useLocalize, useProgress } from '~/hooks';
 import store from '~/store';
+import { cn } from '~/utils';
+import MarkdownLite from './MarkdownLite';
+import ProgressText from './ProgressText';
 
 export default function CodeAnalyze({
   initialProgress = 0.1,

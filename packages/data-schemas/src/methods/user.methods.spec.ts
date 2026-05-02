@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
+import balanceSchema from '~/schema/balance';
+import userSchema from '~/schema/user';
 import type * as t from '~/types';
 import { createUserMethods } from './user';
-import userSchema from '~/schema/user';
-import balanceSchema from '~/schema/balance';
 
 /** Mocking crypto for generateToken */
 jest.mock('~/crypto', () => ({
@@ -81,8 +81,12 @@ describe('User Methods - Database Tests', () => {
         provider: 'local',
       });
 
-      const foundWithSpaces = await methods.findUser({ email: '  test@example.com  ' });
-      const foundWithTabs = await methods.findUser({ email: '\ttest@example.com\t' });
+      const foundWithSpaces = await methods.findUser({
+        email: '  test@example.com  ',
+      });
+      const foundWithTabs = await methods.findUser({
+        email: '\ttest@example.com\t',
+      });
 
       expect(foundWithSpaces).toBeDefined();
       expect(foundWithSpaces?.email).toBe('test@example.com');
@@ -98,7 +102,9 @@ describe('User Methods - Database Tests', () => {
         provider: 'local',
       });
 
-      const found = await methods.findUser({ email: '  John.Doe@EXAMPLE.COM  ' });
+      const found = await methods.findUser({
+        email: '  John.Doe@EXAMPLE.COM  ',
+      });
 
       expect(found).toBeDefined();
       expect(found?.email).toBe('john.doe@example.com');
@@ -152,7 +158,9 @@ describe('User Methods - Database Tests', () => {
     });
 
     test('should return null for non-existent user', async () => {
-      const found = await methods.findUser({ email: 'nonexistent@example.com' });
+      const found = await methods.findUser({
+        email: 'nonexistent@example.com',
+      });
 
       expect(found).toBeNull();
     });
@@ -280,7 +288,9 @@ describe('User Methods - Database Tests', () => {
 
     test('should return null for non-existent user', async () => {
       const fakeId = new mongoose.Types.ObjectId();
-      const result = await methods.updateUser(fakeId.toString(), { name: 'Test' });
+      const result = await methods.updateUser(fakeId.toString(), {
+        name: 'Test',
+      });
 
       expect(result).toBeNull();
     });
@@ -385,8 +395,18 @@ describe('User Methods - Database Tests', () => {
   describe('searchUsers', () => {
     beforeEach(async () => {
       await User.create([
-        { name: 'John Doe', email: 'john@example.com', username: 'johnd', provider: 'local' },
-        { name: 'Jane Smith', email: 'jane@example.com', username: 'janes', provider: 'local' },
+        {
+          name: 'John Doe',
+          email: 'john@example.com',
+          username: 'johnd',
+          provider: 'local',
+        },
+        {
+          name: 'Jane Smith',
+          email: 'jane@example.com',
+          username: 'janes',
+          provider: 'local',
+        },
         {
           name: 'Bob Johnson',
           email: 'bob@example.com',
@@ -409,7 +429,9 @@ describe('User Methods - Database Tests', () => {
     });
 
     test('should search by email', async () => {
-      const results = await methods.searchUsers({ searchPattern: 'example.com' });
+      const results = await methods.searchUsers({
+        searchPattern: 'example.com',
+      });
 
       expect(results).toHaveLength(3);
     });
@@ -428,7 +450,10 @@ describe('User Methods - Database Tests', () => {
     });
 
     test('should respect limit', async () => {
-      const results = await methods.searchUsers({ searchPattern: 'example', limit: 2 });
+      const results = await methods.searchUsers({
+        searchPattern: 'example',
+        limit: 2,
+      });
 
       expect(results).toHaveLength(2);
     });
@@ -527,7 +552,9 @@ describe('User Methods - Database Tests', () => {
         provider: 'local',
       });
 
-      const found = await methods.findUser({ email: '    test@example.com    ' });
+      const found = await methods.findUser({
+        email: '    test@example.com    ',
+      });
 
       expect(found).toBeDefined();
       expect(found?.email).toBe('test@example.com');
@@ -614,7 +641,9 @@ describe('User Methods - Database Tests', () => {
       });
 
       /** SAML providers sometimes return emails in different formats */
-      const found = await methods.findUser({ email: '  SAML.USER@ENTERPRISE.COM  ' });
+      const found = await methods.findUser({
+        email: '  SAML.USER@ENTERPRISE.COM  ',
+      });
 
       expect(found).toBeDefined();
       expect(found?.provider).toBe('saml');
@@ -639,7 +668,10 @@ describe('User Methods - Database Tests', () => {
 
     test('offset skips the first N documents', async () => {
       const all = await methods.findUsers({}, 'name', { sort: { name: 1 } });
-      const skipped = await methods.findUsers({}, 'name', { offset: 2, sort: { name: 1 } });
+      const skipped = await methods.findUsers({}, 'name', {
+        offset: 2,
+        sort: { name: 1 },
+      });
 
       expect(skipped).toHaveLength(3);
       expect(skipped[0].name).toBe(all[2].name);

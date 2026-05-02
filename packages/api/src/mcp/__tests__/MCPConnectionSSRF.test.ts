@@ -9,14 +9,14 @@
  *    regardless of whether useSSRFProtection is enabled (allowlist scenario)
  */
 
-import * as net from 'net';
-import * as http from 'http';
-import { randomUUID } from 'crypto';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
+import { randomUUID } from 'crypto';
+import * as http from 'http';
 import type { Socket } from 'net';
-import { MCPConnection } from '~/mcp/connection';
+import * as net from 'net';
 import { resolveHostnameSSRF } from '~/auth';
+import { MCPConnection } from '~/mcp/connection';
 
 jest.mock('@librechat/data-schemas', () => ({
   logger: {
@@ -132,7 +132,9 @@ async function createStreamableServer(): Promise<Omit<TestServer, 'redirectHit'>
     let transport = sid ? sessions.get(sid) : undefined;
 
     if (!transport) {
-      transport = new StreamableHTTPServerTransport({ sessionIdGenerator: () => randomUUID() });
+      transport = new StreamableHTTPServerTransport({
+        sessionIdGenerator: () => randomUUID(),
+      });
       const mcp = new McpServer({ name: 'test-ssrf', version: '0.0.1' });
       await mcp.connect(transport);
     }
@@ -237,7 +239,10 @@ describe('MCP SSRF protection – WebSocket DNS resolution', () => {
 
     conn = new MCPConnection({
       serverName: 'ws-ssrf-test',
-      serverConfig: { type: 'websocket', url: 'ws://evil.example.com:8080/mcp' },
+      serverConfig: {
+        type: 'websocket',
+        url: 'ws://evil.example.com:8080/mcp',
+      },
       useSSRFProtection: true,
     });
 
@@ -252,7 +257,10 @@ describe('MCP SSRF protection – WebSocket DNS resolution', () => {
 
     conn = new MCPConnection({
       serverName: 'ws-ssrf-allowlist',
-      serverConfig: { type: 'websocket', url: 'ws://allowlisted.example.com:8080/mcp' },
+      serverConfig: {
+        type: 'websocket',
+        url: 'ws://allowlisted.example.com:8080/mcp',
+      },
       useSSRFProtection: false,
     });
 
@@ -267,7 +275,10 @@ describe('MCP SSRF protection – WebSocket DNS resolution', () => {
 
     conn = new MCPConnection({
       serverName: 'ws-public-test',
-      serverConfig: { type: 'websocket', url: 'ws://public.example.com:8080/mcp' },
+      serverConfig: {
+        type: 'websocket',
+        url: 'ws://public.example.com:8080/mcp',
+      },
       useSSRFProtection: true,
     });
 

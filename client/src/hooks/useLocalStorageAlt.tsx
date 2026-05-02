@@ -5,7 +5,7 @@
  *  - Also value will be updated everywhere, when value updated (via `storage` event)
  */
 
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export default function useLocalStorage<T>(
   key: string,

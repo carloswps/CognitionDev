@@ -163,8 +163,8 @@ describe('Tool Handlers', () => {
     let loadTool2;
     let loadTool3;
     const sampleTools = [...initialTools, 'calculator'];
-    let ToolClass2 = Calculator;
-    let remainingTools = availableTools.filter(
+    const ToolClass2 = Calculator;
+    const remainingTools = availableTools.filter(
       (tool) => sampleTools.indexOf(tool.pluginKey) === -1,
     );
 

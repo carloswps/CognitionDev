@@ -1,18 +1,18 @@
-import * as types from '../types';
-import * as r from '../roles';
-import * as p from '../permissions';
+import type * as p from '../permissions';
+import type * as r from '../roles';
+import type * as types from '../types';
+import type { Action, ActionMetadata } from './agents';
 import {
+  type Agent,
+  type AgentCreateParams,
+  type AgentUpdateParams,
+  type Assistant,
+  type AssistantCreateParams,
+  type AssistantDocument,
+  type AssistantUpdateParams,
+  type FunctionTool,
   Tools,
-  Assistant,
-  AssistantCreateParams,
-  AssistantUpdateParams,
-  FunctionTool,
-  AssistantDocument,
-  Agent,
-  AgentCreateParams,
-  AgentUpdateParams,
 } from './assistants';
-import { Action, ActionMetadata } from './agents';
 
 export type MutationOptions<
   Response,
@@ -209,7 +209,9 @@ export type ArchiveConvoOptions = MutationOptions<
   types.TArchiveConversationRequest
 >;
 
-export type DeleteSharedLinkContext = { previousQueries?: Map<string, TDeleteSharedLinkResponse> };
+export type DeleteSharedLinkContext = {
+  previousQueries?: Map<string, TDeleteSharedLinkResponse>;
+};
 export type DeleteSharedLinkOptions = MutationOptions<
   TDeleteSharedLinkResponse,
   { shareId: string },
@@ -362,7 +364,10 @@ export type ToolParams<T extends ToolId> = ToolParamsMap[T] & {
   blockIndex?: number;
   conversationId: string;
 };
-export type ToolCallResponse = { result: unknown; attachments?: types.TAttachment[] };
+export type ToolCallResponse = {
+  result: unknown;
+  attachments?: types.TAttachment[];
+};
 export type ToolCallMutationOptions<T extends ToolId> = MutationOptions<
   ToolCallResponse,
   ToolParams<T>

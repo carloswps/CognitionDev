@@ -1,5 +1,5 @@
-import React from 'react';
 import { Button } from '@librechat/client';
+import type React from 'react';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
 
@@ -51,7 +51,11 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ error, onRetry, cont
   };
 
   // Extract user-friendly error information
-  const getErrorInfo = (): { title: string; message: string; suggestion: string } => {
+  const getErrorInfo = (): {
+    title: string;
+    message: string;
+    suggestion: string;
+  } => {
     // Handle different error types
     let errorData: unknown;
 
@@ -161,11 +165,15 @@ export const ErrorDisplay: React.FC<ErrorDisplayProps> = ({ error, onRetry, cont
    */
   const getNotFoundMessage = (): string => {
     if (context?.searchQuery) {
-      return localize('com_agents_search_no_results', { query: context.searchQuery });
+      return localize('com_agents_search_no_results', {
+        query: context.searchQuery,
+      });
     }
 
     if (context?.category && context.category !== 'all') {
-      return localize('com_agents_category_empty', { category: context.category });
+      return localize('com_agents_category_empty', {
+        category: context.category,
+      });
     }
 
     return localize('com_agents_error_not_found_message');

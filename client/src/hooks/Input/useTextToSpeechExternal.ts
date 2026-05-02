@@ -1,6 +1,6 @@
-import { useState, useMemo, useRef, useCallback, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
 import { useToastContext } from '@librechat/client';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { useTextToSpeechMutation, useVoicesQuery } from '~/data-provider';
 import { useLocalize } from '~/hooks';
 import store from '~/store';
@@ -126,7 +126,9 @@ function useTextToSpeechExternal({
     },
     onError: (error: unknown) => {
       showToast({
-        message: localize('com_nav_audio_process_error', { 0: (error as Error).message }),
+        message: localize('com_nav_audio_process_error', {
+          0: (error as Error).message,
+        }),
         status: 'error',
       });
     },

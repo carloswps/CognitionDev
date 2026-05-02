@@ -1,16 +1,16 @@
-import mongoose from 'mongoose';
+import {
+  AccessRoleIds,
+  PermissionBits,
+  PrincipalType,
+  ResourceType,
+  SystemRoles,
+} from 'librechat-data-provider';
 import { ObjectId } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import {
-  SystemRoles,
-  ResourceType,
-  AccessRoleIds,
-  PrincipalType,
-  PermissionBits,
-} from 'librechat-data-provider';
+import mongoose from 'mongoose';
 import type { IPromptGroup, AccessRole as TAccessRole, AclEntry as TAclEntry } from '..';
+import { createModels, logger } from '..';
 import { createAclEntryMethods } from './aclEntry';
-import { logger, createModels } from '..';
 import { createMethods } from './index';
 
 // Disable console for tests
@@ -556,7 +556,9 @@ describe('Prompt ACL Permissions', () => {
         },
       });
 
-      const savedPrompt = result as { prompt?: { _id: mongoose.Types.ObjectId } } | null;
+      const savedPrompt = result as {
+        prompt?: { _id: mongoose.Types.ObjectId };
+      } | null;
       if (!savedPrompt?.prompt) {
         throw new Error('Failed to save prompt');
       }

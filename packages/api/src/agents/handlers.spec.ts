@@ -1,10 +1,10 @@
-import { Constants } from '@librechat/agents';
 import type {
+  ToolCallRequest,
   ToolExecuteBatchRequest,
   ToolExecuteResult,
-  ToolCallRequest,
 } from '@librechat/agents';
-import { createToolExecuteHandler, ToolExecuteOptions } from './handlers';
+import { Constants } from '@librechat/agents';
+import { createToolExecuteHandler, type ToolExecuteOptions } from './handlers';
 
 function createMockTool(name: string, capturedConfigs: Record<string, unknown>[]) {
   return {
@@ -58,7 +58,11 @@ describe('createToolExecuteHandler', () => {
           codeSessionContext: {
             session_id: 'prev-session-abc',
             files: [
-              { session_id: 'prev-session-abc', id: 'f1', name: 'data.parquet' },
+              {
+                session_id: 'prev-session-abc',
+                id: 'f1',
+                name: 'data.parquet',
+              },
               { session_id: 'prev-session-abc', id: 'f2', name: 'chart.png' },
             ],
           },

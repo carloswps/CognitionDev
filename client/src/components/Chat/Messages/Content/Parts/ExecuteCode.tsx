@@ -1,14 +1,14 @@
-import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
-import { useRecoilValue } from 'recoil';
-import { SquareTerminal } from 'lucide-react';
 import type { TAttachment } from 'librechat-data-provider';
+import { SquareTerminal } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import ProgressText from '~/components/Chat/Messages/Content/ProgressText';
-import { useProgress, useLocalize, useExpandCollapse } from '~/hooks';
-import CodeWindowHeader from './CodeWindowHeader';
-import { AttachmentGroup } from './Attachment';
-import Stdout from './Stdout';
-import { cn } from '~/utils';
+import { useExpandCollapse, useLocalize, useProgress } from '~/hooks';
 import store from '~/store';
+import { cn } from '~/utils';
+import { AttachmentGroup } from './Attachment';
+import CodeWindowHeader from './CodeWindowHeader';
+import Stdout from './Stdout';
 
 interface ParsedArgs {
   lang?: string;

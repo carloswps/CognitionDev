@@ -1,9 +1,9 @@
+import { logger } from '@librechat/data-schemas';
 import type Keyv from 'keyv';
 import { fromPairs } from 'lodash';
-import { logger } from '@librechat/data-schemas';
+import { keyvRedisClient, standardCache } from '~/cache';
 import type { IServerConfigsRepositoryInterface } from '~/mcp/registry/ServerConfigsRepositoryInterface';
-import type { ParsedServerConfig, AddServerResult } from '~/mcp/types';
-import { standardCache, keyvRedisClient } from '~/cache';
+import type { AddServerResult, ParsedServerConfig } from '~/mcp/types';
 import { BaseRegistryCache } from './BaseRegistryCache';
 
 /**
@@ -48,13 +48,19 @@ export class ServerConfigsCacheRedis
       throw new Error(
         `Server "${serverName}" does not exist in cache. Use add() to create new configs.`,
       );
-    const success = await this.cache.set(serverName, { ...config, updatedAt: Date.now() });
+    const success = await this.cache.set(serverName, {
+      ...config,
+      updatedAt: Date.now(),
+    });
     this.successCheck(`update ${this.namespace} server "${serverName}"`, success);
   }
 
   public async upsert(serverName: string, config: ParsedServerConfig): Promise<void> {
     if (this.leaderOnly) await this.leaderCheck(`upsert ${this.namespace} MCP servers`);
-    const success = await this.cache.set(serverName, { ...config, updatedAt: Date.now() });
+    const success = await this.cache.set(serverName, {
+      ...config,
+      updatedAt: Date.now(),
+    });
     this.successCheck(`upsert ${this.namespace} server "${serverName}"`, success);
   }
 

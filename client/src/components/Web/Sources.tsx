@@ -1,26 +1,26 @@
-import React, { useMemo, useCallback } from 'react';
-import { useRecoilValue } from 'recoil';
 import * as Ariakit from '@ariakit/react';
 import { VisuallyHidden } from '@ariakit/react';
-import { Tools } from 'librechat-data-provider';
-import { X, Globe, Newspaper, Image, ChevronDown, File, Download } from 'lucide-react';
 import {
-  OGDialog,
   AnimatedTabs,
+  OGDialog,
   OGDialogClose,
-  OGDialogTitle,
   OGDialogContent,
+  OGDialogTitle,
   OGDialogTrigger,
   useToastContext,
 } from '@librechat/client';
-import type { ValidSource, ImageResult } from 'librechat-data-provider';
+import type { ImageResult, ValidSource } from 'librechat-data-provider';
+import { Tools } from 'librechat-data-provider';
+import { ChevronDown, Download, File, Globe, Image, Newspaper, X } from 'lucide-react';
+import React, { useCallback, useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
 import { FaviconImage, getCleanDomain } from '~/components/Web/SourceHovercard';
-import SourcesErrorBoundary from './SourcesErrorBoundary';
 import { useFileDownload } from '~/data-provider';
-import { useSearchContext } from '~/Providers';
 import { useLocalize } from '~/hooks';
-import { cn } from '~/utils';
+import { useSearchContext } from '~/Providers';
 import store from '~/store';
+import { cn } from '~/utils';
+import SourcesErrorBoundary from './SourcesErrorBoundary';
 
 interface SourceItemProps {
   source: ValidSource;
@@ -421,7 +421,9 @@ const SourcesGroup = React.memo(function SourcesGroup({
             <div className="flex items-center gap-2">
               <StackedFavicons sources={remainingSources} />
               <span className="truncate text-xs font-medium text-text-secondary">
-                {localize('com_sources_more_sources', { count: remainingSources.length })}
+                {localize('com_sources_more_sources', {
+                  count: remainingSources.length,
+                })}
               </span>
             </div>
           </OGDialogTrigger>
@@ -517,7 +519,9 @@ function FilesGroup({ files, messageId, conversationId, limit = 3 }: FilesGroupP
                 ))}
               </div>
               <span className="truncate text-xs font-medium text-text-secondary">
-                {localize('com_sources_more_files', { count: remainingFiles.length })}
+                {localize('com_sources_more_files', {
+                  count: remainingFiles.length,
+                })}
               </span>
             </div>
           </OGDialogTrigger>
@@ -556,7 +560,10 @@ function FilesGroup({ files, messageId, conversationId, limit = 3 }: FilesGroupP
 function TabWithIcon({ label, icon }: { label: string; icon: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2 rounded-md px-3 py-1 text-sm transition-colors hover:bg-surface-tertiary hover:text-text-primary">
-      {React.cloneElement(icon as React.ReactElement, { size: 14, 'aria-hidden': true })}
+      {React.cloneElement(icon as React.ReactElement, {
+        size: 14,
+        'aria-hidden': true,
+      })}
       <span>{label}</span>
     </div>
   );
@@ -663,7 +670,10 @@ function SourcesComponent({ messageId, conversationId }: SourcesProps = {}) {
   }, [searchResults, messageId]);
 
   const tabs = useMemo(() => {
-    const availableTabs: Array<{ label: React.ReactNode; content: React.ReactNode }> = [];
+    const availableTabs: Array<{
+      label: React.ReactNode;
+      content: React.ReactNode;
+    }> = [];
 
     if (organicSources.length || topStories.length || hasAnswerBox) {
       availableTabs.push({

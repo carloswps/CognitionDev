@@ -1,10 +1,10 @@
-import { useRecoilValue } from 'recoil';
-import { QueryKeys } from 'librechat-data-provider';
+import { Button, NewChatIcon, TooltipAnchor } from '@librechat/client';
 import { useQueryClient } from '@tanstack/react-query';
-import { TooltipAnchor, Button, NewChatIcon } from '@librechat/client';
+import { QueryKeys } from 'librechat-data-provider';
+import { useRecoilValue } from 'recoil';
 import { useLocalize, useNewConvo } from '~/hooks';
-import { clearMessagesCache, cn } from '~/utils';
 import store from '~/store';
+import { clearMessagesCache, cn } from '~/utils';
 
 export default function NewChat({ className }: { className?: string }) {
   const localize = useLocalize();

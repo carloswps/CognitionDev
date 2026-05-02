@@ -79,7 +79,10 @@ const getMCPTools = async (req, res) => {
     const mcpServers = {};
 
     const cachePromises = configuredServers.map((serverName) =>
-      getMCPServerTools(userId, serverName).then((tools) => ({ serverName, tools })),
+      getMCPServerTools(userId, serverName).then((tools) => ({
+        serverName,
+        tools,
+      })),
     );
     const cacheResults = await Promise.all(cachePromises);
 

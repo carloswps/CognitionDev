@@ -1,4 +1,5 @@
-import React, { FC, forwardRef } from 'react';
+import type React from 'react';
+import { type FC, forwardRef } from 'react';
 import { cn } from '~/utils/';
 
 interface Props {

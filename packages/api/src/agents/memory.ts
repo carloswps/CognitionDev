@@ -1,25 +1,26 @@
 /** Memories */
-import { z } from 'zod';
-import { tool } from '@langchain/core/tools';
-import { Tools } from 'librechat-data-provider';
-import { logger } from '@librechat/data-schemas';
+
+import type { BaseMessage, ToolMessage } from '@langchain/core/messages';
 import { HumanMessage } from '@langchain/core/messages';
-import { Run, Providers, GraphEvents } from '@librechat/agents';
+import { tool } from '@langchain/core/tools';
 import type {
+  ClientOptions,
+  EventHandler,
+  LLMConfig,
   OpenAIClientOptions,
   StreamEventData,
   ToolEndCallback,
-  ClientOptions,
-  EventHandler,
   ToolEndData,
-  LLMConfig,
 } from '@librechat/agents';
-import type { ObjectId, MemoryMethods, IUser } from '@librechat/data-schemas';
-import type { TAttachment, MemoryArtifact } from 'librechat-data-provider';
-import type { BaseMessage, ToolMessage } from '@langchain/core/messages';
+import { GraphEvents, Providers, Run } from '@librechat/agents';
+import type { IUser, MemoryMethods, ObjectId } from '@librechat/data-schemas';
+import { logger } from '@librechat/data-schemas';
 import type { Response as ServerResponse } from 'express';
+import type { MemoryArtifact, TAttachment } from 'librechat-data-provider';
+import { Tools } from 'librechat-data-provider';
+import { z } from 'zod';
 import { GenerationJobManager } from '~/stream/GenerationJobManager';
-import { resolveHeaders, createSafeUser } from '~/utils';
+import { createSafeUser, resolveHeaders } from '~/utils';
 import Tokenizer from '~/utils/tokenizer';
 
 type RequiredMemoryMethods = Pick<
@@ -403,7 +404,11 @@ ${memory ?? 'No existing memories'}`;
     }
 
     const artifactPromises: Promise<TAttachment | null>[] = [];
-    const memoryCallback = createMemoryCallback({ res, artifactPromises, streamId });
+    const memoryCallback = createMemoryCallback({
+      res,
+      artifactPromises,
+      streamId,
+    });
     const customHandlers = {
       [GraphEvents.TOOL_END]: new BasicToolEndHandler(memoryCallback),
     };
@@ -483,7 +488,11 @@ ${memory ?? 'No existing memories'}`;
         provider: llmConfig?.provider,
       });
     } else {
-      logger.debug('[MemoryAgent] Returned no content', { userId, conversationId, messageId });
+      logger.debug('[MemoryAgent] Returned no content', {
+        userId,
+        conversationId,
+        messageId,
+      });
     }
     return await Promise.all(artifactPromises);
   } catch (error) {
@@ -522,7 +531,7 @@ export async function createMemoryProcessor({
 
   return [
     withoutKeys,
-    async function (messages: BaseMessage[]): Promise<(TAttachment | null)[] | undefined> {
+    async (messages: BaseMessage[]): Promise<(TAttachment | null)[] | undefined> => {
       try {
         return await processMemory({
           res,
@@ -584,7 +593,10 @@ async function handleMemoryArtifact({
     return attachment;
   }
   if (streamId) {
-    GenerationJobManager.emitChunk(streamId, { event: 'attachment', data: attachment });
+    GenerationJobManager.emitChunk(streamId, {
+      event: 'attachment',
+      data: attachment,
+    });
   } else {
     res.write(`event: attachment\ndata: ${JSON.stringify(attachment)}\n\n`);
   }

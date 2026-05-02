@@ -1,14 +1,14 @@
-import { renderHook, act } from '@testing-library/react';
-import { StepTypes, StepEvents, ContentTypes, ToolCallTypes } from 'librechat-data-provider';
+import { act, renderHook } from '@testing-library/react';
 import type {
-  TMessageContentParts,
-  SummaryContentPart,
-  EventSubmission,
-  TEndpointOption,
-  TConversation,
-  TMessage,
   Agents,
+  EventSubmission,
+  SummaryContentPart,
+  TConversation,
+  TEndpointOption,
+  TMessage,
+  TMessageContentParts,
 } from 'librechat-data-provider';
+import { ContentTypes, StepEvents, StepTypes, ToolCallTypes } from 'librechat-data-provider';
 import useStepHandler from '~/hooks/SSE/useStepHandler';
 
 type TSubmissionForTest = {
@@ -21,7 +21,11 @@ type TSubmissionForTest = {
   conversation: Partial<TConversation>;
   endpointOption: TEndpointOption;
   initialResponse: TMessage;
-  editedContent?: { index: number; type: string; [key: string]: unknown } | null;
+  editedContent?: {
+    index: number;
+    type: string;
+    [key: string]: unknown;
+  } | null;
 };
 
 describe('useStepHandler', () => {
@@ -184,12 +188,16 @@ describe('useStepHandler', () => {
     });
 
     it('should handle USE_PRELIM_RESPONSE_MESSAGE_ID by using initialResponse', () => {
-      const initialResponse = createResponseMessage({ messageId: 'initial-response-id' });
+      const initialResponse = createResponseMessage({
+        messageId: 'initial-response-id',
+      });
       mockGetMessages.mockReturnValue([initialResponse]);
 
       const { result } = renderHook(() => useStepHandler(createHookParams()));
 
-      const runStep = createRunStep({ runId: 'USE_PRELIM_RESPONSE_MESSAGE_ID' });
+      const runStep = createRunStep({
+        runId: 'USE_PRELIM_RESPONSE_MESSAGE_ID',
+      });
       const submission = createSubmission({
         initialResponse,
       });
@@ -236,7 +244,10 @@ describe('useStepHandler', () => {
 
       act(() => {
         result.current.stepHandler(
-          { event: StepEvents.ON_MESSAGE_DELTA, data: createMessageDelta(stepId, 'Hello') },
+          {
+            event: StepEvents.ON_MESSAGE_DELTA,
+            data: createMessageDelta(stepId, 'Hello'),
+          },
           submission,
         );
       });
@@ -431,14 +442,20 @@ describe('useStepHandler', () => {
 
       act(() => {
         result.current.stepHandler(
-          { event: StepEvents.ON_MESSAGE_DELTA, data: createMessageDelta('step-1', 'Hello ') },
+          {
+            event: StepEvents.ON_MESSAGE_DELTA,
+            data: createMessageDelta('step-1', 'Hello '),
+          },
           submission,
         );
       });
 
       act(() => {
         result.current.stepHandler(
-          { event: StepEvents.ON_MESSAGE_DELTA, data: createMessageDelta('step-1', 'World') },
+          {
+            event: StepEvents.ON_MESSAGE_DELTA,
+            data: createMessageDelta('step-1', 'World'),
+          },
           submission,
         );
       });
@@ -446,7 +463,10 @@ describe('useStepHandler', () => {
       const lastCall = mockSetMessages.mock.calls[mockSetMessages.mock.calls.length - 1][0];
       const responseMsg = lastCall[lastCall.length - 1];
       expect(responseMsg.content).toContainEqual(
-        expect.objectContaining({ type: ContentTypes.TEXT, text: 'Hello World' }),
+        expect.objectContaining({
+          type: ContentTypes.TEXT,
+          text: 'Hello World',
+        }),
       );
     });
 
@@ -510,7 +530,10 @@ describe('useStepHandler', () => {
       const lastCall = mockSetMessages.mock.calls[mockSetMessages.mock.calls.length - 1][0];
       const responseMsg = lastCall[lastCall.length - 1];
       expect(responseMsg.content).toContainEqual(
-        expect.objectContaining({ type: ContentTypes.THINK, think: 'Thinking...' }),
+        expect.objectContaining({
+          type: ContentTypes.THINK,
+          think: 'Thinking...',
+        }),
       );
     });
 
@@ -545,14 +568,20 @@ describe('useStepHandler', () => {
 
       act(() => {
         result.current.stepHandler(
-          { event: StepEvents.ON_REASONING_DELTA, data: createReasoningDelta('step-1', 'First ') },
+          {
+            event: StepEvents.ON_REASONING_DELTA,
+            data: createReasoningDelta('step-1', 'First '),
+          },
           submission,
         );
       });
 
       act(() => {
         result.current.stepHandler(
-          { event: StepEvents.ON_REASONING_DELTA, data: createReasoningDelta('step-1', 'thought') },
+          {
+            event: StepEvents.ON_REASONING_DELTA,
+            data: createReasoningDelta('step-1', 'thought'),
+          },
           submission,
         );
       });
@@ -560,7 +589,10 @@ describe('useStepHandler', () => {
       const lastCall = mockSetMessages.mock.calls[mockSetMessages.mock.calls.length - 1][0];
       const responseMsg = lastCall[lastCall.length - 1];
       expect(responseMsg.content).toContainEqual(
-        expect.objectContaining({ type: ContentTypes.THINK, think: 'First thought' }),
+        expect.objectContaining({
+          type: ContentTypes.THINK,
+          think: 'First thought',
+        }),
       );
     });
   });
@@ -771,7 +803,10 @@ describe('useStepHandler', () => {
 
       act(() => {
         result.current.stepHandler(
-          { event: StepEvents.ON_MESSAGE_DELTA, data: createMessageDelta('step-1', 'Test') },
+          {
+            event: StepEvents.ON_MESSAGE_DELTA,
+            data: createMessageDelta('step-1', 'Test'),
+          },
           submission,
         );
       });
@@ -802,7 +837,10 @@ describe('useStepHandler', () => {
 
       act(() => {
         result.current.stepHandler(
-          { event: StepEvents.ON_MESSAGE_DELTA, data: createMessageDelta('step-1', ' more') },
+          {
+            event: StepEvents.ON_MESSAGE_DELTA,
+            data: createMessageDelta('step-1', ' more'),
+          },
           submission,
         );
       });
@@ -810,7 +848,10 @@ describe('useStepHandler', () => {
       const lastCall = mockSetMessages.mock.calls[mockSetMessages.mock.calls.length - 1][0];
       const responseMsg = lastCall[lastCall.length - 1];
       expect(responseMsg.content).toContainEqual(
-        expect.objectContaining({ type: ContentTypes.TEXT, text: 'Synced content more' }),
+        expect.objectContaining({
+          type: ContentTypes.TEXT,
+          text: 'Synced content more',
+        }),
       );
     });
 
@@ -829,7 +870,10 @@ describe('useStepHandler', () => {
 
       expect(() => {
         act(() => {
-          result.current.syncStepMessage({ ...createResponseMessage(), messageId: '' });
+          result.current.syncStepMessage({
+            ...createResponseMessage(),
+            messageId: '',
+          });
         });
       }).not.toThrow();
     });
@@ -852,7 +896,10 @@ describe('useStepHandler', () => {
         result.current.stepHandler({ event: StepEvents.ON_RUN_STEP, data: runStep }, submission);
       });
 
-      expect(mockAnnouncePolite).toHaveBeenCalledWith({ message: 'composing', isStatus: true });
+      expect(mockAnnouncePolite).toHaveBeenCalledWith({
+        message: 'composing',
+        isStatus: true,
+      });
     });
 
     it('should not announce if within MESSAGE_UPDATE_INTERVAL', () => {
@@ -892,7 +939,11 @@ describe('useStepHandler', () => {
         index: 0,
       });
       const submission = createSubmission({
-        editedContent: { index: 0, type: ContentTypes.TEXT, text: 'Previous content' },
+        editedContent: {
+          index: 0,
+          type: ContentTypes.TEXT,
+          text: 'Previous content',
+        },
         initialResponse,
       });
 
@@ -916,15 +967,24 @@ describe('useStepHandler', () => {
 
       act(() => {
         result.current.stepHandler(
-          { event: StepEvents.ON_MESSAGE_DELTA, data: createMessageDelta(stepId, 'First ') },
+          {
+            event: StepEvents.ON_MESSAGE_DELTA,
+            data: createMessageDelta(stepId, 'First '),
+          },
           submission,
         );
         result.current.stepHandler(
-          { event: StepEvents.ON_MESSAGE_DELTA, data: createMessageDelta(stepId, 'Second ') },
+          {
+            event: StepEvents.ON_MESSAGE_DELTA,
+            data: createMessageDelta(stepId, 'Second '),
+          },
           submission,
         );
         result.current.stepHandler(
-          { event: StepEvents.ON_MESSAGE_DELTA, data: createMessageDelta(stepId, 'Third') },
+          {
+            event: StepEvents.ON_MESSAGE_DELTA,
+            data: createMessageDelta(stepId, 'Third'),
+          },
           submission,
         );
       });
@@ -941,7 +1001,10 @@ describe('useStepHandler', () => {
       const lastCall = mockSetMessages.mock.calls[mockSetMessages.mock.calls.length - 1][0];
       const responseMsg = lastCall.find((m: TMessage) => !m.isCreatedByUser);
       expect(responseMsg?.content).toContainEqual(
-        expect.objectContaining({ type: ContentTypes.TEXT, text: 'First Second Third' }),
+        expect.objectContaining({
+          type: ContentTypes.TEXT,
+          text: 'First Second Third',
+        }),
       );
     });
 
@@ -963,7 +1026,10 @@ describe('useStepHandler', () => {
           submission,
         );
         result.current.stepHandler(
-          { event: StepEvents.ON_MESSAGE_DELTA, data: createMessageDelta(stepId, 'Response') },
+          {
+            event: StepEvents.ON_MESSAGE_DELTA,
+            data: createMessageDelta(stepId, 'Response'),
+          },
           submission,
         );
       });

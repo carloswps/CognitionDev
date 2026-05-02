@@ -6,7 +6,9 @@ test.describe('Endpoints Presets suite', () => {
     await page.getByTestId('new-conversation-menu').click();
 
     // includes the icon + endpoint names in obj property
-    const endpointItem = page.getByRole('menuitemradio', { name: 'ChatGPT OpenAI' });
+    const endpointItem = page.getByRole('menuitemradio', {
+      name: 'ChatGPT OpenAI',
+    });
     await endpointItem.click();
 
     await page.getByTestId('new-conversation-menu').click();

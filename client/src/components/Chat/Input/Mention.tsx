@@ -1,15 +1,15 @@
-import { memo, useState, useRef, useEffect } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { AutoSizer, List } from 'react-virtualized';
 import { Spinner, useCombobox } from '@librechat/client';
 import { EModelEndpoint } from 'librechat-data-provider';
+import { memo, useEffect, useRef, useState } from 'react';
+import { AutoSizer, List } from 'react-virtualized';
 import type { RecoilState } from 'recoil';
-import type { MentionOption, ConvoGenerator } from '~/common';
-import { useGetConversation, useLocalize, TranslationKeys } from '~/hooks';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import type { ConvoGenerator, MentionOption } from '~/common';
+import { type TranslationKeys, useGetConversation, useLocalize } from '~/hooks';
 import useInitPopoverInput from '~/hooks/Input/useInitPopoverInput';
+import useMentions from '~/hooks/Input/useMentions';
 import useSelectMention from '~/hooks/Input/useSelectMention';
 import { useAssistantsMapContext } from '~/Providers';
-import useMentions from '~/hooks/Input/useMentions';
 import { removeCharIfLast } from '~/utils';
 import MentionItem from './MentionItem';
 
@@ -139,7 +139,10 @@ function MentionContent({
   const type = commandChar !== '@' ? 'add-convo' : 'mention';
   useEffect(() => {
     const currentActiveItem = document.getElementById(`${type}-item-${activeIndex}`);
-    currentActiveItem?.scrollIntoView({ behavior: 'instant', block: 'nearest' });
+    currentActiveItem?.scrollIntoView({
+      behavior: 'instant',
+      block: 'nearest',
+    });
   }, [type, activeIndex]);
 
   const rowRenderer = ({

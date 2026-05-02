@@ -1,7 +1,7 @@
 import type { TUserMemory } from 'librechat-data-provider';
-import MemoryCardActions from './MemoryCardActions';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
+import MemoryCardActions from './MemoryCardActions';
 
 interface MemoryCardProps {
   memory: TUserMemory;

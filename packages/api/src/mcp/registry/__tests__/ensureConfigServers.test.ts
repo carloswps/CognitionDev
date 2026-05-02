@@ -1,6 +1,6 @@
-import type * as t from '~/mcp/types';
-import { MCPServersRegistry } from '~/mcp/registry/MCPServersRegistry';
 import { MCPServerInspector } from '~/mcp/registry/MCPServerInspector';
+import { MCPServersRegistry } from '~/mcp/registry/MCPServersRegistry';
+import type * as t from '~/mcp/types';
 
 jest.mock('~/mcp/registry/MCPServerInspector');
 jest.mock('~/mcp/registry/db/ServerConfigsDB', () => ({
@@ -130,7 +130,9 @@ describe('MCPServersRegistry — ensureConfigServers', () => {
     await registry.ensureConfigServers({ my_server: sseConfig });
     expect(inspectSpy).toHaveBeenCalledTimes(1);
 
-    const result2 = await registry.ensureConfigServers({ my_server: sseConfig });
+    const result2 = await registry.ensureConfigServers({
+      my_server: sseConfig,
+    });
     expect(result2).toHaveProperty('my_server');
     expect(result2.my_server.source).toBe('config');
     expect(inspectSpy).toHaveBeenCalledTimes(1);
@@ -139,7 +141,9 @@ describe('MCPServersRegistry — ensureConfigServers', () => {
   it('should store inspectionFailed stub on inspection failure', async () => {
     inspectSpy.mockRejectedValueOnce(new Error('connection refused'));
 
-    const result = await registry.ensureConfigServers({ bad_server: sseConfig });
+    const result = await registry.ensureConfigServers({
+      bad_server: sseConfig,
+    });
 
     expect(result).toHaveProperty('bad_server');
     expect(result.bad_server.inspectionFailed).toBe(true);
@@ -151,7 +155,9 @@ describe('MCPServersRegistry — ensureConfigServers', () => {
     await registry.ensureConfigServers({ bad_server: sseConfig });
     expect(inspectSpy).toHaveBeenCalledTimes(1);
 
-    const result2 = await registry.ensureConfigServers({ bad_server: sseConfig });
+    const result2 = await registry.ensureConfigServers({
+      bad_server: sseConfig,
+    });
     expect(result2.bad_server.inspectionFailed).toBe(true);
     expect(inspectSpy).toHaveBeenCalledTimes(1);
   });
@@ -163,7 +169,9 @@ describe('MCPServersRegistry — ensureConfigServers', () => {
 
     jest.setSystemTime(new Date(FIXED_TIME + 6 * 60 * 1000));
 
-    const result = await registry.ensureConfigServers({ flaky_server: sseConfig });
+    const result = await registry.ensureConfigServers({
+      flaky_server: sseConfig,
+    });
     expect(inspectSpy).toHaveBeenCalledTimes(2);
     expect(result.flaky_server.inspectionFailed).toBeUndefined();
     expect(result.flaky_server.source).toBe('config');
@@ -174,11 +182,15 @@ describe('MCPServersRegistry — ensureConfigServers', () => {
   describe('cross-tenant isolation', () => {
     it('should use different cache keys for same server name with different configs', async () => {
       inspectSpy.mockClear();
-      const resultA = await registry.ensureConfigServers({ shared_name: sseConfig });
+      const resultA = await registry.ensureConfigServers({
+        shared_name: sseConfig,
+      });
       expect(resultA.shared_name.source).toBe('config');
       expect(inspectSpy).toHaveBeenCalledTimes(1);
 
-      const resultB = await registry.ensureConfigServers({ shared_name: altSseConfig });
+      const resultB = await registry.ensureConfigServers({
+        shared_name: altSseConfig,
+      });
       expect(resultB.shared_name.source).toBe('config');
       expect(inspectSpy).toHaveBeenCalledTimes(2);
     });
@@ -218,7 +230,9 @@ describe('MCPServersRegistry — ensureConfigServers', () => {
     it('should merge YAML → config → user with correct precedence in getAllServerConfigs', async () => {
       await registry.addServer('yaml_srv', yamlConfig, 'CACHE');
 
-      const configServers = await registry.ensureConfigServers({ config_srv: sseConfig });
+      const configServers = await registry.ensureConfigServers({
+        config_srv: sseConfig,
+      });
 
       const all = await registry.getAllServerConfigs(undefined, configServers);
       expect(all).toHaveProperty('yaml_srv');
@@ -233,7 +247,9 @@ describe('MCPServersRegistry — ensureConfigServers', () => {
       };
       jest.spyOn(registry['dbConfigsRepo'], 'getAll').mockResolvedValue(mockDbConfigs);
 
-      const configServers = await registry.ensureConfigServers({ config_srv: sseConfig });
+      const configServers = await registry.ensureConfigServers({
+        config_srv: sseConfig,
+      });
       const all = await registry.getAllServerConfigs('user-1', configServers);
 
       expect(all).toHaveProperty('config_srv');
@@ -255,7 +271,10 @@ describe('MCPServersRegistry — ensureConfigServers', () => {
     });
 
     it('should return evicted server names', async () => {
-      await registry.ensureConfigServers({ srv_a: sseConfig, srv_b: altSseConfig });
+      await registry.ensureConfigServers({
+        srv_a: sseConfig,
+        srv_b: altSseConfig,
+      });
       const evicted = await registry.invalidateConfigCache();
       expect(evicted.length).toBeGreaterThan(0);
     });
@@ -268,14 +287,18 @@ describe('MCPServersRegistry — ensureConfigServers', () => {
 
   describe('getServerConfig with configServers', () => {
     it('should return config-source server when configServers is passed', async () => {
-      const configServers = await registry.ensureConfigServers({ config_srv: sseConfig });
+      const configServers = await registry.ensureConfigServers({
+        config_srv: sseConfig,
+      });
       const config = await registry.getServerConfig('config_srv', undefined, configServers);
       expect(config).toBeDefined();
       expect(config?.source).toBe('config');
     });
 
     it('should return config-source server with userId when configServers is passed', async () => {
-      const configServers = await registry.ensureConfigServers({ config_srv: sseConfig });
+      const configServers = await registry.ensureConfigServers({
+        config_srv: sseConfig,
+      });
       const config = await registry.getServerConfig('config_srv', 'user-123', configServers);
       expect(config).toBeDefined();
       expect(config?.source).toBe('config');
@@ -288,12 +311,16 @@ describe('MCPServersRegistry — ensureConfigServers', () => {
     });
 
     it('should return correct config after invalidation and re-init', async () => {
-      const configServers1 = await registry.ensureConfigServers({ config_srv: sseConfig });
+      const configServers1 = await registry.ensureConfigServers({
+        config_srv: sseConfig,
+      });
       expect(await registry.getServerConfig('config_srv', undefined, configServers1)).toBeDefined();
 
       await registry.invalidateConfigCache();
 
-      const configServers2 = await registry.ensureConfigServers({ config_srv: sseConfig });
+      const configServers2 = await registry.ensureConfigServers({
+        config_srv: sseConfig,
+      });
       const config = await registry.getServerConfig('config_srv', undefined, configServers2);
       expect(config).toBeDefined();
       expect(config?.source).toBe('config');

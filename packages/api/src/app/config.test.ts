@@ -1,8 +1,8 @@
-import { getTransactionsConfig, getBalanceConfig, getCustomEndpointConfig } from './config';
-import { logger } from '@librechat/data-schemas';
-import { FileSources, EModelEndpoint } from 'librechat-data-provider';
-import type { TCustomConfig, TEndpoint } from 'librechat-data-provider';
 import type { AppConfig } from '@librechat/data-schemas';
+import { logger } from '@librechat/data-schemas';
+import type { TCustomConfig, TEndpoint } from 'librechat-data-provider';
+import { EModelEndpoint, FileSources } from 'librechat-data-provider';
+import { getBalanceConfig, getCustomEndpointConfig, getTransactionsConfig } from './config';
 
 // Helper function to create a minimal AppConfig for testing
 const createTestAppConfig = (overrides: Partial<AppConfig> = {}): AppConfig => {
@@ -311,7 +311,10 @@ describe('getCustomEndpointConfig', () => {
         },
       });
 
-      const result = getCustomEndpointConfig({ endpoint: 'TestEndpoint', appConfig });
+      const result = getCustomEndpointConfig({
+        endpoint: 'TestEndpoint',
+        appConfig,
+      });
       expect(result).toEqual({
         name: 'TestEndpoint',
         apiKey: 'test-key',
@@ -349,7 +352,10 @@ describe('getCustomEndpointConfig', () => {
         },
       });
 
-      const result = getCustomEndpointConfig({ endpoint: 'customai', appConfig });
+      const result = getCustomEndpointConfig({
+        endpoint: 'customai',
+        appConfig,
+      });
       expect(result).toBeUndefined();
     });
   });

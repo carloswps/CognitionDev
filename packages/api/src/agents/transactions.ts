@@ -1,6 +1,6 @@
+import type { TransactionData } from '@librechat/data-schemas';
 import { CANCEL_RATE } from '@librechat/data-schemas';
 import type { TCustomConfig, TTransactionsConfig } from 'librechat-data-provider';
-import type { TransactionData } from '@librechat/data-schemas';
 import type { EndpointTokenConfig } from '~/types/tokens';
 
 type TokenType = 'prompt' | 'completion';
@@ -95,7 +95,13 @@ function calculateTokenValue(
 ): { tokenValue: number; rate: number } {
   const { tokenType, model, endpointTokenConfig, inputTokenCount, rawAmount, valueKey } = txData;
   const multiplier = Math.abs(
-    pricing.getMultiplier({ valueKey, tokenType, model, endpointTokenConfig, inputTokenCount }),
+    pricing.getMultiplier({
+      valueKey,
+      tokenType,
+      model,
+      endpointTokenConfig,
+      inputTokenCount,
+    }),
   );
   let rate = multiplier;
   let tokenValue = rawAmount * multiplier;
@@ -109,11 +115,20 @@ function calculateTokenValue(
 function calculateStructuredTokenValue(
   txData: StructuredTxData,
   pricing: PricingFns,
-): { tokenValue: number; rate: number; rawAmount: number; rateDetail?: Record<string, number> } {
+): {
+  tokenValue: number;
+  rate: number;
+  rawAmount: number;
+  rateDetail?: Record<string, number>;
+} {
   const { tokenType, model, endpointTokenConfig, inputTokenCount } = txData;
 
   if (!tokenType) {
-    return { tokenValue: txData.rawAmount ?? 0, rate: 0, rawAmount: txData.rawAmount ?? 0 };
+    return {
+      tokenValue: txData.rawAmount ?? 0,
+      rate: 0,
+      rawAmount: txData.rawAmount ?? 0,
+    };
   }
 
   if (tokenType === 'prompt') {
@@ -124,11 +139,17 @@ function calculateStructuredTokenValue(
       inputTokenCount,
     });
     const writeMultiplier =
-      pricing.getCacheMultiplier({ cacheType: 'write', model, endpointTokenConfig }) ??
-      inputMultiplier;
+      pricing.getCacheMultiplier({
+        cacheType: 'write',
+        model,
+        endpointTokenConfig,
+      }) ?? inputMultiplier;
     const readMultiplier =
-      pricing.getCacheMultiplier({ cacheType: 'read', model, endpointTokenConfig }) ??
-      inputMultiplier;
+      pricing.getCacheMultiplier({
+        cacheType: 'read',
+        model,
+        endpointTokenConfig,
+      }) ?? inputMultiplier;
 
     const inputAbs = Math.abs(txData.inputTokens ?? 0);
     const writeAbs = Math.abs(txData.writeTokens ?? 0);
@@ -153,7 +174,11 @@ function calculateStructuredTokenValue(
       tokenValue,
       rate,
       rawAmount: -totalPromptTokens,
-      rateDetail: { input: inputMultiplier, write: writeMultiplier, read: readMultiplier },
+      rateDetail: {
+        input: inputMultiplier,
+        write: writeMultiplier,
+        read: readMultiplier,
+      },
     };
   }
 

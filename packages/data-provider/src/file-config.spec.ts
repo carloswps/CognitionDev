@@ -1,18 +1,18 @@
-import type { FileConfig } from './types/files';
 import {
+  applicationMimeTypes,
   fileConfig as baseFileConfig,
-  isPermissiveMimeConfig,
   convertStringsToRegex,
+  defaultOCRMimeTypes,
   documentParserMimeTypes,
   getEndpointFileConfig,
-  applicationMimeTypes,
-  defaultOCRMimeTypes,
-  supportedMimeTypes,
-  mergeFileConfig,
   inferMimeType,
+  isPermissiveMimeConfig,
+  mergeFileConfig,
+  supportedMimeTypes,
   textMimeTypes,
 } from './file-config';
 import { EModelEndpoint } from './schemas';
+import type { FileConfig } from './types/files';
 
 describe('inferMimeType', () => {
   it('should normalize text/x-python-script to text/x-python', () => {

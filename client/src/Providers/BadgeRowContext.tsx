@@ -1,17 +1,18 @@
-import React, { createContext, useContext, useEffect, useMemo, useRef } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { Tools, Constants, LocalStorageKeys, AgentCapabilities } from 'librechat-data-provider';
 import type { TAgentsEndpoint } from 'librechat-data-provider';
+import { AgentCapabilities, Constants, LocalStorageKeys, Tools } from 'librechat-data-provider';
+import type React from 'react';
+import { createContext, useContext, useEffect, useMemo, useRef } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { useGetStartupConfig } from '~/data-provider';
 import {
+  useCodeApiKeyForm,
+  useGetAgentsConfig,
   useMCPServerManager,
   useSearchApiKeyForm,
-  useGetAgentsConfig,
-  useCodeApiKeyForm,
   useToolToggle,
 } from '~/hooks';
-import { getTimestampedValue } from '~/utils/timestamps';
-import { useGetStartupConfig } from '~/data-provider';
 import { ephemeralAgentByConvoId } from '~/store';
+import { getTimestampedValue } from '~/utils/timestamps';
 
 interface BadgeRowContextType {
   conversationId?: string | null;
@@ -238,7 +239,10 @@ export default function BadgeRowProvider({
     isAuthenticated: true,
   });
 
-  const mcpServerManager = useMCPServerManager({ conversationId, storageContextKey });
+  const mcpServerManager = useMCPServerManager({
+    conversationId,
+    storageContextKey,
+  });
 
   const value: BadgeRowContextType = {
     webSearch,

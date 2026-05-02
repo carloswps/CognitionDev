@@ -1,10 +1,10 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { FileSources } from 'librechat-data-provider';
+import { fireEvent, render, screen } from '@testing-library/react';
 import type { TFile } from 'librechat-data-provider';
+import { FileSources } from 'librechat-data-provider';
+import type React from 'react';
 import type { ExtendedFile } from '~/common';
-import DataTable from '../PanelTable';
 import { columns } from '../PanelColumns';
+import DataTable from '../PanelTable';
 
 const mockShowToast = jest.fn();
 const mockAddFile = jest.fn();
@@ -14,7 +14,10 @@ let mockFiles: Map<string, ExtendedFile> = new Map();
 let mockConversation: Record<string, unknown> | null = { endpoint: 'openAI' };
 let mockRawFileConfig: Record<string, unknown> | null = {
   endpoints: {
-    openAI: { fileLimit: 10, supportedMimeTypes: ['application/pdf', 'text/plain'] },
+    openAI: {
+      fileLimit: 10,
+      supportedMimeTypes: ['application/pdf', 'text/plain'],
+    },
   },
 };
 
@@ -25,9 +28,9 @@ jest.mock('@librechat/client', () => ({
   Button: ({
     children,
     ...props
-  }: { children: React.ReactNode } & React.ButtonHTMLAttributes<HTMLButtonElement>) => (
-    <button {...props}>{children}</button>
-  ),
+  }: {
+    children: React.ReactNode;
+  } & React.ButtonHTMLAttributes<HTMLButtonElement>) => <button {...props}>{children}</button>,
   TableRow: ({ children, ...props }: { children: React.ReactNode }) => (
     <tr {...props}>{children}</tr>
   ),
@@ -40,9 +43,9 @@ jest.mock('@librechat/client', () => ({
   TableCell: ({
     children,
     ...props
-  }: { children: React.ReactNode } & React.TdHTMLAttributes<HTMLTableCellElement>) => (
-    <td {...props}>{children}</td>
-  ),
+  }: {
+    children: React.ReactNode;
+  } & React.TdHTMLAttributes<HTMLTableCellElement>) => <td {...props}>{children}</td>,
   FilterInput: () => <input data-testid="filter" />,
   TableHeader: ({ children, ...props }: { children: React.ReactNode }) => (
     <thead {...props}>{children}</thead>

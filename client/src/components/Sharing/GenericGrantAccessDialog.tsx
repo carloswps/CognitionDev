@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { AccessRoleIds, ResourceType } from 'librechat-data-provider';
-import { Share2Icon, Users, Link, CopyCheck, UserX, UserCheck } from 'lucide-react';
 import {
-  Label,
   Button,
-  Spinner,
-  Skeleton,
+  Label,
   OGDialog,
-  OGDialogTitle,
   OGDialogClose,
   OGDialogContent,
+  OGDialogTitle,
   OGDialogTrigger,
+  Skeleton,
+  Spinner,
   useToastContext,
 } from '@librechat/client';
-import type { TPrincipal } from 'librechat-data-provider';
+import type { AccessRoleIds, ResourceType, TPrincipal } from 'librechat-data-provider';
+import { CopyCheck, Link, Share2Icon, UserCheck, Users, UserX } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import {
+  useCanSharePublic,
+  useCopyToClipboard,
+  useLocalize,
   usePeoplePickerPermissions,
   useResourcePermissionState,
-  useCopyToClipboard,
-  useCanSharePublic,
-  useLocalize,
 } from '~/hooks';
+import { cn } from '~/utils';
+import { SelectedPrincipalsList } from './PeoplePicker';
 import UnifiedPeopleSearch from './PeoplePicker/UnifiedPeopleSearch';
 import PeoplePickerAdminSettings from './PeoplePickerAdminSettings';
 import PublicSharingToggle from './PublicSharingToggle';
-import { SelectedPrincipalsList } from './PeoplePicker';
-import { cn } from '~/utils';
 
 export default function GenericGrantAccessDialog({
   resourceName,

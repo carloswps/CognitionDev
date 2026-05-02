@@ -58,7 +58,13 @@ const apiKey = 'fake-api-key';
 
 const messageHistory = [
   { role: 'user', isCreatedByUser: true, text: 'Hello', messageId: '1' },
-  { role: 'assistant', isCreatedByUser: false, text: 'Hi', messageId: '2', parentMessageId: '1' },
+  {
+    role: 'assistant',
+    isCreatedByUser: false,
+    text: 'Hi',
+    messageId: '2',
+    parentMessageId: '1',
+  },
   {
     role: 'user',
     isCreatedByUser: true,
@@ -145,7 +151,10 @@ describe('BaseClient', () => {
       content: 'Refined answer',
     };
 
-    const result = await TestClient.summarizeMessages({ messagesToRefine, remainingContextTokens });
+    const result = await TestClient.summarizeMessages({
+      messagesToRefine,
+      remainingContextTokens,
+    });
     expect(result.summaryMessage).toEqual(expectedRefinedMessage);
   });
 
@@ -188,7 +197,11 @@ describe('BaseClient', () => {
       { role: 'assistant', content: 'How can I help you?', tokenCount: 30 },
       { role: 'user', content: 'I have a question.', tokenCount: 5 },
       { role: 'user', content: 'I need a coffee, stat!', tokenCount: 19 },
-      { role: 'assistant', content: 'Sure, I can help with that.', tokenCount: 18 },
+      {
+        role: 'assistant',
+        content: 'Sure, I can help with that.',
+        tokenCount: 18,
+      },
     ];
 
     // Subtract 3 tokens for Assistant Label priming after all messages have been counted.
@@ -200,7 +213,11 @@ describe('BaseClient', () => {
     const expectedContext = [
       { role: 'user', content: 'I have a question.', tokenCount: 5 },
       { role: 'user', content: 'I need a coffee, stat!', tokenCount: 19 },
-      { role: 'assistant', content: 'Sure, I can help with that.', tokenCount: 18 },
+      {
+        role: 'assistant',
+        content: 'Sure, I can help with that.',
+        tokenCount: 18,
+      },
     ];
 
     const lastExpectedMessage =
@@ -289,7 +306,12 @@ describe('BaseClient', () => {
     });
 
     const unorderedBranchedMessages = [
-      { id: '4', parentMessageId: '2', text: 'Message 4', summary: 'Summary for Message 4' },
+      {
+        id: '4',
+        parentMessageId: '2',
+        text: 'Message 4',
+        summary: 'Summary for Message 4',
+      },
       { id: '10', parentMessageId: '7', text: 'Message 10' },
       { id: '1', parentMessageId: null, text: 'Message 1' },
       { id: '6', parentMessageId: '5', text: 'Message 7' },
@@ -301,7 +323,12 @@ describe('BaseClient', () => {
       { id: '6', parentMessageId: '4', text: 'Message 6' },
       { id: '8', parentMessageId: '7', text: 'Message 9' },
       { id: '9', parentMessageId: '7', text: 'Message 9' },
-      { id: '11', parentMessageId: '2', text: 'Message 11', summary: 'Summary for Message 11' },
+      {
+        id: '11',
+        parentMessageId: '2',
+        text: 'Message 11',
+        summary: 'Summary for Message 11',
+      },
     ];
 
     it('should return ordered messages from a branched array based on parentMessageId', () => {
@@ -339,8 +366,18 @@ describe('BaseClient', () => {
 
     let unorderedMessagesWithSummary = [
       { id: '4', parentMessageId: '3', text: 'Message 4' },
-      { id: '2', parentMessageId: '1', text: 'Message 2', summary: 'Summary for Message 2' },
-      { id: '3', parentMessageId: '2', text: 'Message 3', summary: 'Summary for Message 3' },
+      {
+        id: '2',
+        parentMessageId: '1',
+        text: 'Message 2',
+        summary: 'Summary for Message 2',
+      },
+      {
+        id: '3',
+        parentMessageId: '2',
+        text: 'Message 3',
+        summary: 'Summary for Message 3',
+      },
       { id: '1', parentMessageId: null, text: 'Message 1' },
     ];
 
@@ -366,9 +403,24 @@ describe('BaseClient', () => {
     it('should handle multiple summaries and return the branch from the latest to the parentMessageId', () => {
       unorderedMessagesWithSummary = [
         { id: '5', parentMessageId: '4', text: 'Message 5' },
-        { id: '2', parentMessageId: '1', text: 'Message 2', summary: 'Summary for Message 2' },
-        { id: '3', parentMessageId: '2', text: 'Message 3', summary: 'Summary for Message 3' },
-        { id: '4', parentMessageId: '3', text: 'Message 4', summary: 'Summary for Message 4' },
+        {
+          id: '2',
+          parentMessageId: '1',
+          text: 'Message 2',
+          summary: 'Summary for Message 2',
+        },
+        {
+          id: '3',
+          parentMessageId: '2',
+          text: 'Message 3',
+          summary: 'Summary for Message 3',
+        },
+        {
+          id: '4',
+          parentMessageId: '3',
+          text: 'Message 4',
+          summary: 'Summary for Message 4',
+        },
         { id: '1', parentMessageId: null, text: 'Message 1' },
       ];
       const result = TestClient.constructor.getMessagesForConversation({
@@ -392,10 +444,30 @@ describe('BaseClient', () => {
     it('should handle summary at root edge case and continue until the parentMessageId', () => {
       unorderedMessagesWithSummary = [
         { id: '5', parentMessageId: '4', text: 'Message 5' },
-        { id: '1', parentMessageId: null, text: 'Message 1', summary: 'Summary for Message 1' },
-        { id: '4', parentMessageId: '3', text: 'Message 4', summary: 'Summary for Message 4' },
-        { id: '2', parentMessageId: '1', text: 'Message 2', summary: 'Summary for Message 2' },
-        { id: '3', parentMessageId: '2', text: 'Message 3', summary: 'Summary for Message 3' },
+        {
+          id: '1',
+          parentMessageId: null,
+          text: 'Message 1',
+          summary: 'Summary for Message 1',
+        },
+        {
+          id: '4',
+          parentMessageId: '3',
+          text: 'Message 4',
+          summary: 'Summary for Message 4',
+        },
+        {
+          id: '2',
+          parentMessageId: '1',
+          text: 'Message 2',
+          summary: 'Summary for Message 2',
+        },
+        {
+          id: '3',
+          parentMessageId: '2',
+          text: 'Message 3',
+          summary: 'Summary for Message 3',
+        },
       ];
       const result = TestClient.constructor.getMessagesForConversation({
         messages: unorderedMessagesWithSummary,
@@ -664,7 +736,11 @@ describe('BaseClient', () => {
 
     test('setOptions is called with the correct arguments only when replaceOptions is set to true', async () => {
       TestClient.setOptions = jest.fn();
-      const opts = { conversationId: '123', parentMessageId: '456', replaceOptions: true };
+      const opts = {
+        conversationId: '123',
+        parentMessageId: '456',
+        replaceOptions: true,
+      };
       await TestClient.sendMessage('Hello, world!', opts);
       expect(TestClient.setOptions).toHaveBeenCalledWith(opts);
       TestClient.setOptions.mockClear();
@@ -878,7 +954,10 @@ describe('BaseClient', () => {
 
     test('sendCompletion is called with the correct arguments', async () => {
       const payload = {}; // Mock payload
-      TestClient.buildMessages.mockReturnValue({ prompt: payload, tokenCountMap: null });
+      TestClient.buildMessages.mockReturnValue({
+        prompt: payload,
+        tokenCountMap: null,
+      });
       const opts = {};
       await TestClient.sendMessage('Hello, world!', opts);
       expect(TestClient.sendCompletion).toHaveBeenCalledWith(payload, opts);
@@ -912,7 +991,12 @@ describe('BaseClient', () => {
       saveMessage.mockClear();
 
       const result = await TestClient.saveMessageToDatabase(
-        { messageId: 'msg-1', conversationId: 'conv-1', isCreatedByUser: true, text: 'hi' },
+        {
+          messageId: 'msg-1',
+          conversationId: 'conv-1',
+          isCreatedByUser: true,
+          text: 'hi',
+        },
         {},
         null,
       );
@@ -937,7 +1021,12 @@ describe('BaseClient', () => {
       saveConvo.mockResolvedValue({ conversationId: 'conv-1' });
 
       const result = await TestClient.saveMessageToDatabase(
-        { messageId: 'msg-1', conversationId: 'conv-1', isCreatedByUser: true, text: 'hi' },
+        {
+          messageId: 'msg-1',
+          conversationId: 'conv-1',
+          isCreatedByUser: true,
+          text: 'hi',
+        },
         { endpoint: 'openAI' },
         null,
       );
@@ -1202,7 +1291,9 @@ describe('BaseClient', () => {
     });
 
     test('does not set files when no attachments match request file IDs', async () => {
-      TestClient.options.req = { body: { files: [{ file_id: 'file-nomatch' }] } };
+      TestClient.options.req = {
+        body: { files: [{ file_id: 'file-nomatch' }] },
+      };
       TestClient.saveMessageToDatabase = jest.fn().mockResolvedValue({ message: {} });
 
       await TestClient.sendMessage('Hello');

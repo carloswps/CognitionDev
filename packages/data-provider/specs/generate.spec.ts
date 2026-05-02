@@ -1,6 +1,6 @@
-import { ZodError, z } from 'zod';
-import { generateDynamicSchema, validateSettingDefinitions, OptionTypes } from '../src/generate';
+import { ZodError, type z } from 'zod';
 import type { SettingsConfiguration } from '../src/generate';
+import { generateDynamicSchema, OptionTypes, validateSettingDefinitions } from '../src/generate';
 
 describe('generateDynamicSchema', () => {
   it('should generate a schema for number settings with range', () => {
@@ -163,10 +163,14 @@ describe('generateDynamicSchema', () => {
 
     const schema = generateDynamicSchema(settings);
     // Testing with right number of tags
-    let result = schema.safeParse({ testArray: ['value1', 'value2', 'value3'] });
+    let result = schema.safeParse({
+      testArray: ['value1', 'value2', 'value3'],
+    });
 
     expect(result.success).toBeTruthy();
-    expect(result?.['data']).toEqual({ testArray: ['value1', 'value2', 'value3'] });
+    expect(result?.['data']).toEqual({
+      testArray: ['value1', 'value2', 'value3'],
+    });
 
     // Testing with too few tags (should fail)
     result = schema.safeParse({ testArray: [] }); // Assuming minTags is 1, empty array should fail
@@ -313,7 +317,12 @@ describe('validateSettingDefinitions', () => {
   // Validate optionType with tConversationSchema
   test('should throw error for optionType "conversation" not matching schema', () => {
     const settingsWithInvalidConversationOptionType: SettingsConfiguration = [
-      { key: 'userAge', component: 'input', type: 'number', optionType: 'conversation' },
+      {
+        key: 'userAge',
+        component: 'input',
+        type: 'number',
+        optionType: 'conversation',
+      },
     ];
 
     expect(() => validateSettingDefinitions(settingsWithInvalidConversationOptionType)).toThrow(
@@ -399,7 +408,13 @@ describe('validateSettingDefinitions', () => {
   // Validate minText and maxText constraints in input and textarea
   test('validate minText and maxText constraints', () => {
     const settings: SettingsConfiguration = [
-      { key: 'biography', type: 'string', component: 'textarea', minText: 10, maxText: 5 }, // Incorrect minText and maxText
+      {
+        key: 'biography',
+        type: 'string',
+        component: 'textarea',
+        minText: 10,
+        maxText: 5,
+      }, // Incorrect minText and maxText
     ];
 
     expect(() => validateSettingDefinitions(settings)).toThrow(ZodError);
@@ -408,7 +423,12 @@ describe('validateSettingDefinitions', () => {
   // Validate optionType constraint with tConversationSchema
   test('validate optionType constraint with tConversationSchema', () => {
     const settings: SettingsConfiguration = [
-      { key: 'userAge', type: 'number', component: 'input', optionType: 'conversation' }, // No corresponding schema in tConversationSchema
+      {
+        key: 'userAge',
+        type: 'number',
+        component: 'input',
+        optionType: 'conversation',
+      }, // No corresponding schema in tConversationSchema
     ];
 
     expect(() => validateSettingDefinitions(settings)).toThrow(ZodError);

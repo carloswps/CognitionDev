@@ -1,15 +1,15 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Markdown from '../Markdown';
+import React from 'react';
 import { RecoilRoot } from 'recoil';
 import { UI_RESOURCE_MARKER } from '~/components/MCPUIResource/plugin';
+import { useGetMessagesByConvoId } from '~/data-provider';
+import { useLocalize } from '~/hooks';
 import {
   useMessageContext,
   useOptionalMessagesConversation,
   useOptionalMessagesOperations,
 } from '~/Providers';
-import { useGetMessagesByConvoId } from '~/data-provider';
-import { useLocalize } from '~/hooks';
+import Markdown from '../Markdown';
 
 // Mocks for hooks used by MCPUIResource when rendered inside Markdown.
 // Keep Provider components intact while mocking only the hooks we use.
@@ -85,7 +85,9 @@ describe('Markdown with MCP UI markers (resource IDs)', () => {
       },
     ];
 
-    mockUseGetMessagesByConvoId.mockReturnValue({ data: currentTestMessages } as any);
+    mockUseGetMessagesByConvoId.mockReturnValue({
+      data: currentTestMessages,
+    } as any);
 
     const content = [
       'Here are the current weather conditions for both Paris and New York:',

@@ -116,7 +116,10 @@ router.delete('/', async (req, res) => {
     Object.prototype.propertyIsEnumerable.call(assistantClients, endpoint)
   ) {
     /** @type {{ openai: OpenAI }} */
-    const { openai } = await assistantClients[endpoint].initializeClient({ req, res });
+    const { openai } = await assistantClients[endpoint].initializeClient({
+      req,
+      res,
+    });
     try {
       const response = await openai.beta.threads.delete(thread_id);
       logger.debug('Deleted OpenAI thread:', response);

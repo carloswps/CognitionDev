@@ -15,18 +15,17 @@
  *    are never closed — proving the fix is necessary.
  */
 
-import * as http from 'http';
-import * as net from 'net';
-import { randomUUID } from 'crypto';
-import { Agent, fetch as undiciFetch } from 'undici';
+import { logger } from '@librechat/data-schemas';
 import { Server as McpServerCore } from '@modelcontextprotocol/sdk/server/index.js';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import { logger } from '@librechat/data-schemas';
-import { MCPConnection } from '~/mcp/connection';
-
+import { randomUUID } from 'crypto';
+import * as http from 'http';
 import type { Socket } from 'net';
+import * as net from 'net';
+import { Agent, fetch as undiciFetch } from 'undici';
+import { MCPConnection } from '~/mcp/connection';
 
 jest.mock('@librechat/data-schemas', () => ({
   logger: {
@@ -125,7 +124,9 @@ async function createStreamableServer(): Promise<TestServer> {
     let transport = sid ? sessions.get(sid) : undefined;
 
     if (!transport) {
-      transport = new StreamableHTTPServerTransport({ sessionIdGenerator: () => randomUUID() });
+      transport = new StreamableHTTPServerTransport({
+        sessionIdGenerator: () => randomUUID(),
+      });
       const mcp = new McpServer({ name: 'test-streamable', version: '0.0.1' });
       await mcp.connect(transport);
     }
@@ -335,7 +336,11 @@ describe('MCPConnection Agent lifecycle – streamable-http', () => {
     const customTimeout = 10 * 60 * 1000;
     conn = new MCPConnection({
       serverName: 'test',
-      serverConfig: { type: 'streamable-http', url: server.url, sseReadTimeout: customTimeout },
+      serverConfig: {
+        type: 'streamable-http',
+        url: server.url,
+        sseReadTimeout: customTimeout,
+      },
       useSSRFProtection: false,
     });
 
@@ -474,7 +479,9 @@ describe('Regression: old per-request Agent pattern leaks agents', () => {
      * In the old code, `new Agent()` was inside the returned closure, so each call to
      * the fetch function allocated a fresh Agent that was never stored or closed.
      */
-    const privateSelf = conn as unknown as Record<string, unknown> & { agents: Agent[] };
+    const privateSelf = conn as unknown as Record<string, unknown> & {
+      agents: Agent[];
+    };
 
     const originalMethod = (privateSelf.createFetchFunction as (...a: unknown[]) => unknown).bind(
       conn,
@@ -542,7 +549,9 @@ describe('MCPConnection SSE 404 handling – session-aware', () => {
     (
       conn as unknown as { setupTransportErrorHandlers: (t: unknown) => void }
     ).setupTransportErrorHandlers(transport);
-    const sseError = Object.assign(new Error('Failed to open SSE stream'), { code: 404 });
+    const sseError = Object.assign(new Error('Failed to open SSE stream'), {
+      code: 404,
+    });
     transport.onerror?.(sseError);
   }
 

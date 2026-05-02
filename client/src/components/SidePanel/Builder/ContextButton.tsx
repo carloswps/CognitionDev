@@ -1,17 +1,17 @@
 import {
   Dialog,
+  DialogTemplate,
   DialogTrigger,
   Label,
-  DialogTemplate,
-  useToastContext,
   TrashIcon,
+  useToastContext,
 } from '@librechat/client';
-import type { Assistant, AssistantCreateParams, AssistantsEndpoint } from 'librechat-data-provider';
 import type { UseMutationResult } from '@tanstack/react-query';
+import type { Assistant, AssistantCreateParams, AssistantsEndpoint } from 'librechat-data-provider';
 import { useDeleteAssistantMutation } from '~/data-provider';
 import { useLocalize, useSetIndexOptions } from '~/hooks';
-import { cn, removeFocusOutlines } from '~/utils';
 import { useChatContext } from '~/Providers';
+import { cn, removeFocusOutlines } from '~/utils';
 
 export default function ContextButton({
   activeModel,
@@ -115,7 +115,11 @@ export default function ContextButton({
         }
         selection={{
           selectHandler: () =>
-            deleteAssistant.mutate({ assistant_id, model: activeModel, endpoint }),
+            deleteAssistant.mutate({
+              assistant_id,
+              model: activeModel,
+              endpoint,
+            }),
           selectClasses: 'bg-red-600 hover:bg-red-700 dark:hover:bg-red-800 text-white',
           selectText: localize('com_ui_delete'),
         }}

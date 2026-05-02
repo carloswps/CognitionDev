@@ -1,8 +1,8 @@
+import { render, screen } from '@testing-library/react';
+import type { SearchResultData, TAttachment, ValidSource } from 'librechat-data-provider';
+import { Tools } from 'librechat-data-provider';
 import React from 'react';
 import { RecoilRoot } from 'recoil';
-import { Tools } from 'librechat-data-provider';
-import { render, screen } from '@testing-library/react';
-import type { TAttachment, SearchResultData, ValidSource } from 'librechat-data-provider';
 import { SearchContext } from '~/Providers';
 import WebSearch from '../WebSearch';
 
@@ -210,12 +210,26 @@ describe('WebSearch', () => {
       const searchResults = makeSearchResults({
         0: {
           organic: [
-            { link: 'https://a.com', title: 'A', processed: true } as ValidSource,
-            { link: 'https://b.com', title: 'B', processed: false } as ValidSource,
+            {
+              link: 'https://a.com',
+              title: 'A',
+              processed: true,
+            } as ValidSource,
+            {
+              link: 'https://b.com',
+              title: 'B',
+              processed: false,
+            } as ValidSource,
           ],
         },
         1: {
-          organic: [{ link: 'https://c.com', title: 'C', processed: true } as ValidSource],
+          organic: [
+            {
+              link: 'https://c.com',
+              title: 'C',
+              processed: true,
+            } as ValidSource,
+          ],
         },
       });
 

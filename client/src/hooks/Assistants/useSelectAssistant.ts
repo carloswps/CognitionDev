@@ -1,10 +1,10 @@
-import { useCallback } from 'react';
-import { isAssistantsEndpoint } from 'librechat-data-provider';
 import type { AssistantsEndpoint, TConversation, TPreset } from 'librechat-data-provider';
+import { isAssistantsEndpoint } from 'librechat-data-provider';
+import { useCallback } from 'react';
 import useDefaultConvo from '~/hooks/Conversations/useDefaultConvo';
 import { useChatContext } from '~/Providers/ChatContext';
+import { logger, mapAssistants } from '~/utils';
 import useAssistantListMap from './useAssistantListMap';
-import { mapAssistants, logger } from '~/utils';
 
 export default function useSelectAssistant(endpoint: AssistantsEndpoint) {
   const getDefaultConversation = useDefaultConvo();

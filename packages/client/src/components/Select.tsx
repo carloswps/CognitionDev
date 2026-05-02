@@ -1,17 +1,17 @@
-import * as React from 'react';
-import * as SelectPrimitive from '@radix-ui/react-select';
 import { CaretSortIcon, CheckIcon, ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
+import * as SelectPrimitive from '@radix-ui/react-select';
+import * as React from 'react';
 import { cn } from '~/utils';
 
-// @ts-ignore - Radix UI type conflicts with React types
+// @ts-expect-error - Radix UI type conflicts with React types
 const Select = SelectPrimitive.Root;
 
-// @ts-ignore - Radix UI type conflicts with React types
+// @ts-expect-error - Radix UI type conflicts with React types
 const SelectGroup = SelectPrimitive.Group;
 
 const SelectValue = SelectPrimitive.Value;
 
-// @ts-ignore - Radix UI type conflicts with React types
+// @ts-expect-error - Radix UI type conflicts with React types
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
@@ -150,13 +150,13 @@ SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 
 export {
   Select,
-  SelectGroup,
-  SelectValue,
-  SelectTrigger,
   SelectContent,
-  SelectLabel,
+  SelectGroup,
   SelectItem,
-  SelectSeparator,
-  SelectScrollUpButton,
+  SelectLabel,
   SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
 };

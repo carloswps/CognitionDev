@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
 import {
   OGDialog,
-  OGDialogTitle,
-  OGDialogPortal,
-  OGDialogOverlay,
   OGDialogContent,
+  OGDialogOverlay,
+  OGDialogPortal,
+  OGDialogTitle,
 } from '@librechat/client';
+import React, { useEffect, useState } from 'react';
 import type { SharePointBatchProgress } from '~/data-provider/Files/sharepoint';
-import { useSharePointPicker, useLocalize } from '~/hooks';
+import { useLocalize, useSharePointPicker } from '~/hooks';
 
 interface SharePointPickerDialogProps {
   isOpen: boolean;

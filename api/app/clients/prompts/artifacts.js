@@ -528,7 +528,10 @@ const generateArtifactsPrompt = ({ endpoint, artifacts }) => {
   }
 
   if (artifacts === ArtifactModes.SHADCNUI) {
-    prompt += generateShadcnPrompt({ components, useXML: endpoint === EModelEndpoint.anthropic });
+    prompt += generateShadcnPrompt({
+      components,
+      useXML: endpoint === EModelEndpoint.anthropic,
+    });
   }
 
   return prompt;

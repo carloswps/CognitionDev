@@ -120,7 +120,9 @@ describe('MCPServersRegistry Redis Integration Tests', () => {
       const keysToDelete: string[] = [];
 
       // Collect all keys first
-      for await (const key of keyvRedisClient.scanIterator({ MATCH: pattern })) {
+      for await (const key of keyvRedisClient.scanIterator({
+        MATCH: pattern,
+      })) {
         keysToDelete.push(key);
       }
 

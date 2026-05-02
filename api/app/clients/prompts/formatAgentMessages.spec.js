@@ -105,7 +105,11 @@ describe('formatAgentMessages', () => {
       {
         role: 'assistant',
         content: [
-          { type: ContentTypes.TEXT, [ContentTypes.TEXT]: 'Checking...', tool_call_ids: ['123'] },
+          {
+            type: ContentTypes.TEXT,
+            [ContentTypes.TEXT]: 'Checking...',
+            tool_call_ids: ['123'],
+          },
           {
             type: ContentTypes.TOOL_CALL,
             tool_call: {
@@ -120,7 +124,9 @@ describe('formatAgentMessages', () => {
     ];
     const result = formatAgentMessages(payload);
     expect(result).toHaveLength(2);
-    expect(result[0].tool_calls[0].args).toStrictEqual({ input: 'non-json-string' });
+    expect(result[0].tool_calls[0].args).toStrictEqual({
+      input: 'non-json-string',
+    });
   });
 
   it('should handle complex tool calls with multiple steps', () => {
@@ -156,7 +162,10 @@ describe('formatAgentMessages', () => {
               output: '23.89°C',
             },
           },
-          { type: ContentTypes.TEXT, [ContentTypes.TEXT]: "Here's your answer." },
+          {
+            type: ContentTypes.TEXT,
+            [ContentTypes.TEXT]: "Here's your answer.",
+          },
         ],
       },
     ];
@@ -215,7 +224,12 @@ describe('formatAgentMessages', () => {
       },
       {
         role: 'assistant',
-        content: [{ type: ContentTypes.TEXT, [ContentTypes.TEXT]: 'How can I help you?' }],
+        content: [
+          {
+            type: ContentTypes.TEXT,
+            [ContentTypes.TEXT]: 'How can I help you?',
+          },
+        ],
       },
       { role: 'user', content: "What's the weather?" },
       {
@@ -240,7 +254,10 @@ describe('formatAgentMessages', () => {
       {
         role: 'assistant',
         content: [
-          { type: ContentTypes.TEXT, [ContentTypes.TEXT]: "Here's the weather information." },
+          {
+            type: ContentTypes.TEXT,
+            [ContentTypes.TEXT]: "Here's the weather information.",
+          },
         ],
       },
     ];
@@ -270,7 +287,10 @@ describe('formatAgentMessages', () => {
     expect(result[3].content).toBe('Let me check that for you.');
     expect(result[4].content).toBe('Sunny, 75°F');
     expect(result[5].content).toStrictEqual([
-      { [ContentTypes.TEXT]: "Here's the weather information.", type: ContentTypes.TEXT },
+      {
+        [ContentTypes.TEXT]: "Here's the weather information.",
+        type: ContentTypes.TEXT,
+      },
     ]);
 
     // Check that there are no consecutive AIMessages
@@ -289,7 +309,10 @@ describe('formatAgentMessages', () => {
         role: 'assistant',
         content: [
           { type: ContentTypes.TEXT, [ContentTypes.TEXT]: 'Initial response' },
-          { type: ContentTypes.THINK, [ContentTypes.THINK]: 'Reasoning about the problem...' },
+          {
+            type: ContentTypes.THINK,
+            [ContentTypes.THINK]: 'Reasoning about the problem...',
+          },
           { type: ContentTypes.TEXT, [ContentTypes.TEXT]: 'Final answer' },
         ],
       },
@@ -307,10 +330,22 @@ describe('formatAgentMessages', () => {
       {
         role: 'assistant',
         content: [
-          { type: ContentTypes.THINK, [ContentTypes.THINK]: 'Analyzing the problem...' },
-          { type: ContentTypes.TEXT, [ContentTypes.TEXT]: 'First part of response' },
-          { type: ContentTypes.TEXT, [ContentTypes.TEXT]: 'Second part of response' },
-          { type: ContentTypes.TEXT, [ContentTypes.TEXT]: 'Final part of response' },
+          {
+            type: ContentTypes.THINK,
+            [ContentTypes.THINK]: 'Analyzing the problem...',
+          },
+          {
+            type: ContentTypes.TEXT,
+            [ContentTypes.TEXT]: 'First part of response',
+          },
+          {
+            type: ContentTypes.TEXT,
+            [ContentTypes.TEXT]: 'Second part of response',
+          },
+          {
+            type: ContentTypes.TEXT,
+            [ContentTypes.TEXT]: 'Final part of response',
+          },
         ],
       },
     ];

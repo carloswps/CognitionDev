@@ -1,7 +1,7 @@
-import { loadDefaultInterface } from '@librechat/data-schemas';
-import { SystemRoles, Permissions, PermissionTypes, roleDefaults } from 'librechat-data-provider';
-import type { TConfigDefaults, TCustomConfig } from 'librechat-data-provider';
 import type { AppConfig } from '@librechat/data-schemas';
+import { loadDefaultInterface } from '@librechat/data-schemas';
+import type { TConfigDefaults, TCustomConfig } from 'librechat-data-provider';
+import { Permissions, PermissionTypes, roleDefaults, SystemRoles } from 'librechat-data-provider';
 import { updateInterfacePermissions } from './permissions';
 
 const mockUpdateAccessPermissions = jest.fn();
@@ -52,7 +52,10 @@ describe('updateInterfacePermissions - permissions', () => {
       },
     };
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -210,7 +213,10 @@ describe('updateInterfacePermissions - permissions', () => {
       },
     };
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -354,7 +360,10 @@ describe('updateInterfacePermissions - permissions', () => {
         },
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -511,7 +520,10 @@ describe('updateInterfacePermissions - permissions', () => {
         },
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -655,7 +667,10 @@ describe('updateInterfacePermissions - permissions', () => {
         },
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -815,7 +830,10 @@ describe('updateInterfacePermissions - permissions', () => {
         },
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -901,8 +919,12 @@ describe('updateInterfacePermissions - permissions', () => {
       expectedPermissionsForUser,
       expect.objectContaining({
         permissions: expect.objectContaining({
-          [PermissionTypes.PROMPTS]: expect.objectContaining({ [Permissions.USE]: false }),
-          [PermissionTypes.AGENTS]: expect.objectContaining({ [Permissions.USE]: true }),
+          [PermissionTypes.PROMPTS]: expect.objectContaining({
+            [Permissions.USE]: false,
+          }),
+          [PermissionTypes.AGENTS]: expect.objectContaining({
+            [Permissions.USE]: true,
+          }),
         }),
       }),
     );
@@ -911,8 +933,12 @@ describe('updateInterfacePermissions - permissions', () => {
       expectedPermissionsForAdmin,
       expect.objectContaining({
         permissions: expect.objectContaining({
-          [PermissionTypes.PROMPTS]: expect.objectContaining({ [Permissions.USE]: false }),
-          [PermissionTypes.AGENTS]: expect.objectContaining({ [Permissions.USE]: true }),
+          [PermissionTypes.PROMPTS]: expect.objectContaining({
+            [Permissions.USE]: false,
+          }),
+          [PermissionTypes.AGENTS]: expect.objectContaining({
+            [Permissions.USE]: true,
+          }),
         }),
       }),
     );
@@ -965,7 +991,10 @@ describe('updateInterfacePermissions - permissions', () => {
         },
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -1084,7 +1113,10 @@ describe('updateInterfacePermissions - permissions', () => {
       } as unknown as TCustomConfig['memory'],
     };
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -1114,7 +1146,10 @@ describe('updateInterfacePermissions - permissions', () => {
       },
     };
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -1156,7 +1191,10 @@ describe('updateInterfacePermissions - permissions', () => {
       },
     };
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -1201,7 +1239,10 @@ describe('updateInterfacePermissions - permissions', () => {
         },
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -1295,7 +1336,10 @@ describe('updateInterfacePermissions - permissions', () => {
         },
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -1394,7 +1438,10 @@ describe('updateInterfacePermissions - permissions', () => {
         },
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -1467,7 +1514,10 @@ describe('updateInterfacePermissions - permissions', () => {
         },
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -1485,8 +1535,12 @@ describe('updateInterfacePermissions - permissions', () => {
     expect(userCall[1][PermissionTypes.PROMPTS]).toEqual({
       [Permissions.USE]: true,
     });
-    expect(userCall[1][PermissionTypes.BOOKMARKS]).toEqual({ [Permissions.USE]: true });
-    expect(userCall[1][PermissionTypes.MARKETPLACE]).toEqual({ [Permissions.USE]: true });
+    expect(userCall[1][PermissionTypes.BOOKMARKS]).toEqual({
+      [Permissions.USE]: true,
+    });
+    expect(userCall[1][PermissionTypes.MARKETPLACE]).toEqual({
+      [Permissions.USE]: true,
+    });
 
     // Unconfigured permissions should not be present (left unchanged)
     expect(userCall[1]).not.toHaveProperty(PermissionTypes.MEMORIES);
@@ -1518,7 +1572,10 @@ describe('updateInterfacePermissions - permissions', () => {
         memories: true, // Default is true
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -1567,7 +1624,10 @@ describe('updateInterfacePermissions - permissions', () => {
         memories: true,
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -1645,7 +1705,10 @@ describe('updateInterfacePermissions - permissions', () => {
         bookmarks: true,
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -1718,7 +1781,10 @@ describe('updateInterfacePermissions - permissions', () => {
       } as unknown as TCustomConfig['memory'],
     };
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -1785,7 +1851,10 @@ describe('updateInterfacePermissions - permissions', () => {
         bookmarks: true,
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -1813,7 +1882,9 @@ describe('updateInterfacePermissions - permissions', () => {
       [Permissions.USE]: true,
     });
     // Bookmarks should be updated (explicitly configured)
-    expect(userCall[1][PermissionTypes.BOOKMARKS]).toEqual({ [Permissions.USE]: true });
+    expect(userCall[1][PermissionTypes.BOOKMARKS]).toEqual({
+      [Permissions.USE]: true,
+    });
 
     // Check ADMIN role call
     const adminCall = mockUpdateAccessPermissions.mock.calls.find(
@@ -1825,7 +1896,9 @@ describe('updateInterfacePermissions - permissions', () => {
     expect(adminCall[1][PermissionTypes.PROMPTS]).toEqual({
       [Permissions.USE]: true,
     });
-    expect(adminCall[1][PermissionTypes.BOOKMARKS]).toEqual({ [Permissions.USE]: true });
+    expect(adminCall[1][PermissionTypes.BOOKMARKS]).toEqual({
+      [Permissions.USE]: true,
+    });
 
     // Verify the existing role data was passed to updateAccessPermissions
     expect(userCall[2]).toMatchObject({
@@ -1875,7 +1948,10 @@ describe('updateInterfacePermissions - permissions', () => {
         prompts: true,
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -1939,7 +2015,10 @@ describe('updateInterfacePermissions - permissions', () => {
         },
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -2005,7 +2084,10 @@ describe('updateInterfacePermissions - permissions', () => {
         },
       },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -2070,7 +2152,10 @@ describe('updateInterfacePermissions - permissions', () => {
     const configDefaults = {
       interface: { agents: true, prompts: true },
     } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -2108,7 +2193,10 @@ describe('updateInterfacePermissions - permissions', () => {
       },
     };
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -2146,7 +2234,10 @@ describe('updateInterfacePermissions - permissions', () => {
       },
     };
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -2174,7 +2265,10 @@ describe('updateInterfacePermissions - permissions', () => {
       },
     };
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -2202,7 +2296,10 @@ describe('updateInterfacePermissions - permissions', () => {
       },
     };
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -2251,7 +2348,10 @@ describe('updateInterfacePermissions - permissions', () => {
       },
     };
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -2289,7 +2389,10 @@ describe('updateInterfacePermissions - permissions', () => {
 
     const config = {};
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -2313,7 +2416,10 @@ describe('updateInterfacePermissions - permissions', () => {
       },
     };
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -2351,7 +2457,10 @@ describe('updateInterfacePermissions - permissions', () => {
       },
     };
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -2396,7 +2505,10 @@ describe('updateInterfacePermissions - permissions', () => {
 
     const config = {};
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -2434,7 +2546,10 @@ describe('updateInterfacePermissions - permissions', () => {
 
     const config = {};
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({
@@ -2477,7 +2592,10 @@ describe('updateInterfacePermissions - permissions', () => {
       },
     };
     const configDefaults = { interface: {} } as TConfigDefaults;
-    const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+    const interfaceConfig = await loadDefaultInterface({
+      config,
+      configDefaults,
+    });
     const appConfig = { config, interfaceConfig } as unknown as AppConfig;
 
     await updateInterfacePermissions({

@@ -1,20 +1,20 @@
-import TextareaAutosize from 'react-textarea-autosize';
-import { ImageDetail, imageDetailNumeric, imageDetailValue } from 'librechat-data-provider';
 import {
-  Input,
-  Label,
-  Switch,
-  Slider,
   HoverCard,
-  InputNumber,
   HoverCardTrigger,
+  Input,
+  InputNumber,
+  Label,
+  Slider,
+  Switch,
 } from '@librechat/client';
 import type { ValueType } from '@rc-component/mini-decimal';
+import { ImageDetail, imageDetailNumeric, imageDetailValue } from 'librechat-data-provider';
+import TextareaAutosize from 'react-textarea-autosize';
 import type { TModelSelectProps } from '~/common';
-import { cn, defaultTextProps, optionText, removeFocusOutlines } from '~/utils';
-import { useLocalize, useDebouncedInput } from '~/hooks';
-import OptionHover from './OptionHover';
 import { ESide } from '~/common';
+import { useDebouncedInput, useLocalize } from '~/hooks';
+import { cn, defaultTextProps, optionText, removeFocusOutlines } from '~/utils';
+import OptionHover from './OptionHover';
 
 export default function Settings({
   conversation,

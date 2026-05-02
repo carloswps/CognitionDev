@@ -1,12 +1,12 @@
-import { z } from 'zod';
-import { URL } from 'url';
 import _axios from 'axios';
 import crypto from 'crypto';
 import { load } from 'js-yaml';
-import type { ActionMetadata, ActionMetadataRuntime } from './types/agents';
-import type { FunctionTool, Schema, Reference } from './types/assistants';
-import { AuthTypeEnum, AuthorizationTypeEnum } from './types/agents';
 import type { OpenAPIV3 } from 'openapi-types';
+import { URL } from 'url';
+import { z } from 'zod';
+import type { ActionMetadata, ActionMetadataRuntime } from './types/agents';
+import { AuthorizationTypeEnum, AuthTypeEnum } from './types/agents';
+import type { FunctionTool, Reference, Schema } from './types/assistants';
 import { Tools } from './types/assistants';
 
 export type ParametersSchema = {
@@ -170,7 +170,6 @@ class RequestConfig {
 class RequestExecutor {
   path: string;
   params?: Record<string, unknown>;
-  private operationHash?: string;
   private authHeaders: Record<string, string> = {};
   private authToken?: string;
 
@@ -342,7 +341,11 @@ class RequestExecutor {
     } else if (method === 'put') {
       return axios.put(url, bodyParams, { headers, params: queryParams });
     } else if (method === 'delete') {
-      return axios.delete(url, { headers, data: bodyParams, params: queryParams });
+      return axios.delete(url, {
+        headers,
+        data: bodyParams,
+        params: queryParams,
+      });
     } else if (method === 'patch') {
       return axios.patch(url, bodyParams, { headers, params: queryParams });
     } else {
@@ -761,11 +764,17 @@ export function validateAndParseOpenAPISpec(specString: string): ValidationResul
       !Array.isArray(parsedSpec.servers) ||
       parsedSpec.servers.length === 0
     ) {
-      return { status: false, message: 'Could not find a valid URL in `servers`' };
+      return {
+        status: false,
+        message: 'Could not find a valid URL in `servers`',
+      };
     }
 
     if (!parsedSpec.servers[0].url) {
-      return { status: false, message: 'Could not find a valid URL in `servers`' };
+      return {
+        status: false,
+        message: 'Could not find a valid URL in `servers`',
+      };
     }
 
     // Check for paths

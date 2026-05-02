@@ -1,8 +1,8 @@
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import DialogTemplate from './DialogTemplate';
 import { Dialog } from '@radix-ui/react-dialog';
 import { Provider } from 'jotai';
+import DialogTemplate from './DialogTemplate';
 
 describe('DialogTemplate', () => {
   let mockSelectHandler: jest.Mock;
@@ -27,7 +27,10 @@ describe('DialogTemplate', () => {
             main={<div>Main Content</div>}
             buttons={<button>Button</button>}
             leftButtons={<button>Left Button</button>}
-            selection={{ selectHandler: mockSelectHandler, selectText: 'Select' }}
+            selection={{
+              selectHandler: mockSelectHandler,
+              selectText: 'Select',
+            }}
           />
         </Dialog>
       </Provider>,
@@ -75,7 +78,10 @@ describe('DialogTemplate', () => {
         >
           <DialogTemplate
             title="Test Dialog"
-            selection={{ selectHandler: mockSelectHandler, selectText: 'Select' }}
+            selection={{
+              selectHandler: mockSelectHandler,
+              selectText: 'Select',
+            }}
           />
         </Dialog>
       </Provider>,

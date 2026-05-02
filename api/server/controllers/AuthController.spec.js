@@ -1,5 +1,10 @@
 jest.mock('@librechat/data-schemas', () => ({
-  logger: { error: jest.fn(), debug: jest.fn(), warn: jest.fn(), info: jest.fn() },
+  logger: {
+    error: jest.fn(),
+    debug: jest.fn(),
+    warn: jest.fn(),
+    info: jest.fn(),
+  },
 }));
 jest.mock('~/server/services/GraphTokenService', () => ({
   getGraphApiToken: jest.fn(),
@@ -11,7 +16,10 @@ jest.mock('~/server/services/AuthService', () => ({
   setAuthTokens: jest.fn(),
   registerUser: jest.fn(),
 }));
-jest.mock('~/strategies', () => ({ getOpenIdConfig: jest.fn(), getOpenIdEmail: jest.fn() }));
+jest.mock('~/strategies', () => ({
+  getOpenIdConfig: jest.fn(),
+  getOpenIdEmail: jest.fn(),
+}));
 jest.mock('openid-client', () => ({ refreshTokenGrant: jest.fn() }));
 jest.mock('~/models', () => ({
   deleteAllUserSessions: jest.fn(),
@@ -184,7 +192,11 @@ describe('refreshController – OpenID path', () => {
     mockTokenset.claims.mockReturnValue(baseClaims);
     getOpenIdEmail.mockReturnValue(baseClaims.email);
     setOpenIDAuthTokens.mockReturnValue('new-app-token');
-    findOpenIDUser.mockResolvedValue({ user: { ...defaultUser }, error: null, migration: false });
+    findOpenIDUser.mockResolvedValue({
+      user: { ...defaultUser },
+      error: null,
+      migration: false,
+    });
     updateUser.mockResolvedValue({});
 
     req = {
@@ -273,7 +285,11 @@ describe('refreshController – OpenID path', () => {
   });
 
   it('should return 401 and redirect to /login when findOpenIDUser returns no user', async () => {
-    findOpenIDUser.mockResolvedValue({ user: null, error: null, migration: false });
+    findOpenIDUser.mockResolvedValue({
+      user: null,
+      error: null,
+      migration: false,
+    });
 
     await refreshController(req, res);
 
@@ -282,7 +298,11 @@ describe('refreshController – OpenID path', () => {
   });
 
   it('should return 401 and redirect when findOpenIDUser returns an error', async () => {
-    findOpenIDUser.mockResolvedValue({ user: null, error: 'AUTH_FAILED', migration: false });
+    findOpenIDUser.mockResolvedValue({
+      user: null,
+      error: 'AUTH_FAILED',
+      migration: false,
+    });
 
     await refreshController(req, res);
 

@@ -1,14 +1,14 @@
 import { logger } from '@librechat/data-schemas';
-import type { Redis, Cluster } from 'ioredis';
-import { RedisEventTransport } from '~/stream/implementations/RedisEventTransport';
-import { GenerationJobManagerClass } from '~/stream/GenerationJobManager';
-import { createStreamServices } from '~/stream/createStreamServices';
-import { createMockPublisher } from './helpers/publisher';
+import type { Cluster, Redis } from 'ioredis';
 import {
-  ioredisClient as staticRedisClient,
-  keyvRedisClient as staticKeyvClient,
   keyvRedisClientReady,
+  keyvRedisClient as staticKeyvClient,
+  ioredisClient as staticRedisClient,
 } from '~/cache/redisClients';
+import { createStreamServices } from '~/stream/createStreamServices';
+import { GenerationJobManagerClass } from '~/stream/GenerationJobManager';
+import { RedisEventTransport } from '~/stream/implementations/RedisEventTransport';
+import { createMockPublisher } from './helpers/publisher';
 
 logger.silent = true;
 
@@ -170,7 +170,11 @@ describe('Reconnect Reorder Buffer Desync (Regression)', () => {
         for (let i = 0; i < 10; i++) {
           messageHandler(
             channel,
-            JSON.stringify({ type: 'chunk', seq: baseSeq + i, data: { index: baseSeq + i } }),
+            JSON.stringify({
+              type: 'chunk',
+              seq: baseSeq + i,
+              data: { index: baseSeq + i },
+            }),
           );
         }
 

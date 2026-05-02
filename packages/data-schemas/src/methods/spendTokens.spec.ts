@@ -1,12 +1,12 @@
-import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { matchModelName, findMatchingPattern } from './test-helpers';
+import mongoose from 'mongoose';
 import { createModels } from '~/models';
-import { createTxMethods, tokenValues, premiumTokenValues } from './tx';
-import { createTransactionMethods } from './transaction';
-import { createSpendTokensMethods } from './spendTokens';
 import type { ITransaction } from '~/schema/transaction';
 import type { IBalance } from '..';
+import { createSpendTokensMethods } from './spendTokens';
+import { findMatchingPattern, matchModelName } from './test-helpers';
+import { createTransactionMethods } from './transaction';
+import { createTxMethods, premiumTokenValues, tokenValues } from './tx';
 
 jest.mock('~/config/winston', () => ({
   error: jest.fn(),
@@ -39,7 +39,10 @@ describe('spendTokens', () => {
     Transaction = mongoose.models.Transaction;
     Balance = mongoose.models.Balance;
 
-    const txMethods = createTxMethods(mongoose, { matchModelName, findMatchingPattern });
+    const txMethods = createTxMethods(mongoose, {
+      matchModelName,
+      findMatchingPattern,
+    });
     getCacheMultiplier = txMethods.getCacheMultiplier;
 
     const transactionMethods = createTransactionMethods(mongoose, {
@@ -95,7 +98,9 @@ describe('spendTokens', () => {
     await spendTokens(txData, tokenUsage);
 
     // Verify transactions were created
-    const transactions = await Transaction.find({ user: userId }).sort({ tokenType: 1 });
+    const transactions = await Transaction.find({ user: userId }).sort({
+      tokenType: 1,
+    });
     expect(transactions).toHaveLength(2);
 
     // Check completion transaction
@@ -134,7 +139,9 @@ describe('spendTokens', () => {
     await spendTokens(txData, tokenUsage);
 
     // Verify transactions were created
-    const transactions = await Transaction.find({ user: userId }).sort({ tokenType: 1 });
+    const transactions = await Transaction.find({ user: userId }).sort({
+      tokenType: 1,
+    });
     expect(transactions).toHaveLength(2);
 
     // Check completion transaction
@@ -220,7 +227,9 @@ describe('spendTokens', () => {
     await spendTokens(txData, tokenUsage);
 
     // Verify transactions were created
-    const transactions = await Transaction.find({ user: userId }).sort({ tokenType: 1 });
+    const transactions = await Transaction.find({ user: userId }).sort({
+      tokenType: 1,
+    });
     expect(transactions).toHaveLength(2);
 
     // Verify balance was reduced to exactly 0, not negative
@@ -301,7 +310,9 @@ describe('spendTokens', () => {
     expect(transactions).toHaveLength(4); // 2 transactions (prompt+completion) for each call
 
     // Let's examine the actual transaction records to see what's happening
-    const transactionDetails = await Transaction.find({ user: userId }).sort({ createdAt: 1 });
+    const transactionDetails = await Transaction.find({ user: userId }).sort({
+      createdAt: 1,
+    });
 
     // Log the transaction details for debugging
     console.log('Transaction details:');
@@ -432,7 +443,9 @@ describe('spendTokens', () => {
     expect(transactions).toHaveLength(4); // 2 transactions (prompt+completion) for each call
 
     // Let's examine the actual transaction records to see what's happening
-    const transactionDetails = await Transaction.find({ user: userId }).sort({ createdAt: 1 });
+    const transactionDetails = await Transaction.find({ user: userId }).sort({
+      createdAt: 1,
+    });
 
     // Log the transaction details for debugging
     console.log('Structured transaction details:');
@@ -477,7 +490,9 @@ describe('spendTokens', () => {
     const result = await spendStructuredTokens(txData, tokenUsage);
 
     // Verify transactions were created
-    const transactions = await Transaction.find({ user: userId }).sort({ tokenType: 1 });
+    const transactions = await Transaction.find({ user: userId }).sort({
+      tokenType: 1,
+    });
     expect(transactions).toHaveLength(2);
 
     // Verify balance was reduced to exactly 0, not negative
@@ -736,7 +751,9 @@ describe('spendTokens', () => {
     const result = await spendStructuredTokens(txData, tokenUsage);
 
     // Verify transactions were created
-    const transactions = await Transaction.find({ user: userId }).sort({ tokenType: 1 });
+    const transactions = await Transaction.find({ user: userId }).sort({
+      tokenType: 1,
+    });
     expect(transactions).toHaveLength(2);
 
     // Check completion transaction
@@ -1087,7 +1104,9 @@ describe('spendTokens', () => {
 
       await spendTokens(txData, { promptTokens: -500, completionTokens: 100 });
 
-      const transactions = await Transaction.find({ user: userId }).sort({ tokenType: 1 });
+      const transactions = await Transaction.find({ user: userId }).sort({
+        tokenType: 1,
+      });
 
       const completionTx = transactions.find((t) => t.tokenType === 'completion');
       const promptTx = transactions.find((t) => t.tokenType === 'prompt');
@@ -1120,7 +1139,9 @@ describe('spendTokens', () => {
 
       await spendTokens(txData, { promptTokens, completionTokens });
 
-      const transactions = await Transaction.find({ user: userId }).sort({ tokenType: 1 });
+      const transactions = await Transaction.find({ user: userId }).sort({
+        tokenType: 1,
+      });
       const completionTx = transactions.find((t) => t.tokenType === 'completion');
       const promptTx = transactions.find((t) => t.tokenType === 'prompt');
 
@@ -1146,7 +1167,9 @@ describe('spendTokens', () => {
 
       await spendTokens(txData, { promptTokens: 0, completionTokens: 100 });
 
-      const transactions = await Transaction.find({ user: userId }).sort({ tokenType: 1 });
+      const transactions = await Transaction.find({ user: userId }).sort({
+        tokenType: 1,
+      });
       const completionTx = transactions.find((t) => t.tokenType === 'completion');
       const promptTx = transactions.find((t) => t.tokenType === 'prompt');
 
@@ -1172,9 +1195,14 @@ describe('spendTokens', () => {
         balance: { enabled: true },
       };
 
-      await spendTokens(txData, { promptTokens: -300000, completionTokens: 500 });
+      await spendTokens(txData, {
+        promptTokens: -300000,
+        completionTokens: 500,
+      });
 
-      const transactions = await Transaction.find({ user: userId }).sort({ tokenType: 1 });
+      const transactions = await Transaction.find({ user: userId }).sort({
+        tokenType: 1,
+      });
       const completionTx = transactions.find((t) => t.tokenType === 'completion');
 
       const standardCompletionRate = tokenValues[model].completion;

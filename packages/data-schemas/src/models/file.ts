@@ -1,5 +1,5 @@
-import fileSchema from '~/schema/file';
 import { applyTenantIsolation } from '~/models/plugins/tenantIsolation';
+import fileSchema from '~/schema/file';
 import type { IMongoFile } from '~/types';
 
 export function createFileModel(mongoose: typeof import('mongoose')) {

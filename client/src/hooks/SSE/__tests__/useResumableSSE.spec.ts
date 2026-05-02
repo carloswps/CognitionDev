@@ -1,6 +1,6 @@
-import { renderHook, act } from '@testing-library/react';
-import { Constants, LocalStorageKeys } from 'librechat-data-provider';
+import { act, renderHook } from '@testing-library/react';
 import type { TSubmission } from 'librechat-data-provider';
+import { Constants, LocalStorageKeys } from 'librechat-data-provider';
 
 type SSEEventListener = (e: Partial<MessageEvent> & { responseCode?: number }) => void;
 
@@ -259,26 +259,27 @@ describe('useResumableSSE - 404 error path', () => {
     unmount();
   });
 
-  it.each([undefined, 500, 503])(
-    'does not call errorHandler for responseCode %s (reconnect path)',
-    async (responseCode) => {
-      const submission = buildSubmission();
-      const chatHelpers = buildChatHelpers();
+  it.each([
+    undefined,
+    500,
+    503,
+  ])('does not call errorHandler for responseCode %s (reconnect path)', async (responseCode) => {
+    const submission = buildSubmission();
+    const chatHelpers = buildChatHelpers();
 
-      const { unmount } = renderHook(() => useResumableSSE(submission, chatHelpers));
+    const { unmount } = renderHook(() => useResumableSSE(submission, chatHelpers));
 
-      await act(async () => {
-        await Promise.resolve();
-      });
+    await act(async () => {
+      await Promise.resolve();
+    });
 
-      const sse = getLastSSE();
+    const sse = getLastSSE();
 
-      await act(async () => {
-        sse._emit('error', { responseCode });
-      });
+    await act(async () => {
+      sse._emit('error', { responseCode });
+    });
 
-      expect(mockErrorHandler).not.toHaveBeenCalled();
-      unmount();
-    },
-  );
+    expect(mockErrorHandler).not.toHaveBeenCalled();
+    unmount();
+  });
 });

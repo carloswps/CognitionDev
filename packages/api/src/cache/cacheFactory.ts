@@ -6,18 +6,19 @@
  */
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const KeyvRedis = require('@keyv/redis').default as typeof import('@keyv/redis').default;
-import { Keyv } from 'keyv';
-import createMemoryStore from 'memorystore';
-import { RedisStore } from 'rate-limit-redis';
+
 import { logger } from '@librechat/data-schemas';
-import session, { MemoryStore } from 'express-session';
-import { Time, CacheKeys } from 'librechat-data-provider';
 import { RedisStore as ConnectRedis } from 'connect-redis';
+import session, { type MemoryStore } from 'express-session';
+import { Keyv } from 'keyv';
+import { CacheKeys, Time } from 'librechat-data-provider';
+import createMemoryStore from 'memorystore';
 import type { SendCommandFn } from 'rate-limit-redis';
-import { keyvRedisClient, ioredisClient } from './redisClients';
-import { batchDeleteKeys, scanKeys } from './redisUtils';
+import { RedisStore } from 'rate-limit-redis';
 import { cacheConfig } from './cacheConfig';
 import { violationFile } from './keyvFiles';
+import { ioredisClient, keyvRedisClient } from './redisClients';
+import { batchDeleteKeys, scanKeys } from './redisUtils';
 
 /**
  * Memoized in-memory Keyv instances keyed by namespace.
@@ -124,7 +125,11 @@ export const sessionCache = (namespace: string, ttl?: number): MemoryStore | Con
     const MemoryStore = createMemoryStore(session);
     return new MemoryStore({ ttl, checkPeriod: Time.ONE_DAY });
   }
-  const store = new ConnectRedis({ client: ioredisClient, ttl, prefix: namespace });
+  const store = new ConnectRedis({
+    client: ioredisClient,
+    ttl,
+    prefix: namespace,
+  });
   if (ioredisClient) {
     ioredisClient.on('error', (err) => {
       logger.error(`Session store Redis error for namespace ${namespace}:`, err);

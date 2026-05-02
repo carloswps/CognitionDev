@@ -147,7 +147,11 @@ class RunManager {
     }
 
     if (final && isLast && this.handlers['final']) {
-      return await this.handlers['final']({ step, runStatus, stepsByStatus: this.stepsByStatus });
+      return await this.handlers['final']({
+        step,
+        runStatus,
+        stepsByStatus: this.stepsByStatus,
+      });
     }
 
     logger.debug(`[RunManager] Default handler for ${step.id} with status \`${runStatus}\``, {

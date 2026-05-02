@@ -1,17 +1,17 @@
-import { memo } from 'react';
-import { AgentCapabilities } from 'librechat-data-provider';
-import { useFormContext, Controller } from 'react-hook-form';
 import {
   Checkbox,
+  CircleHelpIcon,
   HoverCard,
   HoverCardContent,
   HoverCardPortal,
   HoverCardTrigger,
-  CircleHelpIcon,
 } from '@librechat/client';
+import { AgentCapabilities } from 'librechat-data-provider';
+import { memo } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import type { AgentForm } from '~/common';
-import { useLocalize } from '~/hooks';
 import { ESide } from '~/common';
+import { useLocalize } from '~/hooks';
 
 function FileSearchCheckbox() {
   const localize = useLocalize();

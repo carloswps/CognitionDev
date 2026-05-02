@@ -1,23 +1,23 @@
-import React, { useMemo, useEffect } from 'react';
-import keyBy from 'lodash/keyBy';
 import { ControlCombobox } from '@librechat/client';
-import { ChevronLeft, RotateCcw } from 'lucide-react';
-import { useFormContext, useWatch, Controller } from 'react-hook-form';
-import { componentMapping } from '~/components/SidePanel/Parameters/components';
-import {
-  alternateName,
-  getSettingsKeys,
-  getEndpointField,
-  LocalStorageKeys,
-  SettingDefinition,
-  agentParamSettings,
-} from 'librechat-data-provider';
 import type * as t from 'librechat-data-provider';
+import {
+  agentParamSettings,
+  alternateName,
+  getEndpointField,
+  getSettingsKeys,
+  LocalStorageKeys,
+  type SettingDefinition,
+} from 'librechat-data-provider';
+import keyBy from 'lodash/keyBy';
+import { ChevronLeft, RotateCcw } from 'lucide-react';
+import React, { useEffect, useMemo } from 'react';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import type { AgentForm, AgentModelPanelProps, StringOption } from '~/common';
-import { useGetEndpointsQuery } from '~/data-provider';
-import { useLiveAnnouncer } from '~/Providers';
-import { useLocalize } from '~/hooks';
 import { Panel } from '~/common';
+import { componentMapping } from '~/components/SidePanel/Parameters/components';
+import { useGetEndpointsQuery } from '~/data-provider';
+import { useLocalize } from '~/hooks';
+import { useLiveAnnouncer } from '~/Providers';
 import { cn } from '~/utils';
 
 export default function ModelPanel({
@@ -93,7 +93,10 @@ export default function ModelPanel({
 
   const handleResetParameters = () => {
     setValue('model_parameters', {} as t.AgentModelParameters);
-    announcePolite({ message: localize('com_ui_model_parameters_reset'), isStatus: true });
+    announcePolite({
+      message: localize('com_ui_model_parameters_reset'),
+      isStatus: true,
+    });
   };
 
   return (
@@ -254,7 +257,9 @@ export default function ModelPanel({
         className="btn btn-neutral my-1 flex w-full items-center justify-center gap-2 px-4 py-2 text-sm"
       >
         <RotateCcw className="h-4 w-4" aria-hidden="true" />
-        {localize('com_ui_reset_var', { 0: localize('com_ui_model_parameters') })}
+        {localize('com_ui_reset_var', {
+          0: localize('com_ui_model_parameters'),
+        })}
       </button>
     </div>
   );

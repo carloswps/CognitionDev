@@ -1,7 +1,7 @@
 import { Constants } from 'librechat-data-provider';
+import type { MCPToolCacheDeps, MCPToolInput } from './tools';
 import { createMCPToolCacheService } from './tools';
 import type { LCAvailableTools } from './types';
-import type { MCPToolInput, MCPToolCacheDeps } from './tools';
 
 function createMockDeps(overrides: Partial<MCPToolCacheDeps> = {}): MCPToolCacheDeps {
   return {
@@ -17,7 +17,11 @@ describe('createMCPToolCacheService', () => {
       const deps = createMockDeps();
       const { updateMCPServerTools } = createMCPToolCacheService(deps);
 
-      const result = await updateMCPServerTools({ userId: 'u1', serverName: 'srv', tools: null });
+      const result = await updateMCPServerTools({
+        userId: 'u1',
+        serverName: 'srv',
+        tools: null,
+      });
 
       expect(result).toEqual({});
       expect(deps.setCachedTools).not.toHaveBeenCalled();
@@ -27,7 +31,11 @@ describe('createMCPToolCacheService', () => {
       const deps = createMockDeps();
       const { updateMCPServerTools } = createMCPToolCacheService(deps);
 
-      const result = await updateMCPServerTools({ userId: 'u1', serverName: 'srv', tools: [] });
+      const result = await updateMCPServerTools({
+        userId: 'u1',
+        serverName: 'srv',
+        tools: [],
+      });
 
       expect(result).toEqual({});
       expect(deps.setCachedTools).not.toHaveBeenCalled();
@@ -44,7 +52,11 @@ describe('createMCPToolCacheService', () => {
         },
       ];
 
-      const result = await updateMCPServerTools({ userId: 'u1', serverName: 'brave', tools });
+      const result = await updateMCPServerTools({
+        userId: 'u1',
+        serverName: 'brave',
+        tools,
+      });
 
       const expectedKey = `search${Constants.mcp_delimiter}brave`;
       expect(result[expectedKey]).toBeDefined();
@@ -92,7 +104,9 @@ describe('createMCPToolCacheService', () => {
           },
         },
       };
-      const deps = createMockDeps({ getCachedTools: jest.fn().mockResolvedValue(existing) });
+      const deps = createMockDeps({
+        getCachedTools: jest.fn().mockResolvedValue(existing),
+      });
       const { mergeAppTools } = createMCPToolCacheService(deps);
       const appTools: LCAvailableTools = {
         new: {
@@ -113,7 +127,9 @@ describe('createMCPToolCacheService', () => {
     });
 
     it('handles null cache (cold start) by defaulting to empty', async () => {
-      const deps = createMockDeps({ getCachedTools: jest.fn().mockResolvedValue(null) });
+      const deps = createMockDeps({
+        getCachedTools: jest.fn().mockResolvedValue(null),
+      });
       const { mergeAppTools } = createMCPToolCacheService(deps);
       const appTools: LCAvailableTools = {
         tool: {
@@ -159,7 +175,11 @@ describe('createMCPToolCacheService', () => {
       const deps = createMockDeps();
       const { cacheMCPServerTools } = createMCPToolCacheService(deps);
 
-      await cacheMCPServerTools({ userId: 'u1', serverName: 'srv', serverTools: {} });
+      await cacheMCPServerTools({
+        userId: 'u1',
+        serverName: 'srv',
+        serverTools: {},
+      });
 
       expect(deps.setCachedTools).not.toHaveBeenCalled();
     });
@@ -178,7 +198,11 @@ describe('createMCPToolCacheService', () => {
         },
       };
 
-      await cacheMCPServerTools({ userId: 'u1', serverName: 'brave', serverTools });
+      await cacheMCPServerTools({
+        userId: 'u1',
+        serverName: 'brave',
+        serverTools,
+      });
 
       expect(deps.setCachedTools).toHaveBeenCalledWith(serverTools, {
         userId: 'u1',

@@ -1,22 +1,24 @@
-import mongoose, { Schema, type Connection, type Model } from 'mongoose';
+import mongoose, { type Connection, type Model, Schema } from 'mongoose';
 import {
   actionSchema,
-  agentSchema,
   agentApiKeySchema,
   agentCategorySchema,
+  agentSchema,
   assistantSchema,
   balanceSchema,
   bannerSchema,
   conversationTagSchema,
   convoSchema,
   fileSchema,
+  groupSchema,
   keySchema,
+  memorySchema,
   messageSchema,
   pluginAuthSchema,
   presetSchema,
   projectSchema,
-  promptSchema,
   promptGroupSchema,
+  promptSchema,
   roleSchema,
   sessionSchema,
   shareSchema,
@@ -24,8 +26,6 @@ import {
   toolCallSchema,
   transactionSchema,
   userSchema,
-  memorySchema,
-  groupSchema,
 } from '~/schema';
 import accessRoleSchema from '~/schema/accessRole';
 import aclEntrySchema from '~/schema/aclEntry';
@@ -149,7 +149,9 @@ class TenantRouter {
       throw new Error(`Pool ${poolId} not configured`);
     }
 
-    const orgConn = poolConn.useDb(`${DB_PREFIX}org_${orgId}`, { useCache: true });
+    const orgConn = poolConn.useDb(`${DB_PREFIX}org_${orgId}`, {
+      useCache: true,
+    });
     this.orgConns.set(orgId, orgConn);
     return orgConn;
   }
@@ -211,10 +213,9 @@ class TenantRouter {
       return cached;
     }
 
-    const existing = (await this.Assignment.findOne({ orgId }).lean()) as Record<
-      string,
-      unknown
-    > | null;
+    const existing = (await this.Assignment.findOne({
+      orgId,
+    }).lean()) as Record<string, unknown> | null;
     if (existing) {
       const poolId = existing.poolId as string;
       this.assignmentCache.set(orgId, poolId);
@@ -243,7 +244,9 @@ class TenantRouter {
   async getPoolStats(): Promise<Record<string, PoolStats>> {
     const stats: Record<string, PoolStats> = {};
     for (const pool of this.pools) {
-      const orgCount = await this.Assignment.countDocuments({ poolId: pool.id });
+      const orgCount = await this.Assignment.countDocuments({
+        poolId: pool.id,
+      });
       stats[pool.id] = {
         orgCount,
         maxOrgs: pool.maxOrgs,
@@ -396,8 +399,16 @@ describeIfFerretDB('Sharding PoC', () => {
       const User1 = await router.getModel('org_1', 'User');
       const User6 = await router.getModel('org_6', 'User');
 
-      await User1.create({ name: 'Alice', email: 'alice@org1.test', username: 'alice1' });
-      await User6.create({ name: 'Bob', email: 'bob@org6.test', username: 'bob6' });
+      await User1.create({
+        name: 'Alice',
+        email: 'alice@org1.test',
+        username: 'alice1',
+      });
+      await User6.create({
+        name: 'Bob',
+        email: 'bob@org6.test',
+        username: 'bob6',
+      });
 
       const org1Users = await User1.find({}).lean();
       const org6Users = await User6.find({}).lean();

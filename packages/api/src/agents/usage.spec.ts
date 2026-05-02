@@ -1,6 +1,6 @@
 import type { UsageMetadata } from '../stream/interfaces/IJobStore';
-import type { RecordUsageDeps, RecordUsageParams } from './usage';
 import type { BulkWriteDeps, PricingFns } from './transactions';
+import type { RecordUsageDeps, RecordUsageParams } from './usage';
 import { recordCollectedUsage } from './usage';
 
 describe('recordCollectedUsage', () => {
@@ -416,7 +416,9 @@ describe('recordCollectedUsage', () => {
         { input_tokens: 100, output_tokens: 50, model: 'gpt-4' },
       ];
 
-      const endpointTokenConfig = { 'gpt-4': { prompt: 0.01, completion: 0.03, context: 8192 } };
+      const endpointTokenConfig = {
+        'gpt-4': { prompt: 0.01, completion: 0.03, context: 8192 },
+      };
 
       await recordCollectedUsage(deps, {
         ...baseParams,

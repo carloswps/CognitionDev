@@ -1,5 +1,10 @@
 jest.mock('@librechat/data-schemas', () => ({
-  logger: { info: jest.fn(), warn: jest.fn(), debug: jest.fn(), error: jest.fn() },
+  logger: {
+    info: jest.fn(),
+    warn: jest.fn(),
+    debug: jest.fn(),
+    error: jest.fn(),
+  },
   DEFAULT_SESSION_EXPIRY: 900000,
   DEFAULT_REFRESH_TOKEN_EXPIRY: 604800000,
 }));
@@ -32,7 +37,9 @@ jest.mock('~/models', () => ({
   deleteUserById: jest.fn(),
   generateRefreshToken: jest.fn(),
 }));
-jest.mock('~/strategies/validators', () => ({ registerSchema: { parse: jest.fn() } }));
+jest.mock('~/strategies/validators', () => ({
+  registerSchema: { parse: jest.fn() },
+}));
 jest.mock('~/server/services/Config', () => ({ getAppConfig: jest.fn() }));
 jest.mock('~/server/utils', () => ({ sendEmail: jest.fn() }));
 
@@ -314,7 +321,10 @@ describe('requestPasswordReset', () => {
   });
 
   it('should reuse baseConfig for non-tenant user without calling resolveAppConfigForUser', async () => {
-    findUser.mockResolvedValue({ _id: 'user-no-tenant', email: 'user@example.com' });
+    findUser.mockResolvedValue({
+      _id: 'user-no-tenant',
+      email: 'user@example.com',
+    });
 
     const req = { body: { email: 'user@example.com' }, ip: '127.0.0.1' };
     await requestPasswordReset(req);

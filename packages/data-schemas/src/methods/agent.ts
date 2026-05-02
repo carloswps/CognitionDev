@@ -1,9 +1,9 @@
 import crypto from 'node:crypto';
-import { Constants, EToolResources, ResourceType, actionDelimiter } from 'librechat-data-provider';
 import type { AgentToolResources } from 'librechat-data-provider';
+import { actionDelimiter, Constants, EToolResources, ResourceType } from 'librechat-data-provider';
 import type { FilterQuery, Model, Types } from 'mongoose';
-import type { IAgent, IAclEntry } from '~/types';
 import logger from '~/config/winston';
+import type { IAclEntry, IAgent } from '~/types';
 
 const { mcp_delimiter } = Constants;
 
@@ -200,7 +200,10 @@ function isDuplicateVersion(
  */
 async function generateActionMetadataHash(
   actionIds: string[] | null | undefined,
-  actions: Array<{ action_id: string; metadata: Record<string, unknown> | null }>,
+  actions: Array<{
+    action_id: string;
+    metadata: Record<string, unknown> | null;
+  }>,
 ): Promise<string> {
   if (!actionIds || actionIds.length === 0) {
     return '';
@@ -338,7 +341,10 @@ export function createAgentMethods(mongoose: typeof import('mongoose'), deps: Ag
 
             actionsHash = await generateActionMetadataHash(
               currentAgent.actions,
-              actions as Array<{ action_id: string; metadata: Record<string, unknown> | null }>,
+              actions as Array<{
+                action_id: string;
+                metadata: Record<string, unknown> | null;
+              }>,
             );
           } catch (error) {
             logger.error('Error fetching actions for hash generation:', error);
@@ -552,7 +558,11 @@ export function createAgentMethods(mongoose: typeof import('mongoose'), deps: Ag
       try {
         await User.updateMany(
           { 'favorites.agentId': (agent as unknown as { id: string }).id },
-          { $pull: { favorites: { agentId: (agent as unknown as { id: string }).id } } },
+          {
+            $pull: {
+              favorites: { agentId: (agent as unknown as { id: string }).id },
+            },
+          },
         );
       } catch (error) {
         logger.error('[deleteAgent] Error removing agent from user favorites', error);
@@ -586,7 +596,9 @@ export function createAgentMethods(mongoose: typeof import('mongoose'), deps: Ag
       const migratedEntries =
         authoredAgents.length > 0
           ? await AclEntry.find({
-              resourceType: { $in: [ResourceType.AGENT, ResourceType.REMOTE_AGENT] },
+              resourceType: {
+                $in: [ResourceType.AGENT, ResourceType.REMOTE_AGENT],
+              },
               resourceId: { $in: authoredAgents.map((a) => a._id) },
             })
               .select('resourceId')
@@ -767,7 +779,9 @@ export function createAgentMethods(mongoose: typeof import('mongoose'), deps: Ag
       throw new Error(`Version ${versionIndex} not found`);
     }
 
-    const revertToVersion = { ...(agent.versions[versionIndex] as Record<string, unknown>) };
+    const revertToVersion = {
+      ...(agent.versions[versionIndex] as Record<string, unknown>),
+    };
     delete revertToVersion._id;
     delete revertToVersion.id;
     delete revertToVersion.versions;

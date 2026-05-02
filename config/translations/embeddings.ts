@@ -1,9 +1,11 @@
 import dotenv from 'dotenv';
+
 dotenv.config({
   path: './',
 });
-import { OpenAIEmbeddings } from '@langchain/openai';
+
 import { HNSWLib } from '@langchain/community/vectorstores/hnswlib';
+import { OpenAIEmbeddings } from '@langchain/openai';
 import { RecursiveCharacterTextSplitter } from '@langchain/textsplitters';
 import * as fs from 'fs';
 import * as path from 'path';

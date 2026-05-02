@@ -9,7 +9,9 @@
  */
 
 // Load environment variables from root .env file for API keys
-require('dotenv').config({ path: require('path').resolve(__dirname, '../../../../../.env') });
+require('dotenv').config({
+  path: require('path').resolve(__dirname, '../../../../../.env'),
+});
 
 const originalEnv = {
   CREDS_KEY: process.env.CREDS_KEY,

@@ -48,7 +48,7 @@ const validateModel = async (req, res, next) => {
     return handleError(res, { text: 'Endpoint models not loaded' });
   }
 
-  let validModel = !!availableModels.find((availableModel) => availableModel === model);
+  const validModel = !!availableModels.find((availableModel) => availableModel === model);
 
   if (validModel) {
     return next();

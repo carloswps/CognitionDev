@@ -1,14 +1,14 @@
-import { Types } from 'mongoose';
-import { PrincipalType, PrincipalModel, PermissionBits } from 'librechat-data-provider';
+import { PermissionBits, PrincipalModel, PrincipalType } from 'librechat-data-provider';
 import type {
   AnyBulkWriteOperation,
   ClientSession,
-  PipelineStage,
   DeleteResult,
   Model,
+  PipelineStage,
 } from 'mongoose';
-import type { AclEntry, IAclEntry } from '~/types';
+import { Types } from 'mongoose';
 import { MAX_PERM_BITS } from '~/common/permissions';
+import type { AclEntry, IAclEntry } from '~/types';
 import { tenantSafeBulkWrite } from '~/utils/tenantBulkWrite';
 
 /**
@@ -118,14 +118,19 @@ export function createAclEntryMethods(mongoose: typeof import('mongoose')) {
    * @returns Array of matching ACL entries
    */
   async function findEntriesByPrincipalsAndResource(
-    principalsList: Array<{ principalType: string; principalId?: string | Types.ObjectId }>,
+    principalsList: Array<{
+      principalType: string;
+      principalId?: string | Types.ObjectId;
+    }>,
     resourceType: string,
     resourceId: string | Types.ObjectId,
   ): Promise<IAclEntry[]> {
     const AclEntry = mongoose.models.AclEntry as Model<IAclEntry>;
     const principalsQuery = principalsList.map((p) => ({
       principalType: p.principalType,
-      ...(p.principalType !== PrincipalType.PUBLIC && { principalId: p.principalId }),
+      ...(p.principalType !== PrincipalType.PUBLIC && {
+        principalId: p.principalId,
+      }),
     }));
 
     return await AclEntry.find({
@@ -145,7 +150,10 @@ export function createAclEntryMethods(mongoose: typeof import('mongoose')) {
    * @returns Whether any of the principals has the permission
    */
   async function hasPermission(
-    principalsList: Array<{ principalType: string; principalId?: string | Types.ObjectId }>,
+    principalsList: Array<{
+      principalType: string;
+      principalId?: string | Types.ObjectId;
+    }>,
     resourceType: string,
     resourceId: string | Types.ObjectId,
     permissionBit: number,
@@ -153,7 +161,9 @@ export function createAclEntryMethods(mongoose: typeof import('mongoose')) {
     const AclEntry = mongoose.models.AclEntry as Model<IAclEntry>;
     const principalsQuery = principalsList.map((p) => ({
       principalType: p.principalType,
-      ...(p.principalType !== PrincipalType.PUBLIC && { principalId: p.principalId }),
+      ...(p.principalType !== PrincipalType.PUBLIC && {
+        principalId: p.principalId,
+      }),
     }));
 
     const entry = await AclEntry.findOne({
@@ -176,7 +186,10 @@ export function createAclEntryMethods(mongoose: typeof import('mongoose')) {
    * @returns {Promise<number>} Effective permission bitmask
    */
   async function getEffectivePermissions(
-    principalsList: Array<{ principalType: string; principalId?: string | Types.ObjectId }>,
+    principalsList: Array<{
+      principalType: string;
+      principalId?: string | Types.ObjectId;
+    }>,
     resourceType: string,
     resourceId: string | Types.ObjectId,
   ): Promise<number> {
@@ -213,7 +226,10 @@ export function createAclEntryMethods(mongoose: typeof import('mongoose')) {
    * // permMap.get(id1.toString()) → 7 (VIEW|EDIT|DELETE)
    */
   async function getEffectivePermissionsForResources(
-    principalsList: Array<{ principalType: string; principalId?: string | Types.ObjectId }>,
+    principalsList: Array<{
+      principalType: string;
+      principalId?: string | Types.ObjectId;
+    }>,
     resourceType: string,
     resourceIds: Array<string | Types.ObjectId>,
   ): Promise<Map<string, number>> {
@@ -224,7 +240,9 @@ export function createAclEntryMethods(mongoose: typeof import('mongoose')) {
     const AclEntry = mongoose.models.AclEntry as Model<IAclEntry>;
     const principalsQuery = principalsList.map((p) => ({
       principalType: p.principalType,
-      ...(p.principalType !== PrincipalType.PUBLIC && { principalId: p.principalId }),
+      ...(p.principalType !== PrincipalType.PUBLIC && {
+        principalId: p.principalId,
+      }),
     }));
 
     // Batch query for all resources at once
@@ -386,7 +404,10 @@ export function createAclEntryMethods(mongoose: typeof import('mongoose')) {
         update.$bit = {};
       }
       const bitUpdate = update.$bit as Record<string, unknown>;
-      bitUpdate.permBits = { ...(bitUpdate.permBits as Record<string, unknown>), and: ~removeBits };
+      bitUpdate.permBits = {
+        ...(bitUpdate.permBits as Record<string, unknown>),
+        and: ~removeBits,
+      };
     }
 
     const options = {
@@ -406,14 +427,19 @@ export function createAclEntryMethods(mongoose: typeof import('mongoose')) {
    * @returns Array of resource IDs
    */
   async function findAccessibleResources(
-    principalsList: Array<{ principalType: string; principalId?: string | Types.ObjectId }>,
+    principalsList: Array<{
+      principalType: string;
+      principalId?: string | Types.ObjectId;
+    }>,
     resourceType: string,
     requiredPermBit: number,
   ): Promise<Types.ObjectId[]> {
     const AclEntry = mongoose.models.AclEntry as Model<IAclEntry>;
     const principalsQuery = principalsList.map((p) => ({
       principalType: p.principalType,
-      ...(p.principalType !== PrincipalType.PUBLIC && { principalId: p.principalId }),
+      ...(p.principalType !== PrincipalType.PUBLIC && {
+        principalId: p.principalId,
+      }),
     }));
 
     return await AclEntry.find({

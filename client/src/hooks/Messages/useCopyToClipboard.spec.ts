@@ -1,11 +1,11 @@
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import copy from 'copy-to-clipboard';
-import { ContentTypes } from 'librechat-data-provider';
 import type {
-  SearchResultData,
   ProcessedOrganic,
+  SearchResultData,
   TMessageContentParts,
 } from 'librechat-data-provider';
+import { ContentTypes } from 'librechat-data-provider';
 import useCopyToClipboard from '~/hooks/Messages/useCopyToClipboard';
 
 // Mock the copy-to-clipboard module
@@ -140,7 +140,9 @@ Citations:
 [1] https://example.com/search1
 `;
 
-      expect(mockCopy).toHaveBeenCalledWith(expectedText, { format: 'text/plain' });
+      expect(mockCopy).toHaveBeenCalledWith(expectedText, {
+        format: 'text/plain',
+      });
     });
 
     it('should format news citations with correct mapping', () => {
@@ -164,7 +166,9 @@ Citations:
 [2] https://example.com/news2
 `;
 
-      expect(mockCopy).toHaveBeenCalledWith(expectedText, { format: 'text/plain' });
+      expect(mockCopy).toHaveBeenCalledWith(expectedText, {
+        format: 'text/plain',
+      });
     });
 
     it('should handle highlighted text with citations', () => {
@@ -187,7 +191,9 @@ Citations:
 [1] https://example.com/search1
 `;
 
-      expect(mockCopy).toHaveBeenCalledWith(expectedText, { format: 'text/plain' });
+      expect(mockCopy).toHaveBeenCalledWith(expectedText, {
+        format: 'text/plain',
+      });
     });
 
     it('should handle composite citations', () => {
@@ -213,7 +219,9 @@ Citations:
 [3] https://example.com/news2
 `;
 
-      expect(mockCopy).toHaveBeenCalledWith(expectedText, { format: 'text/plain' });
+      expect(mockCopy).toHaveBeenCalledWith(expectedText, {
+        format: 'text/plain',
+      });
     });
   });
 
@@ -255,7 +263,9 @@ Citations:
 [1] https://example.com/article
 `;
 
-      expect(mockCopy).toHaveBeenCalledWith(expectedText, { format: 'text/plain' });
+      expect(mockCopy).toHaveBeenCalledWith(expectedText, {
+        format: 'text/plain',
+      });
     });
 
     it('should handle multiple citations of the same source', () => {
@@ -290,7 +300,9 @@ Citations:
 [1] https://example.com/source1
 `;
 
-      expect(mockCopy).toHaveBeenCalledWith(expectedText, { format: 'text/plain' });
+      expect(mockCopy).toHaveBeenCalledWith(expectedText, {
+        format: 'text/plain',
+      });
     });
   });
 
@@ -347,7 +359,9 @@ Citations:
 [1] https://example.com/search1
 `;
 
-      expect(mockCopy).toHaveBeenCalledWith(expectedText, { format: 'text/plain' });
+      expect(mockCopy).toHaveBeenCalledWith(expectedText, {
+        format: 'text/plain',
+      });
     });
 
     it('should handle citations without links', () => {
@@ -410,7 +424,9 @@ Citations:
 [1] https://example.com/1
 `;
 
-      expect(mockCopy).toHaveBeenCalledWith(expectedText, { format: 'text/plain' });
+      expect(mockCopy).toHaveBeenCalledWith(expectedText, {
+        format: 'text/plain',
+      });
     });
   });
 
@@ -450,7 +466,9 @@ Citations:
 [5] https://example.com/ref
 `;
 
-      expect(mockCopy).toHaveBeenCalledWith(expectedText, { format: 'text/plain' });
+      expect(mockCopy).toHaveBeenCalledWith(expectedText, {
+        format: 'text/plain',
+      });
     });
   });
 
@@ -488,7 +506,9 @@ Citations:
 [3] https://example.com/3
 `;
 
-      expect(mockCopy).toHaveBeenCalledWith(expectedText, { format: 'text/plain' });
+      expect(mockCopy).toHaveBeenCalledWith(expectedText, {
+        format: 'text/plain',
+      });
     });
   });
 });

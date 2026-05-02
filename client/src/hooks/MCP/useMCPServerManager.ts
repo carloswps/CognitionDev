@@ -1,27 +1,27 @@
-import { useCallback, useState, useMemo, useRef, useEffect } from 'react';
-import { useAtom } from 'jotai';
 import { useToastContext } from '@librechat/client';
 import { useQueryClient } from '@tanstack/react-query';
+import { useAtom } from 'jotai';
+import type { MCPServersResponse, TPlugin, TUpdateUserPlugins } from 'librechat-data-provider';
 import {
   Constants,
-  QueryKeys,
-  MCPOptions,
+  type MCPOptions,
   Permissions,
-  ResourceType,
   PermissionTypes,
+  QueryKeys,
+  ResourceType,
 } from 'librechat-data-provider';
 import {
   useCancelMCPOAuthMutation,
-  useUpdateUserPluginsMutation,
-  useReinitializeMCPServerMutation,
   useGetAllEffectivePermissionsQuery,
+  useReinitializeMCPServerMutation,
+  useUpdateUserPluginsMutation,
 } from 'librechat-data-provider/react-query';
-import type { TUpdateUserPlugins, TPlugin, MCPServersResponse } from 'librechat-data-provider';
-import type { MCPServerInitState } from '~/store/mcp';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ConfigFieldDetail } from '~/common';
-import { useLocalize, useHasAccess, useMCPSelect, useMCPConnectionStatus } from '~/hooks';
 import { useGetStartupConfig, useMCPServersQuery } from '~/data-provider';
-import { mcpServerInitStatesAtom, getServerInitState } from '~/store/mcp';
+import { useHasAccess, useLocalize, useMCPConnectionStatus, useMCPSelect } from '~/hooks';
+import type { MCPServerInitState } from '~/store/mcp';
+import { getServerInitState, mcpServerInitStatesAtom } from '~/store/mcp';
 
 export interface MCPServerDefinition {
   serverName: string;
@@ -38,7 +38,10 @@ type PollIntervals = Record<string, NodeJS.Timeout | null>;
 export function useMCPServerManager({
   conversationId,
   storageContextKey,
-}: { conversationId?: string | null; storageContextKey?: string } = {}) {
+}: {
+  conversationId?: string | null;
+  storageContextKey?: string;
+} = {}) {
   const localize = useLocalize();
   const queryClient = useQueryClient();
   const { showToast } = useToastContext();
@@ -49,7 +52,9 @@ export function useMCPServerManager({
     permission: Permissions.USE,
   });
 
-  const { data: loadedServers, isLoading } = useMCPServersQuery({ enabled: canUseMcp });
+  const { data: loadedServers, isLoading } = useMCPServersQuery({
+    enabled: canUseMcp,
+  });
 
   // Fetch effective permissions for all MCP servers
   const { data: permissionsMap } = useGetAllEffectivePermissionsQuery(ResourceType.MCPSERVER, {
@@ -249,7 +254,9 @@ export function useMCPServerManager({
             }
 
             showToast({
-              message: localize('com_ui_mcp_authenticated_success', { 0: serverName }),
+              message: localize('com_ui_mcp_authenticated_success', {
+                0: serverName,
+              }),
               status: 'success',
             });
 
@@ -358,7 +365,9 @@ export function useMCPServerManager({
           ]);
 
           showToast({
-            message: localize('com_ui_mcp_initialized_success', { 0: serverName }),
+            message: localize('com_ui_mcp_initialized_success', {
+              0: serverName,
+            }),
             status: 'success',
           });
 

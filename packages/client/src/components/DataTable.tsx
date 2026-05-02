@@ -1,26 +1,27 @@
-import React, { useCallback, useEffect, useRef, useState, memo, useMemo } from 'react';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import {
-  Row,
-  ColumnDef,
-  flexRender,
-  SortingState,
-  useReactTable,
-  getCoreRowModel,
-  VisibilityState,
-  getSortedRowModel,
-  ColumnFiltersState,
-  getFilteredRowModel,
-} from '@tanstack/react-table';
 import type { Table as TTable } from '@tanstack/react-table';
-import { Table, TableRow, TableBody, TableCell, TableHead, TableHeader } from './Table';
-import { useMediaQuery, useLocalize, TranslationKeys } from '~/hooks';
-import AnimatedSearchInput from './AnimatedSearchInput';
-import { TrashIcon, Spinner } from '~/svgs';
-import { Skeleton } from './Skeleton';
-import { Checkbox } from './Checkbox';
-import { Button } from './Button';
+import {
+  type ColumnDef,
+  type ColumnFiltersState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  type Row,
+  type SortingState,
+  useReactTable,
+  type VisibilityState,
+} from '@tanstack/react-table';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import type React from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { type TranslationKeys, useLocalize, useMediaQuery } from '~/hooks';
+import { Spinner, TrashIcon } from '~/svgs';
 import { cn } from '~/utils';
+import AnimatedSearchInput from './AnimatedSearchInput';
+import { Button } from './Button';
+import { Checkbox } from './Checkbox';
+import { Skeleton } from './Skeleton';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './Table';
 
 type TableColumn<TData, TValue> = ColumnDef<TData, TValue> & {
   meta?: {

@@ -1,15 +1,17 @@
-import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { useMediaQuery } from '~/hooks';
-import { Button } from './Button';
 import { X } from 'lucide-react';
+import * as React from 'react';
+import { useMediaQuery } from '~/hooks';
 import { cn } from '~/utils';
+import { Button } from './Button';
 
 const Dialog = DialogPrimitive.Root;
 
 const DialogTrigger = DialogPrimitive.Trigger;
 
-type DialogPortalProps = DialogPrimitive.DialogPortalProps & { className?: string };
+type DialogPortalProps = DialogPrimitive.DialogPortalProps & {
+  className?: string;
+};
 
 const DialogPortal = ({ className = '', children, ...props }: DialogPortalProps) => (
   <DialogPrimitive.Portal className={cn(className)} {...(props as DialogPortalProps)}>
@@ -159,12 +161,12 @@ DialogButton.displayName = DialogPrimitive.Title.displayName;
 
 export {
   Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
-  DialogDescription,
-  DialogClose,
   DialogButton,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 };

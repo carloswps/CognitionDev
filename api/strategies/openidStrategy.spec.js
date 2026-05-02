@@ -509,28 +509,25 @@ describe('setupOpenId', () => {
         false,
         'You must have "group-required" role to log in.',
       ],
-    ])(
-      'uses groups claim directly when %s (no overage)',
-      async (_label, groupsClaim, expectedAllowed, expectedMessage) => {
-        process.env.OPENID_REQUIRED_ROLE = 'group-required';
-        process.env.OPENID_REQUIRED_ROLE_PARAMETER_PATH = 'groups';
-        process.env.OPENID_REQUIRED_ROLE_TOKEN_KIND = 'id';
+    ])('uses groups claim directly when %s (no overage)', async (_label, groupsClaim, expectedAllowed, expectedMessage) => {
+      process.env.OPENID_REQUIRED_ROLE = 'group-required';
+      process.env.OPENID_REQUIRED_ROLE_PARAMETER_PATH = 'groups';
+      process.env.OPENID_REQUIRED_ROLE_TOKEN_KIND = 'id';
 
-        jwtDecode.mockReturnValue({
-          groups: groupsClaim,
-          permissions: ['admin'],
-        });
+      jwtDecode.mockReturnValue({
+        groups: groupsClaim,
+        permissions: ['admin'],
+      });
 
-        await setupOpenId();
-        verifyCallback = require('openid-client/passport').__getVerifyCallbackByName('openid');
+      await setupOpenId();
+      verifyCallback = require('openid-client/passport').__getVerifyCallbackByName('openid');
 
-        const { user, details } = await validate(tokenset);
+      const { user, details } = await validate(tokenset);
 
-        expect(undici.fetch).not.toHaveBeenCalled();
-        expect(Boolean(user)).toBe(expectedAllowed);
-        expect(details?.message).toBe(expectedMessage);
-      },
-    );
+      expect(undici.fetch).not.toHaveBeenCalled();
+      expect(Boolean(user)).toBe(expectedAllowed);
+      expect(details?.message).toBe(expectedMessage);
+    });
 
     it.each([
       ['token kind is not id', { kind: 'access', path: 'groups', decoded: { hasgroups: true } }],
@@ -563,7 +560,9 @@ describe('setupOpenId', () => {
           kind: 'id',
           path: 'groups',
           decoded: {
-            _claim_sources: { src1: { endpoint: 'https://graph.windows.net/ignored' } },
+            _claim_sources: {
+              src1: { endpoint: 'https://graph.windows.net/ignored' },
+            },
             permissions: ['admin'],
           },
         },
@@ -670,34 +669,31 @@ describe('setupOpenId', () => {
           '[openidStrategy] Unexpected response format when resolving groups via Microsoft Graph getMemberObjects',
         ],
       ],
-    ])(
-      'denies login when overage resolution fails because %s',
-      async (_label, setupFetch, expectedErrorArgs) => {
-        process.env.OPENID_REQUIRED_ROLE = 'group-required';
-        process.env.OPENID_REQUIRED_ROLE_PARAMETER_PATH = 'groups';
-        process.env.OPENID_REQUIRED_ROLE_TOKEN_KIND = 'id';
+    ])('denies login when overage resolution fails because %s', async (_label, setupFetch, expectedErrorArgs) => {
+      process.env.OPENID_REQUIRED_ROLE = 'group-required';
+      process.env.OPENID_REQUIRED_ROLE_PARAMETER_PATH = 'groups';
+      process.env.OPENID_REQUIRED_ROLE_TOKEN_KIND = 'id';
 
-        const { logger } = require('@librechat/data-schemas');
+      const { logger } = require('@librechat/data-schemas');
 
-        jwtDecode.mockReturnValue({
-          hasgroups: true,
-          permissions: ['admin'],
-        });
+      jwtDecode.mockReturnValue({
+        hasgroups: true,
+        permissions: ['admin'],
+      });
 
-        await setupOpenId();
-        verifyCallback = require('openid-client/passport').__getVerifyCallbackByName('openid');
+      await setupOpenId();
+      verifyCallback = require('openid-client/passport').__getVerifyCallbackByName('openid');
 
-        undici.fetch.mockImplementation(setupFetch);
+      undici.fetch.mockImplementation(setupFetch);
 
-        const { user, details } = await validate(tokenset);
+      const { user, details } = await validate(tokenset);
 
-        expect(undici.fetch).toHaveBeenCalled();
-        expect(user).toBe(false);
-        expect(details.message).toBe('You must have "group-required" role to log in.');
+      expect(undici.fetch).toHaveBeenCalled();
+      expect(user).toBe(false);
+      expect(details.message).toBe('You must have "group-required" role to log in.');
 
-        expect(logger.error).toHaveBeenCalledWith(...expectedErrorArgs);
-      },
-    );
+      expect(logger.error).toHaveBeenCalledWith(...expectedErrorArgs);
+    });
 
     it.each([
       [
@@ -712,7 +708,9 @@ describe('setupOpenId', () => {
         '_claim_* overage and Graph contains required group',
         {
           _claim_names: { groups: 'src1' },
-          _claim_sources: { src1: { endpoint: 'https://graph.windows.net/ignored' } },
+          _claim_sources: {
+            src1: { endpoint: 'https://graph.windows.net/ignored' },
+          },
         },
         ['group-required', 'some-other-group'],
         true,
@@ -729,54 +727,53 @@ describe('setupOpenId', () => {
         '_claim_* overage and Graph does NOT contain required group',
         {
           _claim_names: { groups: 'src1' },
-          _claim_sources: { src1: { endpoint: 'https://graph.windows.net/ignored' } },
+          _claim_sources: {
+            src1: { endpoint: 'https://graph.windows.net/ignored' },
+          },
         },
         ['some-other-group'],
         false,
       ],
-    ])(
-      'resolves groups via Microsoft Graph when %s',
-      async (_label, decodedTokenValue, graphGroups, expectedAllowed) => {
-        process.env.OPENID_REQUIRED_ROLE = 'group-required';
-        process.env.OPENID_REQUIRED_ROLE_PARAMETER_PATH = 'groups';
-        process.env.OPENID_REQUIRED_ROLE_TOKEN_KIND = 'id';
+    ])('resolves groups via Microsoft Graph when %s', async (_label, decodedTokenValue, graphGroups, expectedAllowed) => {
+      process.env.OPENID_REQUIRED_ROLE = 'group-required';
+      process.env.OPENID_REQUIRED_ROLE_PARAMETER_PATH = 'groups';
+      process.env.OPENID_REQUIRED_ROLE_TOKEN_KIND = 'id';
 
-        const { logger } = require('@librechat/data-schemas');
+      const { logger } = require('@librechat/data-schemas');
 
-        jwtDecode.mockReturnValue(decodedTokenValue);
+      jwtDecode.mockReturnValue(decodedTokenValue);
 
-        await setupOpenId();
-        verifyCallback = require('openid-client/passport').__getVerifyCallbackByName('openid');
+      await setupOpenId();
+      verifyCallback = require('openid-client/passport').__getVerifyCallbackByName('openid');
 
-        undici.fetch.mockResolvedValue({
-          ok: true,
-          status: 200,
-          statusText: 'OK',
-          json: async () => ({
-            value: graphGroups,
+      undici.fetch.mockResolvedValue({
+        ok: true,
+        status: 200,
+        statusText: 'OK',
+        json: async () => ({
+          value: graphGroups,
+        }),
+      });
+
+      const { user } = await validate(tokenset);
+
+      expect(undici.fetch).toHaveBeenCalledWith(
+        'https://graph.microsoft.com/v1.0/me/getMemberObjects',
+        expect.objectContaining({
+          method: 'POST',
+          headers: expect.objectContaining({
+            Authorization: 'Bearer exchanged_graph_token',
           }),
-        });
+        }),
+      );
+      expect(Boolean(user)).toBe(expectedAllowed);
 
-        const { user } = await validate(tokenset);
-
-        expect(undici.fetch).toHaveBeenCalledWith(
-          'https://graph.microsoft.com/v1.0/me/getMemberObjects',
-          expect.objectContaining({
-            method: 'POST',
-            headers: expect.objectContaining({
-              Authorization: 'Bearer exchanged_graph_token',
-            }),
-          }),
-        );
-        expect(Boolean(user)).toBe(expectedAllowed);
-
-        expect(logger.debug).toHaveBeenCalledWith(
-          expect.stringContaining(
-            `Successfully resolved ${graphGroups.length} groups via Microsoft Graph getMemberObjects`,
-          ),
-        );
-      },
-    );
+      expect(logger.debug).toHaveBeenCalledWith(
+        expect.stringContaining(
+          `Successfully resolved ${graphGroups.length} groups via Microsoft Graph getMemberObjects`,
+        ),
+      );
+    });
   });
 
   describe('OBO token exchange for overage', () => {
@@ -1074,7 +1071,9 @@ describe('setupOpenId', () => {
       process.env.OPENID_REQUIRED_ROLE_TOKEN_KIND = 'id';
 
       jwtDecode.mockReturnValue({ hasgroups: true });
-      openidClient.genericGrantRequest.mockResolvedValueOnce({ expires_in: 3600 });
+      openidClient.genericGrantRequest.mockResolvedValueOnce({
+        expires_in: 3600,
+      });
 
       await setupOpenId();
       verifyCallback = require('openid-client/passport').__getVerifyCallbackByName('openid');

@@ -100,7 +100,12 @@ const initializeClient = async ({ req, res, signal, endpointOption }) => {
   /** @type {ArtifactPromises} */
   const artifactPromises = [];
   const { contentParts, aggregateContent } = createContentAggregator();
-  const toolEndCallback = createToolEndCallback({ req, res, artifactPromises, streamId });
+  const toolEndCallback = createToolEndCallback({
+    req,
+    res,
+    artifactPromises,
+    streamId,
+  });
 
   /**
    * Agent context store - populated after initialization, accessed by callback via closure.
@@ -291,7 +296,7 @@ const initializeClient = async ({ req, res, signal, endpointOption }) => {
   }
 
   let userMCPAuthMap = discoveredMCPAuthMap;
-  let edges = discoveredEdges;
+  const edges = discoveredEdges;
 
   /** Multi-Convo: Process addedConvo for parallel agent execution */
   const { userMCPAuthMap: updatedMCPAuthMap } = await processAddedConvo({

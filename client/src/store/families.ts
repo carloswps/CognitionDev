@@ -1,31 +1,31 @@
+import type {
+  EModelEndpoint,
+  TConversation,
+  TMessage,
+  TPreset,
+  TSubmission,
+} from 'librechat-data-provider';
+import { Constants, isEphemeralAgentId, LocalStorageKeys } from 'librechat-data-provider';
 import { useEffect } from 'react';
 import { createSearchParams } from 'react-router-dom';
 import {
   atom,
-  selector,
   atomFamily,
   DefaultValue,
+  selector,
   selectorFamily,
+  useRecoilCallback,
   useRecoilValue,
   useSetRecoilState,
-  useRecoilCallback,
 } from 'recoil';
-import { LocalStorageKeys, isEphemeralAgentId, Constants } from 'librechat-data-provider';
-import type {
-  EModelEndpoint,
-  TConversation,
-  TSubmission,
-  TMessage,
-  TPreset,
-} from 'librechat-data-provider';
-import type { TOptionSettings, ExtendedFile } from '~/common';
+import type { ExtendedFile, TOptionSettings } from '~/common';
+import { useSetConvoContext } from '~/Providers/SetConvoContext';
 import {
   clearModelForNonEphemeralAgent,
   createChatSearchParams,
-  storeEndpointSettings,
   logger,
+  storeEndpointSettings,
 } from '~/utils';
-import { useSetConvoContext } from '~/Providers/SetConvoContext';
 
 const latestMessageKeysAtom = atom<(string | number)[]>({
   key: 'latestMessageKeys',
@@ -86,7 +86,11 @@ const conversationByIndex = atomFamily<TConversation | null, string | number>({
     ({ onSet, node }) => {
       onSet(async (newValue, oldValue) => {
         const index = Number(node.key.split('__')[1]);
-        logger.log('conversation', 'Setting conversation:', { index, newValue, oldValue });
+        logger.log('conversation', 'Setting conversation:', {
+          index,
+          newValue,
+          oldValue,
+        });
         if (newValue?.assistant_id != null && newValue.assistant_id) {
           localStorage.setItem(
             `${LocalStorageKeys.ASST_ID_PREFIX}${index}${newValue.endpoint}`,

@@ -73,7 +73,11 @@ const startServer = async () => {
   initializeFileStorage(appConfig);
   await runAsSystem(async () => {
     await performStartupChecks(appConfig);
-    await updateInterfacePermissions({ appConfig, getRoleByName, updateAccessPermissions });
+    await updateInterfacePermissions({
+      appConfig,
+      getRoleByName,
+      updateAccessPermissions,
+    });
   });
 
   const indexPath = path.join(appConfig.paths.dist, 'index.html');
@@ -199,7 +203,7 @@ const startServer = async () => {
 
     const lang = req.cookies.lang || req.headers['accept-language']?.split(',')[0] || 'en-US';
     const saneLang = lang.replace(/"/g, '&quot;');
-    let updatedIndexHtml = indexHTML.replace(/lang="en-US"/g, `lang="${saneLang}"`);
+    const updatedIndexHtml = indexHTML.replace(/lang="en-US"/g, `lang="${saneLang}"`);
 
     res.type('html');
     res.send(updatedIndexHtml);
@@ -346,7 +350,9 @@ process.on('unhandledRejection', (reason) => {
     });
     return;
   }
-  logger.error('Unhandled promise rejection. The app will continue running.', { reason });
+  logger.error('Unhandled promise rejection. The app will continue running.', {
+    reason,
+  });
 });
 
 /** Export app for easier testing purposes */

@@ -1,4 +1,4 @@
-import { FullConfig } from '@playwright/test';
+import type { FullConfig } from '@playwright/test';
 import authenticate from './authenticate';
 
 async function globalSetup(config: FullConfig) {

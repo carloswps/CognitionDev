@@ -1,26 +1,27 @@
-import React, { memo, useMemo } from 'react';
+import type React from 'react';
+import { memo, useMemo } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { useRecoilValue } from 'recoil';
+import rehypeHighlight from 'rehype-highlight';
+import rehypeKatex from 'rehype-katex';
+import remarkDirective from 'remark-directive';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import supersub from 'remark-supersub';
-import rehypeKatex from 'rehype-katex';
-import { useRecoilValue } from 'recoil';
-import ReactMarkdown from 'react-markdown';
-import rehypeHighlight from 'rehype-highlight';
-import remarkDirective from 'remark-directive';
 import type { Pluggable } from 'unified';
-import { Citation, CompositeCitation, HighlightedText } from '~/components/Web/Citation';
+import { Artifact, artifactPlugin } from '~/components/Artifacts/Artifact';
 import {
-  mcpUIResourcePlugin,
   MCPUIResource,
   MCPUIResourceCarousel,
+  mcpUIResourcePlugin,
 } from '~/components/MCPUIResource';
-import { Artifact, artifactPlugin } from '~/components/Artifacts/Artifact';
-import { ArtifactProvider, CodeBlockProvider } from '~/Providers';
-import MarkdownErrorBoundary from './MarkdownErrorBoundary';
-import { langSubset, preprocessLaTeX } from '~/utils';
 import { unicodeCitation } from '~/components/Web';
-import { code, a, p, img } from './MarkdownComponents';
+import { Citation, CompositeCitation, HighlightedText } from '~/components/Web/Citation';
+import { ArtifactProvider, CodeBlockProvider } from '~/Providers';
 import store from '~/store';
+import { langSubset, preprocessLaTeX } from '~/utils';
+import { a, code, img, p } from './MarkdownComponents';
+import MarkdownErrorBoundary from './MarkdownErrorBoundary';
 
 type TContentProps = {
   content: string;
@@ -78,9 +79,9 @@ const Markdown = memo(function Markdown({ content = '', isLatestMessage }: TCont
       <ArtifactProvider>
         <CodeBlockProvider>
           <ReactMarkdown
-            /** @ts-ignore */
+            /** @ts-expect-error */
             remarkPlugins={remarkPlugins}
-            /* @ts-ignore */
+            /* @ts-expect-error */
             rehypePlugins={rehypePlugins}
             components={
               {

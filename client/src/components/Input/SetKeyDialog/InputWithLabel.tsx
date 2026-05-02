@@ -1,8 +1,8 @@
-import { forwardRef } from 'react';
 import { Input, Label } from '@librechat/client';
 import type { ChangeEvent, FC, Ref } from 'react';
-import { cn, defaultTextPropsLabel, removeFocusOutlines, defaultTextProps } from '~/utils/';
+import { forwardRef } from 'react';
 import { useLocalize } from '~/hooks';
+import { cn, defaultTextProps, defaultTextPropsLabel, removeFocusOutlines } from '~/utils/';
 
 interface InputWithLabelProps {
   id: string;

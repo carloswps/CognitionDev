@@ -39,9 +39,11 @@ describe('Keys Routes', () => {
     it('should update a user key with the authenticated user ID', async () => {
       updateUserKey.mockResolvedValue({});
 
-      const response = await request(app)
-        .put('/api/keys')
-        .send({ name: 'openAI', value: 'sk-test-key-123', expiresAt: '2026-12-31' });
+      const response = await request(app).put('/api/keys').send({
+        name: 'openAI',
+        value: 'sk-test-key-123',
+        expiresAt: '2026-12-31',
+      });
 
       expect(response.status).toBe(201);
       expect(updateUserKey).toHaveBeenCalledWith({
@@ -151,7 +153,9 @@ describe('Keys Routes', () => {
       const response = await request(app).delete('/api/keys');
 
       expect(response.status).toBe(400);
-      expect(response.body).toEqual({ error: 'Specify either all=true to delete.' });
+      expect(response.body).toEqual({
+        error: 'Specify either all=true to delete.',
+      });
       expect(deleteUserKey).not.toHaveBeenCalled();
     });
   });

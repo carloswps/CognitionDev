@@ -1,11 +1,11 @@
-import { memo, useState, useContext, useCallback } from 'react';
 import { Button } from '@librechat/client';
 import { ChevronLeft, ChevronRight, FileText } from 'lucide-react';
-import type { CitationProps } from './types';
-import { SourceHovercard, FaviconImage, getCleanDomain } from '~/components/Web/SourceHovercard';
+import { memo, useCallback, useContext, useState } from 'react';
 import FilePreviewDialog from '~/components/Chat/Messages/Content/FilePreviewDialog';
-import { CitationContext, useCitation, useCompositeCitations } from './Context';
+import { FaviconImage, getCleanDomain, SourceHovercard } from '~/components/Web/SourceHovercard';
 import { useLocalize } from '~/hooks';
+import { CitationContext, useCitation, useCompositeCitations } from './Context';
+import type { CitationProps } from './types';
 
 interface FileCitationMetadata {
   fileBytes?: number;
@@ -136,7 +136,9 @@ export function CompositeCitation(props: CompositeCitationProps) {
                 )}
                 {filePages && filePages.length > 0 && (
                   <span className="text-xs text-text-secondary">
-                    {localize('com_file_pages', { pages: filePages.join(', ') })}
+                    {localize('com_file_pages', {
+                      pages: filePages.join(', '),
+                    })}
                   </span>
                 )}
               </div>

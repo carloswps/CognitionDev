@@ -1,9 +1,9 @@
+import type { AppConfig, IMongoFile, IUser } from '@librechat/data-schemas';
 import { logger } from '@librechat/data-schemas';
-import { EModelEndpoint, EToolResources, AgentCapabilities } from 'librechat-data-provider';
-import type { AgentToolResources, TFile, AgentBaseResource } from 'librechat-data-provider';
-import type { IMongoFile, AppConfig, IUser } from '@librechat/data-schemas';
-import type { FilterQuery, QueryOptions, ProjectionType } from 'mongoose';
 import type { Request as ServerRequest } from 'express';
+import type { AgentBaseResource, AgentToolResources, TFile } from 'librechat-data-provider';
+import { AgentCapabilities, EModelEndpoint, EToolResources } from 'librechat-data-provider';
+import type { FilterQuery, ProjectionType, QueryOptions } from 'mongoose';
 
 /**
  * Function type for retrieving files from the database
@@ -212,7 +212,9 @@ export const primeResources = async ({
         // Deep copy arrays to prevent mutations
         ...(resource.files && { files: [...resource.files] }),
         ...(resource.file_ids && { file_ids: [...resource.file_ids] }),
-        ...(resource.vector_store_ids && { vector_store_ids: [...resource.vector_store_ids] }),
+        ...(resource.vector_store_ids && {
+          vector_store_ids: [...resource.vector_store_ids],
+        }),
       } as AgentBaseResource;
 
       // Now track existing files
@@ -282,7 +284,10 @@ export const primeResources = async ({
     }
 
     if (!_attachments) {
-      return { attachments: attachments.length > 0 ? attachments : undefined, tool_resources };
+      return {
+        attachments: attachments.length > 0 ? attachments : undefined,
+        tool_resources,
+      };
     }
 
     const files = await _attachments;
@@ -309,7 +314,10 @@ export const primeResources = async ({
       }
     }
 
-    return { attachments: attachments.length > 0 ? attachments : [], tool_resources };
+    return {
+      attachments: attachments.length > 0 ? attachments : [],
+      tool_resources,
+    };
   } catch (error) {
     logger.error('Error priming resources', error);
 

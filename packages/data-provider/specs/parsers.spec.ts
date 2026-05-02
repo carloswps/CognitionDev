@@ -1,9 +1,9 @@
-import { replaceSpecialVars, parseConvo, parseCompactConvo, parseTextParts } from '../src/parsers';
 import { specialVariables } from '../src/config';
+import { parseCompactConvo, parseConvo, parseTextParts, replaceSpecialVars } from '../src/parsers';
 import { EModelEndpoint } from '../src/schemas';
-import { ContentTypes } from '../src/types/runs';
+import type { TConversation, TUser } from '../src/types';
 import type { TMessageContentParts } from '../src/types/assistants';
-import type { TUser, TConversation } from '../src/types';
+import { ContentTypes } from '../src/types/runs';
 
 // Mock dayjs module with consistent date/time values regardless of environment
 jest.mock('dayjs', () => {

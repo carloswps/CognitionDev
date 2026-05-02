@@ -1,10 +1,10 @@
-import React, { memo } from 'react';
 import { UserIcon, useAvatar } from '@librechat/client';
+import React, { memo } from 'react';
 import type { IconProps } from '~/common';
-import MessageEndpointIcon from './MessageEndpointIcon';
-import { useAuthContext } from '~/hooks/AuthContext';
 import { useLocalize } from '~/hooks';
+import { useAuthContext } from '~/hooks/AuthContext';
 import { cn } from '~/utils';
+import MessageEndpointIcon from './MessageEndpointIcon';
 
 type ResolvedAvatar = { type: 'image'; src: string } | { type: 'fallback' };
 

@@ -1,6 +1,6 @@
 import { logger } from '@librechat/data-schemas';
-import { MCPServersRegistry } from './registry/MCPServersRegistry';
 import { MCPManager } from './MCPManager';
+import { MCPServersRegistry } from './registry/MCPServersRegistry';
 
 /**
  * Clears config-source MCP server inspection cache so servers are re-inspected on next access.

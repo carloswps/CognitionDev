@@ -36,8 +36,14 @@ describe('resolveAppConfigForUser', () => {
   });
 
   it('calls getAppConfig with role and tenantId when user has tenantId', async () => {
-    await resolveAppConfigForUser(mockGetAppConfig, { tenantId: 'tenant-a', role: 'USER' });
-    expect(mockGetAppConfig).toHaveBeenCalledWith({ role: 'USER', tenantId: 'tenant-a' });
+    await resolveAppConfigForUser(mockGetAppConfig, {
+      tenantId: 'tenant-a',
+      role: 'USER',
+    });
+    expect(mockGetAppConfig).toHaveBeenCalledWith({
+      role: 'USER',
+      tenantId: 'tenant-a',
+    });
   });
 
   it('calls tenantStorage.run for tenant users but not for non-tenant users', async () => {
@@ -46,7 +52,10 @@ describe('resolveAppConfigForUser', () => {
     await resolveAppConfigForUser(mockGetAppConfig, { role: 'USER' });
     expect(runSpy).not.toHaveBeenCalled();
 
-    await resolveAppConfigForUser(mockGetAppConfig, { tenantId: 'tenant-b', role: 'ADMIN' });
+    await resolveAppConfigForUser(mockGetAppConfig, {
+      tenantId: 'tenant-b',
+      role: 'ADMIN',
+    });
     expect(runSpy).toHaveBeenCalledWith({ tenantId: 'tenant-b' }, expect.any(Function));
 
     runSpy.mockRestore();
@@ -59,7 +68,10 @@ describe('resolveAppConfigForUser', () => {
       return { registration: {} };
     });
 
-    await resolveAppConfigForUser(mockGetAppConfig, { tenantId: 'tenant-c', role: 'USER' });
+    await resolveAppConfigForUser(mockGetAppConfig, {
+      tenantId: 'tenant-c',
+      role: 'USER',
+    });
 
     expect(capturedContext).toEqual({ tenantId: 'tenant-c' });
   });
@@ -78,13 +90,19 @@ describe('resolveAppConfigForUser', () => {
 
   it('calls getAppConfig with role undefined when user has tenantId but no role', async () => {
     await resolveAppConfigForUser(mockGetAppConfig, { tenantId: 'tenant-e' });
-    expect(mockGetAppConfig).toHaveBeenCalledWith({ role: undefined, tenantId: 'tenant-e' });
+    expect(mockGetAppConfig).toHaveBeenCalledWith({
+      role: undefined,
+      tenantId: 'tenant-e',
+    });
   });
 
   it('propagates rejection from getAppConfig for tenant users', async () => {
     mockGetAppConfig.mockRejectedValue(new Error('config unavailable'));
     await expect(
-      resolveAppConfigForUser(mockGetAppConfig, { tenantId: 'tenant-f', role: 'USER' }),
+      resolveAppConfigForUser(mockGetAppConfig, {
+        tenantId: 'tenant-f',
+        role: 'USER',
+      }),
     ).rejects.toThrow('config unavailable');
   });
 

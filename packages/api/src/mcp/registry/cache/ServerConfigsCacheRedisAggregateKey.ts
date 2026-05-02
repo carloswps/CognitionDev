@@ -1,8 +1,8 @@
 import type Keyv from 'keyv';
-import type { IServerConfigsRepositoryInterface } from '~/mcp/registry/ServerConfigsRepositoryInterface';
-import type { ParsedServerConfig, AddServerResult } from '~/mcp/types';
-import { BaseRegistryCache } from './BaseRegistryCache';
 import { cacheConfig, standardCache } from '~/cache';
+import type { IServerConfigsRepositoryInterface } from '~/mcp/registry/ServerConfigsRepositoryInterface';
+import type { AddServerResult, ParsedServerConfig } from '~/mcp/types';
+import { BaseRegistryCache } from './BaseRegistryCache';
 
 /**
  * Redis-backed MCP server configs cache that stores all entries under a single aggregate key.
@@ -143,7 +143,10 @@ export class ServerConfigsCacheRedisAggregateKey
           `Server "${serverName}" does not exist in cache. Use add() to create new configs.`,
         );
       }
-      const newAll = { ...all, [serverName]: { ...config, updatedAt: Date.now() } };
+      const newAll = {
+        ...all,
+        [serverName]: { ...config, updatedAt: Date.now() },
+      };
       const success = await this.cache.set(AGGREGATE_KEY, newAll);
       this.successCheck(`update ${this.namespace} server "${serverName}"`, success);
     });
@@ -154,7 +157,10 @@ export class ServerConfigsCacheRedisAggregateKey
     return this.withWriteLock(async () => {
       this.invalidateLocalSnapshot();
       const all = await this.getAll();
-      const newAll = { ...all, [serverName]: { ...config, updatedAt: Date.now() } };
+      const newAll = {
+        ...all,
+        [serverName]: { ...config, updatedAt: Date.now() },
+      };
       const success = await this.cache.set(AGGREGATE_KEY, newAll);
       this.successCheck(`upsert ${this.namespace} server "${serverName}"`, success);
     });

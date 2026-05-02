@@ -1,7 +1,7 @@
-import React from 'react';
-import { Pencil, PlugZap, SlidersHorizontal, RefreshCw, X, Trash2 } from 'lucide-react';
 import { Spinner, TooltipAnchor } from '@librechat/client';
 import type { MCPServerStatus } from 'librechat-data-provider';
+import { Pencil, PlugZap, RefreshCw, SlidersHorizontal, Trash2, X } from 'lucide-react';
+import type React from 'react';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
 
@@ -99,7 +99,9 @@ export default function MCPCardActions({
           <div className={cn(buttonBaseClass, 'cursor-default hover:bg-transparent')}>
             <Spinner
               className="size-4"
-              aria-label={localize('com_nav_mcp_status_connecting', { 0: serverName })}
+              aria-label={localize('com_nav_mcp_status_connecting', {
+                0: serverName,
+              })}
             />
           </div>
         )}

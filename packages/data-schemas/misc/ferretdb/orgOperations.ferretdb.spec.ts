@@ -1,22 +1,24 @@
-import mongoose, { Schema, type Connection, type Model } from 'mongoose';
+import mongoose, { type Connection, type Model, Schema } from 'mongoose';
 import {
   actionSchema,
-  agentSchema,
   agentApiKeySchema,
   agentCategorySchema,
+  agentSchema,
   assistantSchema,
   balanceSchema,
   bannerSchema,
   conversationTagSchema,
   convoSchema,
   fileSchema,
+  groupSchema,
   keySchema,
+  memorySchema,
   messageSchema,
   pluginAuthSchema,
   presetSchema,
   projectSchema,
-  promptSchema,
   promptGroupSchema,
+  promptSchema,
   roleSchema,
   sessionSchema,
   shareSchema,
@@ -24,13 +26,11 @@ import {
   toolCallSchema,
   transactionSchema,
   userSchema,
-  memorySchema,
-  groupSchema,
 } from '~/schema';
 import accessRoleSchema from '~/schema/accessRole';
-import mcpServerSchema from '~/schema/mcpServer';
 import aclEntrySchema from '~/schema/aclEntry';
-import { initializeOrgCollections, createIndexesWithRetry, retryWithBackoff } from '~/utils/retry';
+import mcpServerSchema from '~/schema/mcpServer';
+import { createIndexesWithRetry, initializeOrgCollections, retryWithBackoff } from '~/utils/retry';
 
 /**
  * Production operations tests for FerretDB multi-tenancy:
@@ -130,7 +130,10 @@ async function restoreOrg(
     docsRestored += docs.length;
   }
 
-  return { collectionsRestored: Object.keys(backup.collections).length, docsRestored };
+  return {
+    collectionsRestored: Object.keys(backup.collections).length,
+    docsRestored,
+  };
 }
 
 // ─── MIGRATION UTILITIES ────────────────────────────────────────────────────
@@ -321,7 +324,11 @@ describeIfFerretDB('Org Operations (Production)', () => {
           baseDelayMs: 50,
           maxAttempts: 5,
         });
-        results.push({ orgId, ms: totalMs, models: Object.keys(models).length });
+        results.push({
+          orgId,
+          ms: totalMs,
+          models: Object.keys(models).length,
+        });
       }
 
       const totalMs = results.reduce((s, r) => s + r.ms, 0);
@@ -401,7 +408,9 @@ describeIfFerretDB('Org Operations (Production)', () => {
     }, 60_000);
 
     it('backs up all collections from the source org', async () => {
-      const srcConn = baseConn.useDb(`${DB_PREFIX}org_${sourceOrg}`, { useCache: true });
+      const srcConn = baseConn.useDb(`${DB_PREFIX}org_${sourceOrg}`, {
+        useCache: true,
+      });
       const backup = await backupOrg(srcConn, sourceOrg);
 
       console.log(`[Backup] ${sourceOrg}:`);
@@ -423,10 +432,14 @@ describeIfFerretDB('Org Operations (Production)', () => {
     }, 30_000);
 
     it('restores backup to a fresh org database', async () => {
-      const srcConn = baseConn.useDb(`${DB_PREFIX}org_${sourceOrg}`, { useCache: true });
+      const srcConn = baseConn.useDb(`${DB_PREFIX}org_${sourceOrg}`, {
+        useCache: true,
+      });
       const backup = await backupOrg(srcConn, sourceOrg);
 
-      const dstConn = baseConn.useDb(`${DB_PREFIX}org_${targetOrg}`, { useCache: true });
+      const dstConn = baseConn.useDb(`${DB_PREFIX}org_${targetOrg}`, {
+        useCache: true,
+      });
       const dstModels = registerModels(dstConn);
       await initializeOrgCollections(dstModels);
 
@@ -440,8 +453,12 @@ describeIfFerretDB('Org Operations (Production)', () => {
     }, 60_000);
 
     it('verifies restored data matches source exactly', async () => {
-      const srcConn = baseConn.useDb(`${DB_PREFIX}org_${sourceOrg}`, { useCache: true });
-      const dstConn = baseConn.useDb(`${DB_PREFIX}org_${targetOrg}`, { useCache: true });
+      const srcConn = baseConn.useDb(`${DB_PREFIX}org_${sourceOrg}`, {
+        useCache: true,
+      });
+      const dstConn = baseConn.useDb(`${DB_PREFIX}org_${targetOrg}`, {
+        useCache: true,
+      });
 
       const srcUsers = await srcConn.db!.collection('users').find({}).sort({ email: 1 }).toArray();
       const dstUsers = await dstConn.db!.collection('users').find({}).sort({ email: 1 }).toArray();
@@ -492,7 +509,9 @@ describeIfFerretDB('Org Operations (Production)', () => {
     }, 30_000);
 
     it('verifies BSON type preservation (ObjectId, Date, Number)', async () => {
-      const dstConn = baseConn.useDb(`${DB_PREFIX}org_${targetOrg}`, { useCache: true });
+      const dstConn = baseConn.useDb(`${DB_PREFIX}org_${targetOrg}`, {
+        useCache: true,
+      });
 
       const user = await dstConn.db!.collection('users').findOne({ email: 'alice@backup.test' });
       expect(user).toBeDefined();
@@ -508,7 +527,9 @@ describeIfFerretDB('Org Operations (Production)', () => {
     });
 
     it('measures backup and restore performance', async () => {
-      const srcConn = baseConn.useDb(`${DB_PREFIX}org_${sourceOrg}`, { useCache: true });
+      const srcConn = baseConn.useDb(`${DB_PREFIX}org_${sourceOrg}`, {
+        useCache: true,
+      });
 
       const backupStart = Date.now();
       const backup = await backupOrg(srcConn, sourceOrg);
@@ -587,14 +608,18 @@ describeIfFerretDB('Org Operations (Production)', () => {
       newSchema.index({ orgId: 1, eventType: 1, createdAt: -1 });
 
       for (const orgId of migrationOrgs) {
-        const conn = baseConn.useDb(`${DB_PREFIX}org_${orgId}`, { useCache: true });
+        const conn = baseConn.useDb(`${DB_PREFIX}org_${orgId}`, {
+          useCache: true,
+        });
         const AuditLog = conn.models['AuditLog'] || conn.model('AuditLog', newSchema);
         await AuditLog.createCollection();
         await createIndexesWithRetry(AuditLog);
       }
 
       for (const orgId of migrationOrgs) {
-        const conn = baseConn.useDb(`${DB_PREFIX}org_${orgId}`, { useCache: true });
+        const conn = baseConn.useDb(`${DB_PREFIX}org_${orgId}`, {
+          useCache: true,
+        });
         const collections = (await conn.db!.listCollections().toArray()).map((c) => c.name);
         expect(collections).toContain('auditlogs');
 
@@ -611,7 +636,9 @@ describeIfFerretDB('Org Operations (Production)', () => {
       const indexSpec = { username: 1, createdAt: -1 };
 
       for (const orgId of migrationOrgs) {
-        const conn = baseConn.useDb(`${DB_PREFIX}org_${orgId}`, { useCache: true });
+        const conn = baseConn.useDb(`${DB_PREFIX}org_${orgId}`, {
+          useCache: true,
+        });
         await retryWithBackoff(
           () => conn.db!.collection('users').createIndex(indexSpec, { background: true }),
           `createIndex(users, username+createdAt) for ${orgId}`,
@@ -619,7 +646,9 @@ describeIfFerretDB('Org Operations (Production)', () => {
       }
 
       for (const orgId of migrationOrgs) {
-        const conn = baseConn.useDb(`${DB_PREFIX}org_${orgId}`, { useCache: true });
+        const conn = baseConn.useDb(`${DB_PREFIX}org_${orgId}`, {
+          useCache: true,
+        });
         const indexes = await conn.db!.collection('users').indexes();
         const hasNewIdx = indexes.some(
           (idx: Record<string, unknown>) => JSON.stringify(idx.key) === JSON.stringify(indexSpec),
@@ -661,7 +690,9 @@ describeIfFerretDB('Org Operations (Production)', () => {
 
     it('verifies existing data is preserved after migration', async () => {
       for (const orgId of migrationOrgs) {
-        const conn = baseConn.useDb(`${DB_PREFIX}org_${orgId}`, { useCache: true });
+        const conn = baseConn.useDb(`${DB_PREFIX}org_${orgId}`, {
+          useCache: true,
+        });
         const user = await conn.db!.collection('users').findOne({ email: `user@${orgId}.test` });
         expect(user).toBeDefined();
         expect(user!.name).toBe(`User ${orgId}`);

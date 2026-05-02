@@ -11,20 +11,21 @@
  * call the same pricing functions with the same inputs, their outputs must be
  * numerically identical.
  */
-import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
+
 import {
-  tokenValues,
+  balanceSchema,
   CANCEL_RATE,
   createMethods,
-  balanceSchema,
-  transactionSchema,
   premiumTokenValues,
+  tokenValues,
+  transactionSchema,
 } from '@librechat/data-schemas';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
 import type { PricingFns, TxMetadata } from './transactions';
 import {
-  prepareStructuredTokenSpend,
   bulkWriteTransactions,
+  prepareStructuredTokenSpend,
   prepareTokenSpend,
 } from './transactions';
 
@@ -52,7 +53,12 @@ jest.mock('@librechat/data-schemas', () => {
   const actual = jest.requireActual('@librechat/data-schemas');
   return {
     ...actual,
-    logger: { debug: jest.fn(), error: jest.fn(), warn: jest.fn(), info: jest.fn() },
+    logger: {
+      debug: jest.fn(),
+      error: jest.fn(),
+      warn: jest.fn(),
+      info: jest.fn(),
+    },
   };
 });
 
@@ -169,7 +175,10 @@ describe('Standard token parity', () => {
     await Balance.create({ user: userId, tokenCredits: initialBalance });
 
     const entries = prepareTokenSpend(
-      txMeta(userId, { model: 'gpt-3.5-turbo', transactions: { enabled: false } }),
+      txMeta(userId, {
+        model: 'gpt-3.5-turbo',
+        transactions: { enabled: false },
+      }),
       { promptTokens: 100, completionTokens: 50 },
       pricing,
     );
@@ -515,8 +524,16 @@ describe('Multi-entry batch parity', () => {
     let expectedTotalCost = 0;
     const allEntries = [];
     for (const { promptTokens, completionTokens } of calls) {
-      const pm = getMultiplier({ model, tokenType: 'prompt', inputTokenCount: promptTokens });
-      const cm = getMultiplier({ model, tokenType: 'completion', inputTokenCount: promptTokens });
+      const pm = getMultiplier({
+        model,
+        tokenType: 'prompt',
+        inputTokenCount: promptTokens,
+      });
+      const cm = getMultiplier({
+        model,
+        tokenType: 'completion',
+        inputTokenCount: promptTokens,
+      });
       expectedTotalCost += promptTokens * pm + completionTokens * cm;
       const entries = prepareTokenSpend(
         txMeta(userId, { model }),

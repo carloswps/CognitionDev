@@ -1,6 +1,6 @@
 import type { TMessage } from 'librechat-data-provider';
 import type { LocalizeFunction } from '~/common';
-import { getMessageAriaLabel, getHeaderPrefixForScreenReader } from '../messages';
+import { getHeaderPrefixForScreenReader, getMessageAriaLabel } from '../messages';
 
 const translations: Record<string, string> = {
   com_endpoint_message: 'Message',

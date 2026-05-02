@@ -1,14 +1,14 @@
-import { useState, useId, useMemo, useCallback } from 'react';
 import * as Menu from '@ariakit/react/menu';
-import { useFormContext } from 'react-hook-form';
 import { DropdownPopup } from '@librechat/client';
-import { specialVariables } from 'librechat-data-provider';
-import { ChevronDown, Check, Sparkles } from 'lucide-react';
 import type { TSpecialVarLabel } from 'librechat-data-provider';
+import { specialVariables } from 'librechat-data-provider';
+import { Check, ChevronDown, Sparkles } from 'lucide-react';
+import { useCallback, useId, useMemo, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { getSpecialVariableIcon } from '~/components/Prompts/utils';
-import { extractUniqueVariables } from '~/utils';
-import { useLiveAnnouncer } from '~/Providers';
 import { useLocalize } from '~/hooks';
+import { useLiveAnnouncer } from '~/Providers';
+import { extractUniqueVariables } from '~/utils';
 
 const variableKeys = Object.keys(specialVariables) as Array<keyof typeof specialVariables>;
 
@@ -41,9 +41,13 @@ export default function VariablesDropdown({
       const spacer = currentText.length > 0 ? '\n\n' : '';
       const labelKey = `com_ui_special_var_${key}` as TSpecialVarLabel;
       const prefix = localize(labelKey);
-      setValue(fieldName, `${currentText}${spacer}${prefix}: {{${key}}}`, { shouldDirty: true });
+      setValue(fieldName, `${currentText}${spacer}${prefix}: {{${key}}}`, {
+        shouldDirty: true,
+      });
       setIsMenuOpen(false);
-      const announcement = localize('com_ui_special_variable_added', { 0: prefix });
+      const announcement = localize('com_ui_special_variable_added', {
+        0: prefix,
+      });
       announcePolite({ message: announcement, isStatus: true });
     },
     [fieldName, getValues, setValue, localize, announcePolite],

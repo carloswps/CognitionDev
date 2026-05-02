@@ -58,9 +58,7 @@ const userLimiterOptions = {
   windowMs: userWindowMs,
   max: userMax,
   handler: createHandler(false),
-  keyGenerator: function (req) {
-    return req.user?.id;
-  },
+  keyGenerator: (req) => req.user?.id,
   store: limiterCache('message_user_limiter'),
 };
 

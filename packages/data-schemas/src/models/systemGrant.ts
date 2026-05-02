@@ -1,5 +1,5 @@
-import type * as t from '~/types';
 import systemGrantSchema from '~/schema/systemGrant';
+import type * as t from '~/types';
 
 /**
  * SystemGrant is a cross-tenant control plane — its query logic in systemGrant methods

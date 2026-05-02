@@ -1,5 +1,5 @@
-import type { Redis, Cluster } from 'ioredis';
 import { logger } from '@librechat/data-schemas';
+import type { Cluster, Redis } from 'ioredis';
 import type { IEventTransport } from '~/stream/interfaces/IJobStore';
 
 /**
@@ -515,7 +515,11 @@ export class RedisEventTransport implements IEventTransport {
     try {
       const channel = CHANNELS.events(streamId);
       const seq = await this.getNextSequence(streamId);
-      const message: PubSubMessage = { type: EventTypes.CHUNK, seq, data: event };
+      const message: PubSubMessage = {
+        type: EventTypes.CHUNK,
+        seq,
+        data: event,
+      };
       await this.publisher.publish(channel, JSON.stringify(message));
     } catch (err) {
       logger.error(`[RedisEventTransport] Failed to publish chunk:`, err);

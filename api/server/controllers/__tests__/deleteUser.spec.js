@@ -139,9 +139,15 @@ beforeEach(() => {
 
 describe('deleteUserController - 2FA enforcement', () => {
   it('proceeds with deletion when 2FA is not enabled', async () => {
-    const req = { user: { id: 'user1', _id: 'user1', email: 'a@b.com' }, body: {} };
+    const req = {
+      user: { id: 'user1', _id: 'user1', email: 'a@b.com' },
+      body: {},
+    };
     const res = createRes();
-    mockGetUserById.mockResolvedValue({ _id: 'user1', twoFactorEnabled: false });
+    mockGetUserById.mockResolvedValue({
+      _id: 'user1',
+      twoFactorEnabled: false,
+    });
 
     await deleteUserController(req, res);
 
@@ -152,7 +158,10 @@ describe('deleteUserController - 2FA enforcement', () => {
   });
 
   it('proceeds with deletion when user has no 2FA record', async () => {
-    const req = { user: { id: 'user1', _id: 'user1', email: 'a@b.com' }, body: {} };
+    const req = {
+      user: { id: 'user1', _id: 'user1', email: 'a@b.com' },
+      body: {},
+    };
     const res = createRes();
     mockGetUserById.mockResolvedValue(null);
 
@@ -170,7 +179,10 @@ describe('deleteUserController - 2FA enforcement', () => {
       twoFactorEnabled: true,
       totpSecret: 'enc-secret',
     });
-    mockVerifyOTPOrBackupCode.mockResolvedValue({ verified: false, status: 400 });
+    mockVerifyOTPOrBackupCode.mockResolvedValue({
+      verified: false,
+      status: 400,
+    });
 
     await deleteUserController(req, res);
 
@@ -184,7 +196,10 @@ describe('deleteUserController - 2FA enforcement', () => {
       twoFactorEnabled: true,
       totpSecret: 'enc-secret',
     };
-    const req = { user: { id: 'user1', _id: 'user1' }, body: { token: 'wrong' } };
+    const req = {
+      user: { id: 'user1', _id: 'user1' },
+      body: { token: 'wrong' },
+    };
     const res = createRes();
     mockGetUserById.mockResolvedValue(existingUser);
     mockVerifyOTPOrBackupCode.mockResolvedValue({
@@ -201,7 +216,9 @@ describe('deleteUserController - 2FA enforcement', () => {
       backupCode: undefined,
     });
     expect(res.status).toHaveBeenCalledWith(401);
-    expect(res.json).toHaveBeenCalledWith({ message: 'Invalid token or backup code' });
+    expect(res.json).toHaveBeenCalledWith({
+      message: 'Invalid token or backup code',
+    });
     expect(mockDeleteMessages).not.toHaveBeenCalled();
   });
 
@@ -212,7 +229,10 @@ describe('deleteUserController - 2FA enforcement', () => {
       totpSecret: 'enc-secret',
       backupCodes: [],
     };
-    const req = { user: { id: 'user1', _id: 'user1' }, body: { backupCode: 'bad-code' } };
+    const req = {
+      user: { id: 'user1', _id: 'user1' },
+      body: { backupCode: 'bad-code' },
+    };
     const res = createRes();
     mockGetUserById.mockResolvedValue(existingUser);
     mockVerifyOTPOrBackupCode.mockResolvedValue({

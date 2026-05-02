@@ -1,24 +1,24 @@
-import debounce from 'lodash/debounce';
-import { useEffect, useRef, useCallback } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
 import type { TEndpointOption } from 'librechat-data-provider';
+import debounce from 'lodash/debounce';
 import type { KeyboardEvent } from 'react';
-import {
-  forceResize,
-  insertTextAtCursor,
-  getEntityName,
-  getEntity,
-  checkIfScrollable,
-} from '~/utils';
-import { useAssistantsMapContext } from '~/Providers/AssistantsMapContext';
-import { useAgentsMapContext } from '~/Providers/AgentsMapContext';
+import { useCallback, useEffect, useRef } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { globalAudioId } from '~/common';
+import { useInteractionHealthCheck } from '~/data-provider';
+import { useLocalize } from '~/hooks';
 import useGetSender from '~/hooks/Conversations/useGetSender';
 import useFileHandling from '~/hooks/Files/useFileHandling';
-import { useInteractionHealthCheck } from '~/data-provider';
+import { useAgentsMapContext } from '~/Providers/AgentsMapContext';
+import { useAssistantsMapContext } from '~/Providers/AssistantsMapContext';
 import { useChatContext } from '~/Providers/ChatContext';
-import { globalAudioId } from '~/common';
-import { useLocalize } from '~/hooks';
 import store from '~/store';
+import {
+  checkIfScrollable,
+  forceResize,
+  getEntity,
+  getEntityName,
+  insertTextAtCursor,
+} from '~/utils';
 
 type KeyEvent = KeyboardEvent<HTMLTextAreaElement>;
 

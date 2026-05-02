@@ -1,7 +1,8 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
-import rehypeKatex from 'rehype-katex';
+import type React from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
+import rehypeKatex from 'rehype-katex';
 import { handleDoubleClick, langSubset } from '~/utils';
 
 type TCodeProps = {

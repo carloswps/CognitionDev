@@ -1,10 +1,10 @@
+import type { TConversation } from 'librechat-data-provider';
 import { memo } from 'react';
 import { useRecoilValue } from 'recoil';
-import type { TConversation } from 'librechat-data-provider';
 import type { ExtendedFile, FileSetter } from '~/common';
 import { useFileHandlingNoChatContext } from '~/hooks';
-import FileRow from './FileRow';
 import store from '~/store';
+import FileRow from './FileRow';
 
 function FileFormChat({
   conversation,

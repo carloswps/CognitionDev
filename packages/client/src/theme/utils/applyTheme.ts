@@ -1,4 +1,4 @@
-import { IThemeRGB, IThemeVariables } from '../types';
+import type { IThemeRGB, IThemeVariables } from '../types';
 
 /**
  * Validates RGB string format (e.g., "255 255 255")

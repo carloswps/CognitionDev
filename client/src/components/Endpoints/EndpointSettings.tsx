@@ -1,12 +1,12 @@
-import { useRecoilValue } from 'recoil';
-import { useGetModelsQuery } from 'librechat-data-provider/react-query';
-import { getEndpointField, SettingsViews } from 'librechat-data-provider';
 import type { TConversation } from 'librechat-data-provider';
+import { getEndpointField, SettingsViews } from 'librechat-data-provider';
+import { useGetModelsQuery } from 'librechat-data-provider/react-query';
+import { useRecoilValue } from 'recoil';
 import type { TSettingsProps } from '~/common';
 import { useGetEndpointsQuery } from '~/data-provider';
-import { getSettings } from './Settings';
-import { cn } from '~/utils';
 import store from '~/store';
+import { cn } from '~/utils';
+import { getSettings } from './Settings';
 
 export default function Settings({
   conversation,

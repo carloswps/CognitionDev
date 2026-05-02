@@ -1,37 +1,37 @@
-import React, { useMemo, useCallback, useRef, useState } from 'react';
-import { Plus } from 'lucide-react';
 import { Button, useToastContext } from '@librechat/client';
-import { useWatch, useForm, FormProvider } from 'react-hook-form';
-import { useGetModelsQuery } from 'librechat-data-provider/react-query';
-import {
-  Tools,
-  SystemRoles,
-  ResourceType,
-  EModelEndpoint,
-  PermissionBits,
-  isAssistantsEndpoint,
-} from 'librechat-data-provider';
-import type { FieldNamesMarkedBoolean } from 'react-hook-form';
 import type { Agent } from 'librechat-data-provider';
-import type { TranslationKeys } from '~/hooks/useLocalize';
+import {
+  EModelEndpoint,
+  isAssistantsEndpoint,
+  PermissionBits,
+  ResourceType,
+  SystemRoles,
+  Tools,
+} from 'librechat-data-provider';
+import { useGetModelsQuery } from 'librechat-data-provider/react-query';
+import { Plus } from 'lucide-react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import type { FieldNamesMarkedBoolean } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import type { AgentForm, StringOption } from '~/common';
+import { isEphemeralAgent, Panel } from '~/common';
 import {
   useCreateAgentMutation,
-  useUpdateAgentMutation,
   useGetAgentByIdQuery,
   useGetExpandedAgentByIdQuery,
+  useUpdateAgentMutation,
   useUploadAgentAvatarMutation,
 } from '~/data-provider';
-import { createProviderOption, getDefaultAgentFormValues } from '~/utils';
+import { useAuthContext, useLocalize, useSelectAgent } from '~/hooks';
+import type { TranslationKeys } from '~/hooks/useLocalize';
 import { useResourcePermissions } from '~/hooks/useResourcePermissions';
-import { useSelectAgent, useLocalize, useAuthContext } from '~/hooks';
 import { useAgentPanelContext } from '~/Providers/AgentPanelContext';
-import AgentPanelSkeleton from './AgentPanelSkeleton';
+import { createProviderOption, getDefaultAgentFormValues } from '~/utils';
 import AdvancedPanel from './Advanced/AdvancedPanel';
-import { Panel, isEphemeralAgent } from '~/common';
 import AgentConfig from './AgentConfig';
-import AgentSelect from './AgentSelect';
 import AgentFooter from './AgentFooter';
+import AgentPanelSkeleton from './AgentPanelSkeleton';
+import AgentSelect from './AgentSelect';
 import ModelPanel from './ModelPanel';
 
 /* Helpers */
@@ -48,7 +48,9 @@ function getUpdateToastMessage(
   if (noVersionChange) {
     return localize('com_ui_no_changes');
   }
-  return localize('com_assistants_update_success_name', { name: name ?? localize('com_ui_agent') });
+  return localize('com_assistants_update_success_name', {
+    name: name ?? localize('com_ui_agent'),
+  });
 }
 
 /**
@@ -256,7 +258,9 @@ export default function AgentPanel() {
     onSuccess: (updatedAgent) => {
       showToast({ message: localize('com_ui_upload_agent_avatar') });
 
-      setValue('avatar_preview', updatedAgent.avatar?.filepath ?? '', { shouldDirty: false });
+      setValue('avatar_preview', updatedAgent.avatar?.filepath ?? '', {
+        shouldDirty: false,
+      });
       setValue('avatar_file', null, { shouldDirty: false });
       setValue('avatar_action', null, { shouldDirty: false });
 
@@ -333,7 +337,10 @@ export default function AgentPanel() {
         localize,
       );
       if (toastMessage) {
-        showToast({ message: toastMessage, status: noVersionChange ? 'info' : undefined });
+        showToast({
+          message: toastMessage,
+          status: noVersionChange ? 'info' : undefined,
+        });
       }
 
       const agentOption = getValues('agent');

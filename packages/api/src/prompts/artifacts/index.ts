@@ -1,7 +1,7 @@
 import dedent from 'dedent';
-import { EModelEndpoint, ArtifactModes } from 'librechat-data-provider';
-import { generateShadcnPrompt } from './generate';
+import { ArtifactModes, EModelEndpoint } from 'librechat-data-provider';
 import { components } from './components';
+import { generateShadcnPrompt } from './generate';
 
 const artifactsPrompt = dedent`The assistant can create and reference artifacts during conversations.
   
@@ -419,7 +419,10 @@ export function generateArtifactsPrompt(params: {
   }
 
   if (artifacts === ArtifactModes.SHADCNUI) {
-    prompt += generateShadcnPrompt({ components, useXML: endpoint === EModelEndpoint.anthropic });
+    prompt += generateShadcnPrompt({
+      components,
+      useXML: endpoint === EModelEndpoint.anthropic,
+    });
   }
 
   return prompt;

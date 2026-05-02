@@ -1,9 +1,9 @@
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 import '@testing-library/jest-dom/extend-expect';
-import { MessagesSquare, NotebookPen } from 'lucide-react';
-import { render, fireEvent, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { MessagesSquare, NotebookPen } from 'lucide-react';
 import type { MutableSnapshot } from 'recoil';
 import { ActivePanelProvider, DEFAULT_PANEL } from '~/Providers/ActivePanelContext';
 
@@ -46,8 +46,8 @@ jest.mock('~/components/Nav/AccountSettings', () => ({
   default: () => <div data-testid="account-settings" />,
 }));
 
-import ExpandedPanel from '../ExpandedPanel';
 import store from '~/store';
+import ExpandedPanel from '../ExpandedPanel';
 
 const createLinks = () => [
   {
@@ -108,14 +108,18 @@ describe('ExpandedPanel', () => {
   describe('NavIconButton collapse toggle', () => {
     it('collapses sidebar when clicking the active icon while expanded', () => {
       const { onCollapse } = renderPanel({ expanded: true });
-      const activeButton = screen.getByRole('button', { name: 'com_ui_chat_history' });
+      const activeButton = screen.getByRole('button', {
+        name: 'com_ui_chat_history',
+      });
       fireEvent.click(activeButton);
       expect(onCollapse).toHaveBeenCalledTimes(1);
     });
 
     it('switches panel when clicking an inactive icon while expanded', () => {
       const { onCollapse } = renderPanel({ expanded: true });
-      const inactiveButton = screen.getByRole('button', { name: 'com_ui_prompts' });
+      const inactiveButton = screen.getByRole('button', {
+        name: 'com_ui_prompts',
+      });
       fireEvent.click(inactiveButton);
       expect(onCollapse).not.toHaveBeenCalled();
       expect(localStorage.getItem('side:active-panel')).toBe('prompts');
@@ -123,14 +127,18 @@ describe('ExpandedPanel', () => {
 
     it('expands sidebar when clicking any icon while collapsed', () => {
       const { onExpand } = renderPanel({ expanded: false });
-      const activeButton = screen.getByRole('button', { name: 'com_ui_chat_history' });
+      const activeButton = screen.getByRole('button', {
+        name: 'com_ui_chat_history',
+      });
       fireEvent.click(activeButton);
       expect(onExpand).toHaveBeenCalledTimes(1);
     });
 
     it('sets active panel and expands when clicking an inactive icon while collapsed', () => {
       const { onExpand } = renderPanel({ expanded: false });
-      const inactiveButton = screen.getByRole('button', { name: 'com_ui_prompts' });
+      const inactiveButton = screen.getByRole('button', {
+        name: 'com_ui_prompts',
+      });
       fireEvent.click(inactiveButton);
       expect(onExpand).toHaveBeenCalledTimes(1);
       expect(localStorage.getItem('side:active-panel')).toBe('prompts');

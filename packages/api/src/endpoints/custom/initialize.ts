@@ -1,18 +1,18 @@
+import type { AppConfig } from '@librechat/data-schemas';
+import type { TEndpoint } from 'librechat-data-provider';
 import {
   ErrorTypes,
   envVarRegex,
-  FetchTokenConfig,
   extractEnvVariable,
+  FetchTokenConfig,
 } from 'librechat-data-provider';
-import type { TEndpoint } from 'librechat-data-provider';
-import type { AppConfig } from '@librechat/data-schemas';
-import type { BaseInitializeParams, InitializeResultBase, EndpointTokenConfig } from '~/types';
-import { getOpenAIConfig } from '~/endpoints/openai/config';
-import { isUserProvided, checkUserKeyExpiry } from '~/utils';
 import { getCustomEndpointConfig } from '~/app/config';
-import { fetchModels } from '~/endpoints/models';
 import { validateEndpointURL } from '~/auth';
 import { tokenConfigCache } from '~/cache';
+import { fetchModels } from '~/endpoints/models';
+import { getOpenAIConfig } from '~/endpoints/openai/config';
+import type { BaseInitializeParams, EndpointTokenConfig, InitializeResultBase } from '~/types';
+import { checkUserKeyExpiry, isUserProvided } from '~/utils';
 
 const { PROXY } = process.env;
 
@@ -97,7 +97,10 @@ export async function initializeCustom({
 
   let userValues = null;
   if (userProvidesKey || userProvidesURL) {
-    userValues = await db.getUserKeyValues({ userId: req.user?.id ?? '', name: endpoint });
+    userValues = await db.getUserKeyValues({
+      userId: req.user?.id ?? '',
+      name: endpoint,
+    });
   }
 
   const apiKey = userProvidesKey ? userValues?.apiKey : CUSTOM_API_KEY;
@@ -154,7 +157,13 @@ export async function initializeCustom({
     endpointConfig.models?.fetch &&
     !endpointTokenConfig
   ) {
-    await fetchModels({ apiKey, baseURL, name: endpoint, user: userId, tokenKey });
+    await fetchModels({
+      apiKey,
+      baseURL,
+      name: endpoint,
+      user: userId,
+      tokenKey,
+    });
     endpointTokenConfig = (await cache.get(tokenKey)) as EndpointTokenConfig | undefined;
   }
 

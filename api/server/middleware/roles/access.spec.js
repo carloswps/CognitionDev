@@ -271,7 +271,9 @@ describe('Access Middleware', () => {
 
       expect(next).not.toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(403);
-      expect(res.json).toHaveBeenCalledWith({ message: 'Forbidden: Insufficient permissions' });
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'Forbidden: Insufficient permissions',
+      });
     });
 
     test('should check body properties when configured', async () => {
@@ -338,7 +340,9 @@ describe('Access Middleware', () => {
 
       expect(next).not.toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(403);
-      expect(res.json).toHaveBeenCalledWith({ message: 'Forbidden: Insufficient permissions' });
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'Forbidden: Insufficient permissions',
+      });
     });
 
     test('should handle role with no AGENTS permissions', async () => {
@@ -364,7 +368,9 @@ describe('Access Middleware', () => {
 
       expect(next).not.toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(403);
-      expect(res.json).toHaveBeenCalledWith({ message: 'Forbidden: Insufficient permissions' });
+      expect(res.json).toHaveBeenCalledWith({
+        message: 'Forbidden: Insufficient permissions',
+      });
     });
   });
 });

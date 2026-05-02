@@ -1,15 +1,15 @@
-import { useFormContext, Controller } from 'react-hook-form';
 import {
-  HoverCard,
-  FormInput,
-  HoverCardPortal,
-  HoverCardContent,
-  HoverCardTrigger,
   CircleHelpIcon,
+  FormInput,
+  HoverCard,
+  HoverCardContent,
+  HoverCardPortal,
+  HoverCardTrigger,
 } from '@librechat/client';
+import { Controller, useFormContext } from 'react-hook-form';
 import type { AgentForm } from '~/common';
-import { useLocalize } from '~/hooks';
 import { ESide } from '~/common';
+import { useLocalize } from '~/hooks';
 
 export default function AdvancedPanel() {
   const localize = useLocalize();

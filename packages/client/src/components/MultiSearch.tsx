@@ -1,5 +1,6 @@
 import { Search, X } from 'lucide-react';
-import React, { useState, useMemo, useCallback, useRef } from 'react';
+import type React from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { cn } from '~/utils';
 
 /** This is a generic that can be added to Menu and Select components */

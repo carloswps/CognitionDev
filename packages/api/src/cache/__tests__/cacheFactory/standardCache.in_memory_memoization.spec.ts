@@ -95,7 +95,9 @@ describe('standardCache - in-memory memoization', () => {
   it('tokenConfigCache shares data with standardCache(TOKEN_CONFIG)', async () => {
     const { standardCache, tokenConfigCache } = await loadFactory();
     const direct = standardCache(CacheKeys.TOKEN_CONFIG, Time.THIRTY_MINUTES);
-    await direct.set('openrouter', { 'gpt-4': { context: 128000, prompt: 5, completion: 15 } });
+    await direct.set('openrouter', {
+      'gpt-4': { context: 128000, prompt: 5, completion: 15 },
+    });
 
     const convenience = tokenConfigCache();
     expect(await convenience.get('openrouter')).toEqual({

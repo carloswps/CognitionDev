@@ -18,7 +18,12 @@ jest.mock('https-proxy-agent', () => ({
   HttpsProxyAgent: jest.fn(),
 }));
 jest.mock('@librechat/data-schemas', () => ({
-  logger: { info: jest.fn(), warn: jest.fn(), debug: jest.fn(), error: jest.fn() },
+  logger: {
+    info: jest.fn(),
+    warn: jest.fn(),
+    debug: jest.fn(),
+    error: jest.fn(),
+  },
 }));
 jest.mock('@librechat/api', () => ({
   isEnabled: jest.fn(() => false),
@@ -47,7 +52,9 @@ const { findUser, updateUser } = require('~/models');
 
 // Helper: build a mock openIdConfig
 const mockOpenIdConfig = {
-  serverMetadata: () => ({ jwks_uri: 'https://example.com/.well-known/jwks.json' }),
+  serverMetadata: () => ({
+    jwks_uri: 'https://example.com/.well-known/jwks.json',
+  }),
 };
 
 // Helper: invoke the captured verify callback
@@ -69,11 +76,19 @@ describe('openIdJwtStrategy – token source handling', () => {
     provider: 'openid',
   };
 
-  const payload = { sub: 'oidc-123', email: 'test@example.com', exp: 9999999999 };
+  const payload = {
+    sub: 'oidc-123',
+    email: 'test@example.com',
+    exp: 9999999999,
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
-    findOpenIDUser.mockResolvedValue({ user: { ...baseUser }, error: null, migration: false });
+    findOpenIDUser.mockResolvedValue({
+      user: { ...baseUser },
+      error: null,
+      migration: false,
+    });
     updateUser.mockResolvedValue({});
 
     // Initialize the strategy so capturedVerifyCallback is set
@@ -256,7 +271,9 @@ describe('openIdJwtStrategy – OPENID_EMAIL_CLAIM', () => {
     expect(findUser.mock.calls[0][0]).toMatchObject({
       $or: expect.arrayContaining([{ openidId: payload.sub }]),
     });
-    expect(findUser.mock.calls[1][0]).toEqual({ email: 'test@corp.example.com' });
+    expect(findUser.mock.calls[1][0]).toEqual({
+      email: 'test@corp.example.com',
+    });
     expect(user).toBe(false);
   });
 
@@ -367,7 +384,10 @@ describe('openIdJwtStrategy – OPENID_EMAIL_CLAIM', () => {
     expect(user).toBeTruthy();
     expect(updateUser).toHaveBeenCalledWith(
       'legacy-db-id',
-      expect.objectContaining({ provider: 'openid', openidId: payloadNoEmail.sub }),
+      expect.objectContaining({
+        provider: 'openid',
+        openidId: payloadNoEmail.sub,
+      }),
     );
   });
 });

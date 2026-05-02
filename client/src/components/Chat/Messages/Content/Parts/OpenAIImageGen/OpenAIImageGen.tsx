@@ -1,12 +1,12 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
 import { PixelCard } from '@librechat/client';
-import type { TAttachment, TFile, TAttachmentMetadata } from 'librechat-data-provider';
-import { ToolIcon, isError } from '~/components/Chat/Messages/Content/ToolOutput';
+import type { TAttachment, TAttachmentMetadata, TFile } from 'librechat-data-provider';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from '~/components/Chat/Messages/Content/Image';
-import { useProgress, useLocalize } from '~/hooks';
-import ProgressText from './ProgressText';
-import { AGENT_STYLE_TOOLS } from '.';
+import { isError, ToolIcon } from '~/components/Chat/Messages/Content/ToolOutput';
+import { useLocalize, useProgress } from '~/hooks';
 import { scaleImage } from '~/utils';
+import { AGENT_STYLE_TOOLS } from '.';
+import ProgressText from './ProgressText';
 
 function computeCancelled(
   isSubmitting: boolean | undefined,
@@ -108,7 +108,10 @@ export default function OpenAIImageGen({
     origHeight = 1024;
   }
 
-  const [dimensions, setDimensions] = useState({ width: 'auto', height: 'auto' });
+  const [dimensions, setDimensions] = useState({
+    width: 'auto',
+    height: 'auto',
+  });
   const containerRef = useRef<HTMLDivElement>(null);
 
   const updateDimensions = useCallback(() => {
@@ -156,10 +159,10 @@ export default function OpenAIImageGen({
           const progressRatio = currentStep / totalSteps;
           let mapRatio: number;
           if (progressRatio < 0.8) {
-            mapRatio = Math.pow(progressRatio, 1.1);
+            mapRatio = progressRatio ** 1.1;
           } else {
             const sub = (progressRatio - 0.8) / 0.2;
-            mapRatio = 0.8 + (1 - Math.pow(1 - sub, 2)) * 0.2;
+            mapRatio = 0.8 + (1 - (1 - sub) ** 2) * 0.2;
           }
           const scaledProgress = 0.1 + mapRatio * 0.8;
 

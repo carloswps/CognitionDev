@@ -1,7 +1,8 @@
-import React, { useId } from 'react';
 import { Label } from '@librechat/client';
-import CategoryIcon from '../utils/CategoryIcon';
+import type React from 'react';
+import { useId } from 'react';
 import { useLocalize } from '~/hooks';
+import CategoryIcon from '../utils/CategoryIcon';
 
 export default function ListCard({
   category,

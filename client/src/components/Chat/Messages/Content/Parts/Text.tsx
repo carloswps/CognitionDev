@@ -1,10 +1,10 @@
-import { memo, useMemo, ReactElement } from 'react';
+import { memo, type ReactElement, useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
-import MarkdownLite from '~/components/Chat/Messages/Content/MarkdownLite';
 import Markdown from '~/components/Chat/Messages/Content/Markdown';
+import MarkdownLite from '~/components/Chat/Messages/Content/MarkdownLite';
 import { useMessageContext } from '~/Providers';
-import { cn } from '~/utils';
 import store from '~/store';
+import { cn } from '~/utils';
 
 type TextPartProps = {
   text: string;
@@ -36,7 +36,7 @@ const TextPart = memo(function TextPart({ text, isCreatedByUser, showCursor }: T
     <div
       className={cn(
         isSubmitting ? 'submitting' : '',
-        showCursorState && !!text.length ? 'result-streaming' : '',
+        showCursorState && text.length ? 'result-streaming' : '',
         'markdown prose message-content dark:prose-invert light w-full break-words',
         isCreatedByUser && !enableUserMsgMarkdown && 'whitespace-pre-wrap',
         isCreatedByUser ? 'dark:text-gray-20' : 'dark:text-gray-100',

@@ -1,7 +1,7 @@
-import { ViolationTypes } from 'librechat-data-provider';
 import type { Response } from 'express';
-import type { CheckBalanceDeps } from './checkBalance';
+import { ViolationTypes } from 'librechat-data-provider';
 import type { ServerRequest } from '~/types/http';
+import type { CheckBalanceDeps } from './checkBalance';
 import { checkBalance } from './checkBalance';
 
 jest.mock('@librechat/data-schemas', () => ({

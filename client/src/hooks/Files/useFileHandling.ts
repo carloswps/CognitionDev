@@ -1,29 +1,34 @@
-import React, { useCallback, useEffect, useRef, useMemo, useState } from 'react';
-import { v4 } from 'uuid';
-import { useSetRecoilState } from 'recoil';
 import { useToastContext } from '@librechat/client';
 import { useQueryClient } from '@tanstack/react-query';
+import type {
+  EModelEndpoint,
+  TConversation,
+  TEndpointsConfig,
+  TError,
+} from 'librechat-data-provider';
 import {
-  QueryKeys,
   Constants,
-  EToolResources,
-  mergeFileConfig,
-  isAssistantsEndpoint,
-  getEndpointFileConfig,
   defaultAssistantsVersion,
+  EToolResources,
+  getEndpointFileConfig,
+  isAssistantsEndpoint,
+  mergeFileConfig,
+  QueryKeys,
 } from 'librechat-data-provider';
 import debounce from 'lodash/debounce';
-import type { EModelEndpoint, TEndpointsConfig, TError } from 'librechat-data-provider';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { v4 } from 'uuid';
 import type { ExtendedFile, FileSetter } from '~/common';
-import type { TConversation } from 'librechat-data-provider';
-import { logger, validateFiles, cachePreview, getCachedPreview, removePreviewEntry } from '~/utils';
 import { useGetFileConfig, useUploadFileMutation } from '~/data-provider';
-import useLocalize, { TranslationKeys } from '~/hooks/useLocalize';
-import { useDelayedUploadToast } from './useDelayedUploadToast';
-import { processFileForUpload } from '~/utils/heicConverter';
+import useLocalize, { type TranslationKeys } from '~/hooks/useLocalize';
 import { useChatContext } from '~/Providers/ChatContext';
 import { ephemeralAgentByConvoId } from '~/store';
+import { cachePreview, getCachedPreview, logger, removePreviewEntry, validateFiles } from '~/utils';
+import { processFileForUpload } from '~/utils/heicConverter';
 import useClientResize from './useClientResize';
+import { useDelayedUploadToast } from './useDelayedUploadToast';
 import useUpdateFiles from './useUpdateFiles';
 
 type UseFileHandling = {

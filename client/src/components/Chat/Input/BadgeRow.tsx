@@ -1,27 +1,27 @@
-import React, {
-  memo,
-  useRef,
-  useMemo,
-  useState,
-  useEffect,
-  forwardRef,
-  useReducer,
-  useCallback,
-} from 'react';
 import { Badge } from '@librechat/client';
-import { useRecoilValue, useRecoilCallback } from 'recoil';
 import type { LucideIcon } from 'lucide-react';
-import CodeInterpreter from './CodeInterpreter';
-import { BadgeRowProvider } from '~/Providers';
-import ToolsDropdown from './ToolsDropdown';
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
+import { useRecoilCallback, useRecoilValue } from 'recoil';
 import type { BadgeItem } from '~/common';
 import { useChatBadges } from '~/hooks';
-import ToolDialogs from './ToolDialogs';
-import FileSearch from './FileSearch';
-import Artifacts from './Artifacts';
-import MCPSelect from './MCPSelect';
-import WebSearch from './WebSearch';
+import { BadgeRowProvider } from '~/Providers';
 import store from '~/store';
+import Artifacts from './Artifacts';
+import CodeInterpreter from './CodeInterpreter';
+import FileSearch from './FileSearch';
+import MCPSelect from './MCPSelect';
+import ToolDialogs from './ToolDialogs';
+import ToolsDropdown from './ToolsDropdown';
+import WebSearch from './WebSearch';
 
 interface BadgeRowProps {
   showEphemeralBadges?: boolean;
@@ -256,7 +256,11 @@ function BadgeRow({
         const newMouseX = e.clientX;
         const newInsertIndex = calculateInsertIndex(newMouseX);
         if (newInsertIndex !== dragState.insertIndex) {
-          dispatch({ type: 'UPDATE_POSITION', mouseX: newMouseX, insertIndex: newInsertIndex });
+          dispatch({
+            type: 'UPDATE_POSITION',
+            mouseX: newMouseX,
+            insertIndex: newInsertIndex,
+          });
         } else {
           dispatch({
             type: 'UPDATE_POSITION',

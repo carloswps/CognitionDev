@@ -1,12 +1,12 @@
-import mongoose, { Types } from 'mongoose';
 import { PrincipalType, SystemRoles } from 'librechat-data-provider';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose, { Types } from 'mongoose';
+import { CapabilityImplications, SystemCapabilities } from '~/admin/capabilities';
+import logger from '~/config/winston';
+import systemGrantSchema from '~/schema/systemGrant';
 import type * as t from '~/types';
 import type { SystemCapability } from '~/types/admin';
-import { SystemCapabilities, CapabilityImplications } from '~/admin/capabilities';
 import { createSystemGrantMethods } from './systemGrant';
-import systemGrantSchema from '~/schema/systemGrant';
-import logger from '~/config/winston';
 
 jest.mock('~/config/winston', () => ({
   error: jest.fn(),
@@ -192,7 +192,9 @@ describe('systemGrant methods', () => {
         capability: SystemCapabilities.READ_USERS,
       });
 
-      const grant = await SystemGrant.findOne({ capability: SystemCapabilities.READ_USERS }).lean();
+      const grant = await SystemGrant.findOne({
+        capability: SystemCapabilities.READ_USERS,
+      }).lean();
       expect(grant!.principalId.toString()).toBe(userId.toString());
       expect(grant!.principalId).toBeInstanceOf(Types.ObjectId);
     });
@@ -259,11 +261,11 @@ describe('systemGrant methods', () => {
 
       // Simulate a race: findOneAndUpdate upserts but hits a duplicate key
       const model = mongoose.models.SystemGrant;
-      jest
-        .spyOn(model, 'findOneAndUpdate')
-        .mockRejectedValueOnce(
-          Object.assign(new Error('E11000 duplicate key error'), { code: 11000 }),
-        );
+      jest.spyOn(model, 'findOneAndUpdate').mockRejectedValueOnce(
+        Object.assign(new Error('E11000 duplicate key error'), {
+          code: 11000,
+        }),
+      );
 
       const result = await methods.grantCapability(params);
       expect(result).toBeTruthy();
@@ -409,7 +411,10 @@ describe('systemGrant methods', () => {
 
       const result = await methods.hasCapabilityForPrincipals({
         principals: [
-          { principalType: PrincipalType.USER, principalId: new Types.ObjectId() },
+          {
+            principalType: PrincipalType.USER,
+            principalId: new Types.ObjectId(),
+          },
           { principalType: PrincipalType.ROLE, principalId: SystemRoles.ADMIN },
           { principalType: PrincipalType.PUBLIC },
         ],
@@ -421,7 +426,10 @@ describe('systemGrant methods', () => {
     it('returns false when no principal has the capability', async () => {
       const result = await methods.hasCapabilityForPrincipals({
         principals: [
-          { principalType: PrincipalType.USER, principalId: new Types.ObjectId() },
+          {
+            principalType: PrincipalType.USER,
+            principalId: new Types.ObjectId(),
+          },
           { principalType: PrincipalType.ROLE, principalId: SystemRoles.USER },
           { principalType: PrincipalType.PUBLIC },
         ],
@@ -476,7 +484,10 @@ describe('systemGrant methods', () => {
 
       const result = await methods.hasCapabilityForPrincipals({
         principals: [
-          { principalType: PrincipalType.USER, principalId: new Types.ObjectId() },
+          {
+            principalType: PrincipalType.USER,
+            principalId: new Types.ObjectId(),
+          },
           { principalType: PrincipalType.GROUP, principalId: groupId },
         ],
         capability: SystemCapabilities.READ_USAGE,
@@ -1204,7 +1215,9 @@ describe('systemGrant methods', () => {
         capability: SystemCapabilities.ACCESS_ADMIN,
       });
 
-      const grants = await methods.getCapabilitiesForPrincipals({ principals: [] });
+      const grants = await methods.getCapabilitiesForPrincipals({
+        principals: [],
+      });
       expect(grants).toEqual([]);
     });
 
@@ -1344,7 +1357,12 @@ describe('systemGrant methods', () => {
 
     it('returns empty set when no capabilities match', async () => {
       const held = await methods.getHeldCapabilities({
-        principals: [{ principalType: PrincipalType.USER, principalId: new Types.ObjectId() }],
+        principals: [
+          {
+            principalType: PrincipalType.USER,
+            principalId: new Types.ObjectId(),
+          },
+        ],
         capabilities: [SystemCapabilities.MANAGE_ROLES],
       });
 

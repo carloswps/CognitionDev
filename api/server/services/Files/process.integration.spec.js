@@ -21,7 +21,12 @@ jest.mock('@librechat/data-schemas', () => {
   const actual = jest.requireActual('@librechat/data-schemas');
   return {
     ...actual,
-    logger: { warn: jest.fn(), debug: jest.fn(), error: jest.fn(), info: jest.fn() },
+    logger: {
+      warn: jest.fn(),
+      debug: jest.fn(),
+      error: jest.fn(),
+      info: jest.fn(),
+    },
   };
 });
 
@@ -49,7 +54,9 @@ jest.mock('~/server/services/Tools/credentials', () => ({
 }));
 
 jest.mock('~/server/services/Files/strategies', () => ({
-  getStrategyFunctions: jest.fn(() => ({ deleteFile: jest.fn().mockResolvedValue(undefined) })),
+  getStrategyFunctions: jest.fn(() => ({
+    deleteFile: jest.fn().mockResolvedValue(undefined),
+  })),
 }));
 
 jest.mock('~/server/services/Files/Audio/STTService', () => ({
@@ -61,7 +68,11 @@ jest.mock('~/server/services/Config', () => ({
 }));
 
 jest.mock('~/cache', () => ({
-  getLogStores: jest.fn(() => ({ get: jest.fn(), set: jest.fn(), delete: jest.fn() })),
+  getLogStores: jest.fn(() => ({
+    get: jest.fn(),
+    set: jest.fn(),
+    delete: jest.fn(),
+  })),
 }));
 
 // Replace the mocked `~/models` from the sibling process.spec.js with real,
@@ -153,14 +164,19 @@ describe('processDeleteRequest — agent reference cleanup (issue #12776)', () =
       context: { file_ids: [keeperId] },
     });
 
-    await processDeleteRequest({ req: buildReq([deletedFile.toObject()]), files: [deletedFile] });
+    await processDeleteRequest({
+      req: buildReq([deletedFile.toObject()]),
+      files: [deletedFile],
+    });
 
     expect(await File.findOne({ file_id: deletedId })).toBeNull();
     expect(await File.findOne({ file_id: keeperId })).not.toBeNull();
 
     const updatedA = await Agent.findOne({ id: agentA.id }).lean();
     const updatedB = await Agent.findOne({ id: agentB.id }).lean();
-    const updatedUntouched = await Agent.findOne({ id: untouchedAgent.id }).lean();
+    const updatedUntouched = await Agent.findOne({
+      id: untouchedAgent.id,
+    }).lean();
 
     expect(updatedA.tool_resources.file_search.file_ids).toEqual([keeperId]);
     expect(updatedB.tool_resources.execute_code.file_ids).toEqual([]);
@@ -175,7 +191,10 @@ describe('processDeleteRequest — agent reference cleanup (issue #12776)', () =
       file_search: { file_ids: ['other_id'] },
     });
 
-    await processDeleteRequest({ req: buildReq([loneFile.toObject()]), files: [loneFile] });
+    await processDeleteRequest({
+      req: buildReq([loneFile.toObject()]),
+      files: [loneFile],
+    });
 
     expect(await File.findOne({ file_id: loneId })).toBeNull();
     const after = await Agent.findOne({ id: unrelatedAgent.id }).lean();
@@ -194,7 +213,10 @@ describe('processDeleteRequest — agent reference cleanup (issue #12776)', () =
       .mockRejectedValue(new Error('simulated cleanup failure'));
 
     try {
-      await processDeleteRequest({ req: buildReq([targetFile.toObject()]), files: [targetFile] });
+      await processDeleteRequest({
+        req: buildReq([targetFile.toObject()]),
+        files: [targetFile],
+      });
       expect(await File.findOne({ file_id: targetId })).toBeNull();
     } finally {
       db.removeAgentResourceFilesFromAllAgents = original;

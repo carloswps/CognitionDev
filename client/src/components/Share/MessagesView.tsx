@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import type { TMessage } from 'librechat-data-provider';
-import MultiMessage from './MultiMessage';
+import { useState } from 'react';
 import { useLocalize } from '~/hooks';
+import MultiMessage from './MultiMessage';
 
 export default function MessagesView({
   messagesTree: _messagesTree,

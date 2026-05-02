@@ -1,8 +1,9 @@
-import React, { useState, useMemo, useCallback } from 'react';
 import type { TUser } from 'librechat-data-provider';
-import { Skeleton } from './Skeleton';
+import type React from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useAvatar } from '~/hooks';
 import { UserIcon } from '~/svgs';
+import { Skeleton } from './Skeleton';
 
 export interface AvatarProps {
   user?: TUser;

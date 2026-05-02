@@ -1,7 +1,7 @@
-import React from 'react';
 // import { motion } from 'framer-motion';
 // import { LockIcon, UnlockIcon } from 'lucide-react';
-import { Label, Button } from '@librechat/client';
+import { Button, Label } from '@librechat/client';
+import type React from 'react';
 import { useLocalize } from '~/hooks';
 
 interface DisableTwoFactorToggleProps {

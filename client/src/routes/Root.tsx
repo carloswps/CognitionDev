@@ -1,27 +1,26 @@
-import { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { Outlet } from 'react-router-dom';
 import { useMediaQuery } from '@librechat/client';
-import {
-  useSearchEnabled,
-  useAssistantsMap,
-  useAuthContext,
-  useAgentsMap,
-  useFileMap,
-} from '~/hooks';
-import store from '~/store';
-import {
-  PromptGroupsProvider,
-  AssistantsMapContext,
-  AgentsMapContext,
-  SetConvoProvider,
-  FileMapContext,
-} from '~/Providers';
-import { useUserTermsQuery, useGetStartupConfig } from '~/data-provider';
+import { useEffect, useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { Banner } from '~/components/Banners';
 import { UnifiedSidebar } from '~/components/UnifiedSidebar';
 import { TermsAndConditionsModal } from '~/components/ui';
-import { useHealthCheck } from '~/data-provider';
-import { Banner } from '~/components/Banners';
+import { useGetStartupConfig, useHealthCheck, useUserTermsQuery } from '~/data-provider';
+import {
+  useAgentsMap,
+  useAssistantsMap,
+  useAuthContext,
+  useFileMap,
+  useSearchEnabled,
+} from '~/hooks';
+import {
+  AgentsMapContext,
+  AssistantsMapContext,
+  FileMapContext,
+  PromptGroupsProvider,
+  SetConvoProvider,
+} from '~/Providers';
+import store from '~/store';
 
 export default function Root() {
   const [showTerms, setShowTerms] = useState(false);

@@ -45,14 +45,14 @@ jest.mock('../utils', () => ({
   readFileAsString: jest.fn(),
 }));
 
-// Now import everything after mocks are in place
-import { parseTextNative, parseText } from './text';
-import fs, { ReadStream } from 'fs';
 import axios from 'axios';
 import FormData from 'form-data';
-import type { ServerRequest } from '~/types';
+import fs, { type ReadStream } from 'fs';
 import { generateShortLivedToken } from '~/crypto/jwt';
+import type { ServerRequest } from '~/types';
 import { readFileAsString } from '~/utils';
+// Now import everything after mocks are in place
+import { parseText, parseTextNative } from './text';
 
 const mockedFs = fs as jest.Mocked<typeof fs>;
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -318,36 +318,36 @@ describe('text', () => {
       { mimetype: 'TEXT/MARKDOWN', originalname: 'notes' },
       { mimetype: '  text/markdown ; charset=UTF-8  ', originalname: 'notes' },
       { mimetype: '', originalname: 'notes.md' },
-    ])(
-      'should short-circuit to native parsing for markdown file (%o)',
-      async ({ mimetype, originalname }) => {
-        process.env.RAG_API_URL = 'http://rag-api.test';
-        const mockText = '# Heading\n\n**bold** text';
-        const mockBytes = Buffer.byteLength(mockText, 'utf8');
+    ])('should short-circuit to native parsing for markdown file (%o)', async ({
+      mimetype,
+      originalname,
+    }) => {
+      process.env.RAG_API_URL = 'http://rag-api.test';
+      const mockText = '# Heading\n\n**bold** text';
+      const mockBytes = Buffer.byteLength(mockText, 'utf8');
 
-        mockedReadFileAsString.mockResolvedValue({
-          content: mockText,
-          bytes: mockBytes,
-        });
+      mockedReadFileAsString.mockResolvedValue({
+        content: mockText,
+        bytes: mockBytes,
+      });
 
-        const result = await parseText({
-          req: mockReq,
-          file: { ...mockFile, mimetype, originalname },
-          file_id: mockFileId,
-        });
+      const result = await parseText({
+        req: mockReq,
+        file: { ...mockFile, mimetype, originalname },
+        file_id: mockFileId,
+      });
 
-        expect(mockedAxios.get).not.toHaveBeenCalled();
-        expect(mockedAxios.post).not.toHaveBeenCalled();
-        expect(mockedReadFileAsString).toHaveBeenCalledWith('/tmp/test.txt', {
-          fileSize: 100,
-        });
-        expect(result).toEqual({
-          text: mockText,
-          bytes: mockBytes,
-          source: FileSources.text,
-        });
-      },
-    );
+      expect(mockedAxios.get).not.toHaveBeenCalled();
+      expect(mockedAxios.post).not.toHaveBeenCalled();
+      expect(mockedReadFileAsString).toHaveBeenCalledWith('/tmp/test.txt', {
+        fileSize: 100,
+      });
+      expect(result).toEqual({
+        text: mockText,
+        bytes: mockBytes,
+        source: FileSources.text,
+      });
+    });
 
     it('should still call the RAG API for non-markdown text files', async () => {
       process.env.RAG_API_URL = 'http://rag-api.test';

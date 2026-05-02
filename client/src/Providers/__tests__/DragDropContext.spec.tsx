@@ -1,7 +1,7 @@
-import React from 'react';
 import { renderHook } from '@testing-library/react';
+import type { Agent, TEndpointsConfig } from 'librechat-data-provider';
 import { EModelEndpoint } from 'librechat-data-provider';
-import type { TEndpointsConfig, Agent } from 'librechat-data-provider';
+import type React from 'react';
 import { DragDropProvider, useDragDropContext } from '../DragDropContext';
 
 const mockEndpointsConfig: TEndpointsConfig = {
@@ -9,7 +9,11 @@ const mockEndpointsConfig: TEndpointsConfig = {
   [EModelEndpoint.agents]: { userProvide: false, order: 1 },
   [EModelEndpoint.anthropic]: { userProvide: false, order: 6 },
   Moonshot: { type: EModelEndpoint.custom, userProvide: false, order: 9999 },
-  'Some Endpoint': { type: EModelEndpoint.custom, userProvide: false, order: 9999 },
+  'Some Endpoint': {
+    type: EModelEndpoint.custom,
+    userProvide: false,
+    order: 9999,
+  },
 };
 
 let mockConversation: Record<string, unknown> | null = null;
@@ -56,36 +60,60 @@ describe('DragDropContext endpointType resolution', () => {
 
   describe('agents endpoint with provider from agentsMap', () => {
     it('resolves to custom for agent with Moonshot provider', () => {
-      mockConversation = { endpoint: EModelEndpoint.agents, agent_id: 'agent-1' };
+      mockConversation = {
+        endpoint: EModelEndpoint.agents,
+        agent_id: 'agent-1',
+      };
       mockAgentsMap = {
-        'agent-1': { provider: 'Moonshot', model_parameters: {} } as Partial<Agent>,
+        'agent-1': {
+          provider: 'Moonshot',
+          model_parameters: {},
+        } as Partial<Agent>,
       };
       const { result } = renderHook(() => useDragDropContext(), { wrapper });
       expect(result.current.endpointType).toBe(EModelEndpoint.custom);
     });
 
     it('resolves to custom for agent with custom provider with spaces', () => {
-      mockConversation = { endpoint: EModelEndpoint.agents, agent_id: 'agent-1' };
+      mockConversation = {
+        endpoint: EModelEndpoint.agents,
+        agent_id: 'agent-1',
+      };
       mockAgentsMap = {
-        'agent-1': { provider: 'Some Endpoint', model_parameters: {} } as Partial<Agent>,
+        'agent-1': {
+          provider: 'Some Endpoint',
+          model_parameters: {},
+        } as Partial<Agent>,
       };
       const { result } = renderHook(() => useDragDropContext(), { wrapper });
       expect(result.current.endpointType).toBe(EModelEndpoint.custom);
     });
 
     it('resolves to openAI for agent with openAI provider', () => {
-      mockConversation = { endpoint: EModelEndpoint.agents, agent_id: 'agent-1' };
+      mockConversation = {
+        endpoint: EModelEndpoint.agents,
+        agent_id: 'agent-1',
+      };
       mockAgentsMap = {
-        'agent-1': { provider: EModelEndpoint.openAI, model_parameters: {} } as Partial<Agent>,
+        'agent-1': {
+          provider: EModelEndpoint.openAI,
+          model_parameters: {},
+        } as Partial<Agent>,
       };
       const { result } = renderHook(() => useDragDropContext(), { wrapper });
       expect(result.current.endpointType).toBe(EModelEndpoint.openAI);
     });
 
     it('resolves to anthropic for agent with anthropic provider', () => {
-      mockConversation = { endpoint: EModelEndpoint.agents, agent_id: 'agent-1' };
+      mockConversation = {
+        endpoint: EModelEndpoint.agents,
+        agent_id: 'agent-1',
+      };
       mockAgentsMap = {
-        'agent-1': { provider: EModelEndpoint.anthropic, model_parameters: {} } as Partial<Agent>,
+        'agent-1': {
+          provider: EModelEndpoint.anthropic,
+          model_parameters: {},
+        } as Partial<Agent>,
       };
       const { result } = renderHook(() => useDragDropContext(), { wrapper });
       expect(result.current.endpointType).toBe(EModelEndpoint.anthropic);
@@ -94,7 +122,10 @@ describe('DragDropContext endpointType resolution', () => {
 
   describe('agents endpoint with provider from agentData query', () => {
     it('uses agentData when agent is not in agentsMap', () => {
-      mockConversation = { endpoint: EModelEndpoint.agents, agent_id: 'agent-2' };
+      mockConversation = {
+        endpoint: EModelEndpoint.agents,
+        agent_id: 'agent-2',
+      };
       mockAgentsMap = {};
       mockAgentQueryData = { provider: 'Moonshot' } as Partial<Agent>;
       const { result } = renderHook(() => useDragDropContext(), { wrapper });
@@ -110,7 +141,10 @@ describe('DragDropContext endpointType resolution', () => {
     });
 
     it('falls back to agents when agent has no provider', () => {
-      mockConversation = { endpoint: EModelEndpoint.agents, agent_id: 'agent-1' };
+      mockConversation = {
+        endpoint: EModelEndpoint.agents,
+        agent_id: 'agent-1',
+      };
       mockAgentsMap = { 'agent-1': { model_parameters: {} } as Partial<Agent> };
       const { result } = renderHook(() => useDragDropContext(), { wrapper });
       expect(result.current.endpointType).toBe(EModelEndpoint.agents);
@@ -120,13 +154,23 @@ describe('DragDropContext endpointType resolution', () => {
   describe('consistency: same endpoint type whether used directly or through agents', () => {
     it('Moonshot resolves to the same type as direct endpoint and as agent provider', () => {
       mockConversation = { endpoint: 'Moonshot' };
-      const { result: directResult } = renderHook(() => useDragDropContext(), { wrapper });
+      const { result: directResult } = renderHook(() => useDragDropContext(), {
+        wrapper,
+      });
 
-      mockConversation = { endpoint: EModelEndpoint.agents, agent_id: 'agent-1' };
-      mockAgentsMap = {
-        'agent-1': { provider: 'Moonshot', model_parameters: {} } as Partial<Agent>,
+      mockConversation = {
+        endpoint: EModelEndpoint.agents,
+        agent_id: 'agent-1',
       };
-      const { result: agentResult } = renderHook(() => useDragDropContext(), { wrapper });
+      mockAgentsMap = {
+        'agent-1': {
+          provider: 'Moonshot',
+          model_parameters: {},
+        } as Partial<Agent>,
+      };
+      const { result: agentResult } = renderHook(() => useDragDropContext(), {
+        wrapper,
+      });
 
       expect(directResult.current.endpointType).toBe(agentResult.current.endpointType);
     });

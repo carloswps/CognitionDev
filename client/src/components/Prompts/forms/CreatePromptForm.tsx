@@ -1,19 +1,19 @@
-import { useEffect } from 'react';
+import { Button, Input, TextareaAutosize } from '@librechat/client';
+import { LocalStorageKeys, Permissions, PermissionTypes } from 'librechat-data-provider';
 import { FileText } from 'lucide-react';
+import { useEffect } from 'react';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { Button, TextareaAutosize, Input } from '@librechat/client';
-import { useForm, Controller, FormProvider } from 'react-hook-form';
-import { LocalStorageKeys, PermissionTypes, Permissions } from 'librechat-data-provider';
 import OpenSidebar from '~/components/Chat/Menus/OpenSidebar';
-import CategorySelector from '../fields/CategorySelector';
-import VariablesDropdown from '../editor/VariablesDropdown';
-import PromptVariables from '../display/PromptVariables';
-import Description from '../fields/Description';
-import { usePromptGroupsContext } from '~/Providers';
-import { useLocalize, useHasAccess } from '~/hooks';
-import Command from '../fields/Command';
 import { useCreatePrompt } from '~/data-provider';
+import { useHasAccess, useLocalize } from '~/hooks';
+import { usePromptGroupsContext } from '~/Providers';
 import { cn } from '~/utils';
+import PromptVariables from '../display/PromptVariables';
+import VariablesDropdown from '../editor/VariablesDropdown';
+import CategorySelector from '../fields/CategorySelector';
+import Command from '../fields/Command';
+import Description from '../fields/Description';
 
 type CreateFormValues = {
   name: string;

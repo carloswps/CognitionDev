@@ -1,26 +1,26 @@
-import { useState, memo, useRef, useCallback, useId, useMemo } from 'react';
 import * as Ariakit from '@ariakit/react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Ellipsis, Eye, SquarePen, Trash, EarthIcon, User } from 'lucide-react';
-import { PermissionBits, ResourceType } from 'librechat-data-provider';
-import type { TPromptGroup } from 'librechat-data-provider';
 import {
-  Label,
   Button,
-  Spinner,
-  OGDialog,
-  TooltipAnchor,
   DropdownPopup,
+  Label,
+  OGDialog,
   OGDialogTemplate,
+  Spinner,
+  TooltipAnchor,
   useToastContext,
 } from '@librechat/client';
-import { useLocalize, useAuthContext, useSubmitMessage, useResourcePermissions } from '~/hooks';
-import { useRecordPromptUsage, useDeletePromptGroup } from '~/data-provider';
+import type { TPromptGroup } from 'librechat-data-provider';
+import { PermissionBits, ResourceType } from 'librechat-data-provider';
+import { EarthIcon, Ellipsis, Eye, SquarePen, Trash, User } from 'lucide-react';
+import { memo, useCallback, useId, useMemo, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDeletePromptGroup, useRecordPromptUsage } from '~/data-provider';
+import { useAuthContext, useLocalize, useResourcePermissions, useSubmitMessage } from '~/hooks';
 import { useLiveAnnouncer } from '~/Providers';
-import VariableDialog from '../dialogs/VariableDialog';
+import { cn, detectVariables } from '~/utils';
 import PreviewPrompt from '../dialogs/PreviewPrompt';
+import VariableDialog from '../dialogs/VariableDialog';
 import CategoryIcon from '../utils/CategoryIcon';
-import { detectVariables, cn } from '~/utils';
 
 const PROMPT_PATH = '/prompts';
 
@@ -67,7 +67,10 @@ function ChatGroupItem({
       }
     },
     onError: () => {
-      showToast({ status: 'error', message: localize('com_ui_prompt_delete_error') });
+      showToast({
+        status: 'error',
+        message: localize('com_ui_prompt_delete_error'),
+      });
     },
   });
 
@@ -106,7 +109,10 @@ function ChatGroupItem({
       : (group.productionPrompt?.prompt ?? '');
 
   const ariaLabel = group.category
-    ? localize('com_ui_prompt_group_button', { name: group.name, category: group.category })
+    ? localize('com_ui_prompt_group_button', {
+        name: group.name,
+        category: group.category,
+      })
     : localize('com_ui_prompt_group_button_no_category', { name: group.name });
 
   const dropdownItems = useMemo(() => {
@@ -162,13 +168,17 @@ function ChatGroupItem({
               </span>
               {isSharedPrompt && (
                 <TooltipAnchor
-                  description={localize('com_ui_by_author', { 0: group.authorName })}
+                  description={localize('com_ui_by_author', {
+                    0: group.authorName,
+                  })}
                   side="top"
                   render={
                     <span
                       tabIndex={0}
                       role="img"
-                      aria-label={localize('com_ui_by_author', { 0: group.authorName })}
+                      aria-label={localize('com_ui_by_author', {
+                        0: group.authorName,
+                      })}
                       className="flex shrink-0 items-center"
                     >
                       <User className="size-3.5 text-text-secondary" aria-hidden="true" />

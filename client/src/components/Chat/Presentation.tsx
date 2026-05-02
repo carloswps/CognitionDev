@@ -1,13 +1,13 @@
+import { type FileSources, LocalStorageKeys } from 'librechat-data-provider';
 import { useEffect, useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
-import { FileSources, LocalStorageKeys } from 'librechat-data-provider';
 import type { ExtendedFile } from '~/common';
-import DragDropWrapper from '~/components/Chat/Input/Files/DragDropWrapper';
-import { EditorProvider, ArtifactsProvider } from '~/Providers';
-import { useDeleteFilesMutation } from '~/data-provider';
 import Artifacts from '~/components/Artifacts/Artifacts';
+import DragDropWrapper from '~/components/Chat/Input/Files/DragDropWrapper';
 import { SidePanelGroup } from '~/components/SidePanel';
+import { useDeleteFilesMutation } from '~/data-provider';
 import { useSetFilesToDelete } from '~/hooks';
+import { ArtifactsProvider, EditorProvider } from '~/Providers';
 import store from '~/store';
 
 export default function Presentation({ children }: { children: React.ReactNode }) {

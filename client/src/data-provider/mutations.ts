@@ -1,20 +1,23 @@
-import {
-  Constants,
-  defaultAssistantsVersion,
-  ConversationListResponse,
-} from 'librechat-data-provider';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { dataService, MutationKeys, QueryKeys, defaultOrderQuery } from 'librechat-data-provider';
 import type { InfiniteData, UseMutationResult } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type * as t from 'librechat-data-provider';
 import {
-  logger,
+  Constants,
+  type ConversationListResponse,
+  dataService,
+  defaultAssistantsVersion,
+  defaultOrderQuery,
+  MutationKeys,
+  QueryKeys,
+} from 'librechat-data-provider';
+import useUpdateTagsInConvo from '~/hooks/Conversations/useUpdateTagsInConvo';
+import {
   /* Conversations */
   addConvoToAllQueries,
-  updateConvoInAllQueries,
+  logger,
   removeConvoFromAllQueries,
+  updateConvoInAllQueries,
 } from '~/utils';
-import useUpdateTagsInConvo from '~/hooks/Conversations/useUpdateTagsInConvo';
 import { updateConversationTag } from '~/utils/conversationTags';
 import { useConversationTagsQuery } from './queries';
 
@@ -311,7 +314,10 @@ export const useConversationTagMutation = ({
           );
           // If the tag exists, update it
           const updatedData = [...queryData];
-          updatedData[existingTagIndex] = { ...updatedData[existingTagIndex], ..._data };
+          updatedData[existingTagIndex] = {
+            ...updatedData[existingTagIndex],
+            ..._data,
+          };
           return updatedData.sort((a, b) => a.position - b.position);
         } else {
           // If the tag doesn't exist, add it
@@ -836,7 +842,12 @@ export const useDeleteAssistantMutation = (
     ({ assistant_id, model, endpoint }: t.DeleteAssistantBody) => {
       const endpointsConfig = queryClient.getQueryData<t.TEndpointsConfig>([QueryKeys.endpoints]);
       const version = endpointsConfig?.[endpoint]?.version ?? defaultAssistantsVersion[endpoint];
-      return dataService.deleteAssistant({ assistant_id, model, version, endpoint });
+      return dataService.deleteAssistant({
+        assistant_id,
+        model,
+        version,
+        endpoint,
+      });
     },
     {
       onMutate: (variables) => options?.onMutate?.(variables),

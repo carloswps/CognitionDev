@@ -1,15 +1,15 @@
-import React from 'react';
-import { Bot } from 'lucide-react';
-import { isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
 import type {
-  TModelSpec,
   TAgentsMap,
   TAssistantsMap,
   TEndpointsConfig,
+  TModelSpec,
 } from 'librechat-data-provider';
-import type { useLocalize } from '~/hooks';
+import { isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
+import { Bot } from 'lucide-react';
+import React from 'react';
+import type { Endpoint, SelectedValues } from '~/common';
 import SpecIcon from '~/components/Chat/Menus/Endpoints/components/SpecIcon';
-import { Endpoint, SelectedValues } from '~/common';
+import type { useLocalize } from '~/hooks';
 
 export function filterItems<
   T extends {

@@ -1,4 +1,4 @@
-import { ToolMessage, AIMessage, HumanMessage } from '@langchain/core/messages';
+import { AIMessage, HumanMessage, ToolMessage } from '@langchain/core/messages';
 import { extractDiscoveredToolsFromHistory } from './run';
 
 describe('extractDiscoveredToolsFromHistory', () => {
@@ -14,8 +14,15 @@ describe('extractDiscoveredToolsFromHistory', () => {
 
     const messages = [
       new HumanMessage('Find tools'),
-      new AIMessage({ content: '', tool_calls: [{ id: 'call_1', name: 'tool_search', args: {} }] }),
-      new ToolMessage({ content: toolSearchOutput, tool_call_id: 'call_1', name: 'tool_search' }),
+      new AIMessage({
+        content: '',
+        tool_calls: [{ id: 'call_1', name: 'tool_search', args: {} }],
+      }),
+      new ToolMessage({
+        content: toolSearchOutput,
+        tool_call_id: 'call_1',
+        name: 'tool_search',
+      }),
     ];
 
     const discovered = extractDiscoveredToolsFromHistory(messages);
@@ -32,7 +39,11 @@ describe('extractDiscoveredToolsFromHistory', () => {
 - tool_y (score: 0.80)`;
 
     const messages = [
-      new ToolMessage({ content: legacyOutput, tool_call_id: 'call_1', name: 'tool_search' }),
+      new ToolMessage({
+        content: legacyOutput,
+        tool_call_id: 'call_1',
+        name: 'tool_search',
+      }),
     ];
 
     const discovered = extractDiscoveredToolsFromHistory(messages);
@@ -73,9 +84,17 @@ describe('extractDiscoveredToolsFromHistory', () => {
     });
 
     const messages = [
-      new ToolMessage({ content: firstOutput, tool_call_id: 'call_1', name: 'tool_search' }),
+      new ToolMessage({
+        content: firstOutput,
+        tool_call_id: 'call_1',
+        name: 'tool_search',
+      }),
       new AIMessage('Using discovered tools'),
-      new ToolMessage({ content: secondOutput, tool_call_id: 'call_2', name: 'tool_search' }),
+      new ToolMessage({
+        content: secondOutput,
+        tool_call_id: 'call_2',
+        name: 'tool_search',
+      }),
     ];
 
     const discovered = extractDiscoveredToolsFromHistory(messages);
@@ -108,7 +127,11 @@ describe('extractDiscoveredToolsFromHistory', () => {
     });
 
     const messages = [
-      new ToolMessage({ content: output, tool_call_id: 'call_1', name: 'tool_search' }),
+      new ToolMessage({
+        content: output,
+        tool_call_id: 'call_1',
+        name: 'tool_search',
+      }),
     ];
 
     const discovered = extractDiscoveredToolsFromHistory(messages);

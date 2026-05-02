@@ -1,22 +1,22 @@
 import dayjs from 'dayjs';
 import type { ZodIssue } from 'zod';
-import type * as a from './types/assistants';
+import { bedrockInputSchema } from './bedrock';
+import { alternateName } from './config';
 import type * as s from './schemas';
-import type * as t from './types';
-import { ContentTypes } from './types/runs';
 import {
-  openAISchema,
-  googleSchema,
-  EModelEndpoint,
   anthropicSchema,
   assistantSchema,
   // agentsSchema,
   compactAgentsSchema,
-  compactGoogleSchema,
   compactAssistantSchema,
+  compactGoogleSchema,
+  EModelEndpoint,
+  googleSchema,
+  openAISchema,
 } from './schemas';
-import { bedrockInputSchema } from './bedrock';
-import { alternateName } from './config';
+import type * as t from './types';
+import type * as a from './types/assistants';
+import { ContentTypes } from './types/runs';
 
 type EndpointSchema =
   | typeof openAISchema

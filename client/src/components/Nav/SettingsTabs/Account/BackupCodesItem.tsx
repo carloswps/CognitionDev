@@ -1,29 +1,29 @@
-import React, { useState } from 'react';
-import { RefreshCcw } from 'lucide-react';
-import { useSetRecoilState } from 'recoil';
-import { motion, AnimatePresence } from 'framer-motion';
-import { REGEXP_ONLY_DIGITS, REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
-import type {
-  TRegenerateBackupCodesResponse,
-  TRegenerateBackupCodesRequest,
-  TBackupCode,
-  TUser,
-} from 'librechat-data-provider';
 import {
-  InputOTPSeparator,
+  Button,
+  InputOTP,
   InputOTPGroup,
+  InputOTPSeparator,
   InputOTPSlot,
+  Label,
+  OGDialog,
   OGDialogContent,
   OGDialogTitle,
   OGDialogTrigger,
-  OGDialog,
-  InputOTP,
-  Button,
-  Label,
   Spinner,
   TooltipAnchor,
   useToastContext,
 } from '@librechat/client';
+import { AnimatePresence, motion } from 'framer-motion';
+import { REGEXP_ONLY_DIGITS, REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
+import type {
+  TBackupCode,
+  TRegenerateBackupCodesRequest,
+  TRegenerateBackupCodesResponse,
+  TUser,
+} from 'librechat-data-provider';
+import { RefreshCcw } from 'lucide-react';
+import React, { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 import { useRegenerateBackupCodesMutation } from '~/data-provider';
 import { useAuthContext, useLocalize } from '~/hooks';
 import store from '~/store';
@@ -60,7 +60,9 @@ const BackupCodesItem: React.FC = () => {
 
         if (!auto && newBackupCodes.length) {
           const codesString = data.backupCodes.join('\n');
-          const blob = new Blob([codesString], { type: 'text/plain;charset=utf-8' });
+          const blob = new Blob([codesString], {
+            type: 'text/plain;charset=utf-8',
+          });
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
@@ -152,7 +154,9 @@ const BackupCodesItem: React.FC = () => {
                       >
                         <div className="flex items-center justify-between" aria-hidden="true">
                           <span className="text-sm font-medium text-text-secondary">
-                            {localize('com_ui_backup_code_number', { number: index + 1 })}
+                            {localize('com_ui_backup_code_number', {
+                              number: index + 1,
+                            })}
                           </span>
                           <TooltipAnchor
                             description={

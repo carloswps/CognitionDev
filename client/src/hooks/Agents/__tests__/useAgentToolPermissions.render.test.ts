@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
-import { Tools, Constants, EToolResources } from 'librechat-data-provider';
 import type { TEphemeralAgent } from 'librechat-data-provider';
+import { Constants, EToolResources, Tools } from 'librechat-data-provider';
 import useAgentToolPermissions from '../useAgentToolPermissions';
 
 // Mock dependencies
@@ -308,7 +308,9 @@ describe('useAgentToolPermissions', () => {
       (useAgentsMapContext as jest.Mock).mockReturnValue({
         [agentId]: mockAgent,
       });
-      (useGetAgentByIdQuery as jest.Mock).mockReturnValue({ data: mockAgentData });
+      (useGetAgentByIdQuery as jest.Mock).mockReturnValue({
+        data: mockAgentData,
+      });
 
       const { result } = renderHook(() => useAgentToolPermissions(agentId));
 
@@ -331,7 +333,9 @@ describe('useAgentToolPermissions', () => {
       (useAgentsMapContext as jest.Mock).mockReturnValue({
         [agentId]: mockAgent,
       });
-      (useGetAgentByIdQuery as jest.Mock).mockReturnValue({ data: mockAgentData });
+      (useGetAgentByIdQuery as jest.Mock).mockReturnValue({
+        data: mockAgentData,
+      });
 
       const { result } = renderHook(() => useAgentToolPermissions(agentId));
 

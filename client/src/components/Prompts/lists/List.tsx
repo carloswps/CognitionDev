@@ -1,8 +1,8 @@
-import { FileText } from 'lucide-react';
 import { Skeleton } from '@librechat/client';
 import type { TPromptGroup } from 'librechat-data-provider';
-import ChatGroupItem from './ChatGroupItem';
+import { FileText } from 'lucide-react';
 import { useLocalize } from '~/hooks';
+import ChatGroupItem from './ChatGroupItem';
 
 export default function List({
   groups = [],

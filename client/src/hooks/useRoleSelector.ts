@@ -1,6 +1,6 @@
-import { useMemo, useState, useCallback } from 'react';
-import { SystemRoles, roleDefaults, isSystemRoleName } from 'librechat-data-provider';
 import type { PermissionTypes, TRole } from 'librechat-data-provider';
+import { isSystemRoleName, roleDefaults, SystemRoles } from 'librechat-data-provider';
+import { useCallback, useMemo, useState } from 'react';
 import { useGetRole, useListRoles } from '~/data-provider';
 import { useAuthContext } from './AuthContext';
 
@@ -18,7 +18,9 @@ export function useRoleSelector(permissionType: PermissionTypes) {
     data: customRoleData = null,
     isLoading: isCustomRoleLoading,
     isError: isCustomRoleError,
-  } = useGetRole(isSelectedCustomRole ? selectedRole : '_', { enabled: isSelectedCustomRole });
+  } = useGetRole(isSelectedCustomRole ? selectedRole : '_', {
+    enabled: isSelectedCustomRole,
+  });
 
   const resolvePermissions = useCallback(
     (role: string, customData: TRole | null) => {
@@ -48,7 +50,11 @@ export function useRoleSelector(permissionType: PermissionTypes) {
   }, [roleList]);
 
   const roleDropdownItems = useMemo(
-    () => availableRoleNames.map((role) => ({ label: role, onClick: () => setSelectedRole(role) })),
+    () =>
+      availableRoleNames.map((role) => ({
+        label: role,
+        onClick: () => setSelectedRole(role),
+      })),
     [availableRoleNames],
   );
 

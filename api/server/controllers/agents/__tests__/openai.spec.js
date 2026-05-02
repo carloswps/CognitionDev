@@ -42,9 +42,9 @@ jest.mock('@librechat/api', () => ({
   buildToolSet: jest.fn().mockReturnValue(new Set()),
   sendFinalChunk: jest.fn(),
   createSafeUser: jest.fn().mockReturnValue({ id: 'user-123' }),
-  validateRequest: jest
-    .fn()
-    .mockReturnValue({ request: { model: 'agent-123', messages: [], stream: false } }),
+  validateRequest: jest.fn().mockReturnValue({
+    request: { model: 'agent-123', messages: [], stream: false },
+  }),
   initializeAgent: jest.fn().mockResolvedValue({
     id: 'agent-123',
     model: 'gpt-4',
@@ -182,7 +182,12 @@ describe('OpenAIChatCompletionController', () => {
     it('should return 400 when conversation_id is not a string', async () => {
       const { validateRequest } = require('@librechat/api');
       validateRequest.mockReturnValueOnce({
-        request: { model: 'agent-123', messages: [], stream: false, conversation_id: { $gt: '' } },
+        request: {
+          model: 'agent-123',
+          messages: [],
+          stream: false,
+          conversation_id: { $gt: '' },
+        },
       });
 
       await OpenAIChatCompletionController(req, res);
@@ -218,7 +223,10 @@ describe('OpenAIChatCompletionController', () => {
           conversation_id: 'convo-abc',
         },
       });
-      getConvo.mockResolvedValueOnce({ conversationId: 'convo-abc', user: 'user-123' });
+      getConvo.mockResolvedValueOnce({
+        conversationId: 'convo-abc',
+        user: 'user-123',
+      });
 
       await OpenAIChatCompletionController(req, res);
       expect(getConvo).toHaveBeenCalledWith('user-123', 'convo-abc');
@@ -252,7 +260,10 @@ describe('OpenAIChatCompletionController', () => {
         {
           spendTokens: mockSpendTokens,
           spendStructuredTokens: mockSpendStructuredTokens,
-          pricing: { getMultiplier: mockGetMultiplier, getCacheMultiplier: mockGetCacheMultiplier },
+          pricing: {
+            getMultiplier: mockGetMultiplier,
+            getCacheMultiplier: mockGetCacheMultiplier,
+          },
           bulkWriteOps: {
             insertMany: mockBulkInsertTransactions,
             updateBalance: mockUpdateBalance,
@@ -270,8 +281,14 @@ describe('OpenAIChatCompletionController', () => {
     });
 
     it('should pass balance and transactions config to recordCollectedUsage', async () => {
-      mockGetBalanceConfig.mockReturnValue({ enabled: true, startBalance: 1000 });
-      mockGetTransactionsConfig.mockReturnValue({ enabled: true, rateLimit: 100 });
+      mockGetBalanceConfig.mockReturnValue({
+        enabled: true,
+        startBalance: 1000,
+      });
+      mockGetTransactionsConfig.mockReturnValue({
+        enabled: true,
+        rateLimit: 100,
+      });
 
       await OpenAIChatCompletionController(req, res);
 
@@ -332,7 +349,11 @@ describe('OpenAIChatCompletionController', () => {
 
       req.config = {
         endpoints: {
-          agents: { recursionLimit: 100, maxRecursionLimit: 150, allowedProviders: [] },
+          agents: {
+            recursionLimit: 100,
+            maxRecursionLimit: 150,
+            allowedProviders: [],
+          },
         },
       };
 

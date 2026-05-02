@@ -20,7 +20,7 @@ const createOnProgress = (
   },
 ) => {
   let i = 0;
-  let tokens = addSpaceIfNeeded(generation);
+  const tokens = addSpaceIfNeeded(generation);
 
   const basePayload = Object.assign({}, base, { text: tokens || '' });
 
@@ -60,7 +60,7 @@ const createOnProgress = (
 };
 
 const handleText = async (response) => {
-  let { text } = response;
+  const { text } = response;
   response.text = text;
   return text;
 };

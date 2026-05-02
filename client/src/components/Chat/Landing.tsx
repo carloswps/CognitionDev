@@ -1,12 +1,12 @@
-import { useMemo, useCallback, useState, useEffect, useRef } from 'react';
+import { BirthdayIcon, SplitText, TooltipAnchor } from '@librechat/client';
 import { easings } from '@react-spring/web';
 import { EModelEndpoint } from 'librechat-data-provider';
-import { BirthdayIcon, TooltipAnchor, SplitText } from '@librechat/client';
-import { useChatContext, useAgentsMapContext, useAssistantsMapContext } from '~/Providers';
-import { useGetEndpointsQuery, useGetStartupConfig } from '~/data-provider';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ConvoIcon from '~/components/Endpoints/ConvoIcon';
-import { useLocalize, useAuthContext } from '~/hooks';
-import { getIconEndpoint, getEntity } from '~/utils';
+import { useGetEndpointsQuery, useGetStartupConfig } from '~/data-provider';
+import { useAuthContext, useLocalize } from '~/hooks';
+import { useAgentsMapContext, useAssistantsMapContext, useChatContext } from '~/Providers';
+import { getEntity, getIconEndpoint } from '~/utils';
 
 const containerClassName =
   'shadow-stroke relative flex h-full items-center justify-center rounded-full bg-white dark:bg-presentation dark:text-white text-black dark:after:shadow-none ';
@@ -174,7 +174,10 @@ export default function Landing({ centerFormOnLanding }: { centerFormOnLanding: 
                 className={`${getTextSizeClass(name)} font-medium text-text-primary`}
                 delay={50}
                 textAlign="center"
-                animationFrom={{ opacity: 0, transform: 'translate3d(0,50px,0)' }}
+                animationFrom={{
+                  opacity: 0,
+                  transform: 'translate3d(0,50px,0)',
+                }}
                 animationTo={{ opacity: 1, transform: 'translate3d(0,0,0)' }}
                 easing={easings.easeOutCubic}
                 threshold={0}

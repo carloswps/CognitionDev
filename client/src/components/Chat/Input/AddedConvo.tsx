@@ -1,9 +1,9 @@
-import { useMemo } from 'react';
-import { isAgentsEndpoint } from 'librechat-data-provider';
 import type { TConversation } from 'librechat-data-provider';
+import { isAgentsEndpoint } from 'librechat-data-provider';
+import { useMemo } from 'react';
 import type { SetterOrUpdater } from 'recoil';
-import { useGetEndpointsQuery } from '~/data-provider';
 import { EndpointIcon } from '~/components/Endpoints';
+import { useGetEndpointsQuery } from '~/data-provider';
 import { useAgentsMapContext } from '~/Providers';
 
 export default function AddedConvo({

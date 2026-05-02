@@ -1,7 +1,7 @@
-import React from 'react';
 import { Spinner } from '@librechat/client';
-import { PlugZap, SlidersHorizontal, X } from 'lucide-react';
 import type { MCPServerStatus } from 'librechat-data-provider';
+import { PlugZap, SlidersHorizontal, X } from 'lucide-react';
+import type React from 'react';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
 
@@ -150,7 +150,9 @@ function LoadingStatusIcon({ serverName, onCancel, canCancel }: InitializingStat
     <div className="flex size-6 items-center justify-center rounded p-1">
       <Spinner
         className="size-4 text-text-primary"
-        aria-label={localize('com_nav_mcp_status_connecting', { 0: serverName })}
+        aria-label={localize('com_nav_mcp_status_connecting', {
+          0: serverName,
+        })}
       />
     </div>
   );
@@ -161,7 +163,9 @@ function ConnectingSpinner({ serverName }: { serverName: string }) {
     <div className="flex size-6 items-center justify-center rounded p-1">
       <Spinner
         className="size-4 text-text-primary"
-        aria-label={localize('com_nav_mcp_status_connecting', { 0: serverName })}
+        aria-label={localize('com_nav_mcp_status_connecting', {
+          0: serverName,
+        })}
       />
     </div>
   );

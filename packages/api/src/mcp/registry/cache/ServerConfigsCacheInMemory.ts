@@ -1,4 +1,4 @@
-import { ParsedServerConfig, AddServerResult } from '~/mcp/types';
+import type { AddServerResult, ParsedServerConfig } from '~/mcp/types';
 
 /**
  * In-memory implementation of MCP server configurations cache for single-instance deployments.

@@ -39,7 +39,7 @@ function returnValue(value) {
 }
 
 function createAbortHandler() {
-  return function () {
+  return () => {
     logger.debug('[ImageGenOAI] Image generation aborted');
   };
 }
@@ -75,7 +75,7 @@ function createOpenAIImageTools(fields = {}) {
     return apiKey;
   };
 
-  let apiKey = fields.IMAGE_GEN_OAI_API_KEY ?? getApiKey();
+  const apiKey = fields.IMAGE_GEN_OAI_API_KEY ?? getApiKey();
   const closureConfig = { apiKey };
 
   const imageModel = process.env.IMAGE_GEN_OAI_MODEL || 'gpt-image-1';
@@ -94,7 +94,9 @@ function createOpenAIImageTools(fields = {}) {
   ) {
     baseURL = process.env.IMAGE_GEN_OAI_BASEURL;
     closureConfig.baseURL = baseURL;
-    closureConfig.defaultQuery = { 'api-version': process.env.IMAGE_GEN_OAI_AZURE_API_VERSION };
+    closureConfig.defaultQuery = {
+      'api-version': process.env.IMAGE_GEN_OAI_AZURE_API_VERSION,
+    };
     closureConfig.defaultHeaders = {
       'api-key': process.env.IMAGE_GEN_OAI_API_KEY,
       'Content-Type': 'application/json',
@@ -319,7 +321,7 @@ Error Message: ${error.message}`);
       }
 
       /** @type {import('axios').RawAxiosHeaders} */
-      let headers = {
+      const headers = {
         ...formData.getHeaders(),
       };
 

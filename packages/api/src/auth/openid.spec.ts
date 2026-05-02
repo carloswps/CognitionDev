@@ -1,7 +1,7 @@
-import { Types } from 'mongoose';
-import { ErrorTypes } from 'librechat-data-provider';
-import { logger } from '@librechat/data-schemas';
 import type { IUser, UserMethods } from '@librechat/data-schemas';
+import { logger } from '@librechat/data-schemas';
+import { ErrorTypes } from 'librechat-data-provider';
+import { Types } from 'mongoose';
 import { findOpenIDUser } from './openid';
 
 function newId() {
@@ -132,7 +132,9 @@ describe('findOpenIDUser', () => {
       expect(mockFindUser).toHaveBeenNthCalledWith(1, {
         $or: [{ openidId: 'openid_123' }],
       });
-      expect(mockFindUser).toHaveBeenNthCalledWith(2, { email: 'user@example.com' });
+      expect(mockFindUser).toHaveBeenNthCalledWith(2, {
+        email: 'user@example.com',
+      });
       expect(result).toEqual({
         user: mockUser,
         error: null,
@@ -432,7 +434,9 @@ describe('findOpenIDUser', () => {
         email: 'User@Example.COM',
       });
 
-      expect(mockFindUser).toHaveBeenNthCalledWith(2, { email: 'User@Example.COM' });
+      expect(mockFindUser).toHaveBeenNthCalledWith(2, {
+        email: 'User@Example.COM',
+      });
       expect(result).toEqual({
         user: mockUser,
         error: null,

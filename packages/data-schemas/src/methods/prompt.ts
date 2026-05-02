@@ -1,10 +1,10 @@
 import { ResourceType, SystemCategories } from 'librechat-data-provider';
 import type { Model, Types } from 'mongoose';
-import type { IAclEntry, IPrompt, IPromptGroup, IPromptGroupDocument } from '~/types';
 import { getTenantId, SYSTEM_TENANT_ID } from '~/config/tenantContext';
+import logger from '~/config/winston';
+import type { IAclEntry, IPrompt, IPromptGroup, IPromptGroupDocument } from '~/types';
 import { isValidObjectIdString } from '~/utils/objectId';
 import { escapeRegExp } from '~/utils/string';
-import logger from '~/config/winston';
 
 export interface PromptDeps {
   /** Removes all ACL permissions for a resource. Injected from PermissionService. */
@@ -369,7 +369,9 @@ export function createPromptMethods(mongoose: typeof import('mongoose'), deps: P
         prompt: newPrompt,
         group: {
           ...newPromptGroup,
-          productionPrompt: { prompt: (newPrompt as unknown as IPrompt).prompt },
+          productionPrompt: {
+            prompt: (newPrompt as unknown as IPrompt).prompt,
+          },
         },
       };
     } catch (error) {
@@ -444,7 +446,9 @@ export function createPromptMethods(mongoose: typeof import('mongoose'), deps: P
   async function getRandomPromptGroups(filter: { skip: number | string; limit: number | string }) {
     try {
       const PromptGroup = mongoose.models.PromptGroup as Model<IPromptGroupDocument>;
-      const categories = await PromptGroup.distinct('category', { category: { $ne: '' } });
+      const categories = await PromptGroup.distinct('category', {
+        category: { $ne: '' },
+      });
 
       for (let i = categories.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -459,7 +463,9 @@ export function createPromptMethods(mongoose: typeof import('mongoose'), deps: P
         return { prompts: [] };
       }
 
-      const groups = await PromptGroup.find({ category: { $in: selectedCategories } }).lean();
+      const groups = await PromptGroup.find({
+        category: { $in: selectedCategories },
+      }).lean();
 
       const groupByCategory = new Map<string, unknown>();
       for (const group of groups) {
@@ -540,7 +546,12 @@ export function createPromptMethods(mongoose: typeof import('mongoose'), deps: P
       const result = await PromptGroup.aggregate([
         { $match: matchFilter },
         lookupStage,
-        { $unwind: { path: '$productionPrompt', preserveNullAndEmptyArrays: true } },
+        {
+          $unwind: {
+            path: '$productionPrompt',
+            preserveNullAndEmptyArrays: true,
+          },
+        },
       ]);
       const group = result[0] || null;
       if (group?.author) {
@@ -562,7 +573,9 @@ export function createPromptMethods(mongoose: typeof import('mongoose'), deps: P
     try {
       const PromptGroup = mongoose.models.PromptGroup as Model<IPromptGroupDocument>;
       if (!author || !ObjectId.isValid(author)) {
-        logger.warn('getOwnedPromptGroupIds called with invalid author', { author });
+        logger.warn('getOwnedPromptGroupIds called with invalid author', {
+          author,
+        });
         return [];
       }
       const groups = await PromptGroup.find({ author: new ObjectId(author) }, { _id: 1 }).lean();

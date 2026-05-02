@@ -1,4 +1,4 @@
-import { Schema, Document } from 'mongoose';
+import { type Document, Schema } from 'mongoose';
 
 export interface IConversationTag extends Document {
   tag?: string;

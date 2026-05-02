@@ -1,10 +1,10 @@
-import { useMemo } from 'react';
-import { Variable, ChevronRight } from 'lucide-react';
-import { specialVariables } from 'librechat-data-provider';
 import type { TSpecialVarLabel } from 'librechat-data-provider';
+import { specialVariables } from 'librechat-data-provider';
+import { ChevronRight, Variable } from 'lucide-react';
+import { useMemo } from 'react';
 import { getSpecialVariableIcon } from '~/components/Prompts/utils';
-import { extractUniqueVariables } from '~/utils';
 import { useLocalize } from '~/hooks';
+import { extractUniqueVariables } from '~/utils';
 
 interface ParsedVariable {
   name: string;
@@ -16,7 +16,12 @@ interface ParsedVariable {
 const parseVariable = (variable: string): ParsedVariable => {
   const isSpecial = specialVariables[variable.toLowerCase()] != null;
   if (isSpecial) {
-    return { name: variable.toLowerCase(), options: [], isDropdown: false, isSpecial: true };
+    return {
+      name: variable.toLowerCase(),
+      options: [],
+      isDropdown: false,
+      isSpecial: true,
+    };
   }
 
   const colonIndex = variable.indexOf(':');

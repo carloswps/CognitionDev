@@ -1,30 +1,30 @@
-import { useCallback } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
+import type {
+  TConversation,
+  TEndpointsConfig,
+  TModelsConfig,
+  TStartupConfig,
+} from 'librechat-data-provider';
 import {
-  QueryKeys,
   Constants,
   dataService,
-  getEndpointField,
   getDefaultParamsEndpoint,
+  getEndpointField,
+  QueryKeys,
 } from 'librechat-data-provider';
-import type {
-  TEndpointsConfig,
-  TStartupConfig,
-  TModelsConfig,
-  TConversation,
-} from 'librechat-data-provider';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { startupConfigKey } from '~/data-provider';
+import { useApplyModelSpecEffects } from '~/hooks/Agents';
+import store from '~/store';
 import {
+  buildDefaultConvo,
+  clearMessagesCache,
   clearModelForNonEphemeralAgent,
   getDefaultEndpoint,
-  clearMessagesCache,
-  buildDefaultConvo,
   logger,
 } from '~/utils';
-import { useApplyModelSpecEffects } from '~/hooks/Agents';
-import { startupConfigKey } from '~/data-provider';
-import store from '~/store';
 
 const useNavigateToConvo = (index = 0) => {
   const navigate = useNavigate();
@@ -66,7 +66,9 @@ const useNavigateToConvo = (index = 0) => {
       const convoData = { ...data };
       clearModelForNonEphemeralAgent(convoData);
       setConversation(convoData);
-      navigate(`/c/${conversationId ?? Constants.NEW_CONVO}`, { state: { focusChat: true } });
+      navigate(`/c/${conversationId ?? Constants.NEW_CONVO}`, {
+        state: { focusChat: true },
+      });
     } catch (error) {
       console.error('Error fetching conversation data on navigation', error);
       if (conversation) {
@@ -129,7 +131,9 @@ const useNavigateToConvo = (index = 0) => {
       fetchFreshData(convo);
     } else {
       setConversation(convo);
-      navigate(`/c/${convo.conversationId ?? Constants.NEW_CONVO}`, { state: { focusChat: true } });
+      navigate(`/c/${convo.conversationId ?? Constants.NEW_CONVO}`, {
+        state: { focusChat: true },
+      });
     }
   };
 

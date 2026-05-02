@@ -1,15 +1,18 @@
 import type {
-  TPreset,
-  TConversation,
   EModelEndpoint,
+  TConversation,
   TEndpointsConfig,
+  TPreset,
 } from 'librechat-data-provider';
-import { getLocalStorageItems } from './localStorage';
 import { mapEndpoints } from './endpoints';
+import { getLocalStorageItems } from './localStorage';
 
 type TConvoSetup = Partial<TPreset> | Partial<TConversation>;
 
-type TDefaultEndpoint = { convoSetup: TConvoSetup; endpointsConfig: TEndpointsConfig };
+type TDefaultEndpoint = {
+  convoSetup: TConvoSetup;
+  endpointsConfig: TEndpointsConfig;
+};
 
 const getEndpointFromSetup = (
   convoSetup: TConvoSetup | null,

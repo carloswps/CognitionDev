@@ -1,8 +1,8 @@
-import logger from '../config/winston';
 import { EToolResources, FileContext } from 'librechat-data-provider';
-import type { FilterQuery, SortOrder, Model } from 'mongoose';
+import type { FilterQuery, Model, SortOrder } from 'mongoose';
 import type { IMongoFile } from '~/types/file';
 import { tenantSafeBulkWrite } from '~/utils/tenantBulkWrite';
+import logger from '../config/winston';
 
 /** Factory function that takes mongoose instance and returns the file methods */
 export function createFileMethods(mongoose: typeof import('mongoose')) {
@@ -66,7 +66,10 @@ export function createFileMethods(mongoose: typeof import('mongoose')) {
       const orConditions: FilterQuery<IMongoFile>[] = [];
 
       if (toolResourceSet.has(EToolResources.context)) {
-        orConditions.push({ text: { $exists: true, $ne: null }, context: FileContext.agents });
+        orConditions.push({
+          text: { $exists: true, $ne: null },
+          context: FileContext.agents,
+        });
       }
       if (toolResourceSet.has(EToolResources.file_search)) {
         orConditions.push({ embedded: true });

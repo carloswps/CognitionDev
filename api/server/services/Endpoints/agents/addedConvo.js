@@ -70,7 +70,11 @@ const processAddedConvo = async ({
   });
 
   try {
-    const addedAgent = await loadAddedAgent({ req, conversation: addedConvo, primaryAgent });
+    const addedAgent = await loadAddedAgent({
+      req,
+      conversation: addedConvo,
+      primaryAgent,
+    });
     if (!addedAgent) {
       return { userMCPAuthMap };
     }

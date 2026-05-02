@@ -1,4 +1,4 @@
-import { ParsedServerConfig, AddServerResult } from '~/mcp/types';
+import type { AddServerResult, ParsedServerConfig } from '~/mcp/types';
 
 /**
  * Interface for future DB implementation

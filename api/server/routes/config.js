@@ -116,7 +116,7 @@ function buildWebSearchConfig(appConfig) {
   };
 }
 
-router.get('/', async function (req, res) {
+router.get('/', async (req, res) => {
   try {
     const sharedPayload = buildSharedPayload();
 
@@ -182,7 +182,11 @@ router.get('/', async function (req, res) {
         const userId = req.user.id ?? req.user._id?.toString();
         if (userId) {
           const canDelete = await hasCapability(
-            { id: userId, role: req.user.role ?? '', tenantId: req.user.tenantId },
+            {
+              id: userId,
+              role: req.user.role ?? '',
+              tenantId: req.user.tenantId,
+            },
             SystemCapabilities.ACCESS_ADMIN,
           );
           if (canDelete) {

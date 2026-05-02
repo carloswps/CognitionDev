@@ -1,11 +1,11 @@
 import {
-  Verbosity,
   EModelEndpoint,
   ReasoningEffort,
   ReasoningSummary,
+  Verbosity,
 } from 'librechat-data-provider';
 import type { RequestInit } from 'undici';
-import type { OpenAIParameters, AzureOptions } from '~/types';
+import type { AzureOptions, OpenAIParameters } from '~/types';
 import { getOpenAIConfig } from './config';
 import { knownOpenAIParams } from './llm';
 
@@ -936,9 +936,21 @@ describe('getOpenAIConfig', () => {
   describe('Edge Cases and Error Handling', () => {
     it('should handle null and undefined values in reasoning params', () => {
       const testCases = [
-        { reasoning_effort: null, reasoning_summary: null, shouldHaveReasoning: false },
-        { reasoning_effort: undefined, reasoning_summary: undefined, shouldHaveReasoning: false },
-        { reasoning_effort: '', reasoning_summary: '', shouldHaveReasoning: false },
+        {
+          reasoning_effort: null,
+          reasoning_summary: null,
+          shouldHaveReasoning: false,
+        },
+        {
+          reasoning_effort: undefined,
+          reasoning_summary: undefined,
+          shouldHaveReasoning: false,
+        },
+        {
+          reasoning_effort: '',
+          reasoning_summary: '',
+          shouldHaveReasoning: false,
+        },
         {
           reasoning_effort: ReasoningEffort.unset,
           reasoning_summary: '',
@@ -963,7 +975,10 @@ describe('getOpenAIConfig', () => {
 
       testCases.forEach(({ shouldHaveReasoning, ...modelOptions }) => {
         const result = getOpenAIConfig(mockApiKey, {
-          modelOptions: { ...modelOptions, useResponsesApi: true } as Partial<OpenAIParameters>,
+          modelOptions: {
+            ...modelOptions,
+            useResponsesApi: true,
+          } as Partial<OpenAIParameters>,
         });
 
         if (shouldHaveReasoning) {
@@ -1784,7 +1799,9 @@ describe('getOpenAIConfig', () => {
       });
 
       it('should apply defaultParams for Google via customParams', () => {
-        const credentials = JSON.stringify({ GOOGLE_API_KEY: 'test-google-key' });
+        const credentials = JSON.stringify({
+          GOOGLE_API_KEY: 'test-google-key',
+        });
         const result = getOpenAIConfig(credentials, {
           modelOptions: {
             model: 'gemini-2.0-flash-exp',

@@ -40,7 +40,10 @@ describe('probeResourceMetadataHint', () => {
   it('falls back to POST when HEAD does not return 401', async () => {
     const hintUrl = 'https://example.com/.well-known/oauth-protected-resource';
     mockFetch
-      .mockResolvedValueOnce({ status: 405, headers: new Headers() } as Response)
+      .mockResolvedValueOnce({
+        status: 405,
+        headers: new Headers(),
+      } as Response)
       .mockResolvedValueOnce({
         status: 401,
         headers: new Headers({
@@ -150,7 +153,10 @@ describe('probeResourceMetadataHint', () => {
   });
 
   it('returns a no-challenge result when both probes receive clean 200s', async () => {
-    mockFetch.mockResolvedValue({ status: 200, headers: new Headers() } as Response);
+    mockFetch.mockResolvedValue({
+      status: 200,
+      headers: new Headers(),
+    } as Response);
 
     const result = await probeResourceMetadataHint('https://example.com/mcp');
 
@@ -216,7 +222,10 @@ describe('probeResourceMetadataHint', () => {
   });
 
   it('surfaces headAuthChallenge when only a 403 is observed on HEAD', async () => {
-    mockFetch.mockResolvedValue({ status: 403, headers: new Headers() } as Response);
+    mockFetch.mockResolvedValue({
+      status: 403,
+      headers: new Headers(),
+    } as Response);
 
     const result = await probeResourceMetadataHint('https://example.com/mcp');
 
@@ -231,9 +240,10 @@ describe('probeResourceMetadataHint', () => {
     // A transient HEAD failure followed by an uninformative POST used to leak a
     // {bearerChallenge: false, headAuthChallenge: false} result, silently skipping the
     // MCP_OAUTH_ON_AUTH_ERROR retry. Signal "unknown" via `null` instead.
-    mockFetch
-      .mockRejectedValueOnce(new Error('ETIMEDOUT'))
-      .mockResolvedValueOnce({ status: 200, headers: new Headers() } as Response);
+    mockFetch.mockRejectedValueOnce(new Error('ETIMEDOUT')).mockResolvedValueOnce({
+      status: 200,
+      headers: new Headers(),
+    } as Response);
 
     const result = await probeResourceMetadataHint('https://example.com/mcp');
 
@@ -246,8 +256,14 @@ describe('probeResourceMetadataHint', () => {
     // trips a rule and gets 403. This is not an OAuth signal and must not flip the
     // `MCP_OAUTH_ON_AUTH_ERROR` fallback, so `headAuthChallenge` stays false.
     mockFetch
-      .mockResolvedValueOnce({ status: 200, headers: new Headers() } as Response)
-      .mockResolvedValueOnce({ status: 403, headers: new Headers() } as Response);
+      .mockResolvedValueOnce({
+        status: 200,
+        headers: new Headers(),
+      } as Response)
+      .mockResolvedValueOnce({
+        status: 403,
+        headers: new Headers(),
+      } as Response);
 
     const result = await probeResourceMetadataHint('https://example.com/mcp');
 

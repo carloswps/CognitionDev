@@ -1,14 +1,14 @@
-import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
-import debounce from 'lodash/debounce';
-import { Tools, AuthType } from 'librechat-data-provider';
-import { TerminalSquareIcon, Check, X } from 'lucide-react';
 import { Spinner, TooltipAnchor, useToastContext } from '@librechat/client';
+import { AuthType, Tools } from 'librechat-data-provider';
+import debounce from 'lodash/debounce';
+import { Check, TerminalSquareIcon, X } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { CodeBarProps } from '~/common';
-import { useVerifyAgentToolAuth, useToolCallMutation } from '~/data-provider';
 import ApiKeyDialog from '~/components/SidePanel/Agents/Code/ApiKeyDialog';
-import { useLocalize, useCodeApiKeyForm } from '~/hooks';
-import { cn, normalizeLanguage } from '~/utils';
+import { useToolCallMutation, useVerifyAgentToolAuth } from '~/data-provider';
+import { useCodeApiKeyForm, useLocalize } from '~/hooks';
 import { useMessageContext } from '~/Providers';
+import { cn, normalizeLanguage } from '~/utils';
 
 type RunState = 'idle' | 'loading' | 'success' | 'error';
 
@@ -18,7 +18,10 @@ const RunCode: React.FC<CodeBarProps & { iconOnly?: boolean }> = React.memo(
     const { showToast } = useToastContext();
     const execute = useToolCallMutation(Tools.execute_code, {
       onError: () => {
-        showToast({ message: localize('com_ui_run_code_error'), status: 'error' });
+        showToast({
+          message: localize('com_ui_run_code_error'),
+          status: 'error',
+        });
       },
     });
 

@@ -220,11 +220,17 @@ function checkForSafetyBlock(response) {
   const finishReason = candidate.finishReason;
 
   if (finishReason === 'SAFETY' || finishReason === 'PROHIBITED_CONTENT') {
-    return { reason: finishReason, message: 'Content blocked by safety filters' };
+    return {
+      reason: finishReason,
+      message: 'Content blocked by safety filters',
+    };
   }
 
   if (finishReason === 'RECITATION') {
-    return { reason: finishReason, message: 'Content blocked due to recitation concerns' };
+    return {
+      reason: finishReason,
+      message: 'Content blocked due to recitation concerns',
+    };
   }
 
   if (candidate.safetyRatings) {
@@ -326,7 +332,10 @@ function createGeminiImageTool(fields = {}) {
         throw new Error('Missing required field: prompt');
       }
 
-      logger.debug('[GeminiImageGen] Generating image', { aspectRatio, imageSize });
+      logger.debug('[GeminiImageGen] Generating image', {
+        aspectRatio,
+        imageSize,
+      });
 
       let ai;
       try {
@@ -337,7 +346,12 @@ function createGeminiImageTool(fields = {}) {
       } catch (error) {
         logger.error('[GeminiImageGen] Failed to initialize client:', error);
         return [
-          [{ type: ContentTypes.TEXT, text: `Failed to initialize Gemini: ${error.message}` }],
+          [
+            {
+              type: ContentTypes.TEXT,
+              text: `Failed to initialize Gemini: ${error.message}`,
+            },
+          ],
           { content: [], file_ids: [] },
         ];
       }
@@ -391,7 +405,12 @@ function createGeminiImageTool(fields = {}) {
       } catch (error) {
         logger.error('[GeminiImageGen] API error:', error);
         return [
-          [{ type: ContentTypes.TEXT, text: `Image generation failed: ${error.message}` }],
+          [
+            {
+              type: ContentTypes.TEXT,
+              text: `Image generation failed: ${error.message}`,
+            },
+          ],
           { content: [], file_ids: [] },
         ];
       } finally {
@@ -413,7 +432,12 @@ function createGeminiImageTool(fields = {}) {
       if (!rawImageData) {
         logger.warn('[GeminiImageGen] No image data in response');
         return [
-          [{ type: ContentTypes.TEXT, text: 'No image was generated. Please try again.' }],
+          [
+            {
+              type: ContentTypes.TEXT,
+              text: 'No image was generated. Please try again.',
+            },
+          ],
           { content: [], file_ids: [] },
         ];
       }

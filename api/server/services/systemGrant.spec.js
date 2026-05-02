@@ -172,7 +172,10 @@ describe('SystemGrant methods', () => {
       await methods.seedSystemGrants();
 
       const principals = [
-        { principalType: PrincipalType.USER, principalId: new mongoose.Types.ObjectId() },
+        {
+          principalType: PrincipalType.USER,
+          principalId: new mongoose.Types.ObjectId(),
+        },
         { principalType: PrincipalType.ROLE, principalId: SystemRoles.ADMIN },
         { principalType: PrincipalType.PUBLIC },
       ];
@@ -187,7 +190,10 @@ describe('SystemGrant methods', () => {
 
     it('returns false when no principal has the capability', async () => {
       const principals = [
-        { principalType: PrincipalType.USER, principalId: new mongoose.Types.ObjectId() },
+        {
+          principalType: PrincipalType.USER,
+          principalId: new mongoose.Types.ObjectId(),
+        },
         { principalType: PrincipalType.ROLE, principalId: SystemRoles.USER },
         { principalType: PrincipalType.PUBLIC },
       ];
@@ -251,7 +257,10 @@ describe('SystemGrant methods', () => {
       });
 
       const principals = [
-        { principalType: PrincipalType.USER, principalId: new mongoose.Types.ObjectId() },
+        {
+          principalType: PrincipalType.USER,
+          principalId: new mongoose.Types.ObjectId(),
+        },
         { principalType: PrincipalType.GROUP, principalId: groupId },
         { principalType: PrincipalType.PUBLIC },
       ];

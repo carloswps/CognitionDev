@@ -1,9 +1,9 @@
-import { logger, encryptV2, decryptV2 } from '@librechat/data-schemas';
-import type { OAuthTokens, OAuthClientInformation } from '@modelcontextprotocol/sdk/shared/auth.js';
-import type { TokenMethods, IToken } from '@librechat/data-schemas';
-import type { MCPOAuthTokens, ExtendedOAuthTokens, OAuthMetadata } from './types';
-import { isInvalidClientMessage } from '~/mcp/utils';
+import type { IToken, TokenMethods } from '@librechat/data-schemas';
+import { decryptV2, encryptV2, logger } from '@librechat/data-schemas';
+import type { OAuthClientInformation, OAuthTokens } from '@modelcontextprotocol/sdk/shared/auth.js';
 import { isSystemUserId } from '~/mcp/enum';
+import { isInvalidClientMessage } from '~/mcp/utils';
+import type { ExtendedOAuthTokens, MCPOAuthTokens, OAuthMetadata } from './types';
 
 export class ReauthenticationRequiredError extends Error {
   constructor(serverName: string, reason: 'expired' | 'missing' | 'invalid_client') {
@@ -78,7 +78,7 @@ export class MCPTokenStorage {
     existingTokens,
     metadata,
   }: StoreTokensParams): Promise<void> {
-    const logPrefix = this.getLogPrefix(userId, serverName);
+    const logPrefix = MCPTokenStorage.getLogPrefix(userId, serverName);
 
     try {
       const identifier = `mcp:${serverName}`;
@@ -244,7 +244,7 @@ export class MCPTokenStorage {
         expires_at: 'expires_at' in tokens ? tokens.expires_at : 'N/A',
       });
     } catch (error) {
-      const logPrefix = this.getLogPrefix(userId, serverName);
+      const logPrefix = MCPTokenStorage.getLogPrefix(userId, serverName);
       logger.error(`${logPrefix} Failed to store tokens`, error);
       throw error;
     }
@@ -262,7 +262,7 @@ export class MCPTokenStorage {
     deleteTokens,
     refreshTokens,
   }: GetTokensParams): Promise<MCPOAuthTokens | null> {
-    const logPrefix = this.getLogPrefix(userId, serverName);
+    const logPrefix = MCPTokenStorage.getLogPrefix(userId, serverName);
 
     try {
       const identifier = `mcp:${serverName}`;
@@ -369,7 +369,7 @@ export class MCPTokenStorage {
 
           // Store the refreshed tokens (handles both create and update)
           // Pass existing token state to avoid duplicate DB calls
-          await this.storeTokens({
+          await MCPTokenStorage.storeTokens({
             userId,
             serverName,
             tokens: newTokens,
@@ -401,7 +401,11 @@ export class MCPTokenStorage {
                 `${logPrefix} Client registration rejected during token refresh, attempting to clear stale registration and refresh token`,
               );
               const results = await Promise.allSettled([
-                MCPTokenStorage.deleteClientRegistration({ userId, serverName, deleteTokens }),
+                MCPTokenStorage.deleteClientRegistration({
+                  userId,
+                  serverName,
+                  deleteTokens,
+                }),
                 deleteTokens({
                   userId,
                   type: 'mcp_oauth_refresh',
@@ -521,7 +525,7 @@ export class MCPTokenStorage {
       type: 'mcp_oauth_client',
       identifier: `${identifier}:client`,
     });
-    const logPrefix = this.getLogPrefix(userId, serverName);
+    const logPrefix = MCPTokenStorage.getLogPrefix(userId, serverName);
     logger.debug(`${logPrefix} Cleared stored client registration`);
   }
 

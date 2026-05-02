@@ -115,7 +115,10 @@ describe('AgentClient - titleConvo', () => {
       client.run = null;
 
       await expect(
-        client.titleConvo({ text: 'Test', abortController: new AbortController() }),
+        client.titleConvo({
+          text: 'Test',
+          abortController: new AbortController(),
+        }),
       ).rejects.toThrow('Run not initialized');
     });
 
@@ -1685,7 +1688,9 @@ describe('AgentClient - titleConvo', () => {
         createMessage('msg-1', null, 'First message', { addedConvo: false }),
         createMessage('msg-2', 'msg-1', 'Second message', { addedConvo: true }),
         createMessage('msg-3', 'msg-2', 'Third message', { addedConvo: true }),
-        createMessage('msg-4', 'msg-3', 'Fourth message', { addedConvo: false }),
+        createMessage('msg-4', 'msg-3', 'Fourth message', {
+          addedConvo: false,
+        }),
       ];
 
       const mapMethod = jest.fn((msg) => ({ ...msg, mapped: true }));
@@ -1710,7 +1715,9 @@ describe('AgentClient - titleConvo', () => {
     it('should not apply mapMethod when mapCondition returns false for all messages', () => {
       const messages = [
         createMessage('msg-1', null, 'First message', { addedConvo: false }),
-        createMessage('msg-2', 'msg-1', 'Second message', { addedConvo: false }),
+        createMessage('msg-2', 'msg-1', 'Second message', {
+          addedConvo: false,
+        }),
       ];
 
       const mapMethod = jest.fn((msg) => ({ ...msg, mapped: true }));
@@ -1751,10 +1758,19 @@ describe('AgentClient - titleConvo', () => {
 
     it('should handle mapCondition with complex logic', () => {
       const messages = [
-        createMessage('msg-1', null, 'User message', { isCreatedByUser: true, addedConvo: true }),
-        createMessage('msg-2', 'msg-1', 'Assistant response', { addedConvo: true }),
-        createMessage('msg-3', 'msg-2', 'Another user message', { isCreatedByUser: true }),
-        createMessage('msg-4', 'msg-3', 'Another response', { addedConvo: true }),
+        createMessage('msg-1', null, 'User message', {
+          isCreatedByUser: true,
+          addedConvo: true,
+        }),
+        createMessage('msg-2', 'msg-1', 'Assistant response', {
+          addedConvo: true,
+        }),
+        createMessage('msg-3', 'msg-2', 'Another user message', {
+          isCreatedByUser: true,
+        }),
+        createMessage('msg-4', 'msg-3', 'Another response', {
+          addedConvo: true,
+        }),
       ];
 
       const mapMethod = jest.fn((msg) => ({ ...msg, processed: true }));

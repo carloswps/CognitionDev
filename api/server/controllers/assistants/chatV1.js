@@ -86,7 +86,7 @@ const chatV1 = async (req, res) => {
   /** @type {string|undefined} - the parent messageId */
   let parentMessageId = _parentId;
   /** @type {TMessage[]} */
-  let previousMessages = [];
+  const previousMessages = [];
   /** @type {import('librechat-data-provider').TConversation | null} */
   let conversation = null;
   /** @type {string[]} */
@@ -164,7 +164,9 @@ const chatV1 = async (req, res) => {
         return res.end();
       }
       await cache.delete(cacheKey);
-      const cancelledRun = await openai.beta.threads.runs.cancel(run_id, { thread_id });
+      const cancelledRun = await openai.beta.threads.runs.cancel(run_id, {
+        thread_id,
+      });
       logger.debug('[/assistants/chat/] Cancelled run:', cancelledRun);
     } catch (error) {
       logger.error('[/assistants/chat/] Error cancelling run', error);
@@ -321,7 +323,7 @@ const chatV1 = async (req, res) => {
       parentMessageId = previousMessages[previousMessages.length - 1].messageId;
     }
 
-    let userMessage = {
+    const userMessage = {
       role: 'user',
       content: text,
       metadata: {
@@ -402,7 +404,10 @@ const chatV1 = async (req, res) => {
       const imageCount = visionMessage.image_urls.length;
       const plural = imageCount > 1;
       visionMessage.content = createVisionPrompt(plural);
-      visionMessage = formatMessage({ message: visionMessage, endpoint: EModelEndpoint.openAI });
+      visionMessage = formatMessage({
+        message: visionMessage,
+        endpoint: EModelEndpoint.openAI,
+      });
 
       visionPromise = openai.chat.completions
         .create({
@@ -453,7 +458,11 @@ const chatV1 = async (req, res) => {
         userMessage.file_ids = file_ids;
       }
 
-      const result = await initThread({ openai, body: initThreadBody, thread_id });
+      const result = await initThread({
+        openai,
+        body: initThreadBody,
+        thread_id,
+      });
       thread_id = result.thread_id;
 
       createOnTextProgress({
@@ -651,7 +660,9 @@ const chatV1 = async (req, res) => {
 
     if (!response.run.usage) {
       await sleep(3000);
-      completedRun = await openai.beta.threads.runs.retrieve(response.run.id, { thread_id });
+      completedRun = await openai.beta.threads.runs.retrieve(response.run.id, {
+        thread_id,
+      });
       if (completedRun.usage) {
         await recordUsage({
           ...completedRun.usage,

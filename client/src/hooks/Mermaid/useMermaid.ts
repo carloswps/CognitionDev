@@ -1,9 +1,9 @@
+import { isDark, ThemeContext } from '@librechat/client';
+import DOMPurify from 'dompurify';
+import type { MermaidConfig } from 'mermaid';
 import { useContext, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { Md5 } from 'ts-md5';
-import DOMPurify from 'dompurify';
-import { ThemeContext, isDark } from '@librechat/client';
-import type { MermaidConfig } from 'mermaid';
 import { inlineFlowchartConfig } from '~/utils/mermaid';
 
 // Constants
@@ -87,7 +87,11 @@ export const useMermaid = ({
       startOnLoad: false,
       theme: (customTheme as MermaidConfig['theme']) || defaultTheme,
       ...config,
-      flowchart: { ...inlineFlowchartConfig, ...config?.flowchart, htmlLabels: false },
+      flowchart: {
+        ...inlineFlowchartConfig,
+        ...config?.flowchart,
+        htmlLabels: false,
+      },
       // Security hardening: MUST come after ...config spread to prevent override
       securityLevel: 'strict',
       maxTextSize: config?.maxTextSize ?? 50000,

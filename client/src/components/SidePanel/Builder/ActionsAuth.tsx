@@ -1,20 +1,20 @@
-import { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import * as RadioGroup from '@radix-ui/react-radio-group';
-import {
-  AuthTypeEnum,
-  AuthorizationTypeEnum,
-  TokenExchangeMethodEnum,
-} from 'librechat-data-provider';
 import {
   OGDialog,
   OGDialogClose,
-  OGDialogTitle,
-  OGDialogHeader,
   OGDialogContent,
+  OGDialogHeader,
+  OGDialogTitle,
   OGDialogTrigger,
 } from '@librechat/client';
-import { TranslationKeys, useLocalize } from '~/hooks';
+import * as RadioGroup from '@radix-ui/react-radio-group';
+import {
+  AuthorizationTypeEnum,
+  AuthTypeEnum,
+  TokenExchangeMethodEnum,
+} from 'librechat-data-provider';
+import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
+import { type TranslationKeys, useLocalize } from '~/hooks';
 import { cn } from '~/utils';
 
 export default function ActionsAuth({ disableOAuth }: { disableOAuth?: boolean }) {
@@ -180,7 +180,9 @@ const ApiKey = () => {
           'border-border-medium bg-surface-primary outline-none',
           'focus:ring-2 focus:ring-ring',
         )}
-        {...register('api_key', { required: type === AuthTypeEnum.ServiceHttp })}
+        {...register('api_key', {
+          required: type === AuthTypeEnum.ServiceHttp,
+        })}
       />
       <label className="mb-1 block text-sm font-medium">{localize('com_ui_auth_type')}</label>
       <RadioGroup.Root
@@ -312,7 +314,9 @@ const OAuth = () => {
       <label className="mb-1 block text-sm font-medium">{localize('com_ui_auth_url')}</label>
       <input
         className={inputClasses}
-        {...register('authorization_url', { required: type === AuthTypeEnum.OAuth })}
+        {...register('authorization_url', {
+          required: type === AuthTypeEnum.OAuth,
+        })}
       />
       <label className="mb-1 block text-sm font-medium">{localize('com_ui_token_url')}</label>
       <input

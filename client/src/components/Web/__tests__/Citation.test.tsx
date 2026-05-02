@@ -1,5 +1,5 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import type React from 'react';
 import '@testing-library/jest-dom';
 import type { SearchResultData } from 'librechat-data-provider';
 import { Citation, CompositeCitation } from '~/components/Web/Citation';
@@ -99,7 +99,9 @@ describe('Citation', () => {
       searchResults as any,
     );
 
-    const fileButton = screen.getByRole('button', { name: 'Tutorial Imazing.pdf' });
+    const fileButton = screen.getByRole('button', {
+      name: 'Tutorial Imazing.pdf',
+    });
 
     expect(fileButton).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Tutorial Imazing.pdf' })).not.toBeInTheDocument();

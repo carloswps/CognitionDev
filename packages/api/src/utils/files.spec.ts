@@ -1,4 +1,4 @@
-import { sanitizeFilename, resolveUploadErrorMessage } from './files';
+import { resolveUploadErrorMessage, sanitizeFilename } from './files';
 
 jest.mock('node:crypto', () => {
   const actualModule = jest.requireActual('node:crypto');
@@ -66,9 +66,11 @@ describe('resolveUploadErrorMessage', () => {
   });
 
   test('returns default message for unrecognized error', () => {
-    expect(resolveUploadErrorMessage({ message: 'ENOENT: no such file or directory' })).toBe(
-      'Error processing file',
-    );
+    expect(
+      resolveUploadErrorMessage({
+        message: 'ENOENT: no such file or directory',
+      }),
+    ).toBe('Error processing file');
   });
 
   test('prepends default message for file_ids errors', () => {

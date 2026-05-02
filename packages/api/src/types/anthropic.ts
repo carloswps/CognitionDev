@@ -1,10 +1,10 @@
-import { z } from 'zod';
-import { Dispatcher } from 'undici';
-import { AuthKeys, anthropicSchema, TVertexAISchema } from 'librechat-data-provider';
 import type { AnthropicClientOptions } from '@librechat/agents';
 import type { ThinkingDisplayWireValue } from 'librechat-data-provider';
-import type { LLMConfigResult } from './openai';
+import { AuthKeys, type anthropicSchema, type TVertexAISchema } from 'librechat-data-provider';
+import type { Dispatcher } from 'undici';
+import type { z } from 'zod';
 import type { GoogleServiceKey } from '../utils/key';
+import type { LLMConfigResult } from './openai';
 
 export type AnthropicParameters = z.infer<typeof anthropicSchema>;
 

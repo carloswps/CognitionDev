@@ -1,5 +1,5 @@
+import { useCallback, useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { useState, useEffect, useCallback } from 'react';
 import type { VoiceOption } from '~/common';
 import store from '~/store';
 
@@ -114,7 +114,12 @@ function useTextToSpeechBrowser({
     }
   };
 
-  return { generateSpeechLocal, cancelSpeechLocal, voices, isSpeechSynthesisSupported };
+  return {
+    generateSpeechLocal,
+    cancelSpeechLocal,
+    voices,
+    isSpeechSynthesisSupported,
+  };
 }
 
 export default useTextToSpeechBrowser;

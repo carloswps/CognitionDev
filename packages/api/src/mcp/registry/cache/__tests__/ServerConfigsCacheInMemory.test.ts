@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
-import { ParsedServerConfig } from '~/mcp/types';
+import type { ParsedServerConfig } from '~/mcp/types';
+
 const FIXED_TIME = 1699564800000;
 const originalDateNow = Date.now;
 Date.now = jest.fn(() => FIXED_TIME);
@@ -186,7 +187,9 @@ describe('ServerConfigsCacheInMemory Integration Tests', () => {
 
   describe('credential placeholders in YAML configs', () => {
     it('should preserve LIBRECHAT_OPENID placeholders (admin configs are trusted)', async () => {
-      const adminConfig: ParsedServerConfig & { headers?: Record<string, string> } = {
+      const adminConfig: ParsedServerConfig & {
+        headers?: Record<string, string>;
+      } = {
         type: 'sse',
         url: 'https://internal-service.example.com/mcp',
         headers: {
@@ -210,7 +213,9 @@ describe('ServerConfigsCacheInMemory Integration Tests', () => {
     });
 
     it('should preserve LIBRECHAT_USER placeholders (admin configs are trusted)', async () => {
-      const adminConfig: ParsedServerConfig & { headers?: Record<string, string> } = {
+      const adminConfig: ParsedServerConfig & {
+        headers?: Record<string, string>;
+      } = {
         type: 'sse',
         url: 'https://internal-api.example.com/mcp',
         headers: {

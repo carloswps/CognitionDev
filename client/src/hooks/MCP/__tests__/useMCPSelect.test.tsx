@@ -1,12 +1,12 @@
-import React from 'react';
-import { Provider, createStore } from 'jotai';
-import { renderHook, act, waitFor } from '@testing-library/react';
-import { RecoilRoot, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { act, renderHook, waitFor } from '@testing-library/react';
+import { createStore, Provider } from 'jotai';
 import { Constants, LocalStorageKeys } from 'librechat-data-provider';
+import type React from 'react';
+import { RecoilRoot, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { ephemeralAgentByConvoId } from '~/store';
 import { setTimestamp } from '~/utils/timestamps';
 import { useMCPSelect } from '../useMCPSelect';
-import { MCPServerDefinition } from '../useMCPServerManager';
+import type { MCPServerDefinition } from '../useMCPServerManager';
 
 // Mock dependencies
 jest.mock('~/utils/timestamps', () => ({
@@ -103,7 +103,7 @@ describe('useMCPSelect', () => {
       });
 
       act(() => {
-        // @ts-ignore - Testing invalid input
+        // @ts-expect-error - Testing invalid input
         result.current.setMCPValues('not-an-array');
       });
 
@@ -307,7 +307,9 @@ describe('useMCPSelect', () => {
         return { mcpHook, ephemeralAgent, setEphemeralAgent };
       };
 
-      const { result } = renderHook(() => TestComponent(), { wrapper: Wrapper });
+      const { result } = renderHook(() => TestComponent(), {
+        wrapper: Wrapper,
+      });
 
       // Simulate external update to ephemeralAgent (e.g., from another component)
       const externalMcpValues = ['external-value1', 'external-value2'];
@@ -332,7 +334,9 @@ describe('useMCPSelect', () => {
         return { mcpHook, setEphemeralAgent };
       };
 
-      const { result } = renderHook(() => TestComponent(), { wrapper: Wrapper });
+      const { result } = renderHook(() => TestComponent(), {
+        wrapper: Wrapper,
+      });
 
       act(() => {
         result.current.setEphemeralAgent({
@@ -354,7 +358,9 @@ describe('useMCPSelect', () => {
         return { mcpHook, setEphemeralAgent };
       };
 
-      const { result } = renderHook(() => TestComponent(), { wrapper: Wrapper });
+      const { result } = renderHook(() => TestComponent(), {
+        wrapper: Wrapper,
+      });
 
       act(() => {
         result.current.setEphemeralAgent({
@@ -376,7 +382,9 @@ describe('useMCPSelect', () => {
         return { mcpHook, setEphemeralAgent };
       };
 
-      const { result } = renderHook(() => TestComponent(), { wrapper: Wrapper });
+      const { result } = renderHook(() => TestComponent(), {
+        wrapper: Wrapper,
+      });
 
       act(() => {
         result.current.setEphemeralAgent({
@@ -400,7 +408,9 @@ describe('useMCPSelect', () => {
         return { mcpHook, ephemeralAgent };
       };
 
-      const { result } = renderHook(() => TestComponent(), { wrapper: Wrapper });
+      const { result } = renderHook(() => TestComponent(), {
+        wrapper: Wrapper,
+      });
 
       const newValues = ['hook-value1', 'hook-value2'];
 
@@ -426,7 +436,9 @@ describe('useMCPSelect', () => {
         return { mcpHook, setEphemeralAgent };
       };
 
-      const { result } = renderHook(() => TestComponent(), { wrapper: Wrapper });
+      const { result } = renderHook(() => TestComponent(), {
+        wrapper: Wrapper,
+      });
 
       // Set initial values
       act(() => {
@@ -462,7 +474,9 @@ describe('useMCPSelect', () => {
         return { mcpHook, setEphemeralAgent };
       };
 
-      const { result } = renderHook(() => TestComponent(), { wrapper: Wrapper });
+      const { result } = renderHook(() => TestComponent(), {
+        wrapper: Wrapper,
+      });
 
       // Set initial values
       act(() => {
@@ -501,7 +515,9 @@ describe('useMCPSelect', () => {
         return { mcpHook, setEphemeralAgent };
       };
 
-      const { result } = renderHook(() => TestComponent(), { wrapper: Wrapper });
+      const { result } = renderHook(() => TestComponent(), {
+        wrapper: Wrapper,
+      });
 
       // Set initial values through ephemeralAgent with non-empty array
       const initialValues = ['value1', 'value2'];
@@ -705,7 +721,12 @@ describe('useMCPSelect', () => {
 
       // Existing conversation should have its own isolated state
       const { result: existingResult } = renderHook(
-        () => useMCPSelect({ conversationId: 'existing-convo', storageContextKey, servers }),
+        () =>
+          useMCPSelect({
+            conversationId: 'existing-convo',
+            storageContextKey,
+            servers,
+          }),
         { wrapper: Wrapper },
       );
 
@@ -732,7 +753,11 @@ describe('useMCPSelect', () => {
       const storageContextKey = '__defaults__';
 
       const TestComponent = ({ ctxKey }: { ctxKey?: string }) => {
-        const mcpHook = useMCPSelect({ conversationId: null, storageContextKey: ctxKey, servers });
+        const mcpHook = useMCPSelect({
+          conversationId: null,
+          storageContextKey: ctxKey,
+          servers,
+        });
         const setEphemeralAgent = useSetRecoilState(ephemeralAgentByConvoId(Constants.NEW_CONVO));
         return { mcpHook, setEphemeralAgent };
       };
@@ -770,7 +795,9 @@ describe('useMCPSelect', () => {
         return { mcpHook, setEphemeralAgent };
       };
 
-      const { result } = renderHook(() => TestComponent(), { wrapper: Wrapper });
+      const { result } = renderHook(() => TestComponent(), {
+        wrapper: Wrapper,
+      });
 
       // Simulate spec application setting ephemeral agent MCP
       act(() => {
@@ -794,7 +821,9 @@ describe('useMCPSelect', () => {
         return { mcpHook, setEphemeralAgent };
       };
 
-      const { result } = renderHook(() => TestComponent(), { wrapper: Wrapper });
+      const { result } = renderHook(() => TestComponent(), {
+        wrapper: Wrapper,
+      });
 
       // Set values from a spec
       act(() => {

@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
 import type { TMessage } from 'librechat-data-provider';
 import { buildTree } from 'librechat-data-provider';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
 import { createModels } from '~/models';
-import { createMessageMethods } from './message';
 import type { IMessage } from '..';
+import { createMessageMethods } from './message';
 
 jest.mock('~/config/winston', () => ({
   error: jest.fn(),
@@ -96,7 +96,10 @@ describe('Conversation Structure Tests', () => {
     await bulkSaveMessages(messages, true);
 
     // Retrieve messages (this will sort by createdAt)
-    const retrievedMessages = await getMessages({ conversationId, user: userId });
+    const retrievedMessages = await getMessages({
+      conversationId,
+      user: userId,
+    });
 
     // Build tree
     const tree = buildTree({ messages: retrievedMessages as TMessage[] });
@@ -123,7 +126,10 @@ describe('Conversation Structure Tests', () => {
     await bulkSaveMessages(messages, true);
 
     // Retrieve messages (this will sort by createdAt, but it shouldn't matter now)
-    const retrievedMessages = await getMessages({ conversationId, user: userId });
+    const retrievedMessages = await getMessages({
+      conversationId,
+      user: userId,
+    });
 
     // Build tree
     const tree = buildTree({ messages: retrievedMessages as TMessage[] });
@@ -155,11 +161,18 @@ describe('Conversation Structure Tests', () => {
 
     // Add common properties to all messages
     messages.forEach((msg) => {
-      Object.assign(msg, { isCreatedByUser: false, error: false, unfinished: false });
+      Object.assign(msg, {
+        isCreatedByUser: false,
+        error: false,
+        unfinished: false,
+      });
     });
 
     await bulkSaveMessages(messages, true);
-    const retrievedMessages = await getMessages({ conversationId, user: userId });
+    const retrievedMessages = await getMessages({
+      conversationId,
+      user: userId,
+    });
     const tree = buildTree({ messages: retrievedMessages as TMessage[] });
     expect(tree!.length).toBeGreaterThan(1);
   });
@@ -180,14 +193,21 @@ describe('Conversation Structure Tests', () => {
 
     // Add common properties to all messages
     messages.forEach((msg) => {
-      Object.assign(msg, { isCreatedByUser: false, error: false, unfinished: false });
+      Object.assign(msg, {
+        isCreatedByUser: false,
+        error: false,
+        unfinished: false,
+      });
     });
 
     // Save messages with overriding timestamps (preserve original timestamps)
     await bulkSaveMessages(messages, true);
 
     // Retrieve messages (this will sort by createdAt)
-    const retrievedMessages = await getMessages({ conversationId, user: userId });
+    const retrievedMessages = await getMessages({
+      conversationId,
+      user: userId,
+    });
 
     // Build tree
     const tree = buildTree({ messages: retrievedMessages as TMessage[] });
@@ -250,7 +270,10 @@ describe('Conversation Structure Tests', () => {
     await bulkSaveMessages(messages, true);
 
     // Retrieve messages
-    const retrievedMessages = await getMessages({ conversationId, user: userId });
+    const retrievedMessages = await getMessages({
+      conversationId,
+      user: userId,
+    });
 
     // Debug log to see what's being returned
     console.log(

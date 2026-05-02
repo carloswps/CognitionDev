@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // zod.spec.ts
-import { z } from 'zod';
+
 import type { JsonSchemaType } from '@librechat/data-schemas';
+import { z } from 'zod';
 import {
-  convertWithResolvedRefs,
   convertJsonSchemaToZod,
-  resolveJsonSchemaRefs,
+  convertWithResolvedRefs,
   normalizeJsonSchema,
+  resolveJsonSchemaRefs,
 } from '../zod';
 
 describe('convertJsonSchemaToZod', () => {
@@ -274,7 +275,10 @@ describe('convertJsonSchemaToZod', () => {
       };
       const zodSchema = convertWithResolvedRefs(schema);
 
-      expect(zodSchema?.parse({ name: 'John', age: 30 })).toEqual({ name: 'John', age: 30 });
+      expect(zodSchema?.parse({ name: 'John', age: 30 })).toEqual({
+        name: 'John',
+        age: 30,
+      });
       expect(() => zodSchema?.parse({ name: 123, age: 30 })).toThrow();
     });
 
@@ -328,7 +332,9 @@ describe('convertJsonSchemaToZod', () => {
       };
       const zodSchema = convertWithResolvedRefs(schema);
 
-      expect(zodSchema?.parse({ names: ['John', 'Jane'] })).toEqual({ names: ['John', 'Jane'] });
+      expect(zodSchema?.parse({ names: ['John', 'Jane'] })).toEqual({
+        names: ['John', 'Jane'],
+      });
       expect(() => zodSchema?.parse({ names: ['John', 123] })).toThrow();
     });
   });
@@ -673,7 +679,10 @@ describe('convertJsonSchemaToZod', () => {
       expect(zodSchema?.parse({ name: 'John' })).toEqual({ name: 'John' });
 
       // Should also accept additional properties of any type
-      expect(zodSchema?.parse({ name: 'John', age: 30 })).toEqual({ name: 'John', age: 30 });
+      expect(zodSchema?.parse({ name: 'John', age: 30 })).toEqual({
+        name: 'John',
+        age: 30,
+      });
       expect(zodSchema?.parse({ name: 'John', isActive: true })).toEqual({
         name: 'John',
         isActive: true,
@@ -721,7 +730,10 @@ describe('convertJsonSchemaToZod', () => {
       const zodSchema = convertWithResolvedRefs(schema);
 
       // Should accept the defined properties
-      expect(zodSchema?.parse({ name: 'John', age: 30 })).toEqual({ name: 'John', age: 30 });
+      expect(zodSchema?.parse({ name: 'John', age: 30 })).toEqual({
+        name: 'John',
+        age: 30,
+      });
 
       // Current implementation strips additional properties when additionalProperties is false
       const objWithExtra = { name: 'John', age: 30, isActive: true };
@@ -794,7 +806,9 @@ describe('convertJsonSchemaToZod', () => {
         user: { name: 'John' },
         extraField: 'not allowed', // This should be stripped
       };
-      expect(zodSchema?.parse(dataWithExtraTopLevel)).toEqual({ user: { name: 'John' } });
+      expect(zodSchema?.parse(dataWithExtraTopLevel)).toEqual({
+        user: { name: 'John' },
+      });
 
       // Should reject additional properties in user that don't match the string type
       expect(() =>
@@ -827,7 +841,9 @@ describe('convertJsonSchemaToZod', () => {
       ];
 
       emptyObjectSchemas.forEach((schema) => {
-        const result = convertWithResolvedRefs(schema, { allowEmptyObject: true });
+        const result = convertWithResolvedRefs(schema, {
+          allowEmptyObject: true,
+        });
         expect(result).toBeDefined();
         expect(result instanceof z.ZodObject).toBeTruthy();
       });
@@ -854,7 +870,9 @@ describe('convertJsonSchemaToZod', () => {
         },
       };
 
-      const resultWithFlag = convertWithResolvedRefs(schema, { allowEmptyObject: false });
+      const resultWithFlag = convertWithResolvedRefs(schema, {
+        allowEmptyObject: false,
+      });
       const resultWithoutFlag = convertWithResolvedRefs(schema);
 
       expect(resultWithFlag).toBeDefined();
@@ -886,7 +904,10 @@ describe('convertJsonSchemaToZod', () => {
       });
 
       // The schema should still validate normal properties
-      expect(zodSchema?.parse({ name: 'John', age: 30 })).toEqual({ name: 'John', age: 30 });
+      expect(zodSchema?.parse({ name: 'John', age: 30 })).toEqual({
+        name: 'John',
+        age: 30,
+      });
 
       // But the anyOf/oneOf constraints should be gone
       // (If they were present, this would fail because neither name nor age is required)
@@ -965,7 +986,10 @@ describe('convertJsonSchemaToZod', () => {
       });
 
       // The schema should still work normally
-      expect(zodSchema?.parse({ name: 'John', age: 30 })).toEqual({ name: 'John', age: 30 });
+      expect(zodSchema?.parse({ name: 'John', age: 30 })).toEqual({
+        name: 'John',
+        age: 30,
+      });
     });
 
     it('should handle complex schemas with dropped fields', () => {
@@ -1121,8 +1145,14 @@ describe('convertJsonSchemaToZod', () => {
       });
 
       // The schema should validate objects matching either schema
-      expect(zodSchema?.parse({ name: 'John', age: 30 })).toEqual({ name: 'John', age: 30 });
-      expect(zodSchema?.parse({ id: '123', role: 'admin' })).toEqual({ id: '123', role: 'admin' });
+      expect(zodSchema?.parse({ name: 'John', age: 30 })).toEqual({
+        name: 'John',
+        age: 30,
+      });
+      expect(zodSchema?.parse({ id: '123', role: 'admin' })).toEqual({
+        id: '123',
+        role: 'admin',
+      });
 
       // Should reject objects that don't match either schema
       expect(() => zodSchema?.parse({ age: 30 })).toThrow(); // Missing required 'name'
@@ -2045,7 +2075,11 @@ describe('normalizeJsonSchema', () => {
   });
 
   it('should preserve existing enum when const is also present', () => {
-    const schema = { type: 'string', const: 'hello', enum: ['hello', 'world'] } as any;
+    const schema = {
+      type: 'string',
+      const: 'hello',
+      enum: ['hello', 'world'],
+    } as any;
     const result = normalizeJsonSchema(schema);
     expect(result).toEqual({ type: 'string', enum: ['hello', 'world'] });
     expect(result).not.toHaveProperty('const');
@@ -2077,25 +2111,43 @@ describe('normalizeJsonSchema', () => {
     } as any;
 
     const result = normalizeJsonSchema(schema);
-    expect(result.properties.mode).toEqual({ type: 'string', enum: ['advanced'] });
+    expect(result.properties.mode).toEqual({
+      type: 'string',
+      enum: ['advanced'],
+    });
     expect(result.properties.count).toEqual({ type: 'number', enum: [5] });
-    expect(result.properties.name).toEqual({ type: 'string', description: 'A name' });
+    expect(result.properties.name).toEqual({
+      type: 'string',
+      description: 'A name',
+    });
   });
 
   it('should normalize inside oneOf/anyOf/allOf arrays', () => {
     const schema = {
       type: 'object',
       oneOf: [
-        { type: 'object', properties: { kind: { type: 'string', const: 'A' } } },
-        { type: 'object', properties: { kind: { type: 'string', const: 'B' } } },
+        {
+          type: 'object',
+          properties: { kind: { type: 'string', const: 'A' } },
+        },
+        {
+          type: 'object',
+          properties: { kind: { type: 'string', const: 'B' } },
+        },
       ],
       anyOf: [{ type: 'string', const: 'x' }],
       allOf: [{ type: 'number', const: 1 }],
     } as any;
 
     const result = normalizeJsonSchema(schema);
-    expect(result.oneOf[0].properties.kind).toEqual({ type: 'string', enum: ['A'] });
-    expect(result.oneOf[1].properties.kind).toEqual({ type: 'string', enum: ['B'] });
+    expect(result.oneOf[0].properties.kind).toEqual({
+      type: 'string',
+      enum: ['A'],
+    });
+    expect(result.oneOf[1].properties.kind).toEqual({
+      type: 'string',
+      enum: ['B'],
+    });
     expect(result.anyOf[0]).toEqual({ type: 'string', enum: ['x'] });
     expect(result.allOf[0]).toEqual({ type: 'number', enum: [1] });
   });
@@ -2117,7 +2169,10 @@ describe('normalizeJsonSchema', () => {
     } as any;
 
     const result = normalizeJsonSchema(schema);
-    expect(result.additionalProperties).toEqual({ type: 'string', enum: ['val'] });
+    expect(result.additionalProperties).toEqual({
+      type: 'string',
+      enum: ['val'],
+    });
   });
 
   it('should handle null, undefined, and primitive inputs safely', () => {
@@ -2358,6 +2413,9 @@ describe('normalizeJsonSchema', () => {
     });
     // Standard fields preserved
     expect(result.properties.travelMode.enum).toEqual(['DRIVE', 'BICYCLE', 'TRANSIT', 'WALK']);
-    expect(result.properties.origin).toEqual({ type: 'string', description: 'Starting address' });
+    expect(result.properties.origin).toEqual({
+      type: 'string',
+      description: 'Starting address',
+    });
   });
 });

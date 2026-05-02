@@ -1,14 +1,14 @@
-import { EarthIcon } from 'lucide-react';
+import type { Agent, TFile } from 'librechat-data-provider';
 import {
-  FileSources,
   alternateName,
+  defaultAgentFormValues,
   EModelEndpoint,
   EToolResources,
+  FileSources,
   LocalStorageKeys,
-  defaultAgentFormValues,
 } from 'librechat-data-provider';
-import type { Agent, TFile } from 'librechat-data-provider';
-import type { DropdownValueSetter, TAgentOption, ExtendedFile } from '~/common';
+import { EarthIcon } from 'lucide-react';
+import type { DropdownValueSetter, ExtendedFile, TAgentOption } from '~/common';
 
 /**
  * Creates a Dropdown value setter that always passes a string value,
@@ -160,7 +160,11 @@ export const processAgentOption = ({
 
   if (agent.code_files && _agent?.tool_resources?.execute_code?.file_ids) {
     _agent.tool_resources.execute_code.file_ids.forEach((file_id) =>
-      handleFile({ file_id, list: agent.code_files, tool_resource: EToolResources.execute_code }),
+      handleFile({
+        file_id,
+        list: agent.code_files,
+        tool_resource: EToolResources.execute_code,
+      }),
     );
   }
 

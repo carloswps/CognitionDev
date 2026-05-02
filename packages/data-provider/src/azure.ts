@@ -1,14 +1,14 @@
 import type { ZodError } from 'zod';
 import type {
-  TAzureGroups,
+  TAzureConfigValidationResult,
   TAzureGroupMap,
+  TAzureGroups,
   TAzureModelGroupMap,
   TValidatedAzureConfig,
-  TAzureConfigValidationResult,
 } from '../src/config';
-import { extractEnvVariable, envVarRegex } from '../src/utils';
 import { azureGroupConfigsSchema } from '../src/config';
 import { errorsToString } from '../src/parsers';
+import { envVarRegex, extractEnvVariable } from '../src/utils';
 
 export function validateAzureGroups(configs: TAzureGroups): TAzureConfigValidationResult {
   let isValid = true;
@@ -73,7 +73,13 @@ export function validateAzureGroups(configs: TAzureGroups): TAzureConfigValidati
           errors.push(
             `Duplicate model name detected: "${modelName}". Model names must be unique across groups.`,
           );
-          return { isValid: false, modelNames, modelGroupMap, groupMap, errors };
+          return {
+            isValid: false,
+            modelNames,
+            modelGroupMap,
+            groupMap,
+            errors,
+          };
         }
 
         if (serverless) {
@@ -91,7 +97,13 @@ export function validateAzureGroups(configs: TAzureGroups): TAzureConfigValidati
             errors.push(
               `Model "${modelName}" in group "${groupName}" is missing a deploymentName or version.`,
             );
-            return { isValid: false, modelNames, modelGroupMap, groupMap, errors };
+            return {
+              isValid: false,
+              modelNames,
+              modelGroupMap,
+              groupMap,
+              errors,
+            };
           }
 
           modelGroupMap[modelName] = {
@@ -105,7 +117,13 @@ export function validateAzureGroups(configs: TAzureGroups): TAzureConfigValidati
             errors.push(
               `Model "${modelName}" in group "${groupName}" is missing a required deploymentName or version.`,
             );
-            return { isValid: false, modelNames, modelGroupMap, groupMap, errors };
+            return {
+              isValid: false,
+              modelNames,
+              modelGroupMap,
+              groupMap,
+              errors,
+            };
           }
 
           modelGroupMap[modelName] = {
@@ -290,7 +308,9 @@ export function mapGroupToAzureConfig({
       azureOptions,
       baseURL: extractEnvVariable(baseURL),
       serverless: true,
-      ...(groupConfig.additionalHeaders && { headers: groupConfig.additionalHeaders }),
+      ...(groupConfig.additionalHeaders && {
+        headers: groupConfig.additionalHeaders,
+      }),
     };
   }
 

@@ -1,15 +1,19 @@
 import type { DeleteResult, FilterQuery, Model } from 'mongoose';
 import logger from '~/config/winston';
+import type { AppConfig, IMessage } from '~/types';
 import { createTempChatExpirationDate } from '~/utils/tempChatRetention';
 import { tenantSafeBulkWrite } from '~/utils/tenantBulkWrite';
-import type { AppConfig, IMessage } from '~/types';
 
 /** Simple UUID v4 regex to replace zod validation */
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export interface MessageMethods {
   saveMessage(
-    ctx: { userId: string; isTemporary?: boolean; interfaceConfig?: AppConfig['interfaceConfig'] },
+    ctx: {
+      userId: string;
+      isTemporary?: boolean;
+      interfaceConfig?: AppConfig['interfaceConfig'];
+    },
     params: Partial<IMessage> & { newMessageId?: string },
     metadata?: { context?: string },
   ): Promise<IMessage | null | undefined>;

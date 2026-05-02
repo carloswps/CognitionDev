@@ -1,7 +1,7 @@
-import type { Document } from 'mongoose';
 import type { TFeedbackRating, TFeedbackTag } from 'librechat-data-provider';
+import type { Document } from 'mongoose';
 
-// @ts-ignore
+// @ts-expect-error
 export interface IMessage extends Document {
   messageId: string;
   conversationId: string;

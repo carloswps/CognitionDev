@@ -1,11 +1,11 @@
 import {
-  Verbosity,
   EModelEndpoint,
   ReasoningEffort,
   ReasoningSummary,
+  Verbosity,
 } from 'librechat-data-provider';
-import { getOpenAILLMConfig, extractDefaultParams, applyDefaultParams } from './llm';
 import type * as t from '~/types';
+import { applyDefaultParams, extractDefaultParams, getOpenAILLMConfig } from './llm';
 
 describe('getOpenAILLMConfig', () => {
   describe('Basic Configuration', () => {
@@ -150,32 +150,31 @@ describe('getOpenAILLMConfig', () => {
       'logprobs',
     ];
 
-    it.each(reasoningModels)(
-      'should exclude unsupported parameters for reasoning model: %s',
-      (model) => {
-        const result = getOpenAILLMConfig({
-          apiKey: 'test-api-key',
-          streaming: true,
-          modelOptions: {
-            model,
-            temperature: 0.7,
-            frequency_penalty: 0.5,
-            presence_penalty: 0.3,
-            topP: 0.9,
-            logitBias: { '50256': -100 },
-            n: 2,
-            logprobs: true,
-          } as Partial<t.OpenAIParameters>,
-        });
+    it.each(
+      reasoningModels,
+    )('should exclude unsupported parameters for reasoning model: %s', (model) => {
+      const result = getOpenAILLMConfig({
+        apiKey: 'test-api-key',
+        streaming: true,
+        modelOptions: {
+          model,
+          temperature: 0.7,
+          frequency_penalty: 0.5,
+          presence_penalty: 0.3,
+          topP: 0.9,
+          logitBias: { '50256': -100 },
+          n: 2,
+          logprobs: true,
+        } as Partial<t.OpenAIParameters>,
+      });
 
-        excludedParams.forEach((param) => {
-          expect(result.llmConfig).not.toHaveProperty(param);
-        });
+      excludedParams.forEach((param) => {
+        expect(result.llmConfig).not.toHaveProperty(param);
+      });
 
-        expect(result.llmConfig).toHaveProperty('model', model);
-        expect(result.llmConfig).toHaveProperty('streaming', true);
-      },
-    );
+      expect(result.llmConfig).toHaveProperty('model', model);
+      expect(result.llmConfig).toHaveProperty('streaming', true);
+    });
 
     it('should preserve maxTokens for reasoning models', () => {
       const result = getOpenAILLMConfig({
@@ -643,23 +642,26 @@ describe('getOpenAILLMConfig', () => {
       });
     });
 
-    it.each([ReasoningEffort.xhigh, ReasoningEffort.minimal, ReasoningEffort.none])(
-      'should support OpenRouter effort level: %s',
-      (effort) => {
-        const result = getOpenAILLMConfig({
-          apiKey: 'test-api-key',
-          streaming: true,
-          useOpenRouter: true,
-          modelOptions: {
-            model: 'openai/o3-mini',
-            reasoning_effort: effort,
-          },
-        });
+    it.each([
+      ReasoningEffort.xhigh,
+      ReasoningEffort.minimal,
+      ReasoningEffort.none,
+    ])('should support OpenRouter effort level: %s', (effort) => {
+      const result = getOpenAILLMConfig({
+        apiKey: 'test-api-key',
+        streaming: true,
+        useOpenRouter: true,
+        modelOptions: {
+          model: 'openai/o3-mini',
+          reasoning_effort: effort,
+        },
+      });
 
-        expect(result.llmConfig.modelKwargs).toHaveProperty('reasoning', { effort });
-        expect(result.llmConfig).not.toHaveProperty('include_reasoning');
-      },
-    );
+      expect(result.llmConfig.modelKwargs).toHaveProperty('reasoning', {
+        effort,
+      });
+      expect(result.llmConfig).not.toHaveProperty('include_reasoning');
+    });
 
     it('should fall back to include_reasoning when reasoning_effort is unset (empty string)', () => {
       const result = getOpenAILLMConfig({
@@ -704,7 +706,9 @@ describe('getOpenAILLMConfig', () => {
         },
       });
 
-      expect(result.llmConfig.modelKwargs).toHaveProperty('text', { verbosity: Verbosity.low });
+      expect(result.llmConfig.modelKwargs).toHaveProperty('text', {
+        verbosity: Verbosity.low,
+      });
       expect(result.llmConfig.modelKwargs).not.toHaveProperty('verbosity');
     });
   });

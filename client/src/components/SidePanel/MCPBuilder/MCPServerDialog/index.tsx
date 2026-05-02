@@ -1,30 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { Copy, CopyCheck } from 'lucide-react';
 import {
-  Label,
-  Input,
   Button,
+  Input,
+  Label,
+  OGDialog,
+  OGDialogContent,
+  OGDialogFooter,
+  OGDialogHeader,
+  OGDialogTemplate,
+  OGDialogTitle,
   Spinner,
   TrashIcon,
   useToastContext,
-  OGDialog,
-  OGDialogTitle,
-  OGDialogHeader,
-  OGDialogFooter,
-  OGDialogContent,
-  OGDialogTemplate,
 } from '@librechat/client';
 import {
-  SystemRoles,
-  Permissions,
-  ResourceType,
   PermissionBits,
+  Permissions,
   PermissionTypes,
+  ResourceType,
+  SystemRoles,
 } from 'librechat-data-provider';
-import { useAuthContext, useHasAccess, useResourcePermissions, MCPServerDefinition } from '~/hooks';
+import { Copy, CopyCheck } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import { GenericGrantAccessDialog } from '~/components/Sharing';
+import {
+  type MCPServerDefinition,
+  useAuthContext,
+  useCopyToClipboard,
+  useHasAccess,
+  useLocalize,
+  useResourcePermissions,
+} from '~/hooks';
 import { useMCPServerForm } from './hooks/useMCPServerForm';
-import { useLocalize, useCopyToClipboard } from '~/hooks';
 import MCPServerForm from './MCPServerForm';
 
 interface MCPServerDialogProps {
@@ -115,7 +122,9 @@ export default function MCPServerDialog({
         <OGDialogTemplate
           title={localize('com_ui_delete_mcp_server')}
           className="w-11/12 max-w-md"
-          description={localize('com_ui_mcp_server_delete_confirm', { 0: server?.serverName })}
+          description={localize('com_ui_mcp_server_delete_confirm', {
+            0: server?.serverName,
+          })}
           selection={
             <Button
               onClick={handleDelete}
@@ -164,7 +173,9 @@ export default function MCPServerDialog({
                   variant="outline"
                   onClick={() => {
                     if (isCopying) return;
-                    showToast({ message: localize('com_ui_copied_to_clipboard') });
+                    showToast({
+                      message: localize('com_ui_copied_to_clipboard'),
+                    });
                     copyLink(setIsCopying);
                   }}
                   disabled={isCopying}

@@ -11,12 +11,13 @@
  *   - AWS_REGION: Defaults to 'us-east-1'
  *   - AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY => to avoid error: A dynamic import callback was invoked without -experimental-vm-modules — the AWS SDK credential provider
  */
+
+import type { S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectsCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { Readable } from 'stream';
-import { ListObjectsV2Command, DeleteObjectsCommand } from '@aws-sdk/client-s3';
-import type { S3Client } from '@aws-sdk/client-s3';
 import type { ServerRequest } from '~/types';
 
 const MINIMAL_PNG = Buffer.from([

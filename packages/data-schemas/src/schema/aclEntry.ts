@@ -1,7 +1,7 @@
+import { PrincipalModel, PrincipalType, ResourceType } from 'librechat-data-provider';
 import { Schema } from 'mongoose';
-import { PrincipalType, PrincipalModel, ResourceType } from 'librechat-data-provider';
-import type { IAclEntry } from '~/types';
 import { MAX_PERM_BITS } from '~/common/permissions';
+import type { IAclEntry } from '~/types';
 
 const aclEntrySchema = new Schema<IAclEntry>(
   {
@@ -77,7 +77,17 @@ aclEntrySchema.index({
   resourceId: 1,
   tenantId: 1,
 });
-aclEntrySchema.index({ resourceId: 1, principalType: 1, principalId: 1, tenantId: 1 });
-aclEntrySchema.index({ principalId: 1, permBits: 1, resourceType: 1, tenantId: 1 });
+aclEntrySchema.index({
+  resourceId: 1,
+  principalType: 1,
+  principalId: 1,
+  tenantId: 1,
+});
+aclEntrySchema.index({
+  principalId: 1,
+  permBits: 1,
+  resourceType: 1,
+  tenantId: 1,
+});
 
 export default aclEntrySchema;

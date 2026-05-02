@@ -1,10 +1,10 @@
-import { PrincipalType } from 'librechat-data-provider';
 import {
   configCapability,
-  SystemCapabilities,
   readConfigCapability,
+  SystemCapabilities,
 } from '@librechat/data-schemas';
 import type { Response } from 'express';
+import { PrincipalType } from 'librechat-data-provider';
 import type { ServerRequest } from '~/types/http';
 import { generateCapabilityCheck } from './capabilities';
 
@@ -53,7 +53,10 @@ describe('generateCapabilityCheck', () => {
       );
 
       expect(result).toBe(true);
-      expect(mockGetUserPrincipals).toHaveBeenCalledWith({ userId: 'user-123', role: 'ADMIN' });
+      expect(mockGetUserPrincipals).toHaveBeenCalledWith({
+        userId: 'user-123',
+        role: 'ADMIN',
+      });
       expect(mockHasCapabilityForPrincipals).toHaveBeenCalledWith({
         principals: adminPrincipals,
         capability: SystemCapabilities.ACCESS_ADMIN,
@@ -138,7 +141,9 @@ describe('generateCapabilityCheck', () => {
 
       expect(mockNext).not.toHaveBeenCalled();
       expect(statusMock).toHaveBeenCalledWith(401);
-      expect(jsonMock).toHaveBeenCalledWith({ message: 'Authentication required' });
+      expect(jsonMock).toHaveBeenCalledWith({
+        message: 'Authentication required',
+      });
     });
 
     it('returns 500 on unexpected error', async () => {
@@ -149,7 +154,9 @@ describe('generateCapabilityCheck', () => {
 
       expect(mockNext).not.toHaveBeenCalled();
       expect(statusMock).toHaveBeenCalledWith(500);
-      expect(jsonMock).toHaveBeenCalledWith({ message: 'Internal Server Error' });
+      expect(jsonMock).toHaveBeenCalledWith({
+        message: 'Internal Server Error',
+      });
     });
   });
 
@@ -165,7 +172,9 @@ describe('generateCapabilityCheck', () => {
 
       expect(result).toBe(true);
       expect(mockHasCapabilityForPrincipals).toHaveBeenCalledWith(
-        expect.objectContaining({ capability: SystemCapabilities.MANAGE_CONFIGS }),
+        expect.objectContaining({
+          capability: SystemCapabilities.MANAGE_CONFIGS,
+        }),
       );
     });
 
@@ -202,11 +211,15 @@ describe('generateCapabilityCheck', () => {
       expect(result).toBe(true);
       expect(mockHasCapabilityForPrincipals).toHaveBeenNthCalledWith(
         1,
-        expect.objectContaining({ capability: SystemCapabilities.READ_CONFIGS }),
+        expect.objectContaining({
+          capability: SystemCapabilities.READ_CONFIGS,
+        }),
       );
       expect(mockHasCapabilityForPrincipals).toHaveBeenNthCalledWith(
         2,
-        expect.objectContaining({ capability: readConfigCapability('endpoints') }),
+        expect.objectContaining({
+          capability: readConfigCapability('endpoints'),
+        }),
       );
     });
   });

@@ -248,7 +248,10 @@ router.patch('/:key', memoryPayloadLimit, checkMemoryUpdate, configMiddleware, a
         return res.status(500).json({ error: 'Failed to create new memory.' });
       }
 
-      const deleteResult = await deleteMemory({ userId: req.user.id, key: urlKey });
+      const deleteResult = await deleteMemory({
+        userId: req.user.id,
+        key: urlKey,
+      });
       if (!deleteResult.ok) {
         return res.status(500).json({ error: 'Failed to delete old memory.' });
       }

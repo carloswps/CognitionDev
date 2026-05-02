@@ -1,6 +1,6 @@
 import type { Document, Types } from 'mongoose';
 
-// @ts-ignore
+// @ts-expect-error
 export interface IConversation extends Document {
   conversationId: string;
   title?: string;

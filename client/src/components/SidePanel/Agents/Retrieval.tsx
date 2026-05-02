@@ -1,18 +1,18 @@
-import { useEffect, useMemo } from 'react';
-import { Capabilities } from 'librechat-data-provider';
-import { useFormContext, Controller, useWatch } from 'react-hook-form';
 import {
   Checkbox,
-  HoverCard,
   CircleHelpIcon,
+  HoverCard,
   HoverCardContent,
   HoverCardPortal,
   HoverCardTrigger,
 } from '@librechat/client';
-import OptionHover from '~/components/SidePanel/Parameters/OptionHover';
+import { Capabilities } from 'librechat-data-provider';
+import { useEffect, useMemo } from 'react';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import type { AgentForm } from '~/common';
-import { useLocalize } from '~/hooks';
 import { ESide } from '~/common';
+import OptionHover from '~/components/SidePanel/Parameters/OptionHover';
+import { useLocalize } from '~/hooks';
 import { cn } from '~/utils/';
 
 export default function Retrieval({ retrievalModels }: { retrievalModels: Set<string> }) {

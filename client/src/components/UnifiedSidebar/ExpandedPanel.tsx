@@ -1,15 +1,15 @@
-import { memo, useCallback, lazy, Suspense } from 'react';
+import { Button, Sidebar, Skeleton, TooltipAnchor } from '@librechat/client';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRecoilValue } from 'recoil';
-import { SquarePen } from 'lucide-react';
 import { QueryKeys } from 'librechat-data-provider';
-import { Skeleton, Sidebar, Button, TooltipAnchor } from '@librechat/client';
+import { SquarePen } from 'lucide-react';
+import { lazy, memo, Suspense, useCallback } from 'react';
+import { useRecoilValue } from 'recoil';
 import type { NavLink } from '~/common';
 import { CLOSE_SIDEBAR_ID } from '~/components/Chat/Menus/OpenSidebar';
-import { useActivePanel, resolveActivePanel, DEFAULT_PANEL } from '~/Providers';
 import { useLocalize, useNewConvo } from '~/hooks';
-import { clearMessagesCache, cn } from '~/utils';
+import { DEFAULT_PANEL, resolveActivePanel, useActivePanel } from '~/Providers';
 import store from '~/store';
+import { clearMessagesCache, cn } from '~/utils';
 
 const AccountSettings = lazy(() => import('~/components/Nav/AccountSettings'));
 

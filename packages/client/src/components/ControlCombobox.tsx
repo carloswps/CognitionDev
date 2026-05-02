@@ -1,8 +1,8 @@
 import * as Ariakit from '@ariakit/react';
-import { matchSorter } from 'match-sorter';
-import { Search, ChevronDown } from 'lucide-react';
-import { useMemo, useState, useRef, memo, useEffect } from 'react';
 import { SelectRenderer } from '@ariakit/react-core/select/select-renderer';
+import { ChevronDown, Search } from 'lucide-react';
+import { matchSorter } from 'match-sorter';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import type { OptionWithIcon } from '~/common';
 import './AnimatePopover.css';
 import { cn } from '~/utils';

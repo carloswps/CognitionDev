@@ -1,4 +1,4 @@
-import type { Types, Document } from 'mongoose';
+import type { Document, Types } from 'mongoose';
 
 // Base memory interfaces
 export interface IMemoryEntry extends Document {

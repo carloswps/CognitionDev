@@ -1,6 +1,6 @@
-import { ContentTypes, ToolCallTypes } from 'librechat-data-provider';
-import type { Agents, PartMetadata, TMessageContentParts } from 'librechat-data-provider';
 import type { ToolCall } from '@langchain/core/messages/tool';
+import type { Agents, PartMetadata, TMessageContentParts } from 'librechat-data-provider';
+import { ContentTypes, ToolCallTypes } from 'librechat-data-provider';
 import { filterMalformedContentParts } from './content';
 
 describe('filterMalformedContentParts', () => {
@@ -166,7 +166,10 @@ describe('filterMalformedContentParts', () => {
   describe('edge cases', () => {
     it('should filter out tool_call with null tool_call property', () => {
       const parts = [
-        { type: ContentTypes.TOOL_CALL, tool_call: null as unknown as ToolCall },
+        {
+          type: ContentTypes.TOOL_CALL,
+          tool_call: null as unknown as ToolCall,
+        },
       ] as TMessageContentParts[];
 
       const result = filterMalformedContentParts(parts);

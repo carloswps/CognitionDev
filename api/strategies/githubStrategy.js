@@ -11,7 +11,9 @@ const getProfileDetails = ({ profile }) => ({
 });
 
 const githubLogin = socialLogin('github', getProfileDetails);
-const githubAdminLogin = socialLogin('github', getProfileDetails, { existingUsersOnly: true });
+const githubAdminLogin = socialLogin('github', getProfileDetails, {
+  existingUsersOnly: true,
+});
 
 const getGitHubConfig = (callbackURL) => ({
   clientID: process.env.GITHUB_CLIENT_ID,

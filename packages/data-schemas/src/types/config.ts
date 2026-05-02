@@ -1,5 +1,4 @@
-import { PrincipalType, PrincipalModel } from 'librechat-data-provider';
-import type { TCustomConfig } from 'librechat-data-provider';
+import type { PrincipalModel, PrincipalType, TCustomConfig } from 'librechat-data-provider';
 import type { Document, Types } from 'mongoose';
 
 /**

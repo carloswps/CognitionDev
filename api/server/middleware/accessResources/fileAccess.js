@@ -97,7 +97,11 @@ const fileAccess = async (req, res, next) => {
     }
 
     /** Agent-based access (file inherits agent permissions) */
-    const hasAgentAccess = await checkAgentBasedFileAccess({ userId, role: userRole, fileId });
+    const hasAgentAccess = await checkAgentBasedFileAccess({
+      userId,
+      role: userRole,
+      fileId,
+    });
     if (hasAgentAccess) {
       req.fileAccess = { file };
       return next();

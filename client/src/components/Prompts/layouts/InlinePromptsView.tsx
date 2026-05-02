@@ -1,9 +1,9 @@
+import { Permissions, PermissionTypes } from 'librechat-data-provider';
 import { useCallback } from 'react';
-import { useParams, useNavigate, Navigate } from 'react-router-dom';
-import { PermissionTypes, Permissions } from 'librechat-data-provider';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useHasAccess } from '~/hooks';
 import EmptyPromptPreview from '../display/EmptyPromptPreview';
 import CreatePromptForm from '../forms/CreatePromptForm';
-import { useHasAccess } from '~/hooks';
 import PromptForm from '../forms/PromptForm';
 
 export default function InlinePromptsView() {

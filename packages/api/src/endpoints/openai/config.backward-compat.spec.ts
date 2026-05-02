@@ -1,8 +1,8 @@
 import {
-  Verbosity,
   EModelEndpoint,
   ReasoningEffort,
   ReasoningSummary,
+  Verbosity,
 } from 'librechat-data-provider';
 import { getOpenAIConfig } from './config';
 

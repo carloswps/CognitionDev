@@ -1,10 +1,10 @@
 // Unmock react-i18next for this test file since we're testing actual i18n functionality
 jest.unmock('react-i18next');
 
-import i18n from './i18n';
 import English from './en/translation.json';
-import French from './fr/translation.json';
 import Spanish from './es/translation.json';
+import French from './fr/translation.json';
+import i18n from './i18n';
 
 describe('i18next translation tests', () => {
   // Ensure i18next is initialized before any tests run

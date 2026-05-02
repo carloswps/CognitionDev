@@ -1,26 +1,26 @@
-import { useRecoilValue } from 'recoil';
-import { useCallback, useRef, useEffect } from 'react';
-import { useGetModelsQuery } from 'librechat-data-provider/react-query';
-import {
-  getEndpointField,
-  LocalStorageKeys,
-  isAssistantsEndpoint,
-  getDefaultParamsEndpoint,
-} from 'librechat-data-provider';
 import type {
-  TEndpointsConfig,
   EModelEndpoint,
-  TModelsConfig,
   TConversation,
+  TEndpointsConfig,
+  TModelsConfig,
   TPreset,
 } from 'librechat-data-provider';
-import type { AssistantListItem } from '~/common';
+import {
+  getDefaultParamsEndpoint,
+  getEndpointField,
+  isAssistantsEndpoint,
+  LocalStorageKeys,
+} from 'librechat-data-provider';
+import { useGetModelsQuery } from 'librechat-data-provider/react-query';
+import { useCallback, useEffect, useRef } from 'react';
 import type { SetterOrUpdater } from 'recoil';
-import useAssistantListMap from '~/hooks/Assistants/useAssistantListMap';
-import { buildDefaultConvo, getDefaultEndpoint, logger } from '~/utils';
-import { useGetEndpointsQuery } from '~/data-provider';
+import { useRecoilValue } from 'recoil';
+import type { AssistantListItem } from '~/common';
 import { mainTextareaId } from '~/common';
+import { useGetEndpointsQuery } from '~/data-provider';
+import useAssistantListMap from '~/hooks/Assistants/useAssistantListMap';
 import store from '~/store';
+import { buildDefaultConvo, getDefaultEndpoint, logger } from '~/utils';
 
 const useGenerateConvo = ({
   index = 0,

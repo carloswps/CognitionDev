@@ -1,6 +1,6 @@
-import mongoose, { Schema, Document, Types } from 'mongoose';
+import mongoose, { type Document, Schema, type Types } from 'mongoose';
 
-// @ts-ignore
+// @ts-expect-error
 export interface ITransaction extends Document {
   user: Types.ObjectId;
   conversationId?: string;

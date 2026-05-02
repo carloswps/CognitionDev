@@ -1,5 +1,5 @@
-import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 const enterTestKey = async (page: Page, endpoint: string) => {
   await page.getByTestId('new-conversation-menu').click();

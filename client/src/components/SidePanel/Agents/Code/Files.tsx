@@ -1,12 +1,12 @@
+import { AttachmentIcon } from '@librechat/client';
+import { AgentCapabilities, EModelEndpoint, EToolResources } from 'librechat-data-provider';
 import { memo, useMemo, useRef, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { AttachmentIcon } from '@librechat/client';
-import { EToolResources, EModelEndpoint, AgentCapabilities } from 'librechat-data-provider';
-import type { ExtendedFile, AgentForm } from '~/common';
-import { useFileHandlingNoChatContext } from '~/hooks/Files/useFileHandling';
-import { useAgentFileConfig, useLocalize, useLazyEffect } from '~/hooks';
-import FileRow from '~/components/Chat/Input/Files/FileRow';
+import type { AgentForm, ExtendedFile } from '~/common';
 import { isEphemeralAgent } from '~/common';
+import FileRow from '~/components/Chat/Input/Files/FileRow';
+import { useAgentFileConfig, useLazyEffect, useLocalize } from '~/hooks';
+import { useFileHandlingNoChatContext } from '~/hooks/Files/useFileHandling';
 
 const tool_resource = EToolResources.execute_code;
 

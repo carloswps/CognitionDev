@@ -23,7 +23,7 @@ const determineFileType = async (dataBuffer, returnFileType) => {
 const getBufferMetadata = async (buffer) => {
   const fileType = await determineFileType(buffer, true);
   const bytes = buffer.length;
-  let extension = fileType ? fileType.ext : 'unknown';
+  const extension = fileType ? fileType.ext : 'unknown';
 
   /** @type {Record<string, number>} */
   let dimensions = {};

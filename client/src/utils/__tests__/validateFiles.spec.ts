@@ -1,5 +1,5 @@
-import { megabyte, fileConfig as defaultFileConfig } from 'librechat-data-provider';
 import type { EndpointFileConfig, FileConfig } from 'librechat-data-provider';
+import { fileConfig as defaultFileConfig, megabyte } from 'librechat-data-provider';
 import type { ExtendedFile } from '~/common';
 import { validateFiles } from '../files';
 
@@ -45,7 +45,13 @@ describe('validateFiles', () => {
 
   it('returns true when all checks pass', () => {
     const fileList = [makeFile('doc.pdf', 'application/pdf', 1024)];
-    const result = validateFiles({ files, fileList, setError, endpointFileConfig, fileConfig });
+    const result = validateFiles({
+      files,
+      fileList,
+      setError,
+      endpointFileConfig,
+      fileConfig,
+    });
     expect(result).toBe(true);
     expect(setError).not.toHaveBeenCalled();
   });
@@ -53,14 +59,26 @@ describe('validateFiles', () => {
   it('rejects when endpoint is disabled', () => {
     endpointFileConfig = makeEndpointConfig({ disabled: true });
     const fileList = [makeFile('doc.pdf', 'application/pdf', 1024)];
-    const result = validateFiles({ files, fileList, setError, endpointFileConfig, fileConfig });
+    const result = validateFiles({
+      files,
+      fileList,
+      setError,
+      endpointFileConfig,
+      fileConfig,
+    });
     expect(result).toBe(false);
     expect(setError).toHaveBeenCalledWith('com_ui_attach_error_disabled');
   });
 
   it('rejects empty files (zero bytes)', () => {
     const fileList = [makeFile('empty.pdf', 'application/pdf', 0)];
-    const result = validateFiles({ files, fileList, setError, endpointFileConfig, fileConfig });
+    const result = validateFiles({
+      files,
+      fileList,
+      setError,
+      endpointFileConfig,
+      fileConfig,
+    });
     expect(result).toBe(false);
     expect(setError).toHaveBeenCalledWith('com_error_files_empty');
   });
@@ -75,7 +93,13 @@ describe('validateFiles', () => {
       makeFile('a.pdf', 'application/pdf', 1024),
       makeFile('b.pdf', 'application/pdf', 2048),
     ];
-    const result = validateFiles({ files, fileList, setError, endpointFileConfig, fileConfig });
+    const result = validateFiles({
+      files,
+      fileList,
+      setError,
+      endpointFileConfig,
+      fileConfig,
+    });
     expect(result).toBe(false);
     expect(setError).toHaveBeenCalledWith('File limit reached: 3 files');
   });
@@ -87,13 +111,25 @@ describe('validateFiles', () => {
       ['f2', makeExtendedFile({ file_id: 'f2', filename: 'two.pdf', size: 3072 })],
     ]);
     const fileList = [makeFile('a.pdf', 'application/pdf', 1024)];
-    const result = validateFiles({ files, fileList, setError, endpointFileConfig, fileConfig });
+    const result = validateFiles({
+      files,
+      fileList,
+      setError,
+      endpointFileConfig,
+      fileConfig,
+    });
     expect(result).toBe(true);
   });
 
   it('rejects unsupported MIME type', () => {
     const fileList = [makeFile('data.xyz', 'application/x-unknown', 1024)];
-    const result = validateFiles({ files, fileList, setError, endpointFileConfig, fileConfig });
+    const result = validateFiles({
+      files,
+      fileList,
+      setError,
+      endpointFileConfig,
+      fileConfig,
+    });
     expect(result).toBe(false);
     expect(setError).toHaveBeenCalledWith('Unsupported file type: application/x-unknown');
   });
@@ -102,7 +138,13 @@ describe('validateFiles', () => {
     const limit = 5 * megabyte;
     endpointFileConfig = makeEndpointConfig({ fileSizeLimit: limit });
     const fileList = [makeFile('exact.pdf', 'application/pdf', limit)];
-    const result = validateFiles({ files, fileList, setError, endpointFileConfig, fileConfig });
+    const result = validateFiles({
+      files,
+      fileList,
+      setError,
+      endpointFileConfig,
+      fileConfig,
+    });
     expect(result).toBe(false);
     expect(setError).toHaveBeenCalledWith(`File size limit exceeded: ${limit / megabyte} MB`);
   });
@@ -111,7 +153,13 @@ describe('validateFiles', () => {
     const limit = 5 * megabyte;
     endpointFileConfig = makeEndpointConfig({ fileSizeLimit: limit });
     const fileList = [makeFile('under.pdf', 'application/pdf', limit - 1)];
-    const result = validateFiles({ files, fileList, setError, endpointFileConfig, fileConfig });
+    const result = validateFiles({
+      files,
+      fileList,
+      setError,
+      endpointFileConfig,
+      fileConfig,
+    });
     expect(result).toBe(true);
   });
 
@@ -120,7 +168,13 @@ describe('validateFiles', () => {
     endpointFileConfig = makeEndpointConfig({ totalSizeLimit: limit });
     files = new Map([['f1', makeExtendedFile({ file_id: 'f1', size: 6 * megabyte })]]);
     const fileList = [makeFile('big.pdf', 'application/pdf', 5 * megabyte)];
-    const result = validateFiles({ files, fileList, setError, endpointFileConfig, fileConfig });
+    const result = validateFiles({
+      files,
+      fileList,
+      setError,
+      endpointFileConfig,
+      fileConfig,
+    });
     expect(result).toBe(false);
     expect(setError).toHaveBeenCalledWith(`Total file size limit exceeded: ${limit / megabyte} MB`);
   });
@@ -130,7 +184,13 @@ describe('validateFiles', () => {
     endpointFileConfig = makeEndpointConfig({ totalSizeLimit: limit });
     files = new Map([['f1', makeExtendedFile({ file_id: 'f1', size: 5 * megabyte })]]);
     const fileList = [makeFile('fits.pdf', 'application/pdf', 5 * megabyte)];
-    const result = validateFiles({ files, fileList, setError, endpointFileConfig, fileConfig });
+    const result = validateFiles({
+      files,
+      fileList,
+      setError,
+      endpointFileConfig,
+      fileConfig,
+    });
     expect(result).toBe(true);
   });
 
@@ -148,7 +208,13 @@ describe('validateFiles', () => {
       ],
     ]);
     const fileList = [makeFile('doc.pdf', 'application/pdf', 1024)];
-    const result = validateFiles({ files, fileList, setError, endpointFileConfig, fileConfig });
+    const result = validateFiles({
+      files,
+      fileList,
+      setError,
+      endpointFileConfig,
+      fileConfig,
+    });
     expect(result).toBe(false);
     expect(setError).toHaveBeenCalledWith('com_error_files_dupe');
   });
@@ -157,16 +223,31 @@ describe('validateFiles', () => {
     endpointFileConfig = makeEndpointConfig({ disabled: true, fileLimit: 1 });
     files = new Map([['f1', makeExtendedFile({ file_id: 'f1', filename: 'existing.pdf' })]]);
     const fileList = [makeFile('doc.pdf', 'application/pdf', 1024)];
-    validateFiles({ files, fileList, setError, endpointFileConfig, fileConfig });
+    validateFiles({
+      files,
+      fileList,
+      setError,
+      endpointFileConfig,
+      fileConfig,
+    });
     expect(setError).toHaveBeenCalledWith('com_ui_attach_error_disabled');
   });
 
   it('enforces check ordering: fileLimit before fileSizeLimit', () => {
     const limit = 1;
-    endpointFileConfig = makeEndpointConfig({ fileLimit: 1, fileSizeLimit: limit });
+    endpointFileConfig = makeEndpointConfig({
+      fileLimit: 1,
+      fileSizeLimit: limit,
+    });
     files = new Map([['f1', makeExtendedFile({ file_id: 'f1', filename: 'existing.pdf' })]]);
     const fileList = [makeFile('huge.pdf', 'application/pdf', limit)];
-    validateFiles({ files, fileList, setError, endpointFileConfig, fileConfig });
+    validateFiles({
+      files,
+      fileList,
+      setError,
+      endpointFileConfig,
+      fileConfig,
+    });
     expect(setError).toHaveBeenCalledWith('File limit reached: 1 files');
   });
 });

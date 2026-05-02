@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import type { TStartupConfig } from 'librechat-data-provider';
-import { TranslationKeys, useLocalize } from '~/hooks';
-import { useGetStartupConfig } from '~/data-provider';
+import { useEffect, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import AuthLayout from '~/components/Auth/AuthLayout';
+import { useGetStartupConfig } from '~/data-provider';
+import { type TranslationKeys, useLocalize } from '~/hooks';
 import { REDIRECT_PARAM, SESSION_KEY } from '~/utils';
 
 const headerMap: Record<string, TranslationKeys> = {

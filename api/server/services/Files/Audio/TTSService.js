@@ -176,7 +176,7 @@ class TTSService {
    * @throws {Error} If the selected voice is not available.
    */
   elevenLabsProvider(ttsSchema, input, voice, stream) {
-    let url =
+    const url =
       ttsSchema?.url ||
       `https://api.elevenlabs.io/v1/text-to-speech/${voice}${stream ? '/stream' : ''}`;
 
@@ -265,7 +265,10 @@ class TTSService {
 
     [data, headers].forEach(this.removeUndefined.bind(this));
 
-    const options = { headers, responseType: stream ? 'stream' : 'arraybuffer' };
+    const options = {
+      headers,
+      responseType: stream ? 'stream' : 'arraybuffer',
+    };
 
     if (process.env.PROXY) {
       options.httpsAgent = new HttpsProxyAgent(process.env.PROXY);
@@ -274,7 +277,10 @@ class TTSService {
     try {
       return await axios.post(url, data, options);
     } catch (error) {
-      logAxiosError({ message: `TTS request failed for provider ${provider}:`, error });
+      logAxiosError({
+        message: `TTS request failed for provider ${provider}:`,
+        error,
+      });
       throw error;
     }
   }
@@ -306,7 +312,10 @@ class TTSService {
       const voice = await this.getVoice(ttsSchema, requestVoice);
 
       if (input.length < 4096) {
-        const response = await this.ttsRequest(provider, ttsSchema, { input, voice });
+        const response = await this.ttsRequest(provider, ttsSchema, {
+          input,
+          voice,
+        });
         response.data.pipe(res);
         return;
       }
@@ -346,7 +355,10 @@ class TTSService {
         res.end();
       }
     } catch (error) {
-      logAxiosError({ message: '[TTS] Error creating the audio stream:', error });
+      logAxiosError({
+        message: '[TTS] Error creating the audio stream:',
+        error,
+      });
       if (!res.headersSent) {
         return res.status(500).send('An error occurred');
       }

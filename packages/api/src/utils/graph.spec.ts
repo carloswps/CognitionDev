@@ -1,12 +1,12 @@
 import type { IUser } from '@librechat/data-schemas';
-import type { GraphTokenResolver, GraphTokenOptions } from './graph';
+import type { GraphTokenOptions, GraphTokenResolver } from './graph';
 import {
   containsGraphTokenPlaceholder,
-  recordContainsGraphTokenPlaceholder,
   mcpOptionsContainGraphTokenPlaceholder,
+  preProcessGraphTokens,
+  recordContainsGraphTokenPlaceholder,
   resolveGraphTokenPlaceholder,
   resolveGraphTokensInRecord,
-  preProcessGraphTokens,
 } from './graph';
 
 // Mock the logger
@@ -191,7 +191,9 @@ describe('Graph Token Utilities', () => {
     });
 
     it('should return original value when token is not valid', async () => {
-      mockExtractOpenIDTokenInfo.mockReturnValue({ accessToken: 'access-token' });
+      mockExtractOpenIDTokenInfo.mockReturnValue({
+        accessToken: 'access-token',
+      });
       mockIsOpenIDTokenValid.mockReturnValue(false);
 
       const value = 'Bearer {{LIBRECHAT_GRAPH_ACCESS_TOKEN}}';
@@ -215,7 +217,9 @@ describe('Graph Token Utilities', () => {
     });
 
     it('should resolve placeholder with graph token', async () => {
-      mockExtractOpenIDTokenInfo.mockReturnValue({ accessToken: 'access-token' });
+      mockExtractOpenIDTokenInfo.mockReturnValue({
+        accessToken: 'access-token',
+      });
       mockIsOpenIDTokenValid.mockReturnValue(true);
 
       const value = 'Bearer {{LIBRECHAT_GRAPH_ACCESS_TOKEN}}';
@@ -227,7 +231,9 @@ describe('Graph Token Utilities', () => {
     });
 
     it('should resolve multiple placeholders in a string', async () => {
-      mockExtractOpenIDTokenInfo.mockReturnValue({ accessToken: 'access-token' });
+      mockExtractOpenIDTokenInfo.mockReturnValue({
+        accessToken: 'access-token',
+      });
       mockIsOpenIDTokenValid.mockReturnValue(true);
 
       const value =
@@ -240,7 +246,9 @@ describe('Graph Token Utilities', () => {
     });
 
     it('should return original value when graph token exchange fails', async () => {
-      mockExtractOpenIDTokenInfo.mockReturnValue({ accessToken: 'access-token' });
+      mockExtractOpenIDTokenInfo.mockReturnValue({
+        accessToken: 'access-token',
+      });
       mockIsOpenIDTokenValid.mockReturnValue(true);
       const failingResolver: GraphTokenResolver = jest
         .fn()
@@ -255,7 +263,9 @@ describe('Graph Token Utilities', () => {
     });
 
     it('should return original value when graph token response has no access_token', async () => {
-      mockExtractOpenIDTokenInfo.mockReturnValue({ accessToken: 'access-token' });
+      mockExtractOpenIDTokenInfo.mockReturnValue({
+        accessToken: 'access-token',
+      });
       mockIsOpenIDTokenValid.mockReturnValue(true);
       const emptyResolver: GraphTokenResolver = jest.fn().mockResolvedValue({});
 
@@ -268,7 +278,9 @@ describe('Graph Token Utilities', () => {
     });
 
     it('should use provided scopes', async () => {
-      mockExtractOpenIDTokenInfo.mockReturnValue({ accessToken: 'access-token' });
+      mockExtractOpenIDTokenInfo.mockReturnValue({
+        accessToken: 'access-token',
+      });
       mockIsOpenIDTokenValid.mockReturnValue(true);
 
       const value = 'Bearer {{LIBRECHAT_GRAPH_ACCESS_TOKEN}}';
@@ -306,7 +318,9 @@ describe('Graph Token Utilities', () => {
     };
 
     beforeEach(() => {
-      mockExtractOpenIDTokenInfo.mockReturnValue({ accessToken: 'access-token' });
+      mockExtractOpenIDTokenInfo.mockReturnValue({
+        accessToken: 'access-token',
+      });
       mockIsOpenIDTokenValid.mockReturnValue(true);
     });
 
@@ -368,7 +382,9 @@ describe('Graph Token Utilities', () => {
     };
 
     beforeEach(() => {
-      mockExtractOpenIDTokenInfo.mockReturnValue({ accessToken: 'access-token' });
+      mockExtractOpenIDTokenInfo.mockReturnValue({
+        accessToken: 'access-token',
+      });
       mockIsOpenIDTokenValid.mockReturnValue(true);
     });
 

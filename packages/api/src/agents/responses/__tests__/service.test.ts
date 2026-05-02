@@ -65,7 +65,14 @@ describe('convertInputToMessages', () => {
       {
         type: 'message',
         role: 'assistant',
-        content: [{ type: 'output_text', text: 'I can help!', annotations: [], logprobs: [] }],
+        content: [
+          {
+            type: 'output_text',
+            text: 'I can help!',
+            annotations: [],
+            logprobs: [],
+          },
+        ],
       },
     ];
     const result = convertInputToMessages(input);
@@ -85,7 +92,10 @@ describe('convertInputToMessages', () => {
     ];
     const result = convertInputToMessages(input);
     expect(result).toEqual([
-      { role: 'assistant', content: [{ type: 'text', text: 'I cannot do that.' }] },
+      {
+        role: 'assistant',
+        content: [{ type: 'text', text: 'I cannot do that.' }],
+      },
     ]);
   });
 
@@ -96,7 +106,11 @@ describe('convertInputToMessages', () => {
         type: 'message',
         role: 'user',
         content: [
-          { type: 'input_image', image_url: 'https://example.com/img.png', detail: 'high' },
+          {
+            type: 'input_image',
+            image_url: 'https://example.com/img.png',
+            detail: 'high',
+          },
         ],
       },
     ];
@@ -314,7 +328,14 @@ describe('convertInputToMessages', () => {
       {
         type: 'message',
         role: 'assistant',
-        content: [{ type: 'output_text', text: '2+2 is 4.', annotations: [], logprobs: [] }],
+        content: [
+          {
+            type: 'output_text',
+            text: '2+2 is 4.',
+            annotations: [],
+            logprobs: [],
+          },
+        ],
       },
       {
         type: 'message',
@@ -324,7 +345,10 @@ describe('convertInputToMessages', () => {
     ];
     const result = convertInputToMessages(input);
     expect(result).toEqual([
-      { role: 'system', content: [{ type: 'text', text: 'You are a helpful assistant.' }] },
+      {
+        role: 'system',
+        content: [{ type: 'text', text: 'You are a helpful assistant.' }],
+      },
       { role: 'user', content: [{ type: 'text', text: 'What is 2+2?' }] },
       { role: 'assistant', content: [{ type: 'text', text: '2+2 is 4.' }] },
       { role: 'user', content: [{ type: 'text', text: 'And 3+3?' }] },

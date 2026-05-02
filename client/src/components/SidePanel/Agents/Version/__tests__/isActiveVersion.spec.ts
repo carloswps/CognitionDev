@@ -50,7 +50,9 @@ describe('isActiveVersion', () => {
 
   test('returns false when descriptions do not match', () => {
     const version = createVersion();
-    const currentAgent = createAgentState({ description: 'Different Description' });
+    const currentAgent = createAgentState({
+      description: 'Different Description',
+    });
     const versions = [version];
 
     expect(isActiveVersion(version, currentAgent, versions)).toBe(false);
@@ -58,7 +60,9 @@ describe('isActiveVersion', () => {
 
   test('returns false when instructions do not match', () => {
     const version = createVersion();
-    const currentAgent = createAgentState({ instructions: 'Different Instructions' });
+    const currentAgent = createAgentState({
+      instructions: 'Different Instructions',
+    });
     const versions = [version];
 
     expect(isActiveVersion(version, currentAgent, versions)).toBe(false);
@@ -82,7 +86,9 @@ describe('isActiveVersion', () => {
 
   test('returns false when tools arrays have different lengths', () => {
     const version = createVersion({ tools: ['tool1', 'tool2'] });
-    const currentAgent = createAgentState({ tools: ['tool1', 'tool2', 'tool3'] });
+    const currentAgent = createAgentState({
+      tools: ['tool1', 'tool2', 'tool3'],
+    });
     const versions = [version];
 
     expect(isActiveVersion(version, currentAgent, versions)).toBe(false);
@@ -97,15 +103,21 @@ describe('isActiveVersion', () => {
   });
 
   test('matches capabilities regardless of order', () => {
-    const version = createVersion({ capabilities: ['capability1', 'capability2'] });
-    const currentAgent = createAgentState({ capabilities: ['capability2', 'capability1'] });
+    const version = createVersion({
+      capabilities: ['capability1', 'capability2'],
+    });
+    const currentAgent = createAgentState({
+      capabilities: ['capability2', 'capability1'],
+    });
     const versions = [version];
 
     expect(isActiveVersion(version, currentAgent, versions)).toBe(true);
   });
 
   test('returns false when capabilities arrays have different lengths', () => {
-    const version = createVersion({ capabilities: ['capability1', 'capability2'] });
+    const version = createVersion({
+      capabilities: ['capability1', 'capability2'],
+    });
     const currentAgent = createAgentState({
       capabilities: ['capability1', 'capability2', 'capability3'],
     });
@@ -115,8 +127,12 @@ describe('isActiveVersion', () => {
   });
 
   test('returns false when capabilities do not match', () => {
-    const version = createVersion({ capabilities: ['capability1', 'capability2'] });
-    const currentAgent = createAgentState({ capabilities: ['capability1', 'different'] });
+    const version = createVersion({
+      capabilities: ['capability1', 'capability2'],
+    });
+    const currentAgent = createAgentState({
+      capabilities: ['capability1', 'different'],
+    });
     const versions = [version];
 
     expect(isActiveVersion(version, currentAgent, versions)).toBe(false);
@@ -156,7 +172,9 @@ describe('isActiveVersion', () => {
     });
 
     test('handles when version has capabilities but agent does not', () => {
-      const version = createVersion({ capabilities: ['capability1', 'capability2'] });
+      const version = createVersion({
+        capabilities: ['capability1', 'capability2'],
+      });
       const currentAgent = createAgentState({ capabilities: undefined });
       const versions = [version];
 
@@ -165,7 +183,9 @@ describe('isActiveVersion', () => {
 
     test('handles when agent has capabilities but version does not', () => {
       const version = createVersion({ capabilities: undefined });
-      const currentAgent = createAgentState({ capabilities: ['capability1', 'capability2'] });
+      const currentAgent = createAgentState({
+        capabilities: ['capability1', 'capability2'],
+      });
       const versions = [version];
 
       expect(isActiveVersion(version, currentAgent, versions)).toBe(false);

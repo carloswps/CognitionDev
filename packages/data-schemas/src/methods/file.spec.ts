@@ -1,9 +1,9 @@
+import { EToolResources, FileContext } from 'librechat-data-provider';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import { EToolResources, FileContext } from 'librechat-data-provider';
-import { createFileMethods } from './file';
 import { createModels } from '~/models';
+import { createFileMethods } from './file';
 
 let File: mongoose.Model<unknown>;
 let fileMethods: ReturnType<typeof createFileMethods>;
@@ -276,7 +276,10 @@ describe('File Methods', () => {
       const updated = await fileMethods.updateFileUsage({ file_id: fileId });
       expect(updated?.usage).toBe(1);
 
-      const updated2 = await fileMethods.updateFileUsage({ file_id: fileId, inc: 5 });
+      const updated2 = await fileMethods.updateFileUsage({
+        file_id: fileId,
+        inc: 5,
+      });
       expect(updated2?.usage).toBe(6);
     });
   });
@@ -452,7 +455,9 @@ describe('File Methods', () => {
       const result = await fileMethods.deleteFiles(fileIds);
       expect(result.deletedCount).toBe(3);
 
-      const remaining = await fileMethods.getFiles({ file_id: { $in: fileIds } });
+      const remaining = await fileMethods.getFiles({
+        file_id: { $in: fileIds },
+      });
       expect(remaining).toHaveLength(0);
     });
 

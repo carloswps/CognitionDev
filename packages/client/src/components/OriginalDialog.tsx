@@ -1,6 +1,6 @@
-import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { X } from 'lucide-react';
+import * as React from 'react';
 import { cn } from '~/utils';
 
 const DialogDepthContext = React.createContext(0);
@@ -200,13 +200,13 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
 export {
   Dialog as OGDialog,
-  DialogPortal as OGDialogPortal,
-  DialogOverlay as OGDialogOverlay,
   DialogClose as OGDialogClose,
-  DialogTrigger as OGDialogTrigger,
   DialogContent as OGDialogContent,
-  DialogHeader as OGDialogHeader,
-  DialogFooter as OGDialogFooter,
-  DialogTitle as OGDialogTitle,
   DialogDescription as OGDialogDescription,
+  DialogFooter as OGDialogFooter,
+  DialogHeader as OGDialogHeader,
+  DialogOverlay as OGDialogOverlay,
+  DialogPortal as OGDialogPortal,
+  DialogTitle as OGDialogTitle,
+  DialogTrigger as OGDialogTrigger,
 };

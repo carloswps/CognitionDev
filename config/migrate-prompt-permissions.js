@@ -23,7 +23,10 @@ async function getGlobalProjectPromptGroupIds(db) {
 async function migrateToPromptGroupPermissions({ dryRun = true, batchSize = 100 } = {}) {
   await connect();
 
-  logger.info('Starting PromptGroup Permissions Migration', { dryRun, batchSize });
+  logger.info('Starting PromptGroup Permissions Migration', {
+    dryRun,
+    batchSize,
+  });
 
   const mongoose = require('mongoose');
   /** @type {import('mongoose').mongo.Db | undefined} */

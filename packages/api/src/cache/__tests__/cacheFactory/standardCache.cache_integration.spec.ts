@@ -182,7 +182,9 @@ describe('standardCache', () => {
       expect(testCache).toBeDefined();
       expect(testCache.constructor.name).toBe('Keyv');
       // Type assertion to access internal options
-      const cacheWithOpts = testCache as Keyv & { opts: { namespace: string; ttl: number } };
+      const cacheWithOpts = testCache as Keyv & {
+        opts: { namespace: string; ttl: number };
+      };
       expect(cacheWithOpts.opts.namespace).toBe('ROLES');
       expect(cacheWithOpts.opts.ttl).toBe(5000);
     });

@@ -1,4 +1,4 @@
-import { sanitizeTitle, MAX_TITLE_LENGTH, DEFAULT_TITLE_FALLBACK } from './sanitizeTitle';
+import { DEFAULT_TITLE_FALLBACK, MAX_TITLE_LENGTH, sanitizeTitle } from './sanitizeTitle';
 
 describe('sanitizeTitle', () => {
   describe('Happy Path', () => {

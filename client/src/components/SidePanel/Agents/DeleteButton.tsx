@@ -1,22 +1,22 @@
+import {
+  Button,
+  Label,
+  OGDialog,
+  OGDialogTemplate,
+  OGDialogTrigger,
+  TrashIcon,
+  useToastContext,
+} from '@librechat/client';
+import type { UseMutationResult } from '@tanstack/react-query';
+import type { Agent, AgentCreateParams } from 'librechat-data-provider';
 import { memo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import {
-  Label,
-  Button,
-  OGDialog,
-  TrashIcon,
-  useToastContext,
-  OGDialogTrigger,
-  OGDialogTemplate,
-} from '@librechat/client';
-import type { Agent, AgentCreateParams } from 'librechat-data-provider';
-import type { UseMutationResult } from '@tanstack/react-query';
-import { logger, getDefaultAgentFormValues } from '~/utils';
-import { useDeleteAgentMutation } from '~/data-provider';
 import { isEphemeralAgent } from '~/common';
+import { useDeleteAgentMutation } from '~/data-provider';
 import { useLocalize } from '~/hooks';
 import store from '~/store';
+import { getDefaultAgentFormValues, logger } from '~/utils';
 
 function DeleteButton({
   agent_id,

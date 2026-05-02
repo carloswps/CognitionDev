@@ -1,17 +1,17 @@
-import logger from '~/config/winston';
-import {
-  EModelEndpoint,
-  extractEnvVariable,
-  envVarRegex,
-  TVertexModelMap,
-} from 'librechat-data-provider';
 import type {
-  TCustomConfig,
-  TVertexAISchema,
-  TVertexAIConfig,
   TAnthropicEndpoint,
+  TCustomConfig,
+  TVertexAIConfig,
+  TVertexAISchema,
   TVertexModelConfig,
 } from 'librechat-data-provider';
+import {
+  EModelEndpoint,
+  envVarRegex,
+  extractEnvVariable,
+  type TVertexModelMap,
+} from 'librechat-data-provider';
+import logger from '~/config/winston';
 
 /**
  * Default Vertex AI models available through Google Cloud

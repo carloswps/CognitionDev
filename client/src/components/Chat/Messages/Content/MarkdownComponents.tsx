@@ -1,15 +1,16 @@
-import React, { memo, useMemo, useRef, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
 import { useToastContext } from '@librechat/client';
-import { PermissionTypes, Permissions, apiBaseUrl } from 'librechat-data-provider';
-import Mermaid, { MermaidErrorBoundary } from '~/components/Messages/Content/Mermaid';
+import { apiBaseUrl, Permissions, PermissionTypes } from 'librechat-data-provider';
+import type React from 'react';
+import { memo, useEffect, useMemo, useRef } from 'react';
+import { useRecoilValue } from 'recoil';
 import CodeBlock from '~/components/Messages/Content/CodeBlock';
-import useHasAccess from '~/hooks/Roles/useHasAccess';
+import Mermaid, { MermaidErrorBoundary } from '~/components/Messages/Content/Mermaid';
 import { useFileDownload } from '~/data-provider';
-import { useCodeBlockContext } from '~/Providers';
-import { handleDoubleClick } from '~/utils';
 import { useLocalize } from '~/hooks';
+import useHasAccess from '~/hooks/Roles/useHasAccess';
+import { useCodeBlockContext } from '~/Providers';
 import store from '~/store';
+import { handleDoubleClick } from '~/utils';
 
 type TCodeProps = {
   inline?: boolean;
@@ -128,7 +129,9 @@ export const a: React.ElementType = memo(function MarkdownAnchor({ href, childre
   }, [user?.id, href]);
 
   const { refetch: downloadFile } = useFileDownload(user?.id ?? '', file_id);
-  const props: { target?: string; onClick?: React.MouseEventHandler } = { target: '_blank' };
+  const props: { target?: string; onClick?: React.MouseEventHandler } = {
+    target: '_blank',
+  };
 
   if (!file_id || !filename) {
     return (

@@ -1,10 +1,10 @@
-import { nanoid } from 'nanoid';
-import mongoose from 'mongoose';
 import { Constants } from 'librechat-data-provider';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { createShareMethods, type ShareMethods } from './share';
+import mongoose from 'mongoose';
+import { nanoid } from 'nanoid';
 import type { SchemaWithMeiliMethods } from '~/models/plugins/mongoMeili';
 import type * as t from '~/types';
+import { createShareMethods, type ShareMethods } from './share';
 
 describe('Share Methods', () => {
   let mongoServer: MongoMemoryServer;
@@ -194,7 +194,9 @@ describe('Share Methods', () => {
 
       const result = await shareMethods.createSharedLink(userId1, conversationId);
 
-      const savedShare = await SharedLink.findOne({ shareId: result.shareId }).populate('messages');
+      const savedShare = await SharedLink.findOne({
+        shareId: result.shareId,
+      }).populate('messages');
       expect(savedShare?.messages).toHaveLength(1);
       expect((savedShare?.messages?.[0] as unknown as t.IMessage | undefined)?.text).toBe(
         'User 1 message',
@@ -467,7 +469,9 @@ describe('Share Methods', () => {
       expect(result.links[0].title).toBe('Matching Share');
 
       // Verify that meiliSearch was called with the correct user filter
-      expect(meiliSearchMock).toHaveBeenCalledWith('search term', { filter: `user = "${userId}"` });
+      expect(meiliSearchMock).toHaveBeenCalledWith('search term', {
+        filter: `user = "${userId}"`,
+      });
     });
 
     test('should handle empty results', async () => {
@@ -652,9 +656,9 @@ describe('Share Methods', () => {
       expect(result.conversationId).toBe(conversationId);
 
       // Verify updated share
-      const updatedShare = await SharedLink.findOne({ shareId: result.shareId }).populate(
-        'messages',
-      );
+      const updatedShare = await SharedLink.findOne({
+        shareId: result.shareId,
+      }).populate('messages');
       expect(updatedShare?.messages).toHaveLength(2);
     });
 
@@ -705,9 +709,9 @@ describe('Share Methods', () => {
 
       const result = await shareMethods.updateSharedLink(userId, shareId);
 
-      const updatedShare = await SharedLink.findOne({ shareId: result.shareId }).populate(
-        'messages',
-      );
+      const updatedShare = await SharedLink.findOne({
+        shareId: result.shareId,
+      }).populate('messages');
       expect(updatedShare?.messages).toHaveLength(1);
       expect((updatedShare?.messages?.[0] as unknown as t.IMessage | undefined)?.text).toBe(
         'User message',
@@ -911,11 +915,36 @@ describe('Share Methods', () => {
 
       // Create multiple shares for different users
       await SharedLink.create([
-        { shareId: 'share1', conversationId: 'conv1', user: userId1, isPublic: true },
-        { shareId: 'share2', conversationId: 'conv2', user: userId1, isPublic: false },
-        { shareId: 'share3', conversationId: 'conv3', user: userId2, isPublic: true },
-        { shareId: 'share4', conversationId: 'conv4', user: userId2, isPublic: true },
-        { shareId: 'share5', conversationId: 'conv5', user: userId3, isPublic: true },
+        {
+          shareId: 'share1',
+          conversationId: 'conv1',
+          user: userId1,
+          isPublic: true,
+        },
+        {
+          shareId: 'share2',
+          conversationId: 'conv2',
+          user: userId1,
+          isPublic: false,
+        },
+        {
+          shareId: 'share3',
+          conversationId: 'conv3',
+          user: userId2,
+          isPublic: true,
+        },
+        {
+          shareId: 'share4',
+          conversationId: 'conv4',
+          user: userId2,
+          isPublic: true,
+        },
+        {
+          shareId: 'share5',
+          conversationId: 'conv5',
+          user: userId3,
+          isPublic: true,
+        },
       ]);
 
       // Delete all shares for userId1
@@ -943,9 +972,24 @@ describe('Share Methods', () => {
       const conversationId2 = 'conv-to-keep';
 
       await SharedLink.create([
-        { shareId: 'share1', conversationId: conversationId1, user: userId, isPublic: true },
-        { shareId: 'share2', conversationId: conversationId1, user: userId, isPublic: false },
-        { shareId: 'share3', conversationId: conversationId2, user: userId, isPublic: true },
+        {
+          shareId: 'share1',
+          conversationId: conversationId1,
+          user: userId,
+          isPublic: true,
+        },
+        {
+          shareId: 'share2',
+          conversationId: conversationId1,
+          user: userId,
+          isPublic: false,
+        },
+        {
+          shareId: 'share3',
+          conversationId: conversationId2,
+          user: userId,
+          isPublic: true,
+        },
       ]);
 
       const result = await shareMethods.deleteConvoSharedLink(userId, conversationId1);
@@ -966,7 +1010,12 @@ describe('Share Methods', () => {
       await SharedLink.create([
         { shareId: 'share1', conversationId, user: userId1, isPublic: true },
         { shareId: 'share2', conversationId, user: userId2, isPublic: true },
-        { shareId: 'share3', conversationId: 'other-conv', user: userId1, isPublic: true },
+        {
+          shareId: 'share3',
+          conversationId: 'other-conv',
+          user: userId1,
+          isPublic: true,
+        },
       ]);
 
       const result = await shareMethods.deleteConvoSharedLink(userId1, conversationId);
@@ -1032,7 +1081,10 @@ describe('Share Methods', () => {
 
       expect(result.deletedCount).toBe(4);
 
-      const remainingShares = await SharedLink.find({ conversationId, user: userId });
+      const remainingShares = await SharedLink.find({
+        conversationId,
+        user: userId,
+      });
       expect(remainingShares).toHaveLength(0);
     });
   });

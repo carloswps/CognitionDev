@@ -1,17 +1,17 @@
-import { useCallback, useState, useEffect, useRef, memo, startTransition } from 'react';
-import type { ReactNode } from 'react';
-import { useRecoilState } from 'recoil';
-import { useForm } from 'react-hook-form';
 import { useMediaQuery } from '@librechat/client';
+import type { ReactNode } from 'react';
+import { memo, startTransition, useCallback, useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useRecoilState } from 'recoil';
 import type { ChatFormValues } from '~/common';
-import { ChatContext, ChatFormProvider, ActivePanelProvider } from '~/Providers';
-import useUnifiedSidebarLinks from '~/hooks/Nav/useUnifiedSidebarLinks';
-import { useChatHelpers, useLocalize } from '~/hooks';
 import SidePanelNav from '~/components/SidePanel/Nav';
+import { useChatHelpers, useLocalize } from '~/hooks';
+import useUnifiedSidebarLinks from '~/hooks/Nav/useUnifiedSidebarLinks';
+import { ActivePanelProvider, ChatContext, ChatFormProvider } from '~/Providers';
+import store from '~/store';
+import { cn } from '~/utils';
 import ExpandedPanel from './ExpandedPanel';
 import Sidebar from './Sidebar';
-import { cn } from '~/utils';
-import store from '~/store';
 
 const COLLAPSED_WIDTH = 52;
 const EXPANDED_MIN = 360;
@@ -31,7 +31,9 @@ function getInitialWidth(): number {
  */
 function SidebarChatProvider({ children }: { children: ReactNode }) {
   const chatHelpers = useChatHelpers(0);
-  const sidebarFormMethods = useForm<ChatFormValues>({ defaultValues: { text: '' } });
+  const sidebarFormMethods = useForm<ChatFormValues>({
+    defaultValues: { text: '' },
+  });
   return (
     <ChatFormProvider {...sidebarFormMethods}>
       <ChatContext.Provider value={chatHelpers}>{children}</ChatContext.Provider>
@@ -45,7 +47,10 @@ function UnifiedSidebar() {
   const [expanded, setExpanded] = useRecoilState(store.sidebarExpanded);
   const [sidebarWidth, setSidebarWidth] = useState(getInitialWidth);
   const [isResizing, setIsResizing] = useState(false);
-  const resizeHandlers = useRef<{ move: (e: MouseEvent) => void; up: () => void } | null>(null);
+  const resizeHandlers = useRef<{
+    move: (e: MouseEvent) => void;
+    up: () => void;
+  } | null>(null);
 
   const links = useUnifiedSidebarLinks();
 

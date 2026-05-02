@@ -1,29 +1,29 @@
-import { useState, useMemo, useCallback, useRef } from 'react';
-import { useDrop } from 'react-dnd';
 import { useToastContext } from '@librechat/client';
-import { NativeTypes } from 'react-dnd-html5-backend';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
-import {
-  Tools,
-  QueryKeys,
-  Constants,
-  inferMimeType,
-  EToolResources,
-  EModelEndpoint,
-  mergeFileConfig,
-  AgentCapabilities,
-  resolveEndpointType,
-  isAssistantsEndpoint,
-  getEndpointFileConfig,
-  defaultAgentCapabilities,
-} from 'librechat-data-provider';
-import type { DropTargetMonitor } from 'react-dnd';
 import type * as t from 'librechat-data-provider';
-import store, { ephemeralAgentByConvoId } from '~/store';
-import useFileHandling from './useFileHandling';
+import {
+  AgentCapabilities,
+  Constants,
+  defaultAgentCapabilities,
+  EModelEndpoint,
+  EToolResources,
+  getEndpointFileConfig,
+  inferMimeType,
+  isAssistantsEndpoint,
+  mergeFileConfig,
+  QueryKeys,
+  resolveEndpointType,
+  Tools,
+} from 'librechat-data-provider';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import type { DropTargetMonitor } from 'react-dnd';
+import { useDrop } from 'react-dnd';
+import { NativeTypes } from 'react-dnd-html5-backend';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { isEphemeralAgent } from '~/common';
+import store, { ephemeralAgentByConvoId } from '~/store';
 import useLocalize from '../useLocalize';
+import useFileHandling from './useFileHandling';
 
 export default function useDragHelpers() {
   const queryClient = useQueryClient();

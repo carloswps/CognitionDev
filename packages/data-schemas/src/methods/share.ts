@@ -1,9 +1,9 @@
-import { nanoid } from 'nanoid';
 import { Constants } from 'librechat-data-provider';
 import type { FilterQuery, Model } from 'mongoose';
+import { nanoid } from 'nanoid';
+import logger from '~/config/winston';
 import type { SchemaWithMeiliMethods } from '~/models/plugins/mongoMeili';
 import type * as t from '~/types';
-import logger from '~/config/winston';
 
 class ShareServiceError extends Error {
   code: string;
@@ -381,7 +381,10 @@ export function createShareMethods(mongoose: typeof import('mongoose')) {
         });
       }
 
-      const conversation = (await Conversation.findOne({ conversationId, user }).lean()) as {
+      const conversation = (await Conversation.findOne({
+        conversationId,
+        user,
+      }).lean()) as {
         title?: string;
       } | null;
 
@@ -438,7 +441,11 @@ export function createShareMethods(mongoose: typeof import('mongoose')) {
 
     try {
       const SharedLink = mongoose.models.SharedLink as Model<t.ISharedLink>;
-      const share = (await SharedLink.findOne({ conversationId, user, isPublic: true })
+      const share = (await SharedLink.findOne({
+        conversationId,
+        user,
+        isPublic: true,
+      })
         .select('shareId -_id')
         .lean()) as { shareId?: string } | null;
 
@@ -476,7 +483,10 @@ export function createShareMethods(mongoose: typeof import('mongoose')) {
         throw new ShareServiceError('Share not found', 'SHARE_NOT_FOUND');
       }
 
-      const updatedMessages = await Message.find({ conversationId: share.conversationId, user })
+      const updatedMessages = await Message.find({
+        conversationId: share.conversationId,
+        user,
+      })
         .sort({ createdAt: 1 })
         .lean();
 
@@ -499,7 +509,10 @@ export function createShareMethods(mongoose: typeof import('mongoose')) {
 
       anonymizeConvo(updatedShare);
 
-      return { shareId: newShareId, conversationId: updatedShare.conversationId };
+      return {
+        shareId: newShareId,
+        conversationId: updatedShare.conversationId,
+      };
     } catch (error) {
       logger.error('[updateSharedLink] Error updating shared link', {
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -526,7 +539,10 @@ export function createShareMethods(mongoose: typeof import('mongoose')) {
 
     try {
       const SharedLink = mongoose.models.SharedLink as Model<t.ISharedLink>;
-      const result = await SharedLink.findOneAndDelete({ shareId, user }).lean();
+      const result = await SharedLink.findOneAndDelete({
+        shareId,
+        user,
+      }).lean();
 
       if (!result) {
         return null;

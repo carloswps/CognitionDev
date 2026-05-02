@@ -76,13 +76,21 @@ describeIfFerretDB('Migration anti-join → $nin - FerretDB compatibility', () =
 
   describe('agent migration pattern', () => {
     it('should return only agents WITHOUT user-type ACL entries', async () => {
-      const agent1 = await Agent.create({ id: 'agent_1', name: 'Migrated Agent', author: 'user1' });
+      const agent1 = await Agent.create({
+        id: 'agent_1',
+        name: 'Migrated Agent',
+        author: 'user1',
+      });
       const agent2 = await Agent.create({
         id: 'agent_2',
         name: 'Unmigrated Agent',
         author: 'user2',
       });
-      await Agent.create({ id: 'agent_3', name: 'Another Unmigrated', author: 'user3' });
+      await Agent.create({
+        id: 'agent_3',
+        name: 'Another Unmigrated',
+        author: 'user3',
+      });
 
       await AclEntry.create({
         principalType: 'user',
@@ -116,8 +124,16 @@ describeIfFerretDB('Migration anti-join → $nin - FerretDB compatibility', () =
 
     it('should exclude agents without an author', async () => {
       await Agent.create({ id: 'agent_no_author', name: 'No Author' });
-      await Agent.create({ id: 'agent_null_author', name: 'Null Author', author: null });
-      await Agent.create({ id: 'agent_with_author', name: 'Has Author', author: 'user1' });
+      await Agent.create({
+        id: 'agent_null_author',
+        name: 'Null Author',
+        author: null,
+      });
+      await Agent.create({
+        id: 'agent_with_author',
+        name: 'Has Author',
+        author: 'user1',
+      });
 
       const migratedIds = await AclEntry.distinct('resourceId', {
         resourceType: 'agent',
@@ -136,8 +152,16 @@ describeIfFerretDB('Migration anti-join → $nin - FerretDB compatibility', () =
     });
 
     it('should return empty array when all agents are migrated', async () => {
-      const agent1 = await Agent.create({ id: 'a1', name: 'Agent 1', author: 'user1' });
-      const agent2 = await Agent.create({ id: 'a2', name: 'Agent 2', author: 'user2' });
+      const agent1 = await Agent.create({
+        id: 'a1',
+        name: 'Agent 1',
+        author: 'user1',
+      });
+      const agent2 = await Agent.create({
+        id: 'a2',
+        name: 'Agent 2',
+        author: 'user2',
+      });
 
       await AclEntry.create([
         {
@@ -168,7 +192,11 @@ describeIfFerretDB('Migration anti-join → $nin - FerretDB compatibility', () =
     });
 
     it('should not be confused by ACL entries for a different resourceType', async () => {
-      const agent = await Agent.create({ id: 'a1', name: 'Agent', author: 'user1' });
+      const agent = await Agent.create({
+        id: 'a1',
+        name: 'Agent',
+        author: 'user1',
+      });
 
       await AclEntry.create({
         principalType: 'user',
@@ -226,7 +254,11 @@ describeIfFerretDB('Migration anti-join → $nin - FerretDB compatibility', () =
         author: 'user1',
         category: 'code',
       });
-      await PromptGroup.create({ name: 'Unmigrated PG', author: 'user2', category: 'writing' });
+      await PromptGroup.create({
+        name: 'Unmigrated PG',
+        author: 'user2',
+        category: 'writing',
+      });
 
       await AclEntry.create({
         principalType: 'user',
@@ -325,7 +357,11 @@ describeIfFerretDB('Migration anti-join → $nin - FerretDB compatibility', () =
     it('should correctly handle many resources with partial migration', async () => {
       const agents = [];
       for (let i = 0; i < 20; i++) {
-        agents.push({ id: `agent_${i}`, name: `Agent ${i}`, author: `user_${i}` });
+        agents.push({
+          id: `agent_${i}`,
+          name: `Agent ${i}`,
+          author: `user_${i}`,
+        });
       }
       const created = await Agent.insertMany(agents);
 

@@ -1,21 +1,21 @@
-import { useState, useRef } from 'react';
-import { Pencil } from 'lucide-react';
-import { Trans } from 'react-i18next';
 import {
   Label,
-  Spinner,
   OGDialog,
-  TrashIcon,
-  TooltipAnchor,
-  OGDialogTrigger,
   OGDialogTemplate,
+  OGDialogTrigger,
+  Spinner,
+  TooltipAnchor,
+  TrashIcon,
   useToastContext,
 } from '@librechat/client';
 import type { TUserMemory } from 'librechat-data-provider';
+import { Pencil } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { Trans } from 'react-i18next';
 import { useDeleteMemoryMutation } from '~/data-provider';
-import MemoryEditDialog from './MemoryEditDialog';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
+import MemoryEditDialog from './MemoryEditDialog';
 
 interface MemoryCardActionsProps {
   memory: TUserMemory;

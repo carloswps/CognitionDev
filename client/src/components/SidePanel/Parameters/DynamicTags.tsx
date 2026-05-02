@@ -1,11 +1,11 @@
-import { useState, useMemo, useCallback, useRef } from 'react';
+import { HoverCard, HoverCardTrigger, Input, Label, Tag, useToastContext } from '@librechat/client';
 import type { DynamicSettingProps } from 'librechat-data-provider';
-import { Label, Input, HoverCard, HoverCardTrigger, Tag, useToastContext } from '@librechat/client';
-import { TranslationKeys, useLocalize, useParameterEffects } from '~/hooks';
-import { useChatContext } from '~/Providers';
-import OptionHover from './OptionHover';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { ESide } from '~/common';
+import { type TranslationKeys, useLocalize, useParameterEffects } from '~/hooks';
+import { useChatContext } from '~/Providers';
 import { cn } from '~/utils';
+import OptionHover from './OptionHover';
 
 function DynamicTags({
   label = '',

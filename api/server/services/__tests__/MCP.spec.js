@@ -12,7 +12,12 @@ jest.mock('~/config', () => ({
 
 jest.mock('@librechat/data-schemas', () => ({
   getTenantId: jest.fn(() => 'tenant-1'),
-  logger: { debug: jest.fn(), info: jest.fn(), warn: jest.fn(), error: jest.fn() },
+  logger: {
+    debug: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+  },
 }));
 
 jest.mock('~/server/services/Config', () => ({
@@ -44,15 +49,21 @@ describe('resolveConfigServers', () => {
 
   it('resolves config servers for the current request context', async () => {
     getAppConfig.mockResolvedValue({ mcpConfig: { srv: { url: 'http://a' } } });
-    mockRegistry.ensureConfigServers.mockResolvedValue({ srv: { name: 'srv' } });
+    mockRegistry.ensureConfigServers.mockResolvedValue({
+      srv: { name: 'srv' },
+    });
 
-    const result = await resolveConfigServers({ user: { id: 'u1', role: 'admin' } });
+    const result = await resolveConfigServers({
+      user: { id: 'u1', role: 'admin' },
+    });
 
     expect(result).toEqual({ srv: { name: 'srv' } });
     expect(getAppConfig).toHaveBeenCalledWith(
       expect.objectContaining({ role: 'admin', userId: 'u1' }),
     );
-    expect(mockRegistry.ensureConfigServers).toHaveBeenCalledWith({ srv: { url: 'http://a' } });
+    expect(mockRegistry.ensureConfigServers).toHaveBeenCalledWith({
+      srv: { url: 'http://a' },
+    });
   });
 
   it('returns {} when ensureConfigServers throws', async () => {
@@ -87,7 +98,9 @@ describe('resolveAllMcpConfigs', () => {
 
   it('merges config servers with base servers', async () => {
     getAppConfig.mockResolvedValue({ mcpConfig: { cfg_srv: {} } });
-    mockRegistry.ensureConfigServers.mockResolvedValue({ cfg_srv: { name: 'cfg_srv' } });
+    mockRegistry.ensureConfigServers.mockResolvedValue({
+      cfg_srv: { name: 'cfg_srv' },
+    });
     mockRegistry.getAllServerConfigs.mockResolvedValue({
       cfg_srv: { name: 'cfg_srv' },
       yaml_srv: { name: 'yaml_srv' },
@@ -107,7 +120,9 @@ describe('resolveAllMcpConfigs', () => {
   it('continues with empty configServers when ensureConfigServers fails', async () => {
     getAppConfig.mockResolvedValue({ mcpConfig: { srv: {} } });
     mockRegistry.ensureConfigServers.mockRejectedValue(new Error('inspect failed'));
-    mockRegistry.getAllServerConfigs.mockResolvedValue({ yaml_srv: { name: 'yaml_srv' } });
+    mockRegistry.getAllServerConfigs.mockResolvedValue({
+      yaml_srv: { name: 'yaml_srv' },
+    });
 
     const result = await resolveAllMcpConfigs('u1', { id: 'u1' });
 

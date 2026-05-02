@@ -1,20 +1,20 @@
-import { HttpsProxyAgent } from 'https-proxy-agent';
-import { NodeHttpHandler } from '@smithy/node-http-handler';
 import { BedrockRuntimeClient } from '@aws-sdk/client-bedrock-runtime';
+import { NodeHttpHandler } from '@smithy/node-http-handler';
+import { HttpsProxyAgent } from 'https-proxy-agent';
 import {
   AuthType,
-  EModelEndpoint,
-  extractEnvVariable,
   bedrockInputParser,
   bedrockOutputParser,
+  EModelEndpoint,
+  extractEnvVariable,
   removeNullishValues,
 } from 'librechat-data-provider';
 import type {
   BaseInitializeParams,
-  InitializeResultBase,
   BedrockCredentials,
   GuardrailConfiguration,
   InferenceProfileConfig,
+  InitializeResultBase,
 } from '~/types';
 import { checkUserKeyExpiry } from '~/utils';
 
@@ -71,12 +71,17 @@ export async function initializeBedrock({
 
   let credentials: BedrockCredentials | undefined = isUserProvided
     ? await db
-        .getUserKey({ userId: req.user?.id ?? '', name: EModelEndpoint.bedrock })
+        .getUserKey({
+          userId: req.user?.id ?? '',
+          name: EModelEndpoint.bedrock,
+        })
         .then((key) => JSON.parse(key) as BedrockCredentials)
     : {
         accessKeyId: BEDROCK_AWS_ACCESS_KEY_ID,
         secretAccessKey: BEDROCK_AWS_SECRET_ACCESS_KEY,
-        ...(BEDROCK_AWS_SESSION_TOKEN && { sessionToken: BEDROCK_AWS_SESSION_TOKEN }),
+        ...(BEDROCK_AWS_SESSION_TOKEN && {
+          sessionToken: BEDROCK_AWS_SESSION_TOKEN,
+        }),
       };
 
   if (!credentials) {
@@ -148,7 +153,10 @@ export async function initializeBedrock({
     const customClient = new BedrockRuntimeClient({
       region: (llmConfig.region as string) ?? BEDROCK_AWS_DEFAULT_REGION,
       ...(hasCompleteCredentials && {
-        credentials: credentials as { accessKeyId: string; secretAccessKey: string },
+        credentials: credentials as {
+          accessKeyId: string;
+          secretAccessKey: string;
+        },
       }),
       requestHandler: new NodeHttpHandler({
         httpAgent: proxyAgent,

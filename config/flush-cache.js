@@ -130,11 +130,14 @@ async function flushRedisCache(dryRun = false, verbose = false) {
       }
 
       redis = new IoRedis.Cluster(
-        urls.map((url) => ({ host: url.hostname, port: parseInt(url.port, 10) || 6379 })),
+        urls.map((url) => ({
+          host: url.hostname,
+          port: parseInt(url.port, 10) || 6379,
+        })),
         clusterOptions,
       );
     } else {
-      // @ts-ignore - ioredis default export is constructable despite linter warning
+      // @ts-expect-error - ioredis default export is constructable despite linter warning
       redis = new IoRedis(REDIS_URI, redisOptions);
     }
 

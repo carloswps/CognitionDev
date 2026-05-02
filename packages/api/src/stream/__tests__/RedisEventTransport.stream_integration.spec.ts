@@ -1,5 +1,5 @@
-import type { Redis, Cluster } from 'ioredis';
 import { logger } from '@librechat/data-schemas';
+import type { Cluster, Redis } from 'ioredis';
 import { createMockPublisher } from './helpers/publisher';
 
 logger.silent = true;

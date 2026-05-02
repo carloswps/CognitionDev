@@ -18,7 +18,9 @@ async function passportLogin(req, email, password, done) {
   try {
     const validationError = await validateLoginRequest(req);
     if (validationError) {
-      logError('Passport Local Strategy - Validation Error', { reqBody: req.body });
+      logError('Passport Local Strategy - Validation Error', {
+        reqBody: req.body,
+      });
       logger.error(`[Login] [Login failed] [Username: ${email}] [Request-IP: ${req.ip}]`);
       return done(null, false, { message: validationError });
     }
@@ -36,9 +38,13 @@ async function passportLogin(req, email, password, done) {
       return done(null, false, { message: 'Email does not exist.' });
     }
 
-    const isMatch = await comparePassword(user, password, { compare: bcrypt.compare });
+    const isMatch = await comparePassword(user, password, {
+      compare: bcrypt.compare,
+    });
     if (!isMatch) {
-      logError('Passport Local Strategy - Password does not match', { isMatch });
+      logError('Passport Local Strategy - Password does not match', {
+        isMatch,
+      });
       logger.error(`[Login] [Login failed] [Username: ${email}] [Request-IP: ${req.ip}]`);
       return done(null, false, { message: 'Incorrect password.' });
     }
@@ -74,7 +80,10 @@ async function passportLogin(req, email, password, done) {
 }
 
 function logError(title, parameters) {
-  const entries = Object.entries(parameters).map(([name, value]) => ({ name, value }));
+  const entries = Object.entries(parameters).map(([name, value]) => ({
+    name,
+    value,
+  }));
   logger.error(title, { parameters: entries });
 }
 

@@ -476,7 +476,9 @@ describe('PermissionService', () => {
 
     test('should get effective permissions from inherited permissions', async () => {
       // Find the child resource ID
-      const inheritedEntry = await AclEntry.findOne({ inheritedFrom: { $exists: true } });
+      const inheritedEntry = await AclEntry.findOne({
+        inheritedFrom: { $exists: true },
+      });
       const childResourceId = inheritedEntry.resourceId;
 
       // Mock getUserPrincipals to return user principal
@@ -1114,7 +1116,10 @@ describe('PermissionService', () => {
       });
 
       expect(hasPermissionWithRole).toBe(true);
-      expect(getUserPrincipals).toHaveBeenCalledWith({ userId: testUserId, role: 'EDITOR' });
+      expect(getUserPrincipals).toHaveBeenCalledWith({
+        userId: testUserId,
+        role: 'EDITOR',
+      });
 
       // Test 2: Check permission without role (should call getUserPrincipals)
       getUserPrincipals.mockResolvedValue([
@@ -1131,7 +1136,10 @@ describe('PermissionService', () => {
       });
 
       expect(hasPermissionWithoutRole).toBe(true);
-      expect(getUserPrincipals).toHaveBeenCalledWith({ userId: testUserId, role: undefined });
+      expect(getUserPrincipals).toHaveBeenCalledWith({
+        userId: testUserId,
+        role: undefined,
+      });
 
       // Test 3: Verify getEffectivePermissions also uses the optimization
       getUserPrincipals.mockClear();
@@ -1144,7 +1152,10 @@ describe('PermissionService', () => {
       });
 
       expect(effectiveWithRole).toBe(3); // EDITOR = VIEW + EDIT
-      expect(getUserPrincipals).toHaveBeenCalledWith({ userId: testUserId, role: 'EDITOR' });
+      expect(getUserPrincipals).toHaveBeenCalledWith({
+        userId: testUserId,
+        role: 'EDITOR',
+      });
 
       // Test 4: Verify findAccessibleResources also uses the optimization
       getUserPrincipals.mockClear();
@@ -1157,7 +1168,10 @@ describe('PermissionService', () => {
       });
 
       expect(accessibleWithRole.map((id) => id.toString())).toContain(testResourceId.toString());
-      expect(getUserPrincipals).toHaveBeenCalledWith({ userId: testUserId, role: 'EDITOR' });
+      expect(getUserPrincipals).toHaveBeenCalledWith({
+        userId: testUserId,
+        role: 'EDITOR',
+      });
     });
 
     test('should handle role changes dynamically', async () => {
@@ -1190,7 +1204,10 @@ describe('PermissionService', () => {
       });
 
       expect(hasAdminAccess).toBe(true);
-      expect(getUserPrincipals).toHaveBeenCalledWith({ userId: testUserId, role: 'ADMIN' });
+      expect(getUserPrincipals).toHaveBeenCalledWith({
+        userId: testUserId,
+        role: 'ADMIN',
+      });
 
       // Test with USER role - should NOT have access
       getUserPrincipals.mockClear();
@@ -1209,7 +1226,10 @@ describe('PermissionService', () => {
       });
 
       expect(hasUserAccess).toBe(false);
-      expect(getUserPrincipals).toHaveBeenCalledWith({ userId: testUserId, role: 'USER' });
+      expect(getUserPrincipals).toHaveBeenCalledWith({
+        userId: testUserId,
+        role: 'USER',
+      });
 
       // Test with EDITOR role - should NOT have access
       getUserPrincipals.mockClear();
@@ -1228,7 +1248,10 @@ describe('PermissionService', () => {
       });
 
       expect(hasEditorAccess).toBe(false);
-      expect(getUserPrincipals).toHaveBeenCalledWith({ userId: testUserId, role: 'EDITOR' });
+      expect(getUserPrincipals).toHaveBeenCalledWith({
+        userId: testUserId,
+        role: 'EDITOR',
+      });
     });
 
     test('should work with different resource types', async () => {
@@ -1367,7 +1390,10 @@ describe('PermissionService', () => {
       });
 
       expect(hasPermission).toBe(true);
-      expect(getUserPrincipals).toHaveBeenCalledWith({ userId: stringUserId, role: undefined });
+      expect(getUserPrincipals).toHaveBeenCalledWith({
+        userId: stringUserId,
+        role: undefined,
+      });
     });
 
     test('should check permissions correctly when permission granted with ObjectId', async () => {
@@ -1396,7 +1422,10 @@ describe('PermissionService', () => {
       });
 
       expect(hasPermission).toBe(true);
-      expect(getUserPrincipals).toHaveBeenCalledWith({ userId: objectIdUserId, role: undefined });
+      expect(getUserPrincipals).toHaveBeenCalledWith({
+        userId: objectIdUserId,
+        role: undefined,
+      });
     });
 
     test('should handle bulkUpdateResourcePermissions with string IDs', async () => {
@@ -1966,7 +1995,12 @@ describe('syncUserEntraGroupMemberships - $pullAll on Group.memberIds', () => {
 
   it('should add user to matching Entra groups and remove from non-matching ones', async () => {
     await Group.create([
-      { name: 'Group A', source: 'entra', idOnTheSource: 'entra-group-a', memberIds: [] },
+      {
+        name: 'Group A',
+        source: 'entra',
+        idOnTheSource: 'entra-group-a',
+        memberIds: [],
+      },
       {
         name: 'Group B',
         source: 'entra',
@@ -1999,7 +2033,12 @@ describe('syncUserEntraGroupMemberships - $pullAll on Group.memberIds', () => {
         idOnTheSource: 'entra-x',
         memberIds: [userEntraId, 'other-user'],
       },
-      { name: 'Group Y', source: 'entra', idOnTheSource: 'entra-y', memberIds: [userEntraId] },
+      {
+        name: 'Group Y',
+        source: 'entra',
+        idOnTheSource: 'entra-y',
+        memberIds: [userEntraId],
+      },
     ]);
 
     getUserEntraGroups.mockResolvedValue([]);
@@ -2014,7 +2053,12 @@ describe('syncUserEntraGroupMemberships - $pullAll on Group.memberIds', () => {
 
   it('should remove user from groups not in the API response via $pullAll', async () => {
     await Group.create([
-      { name: 'Keep', source: 'entra', idOnTheSource: 'entra-keep', memberIds: [userEntraId] },
+      {
+        name: 'Keep',
+        source: 'entra',
+        idOnTheSource: 'entra-keep',
+        memberIds: [userEntraId],
+      },
       {
         name: 'Remove',
         source: 'entra',
@@ -2028,7 +2072,9 @@ describe('syncUserEntraGroupMemberships - $pullAll on Group.memberIds', () => {
     await syncUserEntraGroupMemberships(user, 'fake-token');
 
     const keep = await Group.findOne({ idOnTheSource: 'entra-keep' }).lean();
-    const remove = await Group.findOne({ idOnTheSource: 'entra-remove' }).lean();
+    const remove = await Group.findOne({
+      idOnTheSource: 'entra-remove',
+    }).lean();
     expect(keep.memberIds).toContain(userEntraId);
     expect(remove.memberIds).not.toContain(userEntraId);
     expect(remove.memberIds).toContain('other-user');
@@ -2078,8 +2124,18 @@ describe('syncUserEntraGroupMemberships - $pullAll on Group.memberIds', () => {
 
     // Create existing groups A and B
     await Group.create([
-      { name: 'Group A', source: 'entra', idOnTheSource: 'entra-group-a', memberIds: [] },
-      { name: 'Group B', source: 'entra', idOnTheSource: 'entra-group-b', memberIds: [] },
+      {
+        name: 'Group A',
+        source: 'entra',
+        idOnTheSource: 'entra-group-a',
+        memberIds: [],
+      },
+      {
+        name: 'Group B',
+        source: 'entra',
+        idOnTheSource: 'entra-group-b',
+        memberIds: [],
+      },
     ]);
 
     // User is member of A, B, and C (but C doesn't exist yet)
@@ -2098,9 +2154,15 @@ describe('syncUserEntraGroupMemberships - $pullAll on Group.memberIds', () => {
     await syncUserEntraGroupMemberships(user, 'fake-token');
 
     // Verify ALL three groups now have the user as member
-    const groupA = await Group.findOne({ idOnTheSource: 'entra-group-a' }).lean();
-    const groupB = await Group.findOne({ idOnTheSource: 'entra-group-b' }).lean();
-    const groupC = await Group.findOne({ idOnTheSource: 'entra-group-c' }).lean();
+    const groupA = await Group.findOne({
+      idOnTheSource: 'entra-group-a',
+    }).lean();
+    const groupB = await Group.findOne({
+      idOnTheSource: 'entra-group-b',
+    }).lean();
+    const groupC = await Group.findOne({
+      idOnTheSource: 'entra-group-c',
+    }).lean();
 
     expect(groupA.memberIds).toContain(userEntraId);
     expect(groupB.memberIds).toContain(userEntraId);

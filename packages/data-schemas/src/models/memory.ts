@@ -1,5 +1,5 @@
-import memorySchema from '~/schema/memory';
 import { applyTenantIsolation } from '~/models/plugins/tenantIsolation';
+import memorySchema from '~/schema/memory';
 import type { IMemoryEntry } from '~/types/memory';
 
 export function createMemoryModel(mongoose: typeof import('mongoose')) {

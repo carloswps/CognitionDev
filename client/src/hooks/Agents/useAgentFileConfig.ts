@@ -1,13 +1,13 @@
-import { useWatch } from 'react-hook-form';
+import type { EndpointFileConfig } from 'librechat-data-provider';
 import {
   EModelEndpoint,
+  getEndpointFileConfig,
   mergeFileConfig,
   resolveEndpointType,
-  getEndpointFileConfig,
 } from 'librechat-data-provider';
-import type { EndpointFileConfig } from 'librechat-data-provider';
+import { useWatch } from 'react-hook-form';
 import type { AgentForm } from '~/common';
-import { useGetFileConfig, useGetEndpointsQuery } from '~/data-provider';
+import { useGetEndpointsQuery, useGetFileConfig } from '~/data-provider';
 
 export default function useAgentFileConfig(): {
   endpointType: EModelEndpoint | string | undefined;

@@ -183,7 +183,10 @@ describe('Job Replacement Detection', () => {
       const streamId = 'test-stream-123';
       const originalCreatedAt = 1000;
       const userId = 'user-123';
-      const finalEvent = { final: true, conversation: { conversationId: streamId } };
+      const finalEvent = {
+        final: true,
+        conversation: { conversationId: streamId },
+      };
 
       mockGenerationJobManager.getJob.mockResolvedValue({
         createdAt: originalCreatedAt,

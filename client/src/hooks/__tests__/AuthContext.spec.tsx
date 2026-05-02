@@ -1,16 +1,16 @@
 /**
  * @jest-environment @happy-dom/jest-environment
  */
-import React from 'react';
-import { render, act } from '@testing-library/react';
-import { RecoilRoot } from 'recoil';
+
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { act, render } from '@testing-library/react';
+import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { RecoilRoot } from 'recoil';
 
 import type { TAuthConfig } from '~/common';
-
-import { AuthContextProvider, useAuthContext } from '../AuthContext';
 import { SESSION_KEY } from '~/utils';
+import { AuthContextProvider, useAuthContext } from '../AuthContext';
 
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -273,7 +273,10 @@ describe('AuthContextProvider — silentRefresh post-login redirect', () => {
     ];
 
     act(() => {
-      refreshOptions.onSuccess({ user: { id: '1', role: 'USER' }, token: 'new-token' });
+      refreshOptions.onSuccess({
+        user: { id: '1', role: 'USER' },
+        token: 'new-token',
+      });
     });
     act(() => {
       jest.advanceTimersByTime(100);
@@ -299,7 +302,10 @@ describe('AuthContextProvider — silentRefresh post-login redirect', () => {
     ];
 
     act(() => {
-      refreshOptions.onSuccess({ user: { id: '1', role: 'USER' }, token: 'new-token' });
+      refreshOptions.onSuccess({
+        user: { id: '1', role: 'USER' },
+        token: 'new-token',
+      });
     });
     act(() => {
       jest.advanceTimersByTime(100);
@@ -323,14 +329,19 @@ describe('AuthContextProvider — silentRefresh post-login redirect', () => {
     mockRefreshMutate.mockClear();
 
     act(() => {
-      refreshOptions.onSuccess({ user: { id: '1', role: 'USER' }, token: 'new-token' });
+      refreshOptions.onSuccess({
+        user: { id: '1', role: 'USER' },
+        token: 'new-token',
+      });
     });
     act(() => {
       jest.advanceTimersByTime(100);
     });
 
     expect(mockNavigate).toHaveBeenCalledTimes(1);
-    expect(mockNavigate).toHaveBeenCalledWith('/c/abc?endpoint=bedrock', { replace: true });
+    expect(mockNavigate).toHaveBeenCalledWith('/c/abc?endpoint=bedrock', {
+      replace: true,
+    });
     expect(mockRefreshMutate).not.toHaveBeenCalled();
     jest.useRealTimers();
   });
@@ -349,7 +360,10 @@ describe('AuthContextProvider — silentRefresh post-login redirect', () => {
     ];
 
     act(() => {
-      refreshOptions.onSuccess({ user: { id: '1', role: 'USER' }, token: 'new-token' });
+      refreshOptions.onSuccess({
+        user: { id: '1', role: 'USER' },
+        token: 'new-token',
+      });
     });
     act(() => {
       jest.advanceTimersByTime(100);
@@ -388,13 +402,18 @@ describe('AuthContextProvider — silentRefresh subdirectory deployment', () => 
     ];
 
     act(() => {
-      refreshOptions.onSuccess({ user: { id: '1', role: 'USER' }, token: 'new-token' });
+      refreshOptions.onSuccess({
+        user: { id: '1', role: 'USER' },
+        token: 'new-token',
+      });
     });
     act(() => {
       jest.advanceTimersByTime(100);
     });
 
-    expect(mockNavigate).toHaveBeenCalledWith('/c/abc123?model=gpt-4', { replace: true });
+    expect(mockNavigate).toHaveBeenCalledWith('/c/abc123?model=gpt-4', {
+      replace: true,
+    });
     expect(mockNavigate).not.toHaveBeenCalledWith(
       expect.stringContaining('/chat/c/'),
       expect.anything(),
@@ -414,7 +433,10 @@ describe('AuthContextProvider — silentRefresh subdirectory deployment', () => 
     ];
 
     act(() => {
-      refreshOptions.onSuccess({ user: { id: '1', role: 'USER' }, token: 'new-token' });
+      refreshOptions.onSuccess({
+        user: { id: '1', role: 'USER' },
+        token: 'new-token',
+      });
     });
     act(() => {
       jest.advanceTimersByTime(100);
@@ -481,7 +503,10 @@ describe('AuthContextProvider — custom role detection and fetching', () => {
     ];
 
     act(() => {
-      refreshOptions.onSuccess({ user: { id: '1', role: 'STAFF' }, token: 'tok' });
+      refreshOptions.onSuccess({
+        user: { id: '1', role: 'STAFF' },
+        token: 'tok',
+      });
     });
     act(() => {
       jest.advanceTimersByTime(100);
@@ -506,7 +531,10 @@ describe('AuthContextProvider — custom role detection and fetching', () => {
     ];
 
     act(() => {
-      refreshOptions.onSuccess({ user: { id: '1', role: 'USER' }, token: 'tok' });
+      refreshOptions.onSuccess({
+        user: { id: '1', role: 'USER' },
+        token: 'tok',
+      });
     });
     act(() => {
       jest.advanceTimersByTime(100);
@@ -532,7 +560,10 @@ describe('AuthContextProvider — custom role detection and fetching', () => {
     ];
 
     act(() => {
-      refreshOptions.onSuccess({ user: { id: '1', role: 'ADMIN' }, token: 'tok' });
+      refreshOptions.onSuccess({
+        user: { id: '1', role: 'ADMIN' },
+        token: 'tok',
+      });
     });
     act(() => {
       jest.advanceTimersByTime(100);
@@ -564,7 +595,10 @@ describe('AuthContextProvider — custom role detection and fetching', () => {
     ];
 
     act(() => {
-      refreshOptions.onSuccess({ user: { id: '1', role: 'STAFF' }, token: 'tok' });
+      refreshOptions.onSuccess({
+        user: { id: '1', role: 'STAFF' },
+        token: 'tok',
+      });
     });
     act(() => {
       jest.advanceTimersByTime(100);

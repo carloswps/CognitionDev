@@ -1,7 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
 import path from 'path';
+
 const absolutePath = path.resolve(process.cwd(), 'api/server/index.js');
+
 import dotenv from 'dotenv';
+
 dotenv.config();
 
 export default defineConfig({

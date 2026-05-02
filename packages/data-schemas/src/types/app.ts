@@ -1,17 +1,17 @@
 import type {
-  TEndpoint,
+  EModelEndpoint,
   FileStorage,
-  TFileConfig,
+  SummarizationConfig,
+  TAgentsEndpoint,
+  TAnthropicEndpoint,
+  TAssistantEndpoint,
   TAzureConfig,
   TCustomConfig,
-  TMemoryConfig,
-  EModelEndpoint,
-  TVertexAIConfig,
-  TAgentsEndpoint,
   TCustomEndpoints,
-  TAssistantEndpoint,
-  TAnthropicEndpoint,
-  SummarizationConfig,
+  TEndpoint,
+  TFileConfig,
+  TMemoryConfig,
+  TVertexAIConfig,
 } from 'librechat-data-provider';
 
 export type JsonSchemaType = {
