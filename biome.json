@@ -33,7 +33,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": false,
+      "recommended": true,
       "a11y": {
         "noAccessKey": "error",
         "noAriaUnsupportedElements": "error",
@@ -320,12 +320,7 @@
       "linter": { "rules": { "suspicious": { "noAsyncPromiseExecutor": "off" } } }
     },
     {
-      "includes": [
-        "client/src/**/*.tsx",
-        "client/src/**/*.ts",
-        "client/src/**/*.jsx",
-        "client/src/**/*.js"
-      ],
+      "includes": ["client/src/**/*.tsx", "client/src/**/*.ts", "client/src/**/*.jsx", "client/src/**/*.js"],
       "linter": {
         "rules": {
           "a11y": {
@@ -356,7 +351,20 @@
         "**/*.spec.tsx",
         "**/setupTests.js"
       ],
-      "javascript": { "globals": ["exports", "describe", "it", "expect", "beforeAll", "afterAll", "beforeEach", "afterEach", "jest", "test"] },
+      "javascript": {
+        "globals": [
+          "exports",
+          "describe",
+          "it",
+          "expect",
+          "beforeAll",
+          "afterAll",
+          "beforeEach",
+          "afterEach",
+          "jest",
+          "test"
+        ]
+      },
       "linter": {
         "rules": {
           "correctness": { "noUnusedVariables": "off" },
@@ -463,12 +471,7 @@
       "linter": { "rules": { "correctness": { "noUnusedVariables": "warn" } } }
     },
     {
-      "includes": [
-        "packages/data-schemas/**/*.ts",
-        "!**/*.spec.ts",
-        "!**/*.test.ts",
-        "!**/utils/tenantBulkWrite.ts"
-      ],
+      "includes": ["packages/data-schemas/**/*.ts", "!**/*.spec.ts", "!**/*.test.ts", "!**/utils/tenantBulkWrite.ts"],
       "linter": {
         "rules": {
           "suspicious": {
