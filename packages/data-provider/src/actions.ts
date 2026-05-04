@@ -170,6 +170,7 @@ class RequestConfig {
 class RequestExecutor {
   path: string;
   params?: Record<string, unknown>;
+  operationHash?: string;
   private authHeaders: Record<string, string> = {};
   private authToken?: string;
 
@@ -751,7 +752,7 @@ export function validateActionDomain(
  */
 export function validateAndParseOpenAPISpec(specString: string): ValidationResult {
   try {
-    let parsedSpec;
+    let parsedSpec: unknown;
     try {
       parsedSpec = JSON.parse(specString);
     } catch {
