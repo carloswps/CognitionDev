@@ -14,6 +14,7 @@ on:
     branches:
       - main
       - dev
+      - fix/biome-linting-issues
     paths:
       - 'client/**'
       - 'packages/data-provider/**'

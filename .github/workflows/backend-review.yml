@@ -13,6 +13,7 @@ on:
     branches:
       - main
       - dev
+      - fix/biome-linting-issues
     paths:
       - 'api/**'
       - 'packages/**'

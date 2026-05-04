@@ -170,6 +170,7 @@ class RequestConfig {
 class RequestExecutor {
   path: string;
   params?: Record<string, unknown>;
+  operationHash?: string;
   private authHeaders: Record<string, string> = {};
   private authToken?: string;
 

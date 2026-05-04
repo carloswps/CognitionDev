@@ -15,6 +15,7 @@ on:
     branches:
       - main
       - dev
+      - fix/biome-linting-issues
     paths:
       - 'api/**'
       - 'client/**'
