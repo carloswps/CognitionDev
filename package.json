@@ -3,7 +3,11 @@
   "version": "v0.8.5",
   "description": "",
   "packageManager": "npm@11.10.0",
-  "workspaces": ["api", "client", "packages/*"],
+  "workspaces": [
+    "api",
+    "client",
+    "packages/*"
+  ],
   "scripts": {
     "update": "node config/update.js",
     "add-balance": "node config/add-balance.js",
@@ -44,7 +48,7 @@
     "build:client": "cd client && npm run build",
     "build:client-package": "cd packages/client && npm run build",
     "build:packages": "npm run build:data-provider && npm run build:data-schemas && npm run build:api && npm run build:client-package",
-    "build": "npx turbo run build",
+    "build": "cross-env NODE_OPTIONS='--max-old-space-size=4096' npx turbo run build",
     "build:safe": "npx turbo run build --no-daemon",
     "frontend": "npm run build:data-provider && npm run build:data-schemas && npm run build:api && npm run build:client-package && cd client && npm run build",
     "frontend:ci": "npm run build:data-provider && npm run build:client-package && cd client && npm run build:ci",
@@ -159,6 +163,12 @@
     "svgo": "^2.8.2"
   },
   "nodemonConfig": {
-    "ignore": ["api/data/", "data/", "client/", "admin/", "packages/"]
+    "ignore": [
+      "api/data/",
+      "data/",
+      "client/",
+      "admin/",
+      "packages/"
+    ]
   }
 }

@@ -27,6 +27,8 @@ cache: true
 
 # Custom interface configuration
 interface:
+  # Enable/disable for formatting name model
+  modelFormatting: true
   customWelcome: 'Welcome to LibreChat! Enjoy your experience.'
   # Enable/disable file search as a chatarea selection (default: true)
   # Note: This setting does not disable the Agents File Search Capability.
@@ -111,23 +113,23 @@ interface:
   #   public: false
   # MCP Servers configuration example
   # mcpServers:
-    # Controls user permissions for MCP (Model Context Protocol) server management
-    # - use: Allow users to use configured MCP servers
-    # - create: Allow users to create and manage new MCP servers
-    # - share: Allow users to share MCP servers with other users
-    # - public: Allow users to share MCP servers publicly (with everyone)
-     
-    # Creation / edit MCP server config Dialog config example
-    # trustCheckbox:
-    #   label:
-    #     en: 'I understand and I want to continue'
-    #     de: 'Ich verstehe und möchte fortfahren'
-    #     de-DE: 'Ich verstehe und möchte fortfahren' # You can narrow translation to regions like (de-DE or de-CH)
-    #   subLabel:
-    #     en: |
-    #       Librechat hasn't reviewed this MCP server. Attackers may attempt to steal your data or trick the model into taking unintended actions, including destroying data. <a href="https://google.de" target="_blank"><strong>Learn more.</strong></a>
-    #     de: |
-    #       LibreChat hat diesen MCP-Server nicht überprüft. Angreifer könnten versuchen, Ihre Daten zu stehlen oder das Modell zu unbeabsichtigten Aktionen zu verleiten, einschließlich der Zerstörung von Daten. <a href="https://google.de" target="_blank"><strong>Mehr erfahren.</strong></a>
+  # Controls user permissions for MCP (Model Context Protocol) server management
+  # - use: Allow users to use configured MCP servers
+  # - create: Allow users to create and manage new MCP servers
+  # - share: Allow users to share MCP servers with other users
+  # - public: Allow users to share MCP servers publicly (with everyone)
+
+  # Creation / edit MCP server config Dialog config example
+  # trustCheckbox:
+  #   label:
+  #     en: 'I understand and I want to continue'
+  #     de: 'Ich verstehe und möchte fortfahren'
+  #     de-DE: 'Ich verstehe und möchte fortfahren' # You can narrow translation to regions like (de-DE or de-CH)
+  #   subLabel:
+  #     en: |
+  #       Librechat hasn't reviewed this MCP server. Attackers may attempt to steal your data or trick the model into taking unintended actions, including destroying data. <a href="https://google.de" target="_blank"><strong>Learn more.</strong></a>
+  #     de: |
+  #       LibreChat hat diesen MCP-Server nicht überprüft. Angreifer könnten versuchen, Ihre Daten zu stehlen oder das Modell zu unbeabsichtigten Aktionen zu verleiten, einschließlich der Zerstörung von Daten. <a href="https://google.de" target="_blank"><strong>Mehr erfahren.</strong></a>
 
   # Temporary chat retention period in hours (default: 720, min: 1, max: 8760)
   # temporaryChatRetention: 1
@@ -403,6 +405,7 @@ endpoints:
       models:
         default: ['meta-llama/llama-3-70b-instruct']
         fetch: true
+      filterFreeModels: true
       titleConvo: true
       titleModel: 'meta-llama/llama-3-70b-instruct'
       # Recommended: Drop the stop parameter from the request as Openrouter models use a variety of stop tokens.
@@ -418,8 +421,7 @@ endpoints:
       headers:
         x-librechat-body-parentmessageid: '{{LIBRECHAT_BODY_PARENTMESSAGEID}}'
       models:
-        default:
-          ['gpt-4o-mini', 'claude-4.5-sonnet', 'llama-3.1-8b-instruct', 'gemini-2.5-flash-lite']
+        default: ['gpt-4o-mini', 'claude-4.5-sonnet', 'llama-3.1-8b-instruct', 'gemini-2.5-flash-lite']
         fetch: true
       titleConvo: true
       titleModel: 'gpt-4o-mini'
@@ -610,12 +612,12 @@ endpoints:
 
 modelSpecs:
   list:
-    - name: "feynman-mode"
-      label: "Feynman Mode"
-      description: "Forces active learning — explain concepts in your own words before getting any answer"
+    - name: 'feynman-mode'
+      label: 'Feynman Mode'
+      description: 'Forces active learning — explain concepts in your own words before getting any answer'
       preset:
-        endpoint: "google"
-        model: "gemini-2.5-flash"
+        endpoint: 'google'
+        model: 'gemini-2.5-flash'
         temperature: 0.7
         instructions: |
           You are a Feynman Mode assistant. Your sole purpose is to force active learning through the Feynman Technique.

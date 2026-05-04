@@ -4,7 +4,7 @@ import type {
   TEndpointsConfig,
   TModelSpec,
 } from 'librechat-data-provider';
-import { isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
+import { formatModelName, isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
 import { Bot } from 'lucide-react';
 import React from 'react';
 import type { Endpoint, SelectedValues } from '~/common';
@@ -32,8 +32,8 @@ export function filterItems<
   return items.filter((item) => {
     const itemMatches =
       item.label.toLowerCase().includes(searchTermLower) ||
-      (item.name && item.name.toLowerCase().includes(searchTermLower)) ||
-      (item.value && item.value.toLowerCase().includes(searchTermLower));
+      item.name?.toLowerCase().includes(searchTermLower) ||
+      item.value?.toLowerCase().includes(searchTermLower);
 
     if (itemMatches) {
       return true;
@@ -80,15 +80,11 @@ export function filterModels(
   }
 
   return models.filter((modelId) => {
-    let modelName = modelId;
+    let modelName = formatModelName(modelId, endpoint.value);
 
-    if (isAgentsEndpoint(endpoint.value) && agentsMap && agentsMap[modelId]) {
+    if (isAgentsEndpoint(endpoint.value) && agentsMap?.[modelId]) {
       modelName = agentsMap[modelId]?.name || modelId;
-    } else if (
-      isAssistantsEndpoint(endpoint.value) &&
-      assistantsMap &&
-      assistantsMap[endpoint.value]
-    ) {
+    } else if (isAssistantsEndpoint(endpoint.value) && assistantsMap?.[endpoint.value]) {
       const assistant = assistantsMap[endpoint.value][modelId];
       modelName =
         typeof assistant.name === 'string' && assistant.name ? (assistant.name as string) : modelId;
@@ -186,26 +182,18 @@ export const getDisplayValue = ({
       return localize('com_ui_select_model');
     }
 
-    if (
-      isAgentsEndpoint(endpoint.value) &&
-      endpoint.agentNames &&
-      endpoint.agentNames[selectedValues.model]
-    ) {
+    if (isAgentsEndpoint(endpoint.value) && endpoint.agentNames?.[selectedValues.model]) {
       return endpoint.agentNames[selectedValues.model];
     } else if (isAgentsEndpoint(endpoint.value) && agentsMap) {
       const agent = agentsMap[selectedValues.model];
       return agent?.name || selectedValues.model;
     }
 
-    if (
-      isAssistantsEndpoint(endpoint.value) &&
-      endpoint.assistantNames &&
-      endpoint.assistantNames[selectedValues.model]
-    ) {
+    if (isAssistantsEndpoint(endpoint.value) && endpoint.assistantNames?.[selectedValues.model]) {
       return endpoint.assistantNames[selectedValues.model];
     }
 
-    return selectedValues.model;
+    return formatModelName(selectedValues.model, endpoint.value);
   }
 
   if (selectedValues.endpoint) {

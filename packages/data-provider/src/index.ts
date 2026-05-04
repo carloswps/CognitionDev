@@ -52,6 +52,11 @@ export { default as createPayload } from './createPayload';
 // export * from './react-query/react-query-service';
 /* feedback */
 export * from './feedback';
+
+/***
+ * Formats model names by provider.
+ */
+export * from './modelFormatter';
 export * from './parameterSettings';
 /* general helpers */
 export * from './utils';

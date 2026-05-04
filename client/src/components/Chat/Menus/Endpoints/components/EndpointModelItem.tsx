@@ -1,5 +1,5 @@
 import { VisuallyHidden } from '@ariakit/react';
-import { isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
+import { formatModelName, isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
 import { CheckCircle2, EarthIcon, Pin, PinOff } from 'lucide-react';
 import type React from 'react';
 import type { Endpoint } from '~/common';
@@ -29,7 +29,7 @@ export function EndpointModelItem({ modelId, endpoint }: EndpointModelItemProps)
   const { ref: itemRef, isActive } = useIsActiveItem<HTMLDivElement>();
 
   let isGlobal = false;
-  let modelName = modelId;
+  let modelName = formatModelName(modelId, endpoint?.value);
   const avatarUrl = endpoint?.modelIcons?.[modelId ?? ''] || null;
 
   // Use custom names if available

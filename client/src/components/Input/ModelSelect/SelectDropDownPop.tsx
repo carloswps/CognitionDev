@@ -1,5 +1,6 @@
 import { useMultiSearch } from '@librechat/client';
 import { Content, Portal, Root, Trigger } from '@radix-ui/react-popover';
+import { formatModelName } from 'librechat-data-provider';
 import type React from 'react';
 import { useState } from 'react';
 import type { Option } from '~/common';
@@ -75,6 +76,7 @@ function SelectDropDownPop({
               )}
               aria-label={`Select ${title}`}
               aria-haspopup="false"
+              type="button"
             >
               {' '}
               {showLabel && (
@@ -135,7 +137,7 @@ function SelectDropDownPop({
                 return (
                   <MenuItem
                     key={option.value}
-                    title={option.label}
+                    title={formatModelName(option.value)}
                     description={option.description}
                     value={option.value}
                     icon={option.icon}

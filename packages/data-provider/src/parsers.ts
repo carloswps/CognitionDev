@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { formatModelName } from 'src/modelFormatter';
 import type { ZodIssue } from 'zod';
 import { bedrockInputSchema } from './bedrock';
 import { alternateName } from './config';
@@ -6,7 +7,6 @@ import type * as s from './schemas';
 import {
   anthropicSchema,
   assistantSchema,
-  // agentsSchema,
   compactAgentsSchema,
   compactAssistantSchema,
   compactGoogleSchema,
@@ -238,7 +238,10 @@ export const getResponseSender = (endpointOption: Partial<t.TEndpointOption>): s
   }
 
   if (endpoint === EModelEndpoint.anthropic) {
-    return modelLabel || 'Claude';
+    if (modelLabel) {
+      return modelLabel;
+    }
+    return formatModelName(model, endpoint);
   }
 
   if (endpoint === EModelEndpoint.bedrock) {
@@ -248,11 +251,8 @@ export const getResponseSender = (endpointOption: Partial<t.TEndpointOption>): s
   if (endpoint === EModelEndpoint.google) {
     if (modelLabel) {
       return modelLabel;
-    } else if (model?.toLowerCase().includes('gemma') === true) {
-      return 'Gemma';
     }
-
-    return 'Gemini';
+    return formatModelName(model, endpoint);
   }
 
   if (endpoint === EModelEndpoint.custom || endpointType === EModelEndpoint.custom) {
