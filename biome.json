@@ -320,7 +320,12 @@
       "linter": { "rules": { "suspicious": { "noAsyncPromiseExecutor": "off" } } }
     },
     {
-      "includes": ["client/src/**/*.tsx", "client/src/**/*.ts", "client/src/**/*.jsx", "client/src/**/*.js"],
+      "includes": [
+        "client/src/**/*.tsx",
+        "client/src/**/*.ts",
+        "client/src/**/*.jsx",
+        "client/src/**/*.js"
+      ],
       "linter": {
         "rules": {
           "a11y": {
@@ -471,7 +476,12 @@
       "linter": { "rules": { "correctness": { "noUnusedVariables": "warn" } } }
     },
     {
-      "includes": ["packages/data-schemas/**/*.ts", "!**/*.spec.ts", "!**/*.test.ts", "!**/utils/tenantBulkWrite.ts"],
+      "includes": [
+        "packages/data-schemas/**/*.ts",
+        "!**/*.spec.ts",
+        "!**/*.test.ts",
+        "!**/utils/tenantBulkWrite.ts"
+      ],
       "linter": {
         "rules": {
           "suspicious": {

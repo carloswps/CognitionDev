@@ -752,7 +752,7 @@ export function validateActionDomain(
  */
 export function validateAndParseOpenAPISpec(specString: string): ValidationResult {
   try {
-    let parsedSpec;
+    let parsedSpec: unknown;
     try {
       parsedSpec = JSON.parse(specString);
     } catch {
