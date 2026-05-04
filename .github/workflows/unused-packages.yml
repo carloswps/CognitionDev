@@ -9,9 +9,6 @@ on:
       - 'api/**'
       - 'packages/client/**'
       - 'packages/api/**'
-  push:
-    branches:
-      - fix/biome-linting-issues
 
 jobs:
   detect-unused-packages:

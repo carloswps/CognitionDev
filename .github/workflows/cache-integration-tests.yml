@@ -17,7 +17,6 @@ on:
     branches:
       - main
       - dev
-      - fix/biome-linting-issues
     paths:
       - 'packages/api/src/cache/**'
       - 'packages/api/src/cluster/**'
