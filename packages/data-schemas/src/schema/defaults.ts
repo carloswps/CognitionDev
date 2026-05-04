@@ -1,3 +1,6 @@
+// @ts-expect-error
+// @ts-expect-error
+
 import { Schema } from 'mongoose';
 
 // @ts-expect-error

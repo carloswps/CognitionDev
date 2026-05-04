@@ -752,7 +752,8 @@ export function validateActionDomain(
  */
 export function validateAndParseOpenAPISpec(specString: string): ValidationResult {
   try {
-    let parsedSpec: unknown;
+    // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
+    let parsedSpec;
     try {
       parsedSpec = JSON.parse(specString);
     } catch {
