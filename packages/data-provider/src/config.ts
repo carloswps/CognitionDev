@@ -262,6 +262,8 @@ export const bedrockEndpointSchema = baseEndpointSchema.merge(
   }),
 );
 
+export const deepseekEndpointSchema = baseEndpointSchema;
+
 const modelItemSchema = z.union([
   z.string(),
   z.object({
@@ -1120,6 +1122,7 @@ export const configSchema = z.object({
       [EModelEndpoint.agents]: agentsEndpointSchema.optional(),
       [EModelEndpoint.custom]: customEndpointsSchema.optional(),
       [EModelEndpoint.bedrock]: bedrockEndpointSchema.optional(),
+      [EModelEndpoint.deepseek]: deepseekEndpointSchema.optional(),
     })
     .strict()
     .refine((data) => Object.keys(data).length > 0, {
@@ -1194,6 +1197,7 @@ export const defaultEndpoints: EModelEndpoint[] = [
   EModelEndpoint.anthropic,
   EModelEndpoint.custom,
   EModelEndpoint.bedrock,
+  EModelEndpoint.deepseek,
 ];
 
 export const alternateName = {
@@ -1206,8 +1210,8 @@ export const alternateName = {
   [EModelEndpoint.anthropic]: 'Anthropic',
   [EModelEndpoint.custom]: 'Custom',
   [EModelEndpoint.bedrock]: 'AWS Bedrock',
+  [EModelEndpoint.deepseek]: 'DeepSeek',
   [KnownEndpoints.ollama]: 'Ollama',
-  [KnownEndpoints.deepseek]: 'DeepSeek',
   [KnownEndpoints.moonshot]: 'Moonshot',
   [KnownEndpoints.xai]: 'xAI',
   [KnownEndpoints.vercel]: 'Vercel',
@@ -1334,6 +1338,7 @@ export const defaultModels = {
     'gpt-3.5-turbo-instruct',
   ],
   [EModelEndpoint.bedrock]: bedrockModels,
+  [EModelEndpoint.deepseek]: ['deepseek-chat', 'deepseek-reasoner', 'deepseek-v3'],
 };
 
 const fitlerAssistantModels = (str: string) => {
@@ -1351,12 +1356,14 @@ export const initialModelsConfig: TModelsConfig = {
   [EModelEndpoint.google]: defaultModels[EModelEndpoint.google],
   [EModelEndpoint.anthropic]: defaultModels[EModelEndpoint.anthropic],
   [EModelEndpoint.bedrock]: defaultModels[EModelEndpoint.bedrock],
+  [EModelEndpoint.deepseek]: defaultModels[EModelEndpoint.deepseek],
 };
 
 export const EndpointURLs = {
   [EModelEndpoint.assistants]: `${apiBaseUrl()}/api/assistants/v2/chat`,
   [EModelEndpoint.azureAssistants]: `${apiBaseUrl()}/api/assistants/v1/chat`,
   [EModelEndpoint.agents]: `${apiBaseUrl()}/api/${EModelEndpoint.agents}/chat`,
+  [EModelEndpoint.deepseek]: `${apiBaseUrl()}/api/${EModelEndpoint.deepseek}/chat`,
 } as const;
 
 export const modularEndpoints = new Set<EModelEndpoint | string>([
@@ -1367,6 +1374,7 @@ export const modularEndpoints = new Set<EModelEndpoint | string>([
   EModelEndpoint.custom,
   EModelEndpoint.agents,
   EModelEndpoint.bedrock,
+  EModelEndpoint.deepseek,
 ]);
 
 export const supportsBalanceCheck = {
@@ -1379,6 +1387,7 @@ export const supportsBalanceCheck = {
   [EModelEndpoint.azureOpenAI]: true,
   [EModelEndpoint.bedrock]: true,
   [EModelEndpoint.google]: true,
+  [EModelEndpoint.deepseek]: true,
 };
 
 export const visionModels = [

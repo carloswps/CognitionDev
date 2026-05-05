@@ -55,6 +55,7 @@ export const documentSupportedProviders = new Set<string>([
   // handled in AttachFileMenu and DragDropModal since azureOpenAI only supports documents with Use Responses API set to true
   // EModelEndpoint.azureOpenAI,
   EModelEndpoint.google,
+  EModelEndpoint.deepseek,
   Providers.VERTEXAI,
   Providers.MISTRALAI,
   Providers.MISTRAL,
@@ -92,6 +93,7 @@ export const paramEndpoints = new Set<EModelEndpoint | string>([
   EModelEndpoint.anthropic,
   EModelEndpoint.custom,
   EModelEndpoint.google,
+  EModelEndpoint.deepseek,
 ]);
 
 export enum BedrockProviders {
@@ -357,6 +359,48 @@ export const openAISettings = {
   },
 };
 
+export const deepseekSettings = {
+  model: {
+    default: 'deepseek-chat',
+  },
+  temperature: {
+    min: 0,
+    max: 2,
+    step: 0.01,
+    default: 1,
+  },
+  top_p: {
+    min: 0,
+    max: 1,
+    step: 0.01,
+    default: 1,
+  },
+  presence_penalty: {
+    min: -2,
+    max: 2,
+    step: 0.01,
+    default: 0,
+  },
+  frequency_penalty: {
+    min: -2,
+    max: 2,
+    step: 0.01,
+    default: 0,
+  },
+  resendFiles: {
+    default: true as const,
+  },
+  maxContextTokens: {
+    default: undefined,
+  },
+  max_tokens: {
+    default: undefined,
+  },
+  imageDetail: {
+    default: ImageDetail.auto as const,
+  },
+};
+
 export const googleSettings = {
   model: {
     default: 'gemini-1.5-flash-latest' as const,
@@ -577,6 +621,7 @@ export const endpointSettings = {
   [EModelEndpoint.anthropic]: anthropicSettings,
   [EModelEndpoint.agents]: agentsSettings,
   [EModelEndpoint.bedrock]: agentsSettings,
+  [EModelEndpoint.deepseek]: deepseekSettings,
 };
 
 const google = endpointSettings[EModelEndpoint.google];
@@ -1221,6 +1266,10 @@ export const openAIBaseSchema = tConversationSchema.pick({
 });
 
 export const openAISchema = openAIBaseSchema
+  .transform((obj: Partial<TConversation>) => removeNullishValues(obj, true))
+  .catch(() => ({}));
+
+export const deepseekSchema = openAIBaseSchema
   .transform((obj: Partial<TConversation>) => removeNullishValues(obj, true))
   .catch(() => ({}));
 

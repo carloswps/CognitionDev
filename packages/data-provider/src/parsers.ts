@@ -10,6 +10,7 @@ import {
   compactAgentsSchema,
   compactAssistantSchema,
   compactGoogleSchema,
+  deepseekSchema,
   EModelEndpoint,
   googleSchema,
   openAISchema,
@@ -24,7 +25,8 @@ type EndpointSchema =
   | typeof anthropicSchema
   | typeof assistantSchema
   | typeof compactAgentsSchema
-  | typeof bedrockInputSchema;
+  | typeof bedrockInputSchema
+  | typeof deepseekSchema;
 
 export type EndpointSchemaKey = EModelEndpoint;
 
@@ -38,6 +40,7 @@ const endpointSchemas: Record<EndpointSchemaKey, EndpointSchema> = {
   [EModelEndpoint.azureAssistants]: assistantSchema,
   [EModelEndpoint.agents]: compactAgentsSchema,
   [EModelEndpoint.bedrock]: bedrockInputSchema,
+  [EModelEndpoint.deepseek]: deepseekSchema,
 };
 
 // const schemaCreators: Record<EModelEndpoint, (customSchema: DefaultSchemaValues) => EndpointSchema> = {
@@ -53,6 +56,7 @@ export function getEnabledEndpoints() {
     EModelEndpoint.azureAssistants,
     EModelEndpoint.azureOpenAI,
     EModelEndpoint.google,
+    EModelEndpoint.deepseek,
     EModelEndpoint.anthropic,
     EModelEndpoint.bedrock,
   ];
@@ -224,13 +228,13 @@ export const getResponseSender = (endpointOption: Partial<t.TEndpointOption>): s
       return extractOmniVersion(model);
     } else if (model && (model.includes('mistral') || model.includes('codestral'))) {
       return 'Mistral';
-    } else if (model && model.includes('deepseek')) {
+    } else if (model?.includes('deepseek')) {
       return 'Deepseek';
-    } else if (model && model.includes('kimi')) {
+    } else if (model?.includes('kimi')) {
       return 'Kimi';
-    } else if (model && model.includes('moonshot')) {
+    } else if (model?.includes('moonshot')) {
       return 'Moonshot';
-    } else if (model && model.includes('gpt-')) {
+    } else if (model?.includes('gpt-')) {
       const gptVersion = extractGPTVersion(model);
       return gptVersion || 'GPT';
     }
@@ -265,13 +269,13 @@ export const getResponseSender = (endpointOption: Partial<t.TEndpointOption>): s
       return extractOmniVersion(model);
     } else if (model && (model.includes('mistral') || model.includes('codestral'))) {
       return 'Mistral';
-    } else if (model && model.includes('deepseek')) {
+    } else if (model?.includes('deepseek')) {
       return 'Deepseek';
-    } else if (model && model.includes('kimi')) {
+    } else if (model?.includes('kimi')) {
       return 'Kimi';
-    } else if (model && model.includes('moonshot')) {
+    } else if (model?.includes('moonshot')) {
       return 'Moonshot';
-    } else if (model && model.includes('gpt-')) {
+    } else if (model?.includes('gpt-')) {
       const gptVersion = extractGPTVersion(model);
       return gptVersion || 'GPT';
     } else if (modelDisplayLabel) {
@@ -279,6 +283,13 @@ export const getResponseSender = (endpointOption: Partial<t.TEndpointOption>): s
     }
 
     return 'AI';
+  }
+
+  if (endpoint === EModelEndpoint.deepseek) {
+    if (modelLabel) {
+      return modelLabel;
+    }
+    return formatModelName(model, endpoint);
   }
 
   return '';
@@ -290,7 +301,8 @@ type CompactEndpointSchema =
   | typeof compactAgentsSchema
   | typeof compactGoogleSchema
   | typeof anthropicSchema
-  | typeof bedrockInputSchema;
+  | typeof bedrockInputSchema
+  | typeof deepseekSchema;
 
 const compactEndpointSchemas: Record<EndpointSchemaKey, CompactEndpointSchema> = {
   [EModelEndpoint.openAI]: openAISchema,
@@ -302,6 +314,7 @@ const compactEndpointSchemas: Record<EndpointSchemaKey, CompactEndpointSchema> =
   [EModelEndpoint.google]: compactGoogleSchema,
   [EModelEndpoint.bedrock]: bedrockInputSchema,
   [EModelEndpoint.anthropic]: anthropicSchema,
+  [EModelEndpoint.deepseek]: deepseekSchema,
 };
 
 export const parseCompactConvo = ({
@@ -420,7 +433,7 @@ export function replaceSpecialVars({ text, user }: { text: string; user?: t.TUse
   const isoDatetime = now.toISOString();
   result = result.replace(/{{iso_datetime}}/gi, isoDatetime);
 
-  if (user && user.name) {
+  if (user?.name) {
     result = result.replace(/{{current_user}}/gi, user.name);
   }
 
@@ -504,7 +517,7 @@ export function parseEphemeralAgentId(agentId: string): ParsedEphemeralAgentId |
     const lastIndexSep = agentId.lastIndexOf('____');
     const indexStr = agentId.slice(lastIndexSep + 4);
     const parsedIndex = parseInt(indexStr, 10);
-    if (!isNaN(parsedIndex)) {
+    if (!Number.isNaN(parsedIndex)) {
       index = parsedIndex;
       workingId = agentId.slice(0, lastIndexSep);
     }

@@ -5,7 +5,7 @@ const {
   getBedrockModels,
   getOpenAIModels,
   getGoogleModels,
-  getDeepseekModels,
+  getDeepSeekModels,
 } = require('@librechat/api');
 const { getAppConfig } = require('./app');
 
@@ -58,7 +58,7 @@ async function loadDefaultModels(req) {
           logger.error('Error getting Bedrock models:', error);
           return [];
         }),
-        Promise.resolve(getDeepseekModels()).catch((error) => {
+        Promise.resolve(getDeepSeekModels()).catch((error) => {
           logger.error('Error getting Deepseek models:', error);
           return [];
         }),
