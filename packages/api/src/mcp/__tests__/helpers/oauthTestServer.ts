@@ -1,11 +1,11 @@
-import * as http from 'http';
-import * as net from 'net';
-import { randomUUID, createHash } from 'crypto';
-import { z } from 'zod';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import type { FlowState } from '~/flow/types';
+import { createHash, randomUUID } from 'crypto';
+import * as http from 'http';
 import type { Socket } from 'net';
+import * as net from 'net';
+import { z } from 'zod';
+import type { FlowState } from '~/flow/types';
 
 export class MockKeyv<T = unknown> {
   private store: Map<string, FlowState<T>>;
@@ -156,7 +156,10 @@ export async function createOAuthMCPServer(
       const data = JSON.parse(body) as { redirect_uris?: string[] };
       const clientId = `client-${randomUUID().slice(0, 8)}`;
       const clientSecret = `secret-${randomUUID()}`;
-      registeredClients.set(clientId, { client_id: clientId, client_secret: clientSecret });
+      registeredClients.set(clientId, {
+        client_id: clientId,
+        client_secret: clientSecret,
+      });
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(
         JSON.stringify({
@@ -231,7 +234,10 @@ export async function createOAuthMCPServer(
           if (requestClientId !== codeData.clientId) {
             res.writeHead(401, { 'Content-Type': 'application/json' });
             res.end(
-              JSON.stringify({ error: 'invalid_client', error_description: 'client_id mismatch' }),
+              JSON.stringify({
+                error: 'invalid_client',
+                error_description: 'client_id mismatch',
+              }),
             );
             return;
           }
@@ -339,7 +345,10 @@ export async function createOAuthMCPServer(
       transport = new StreamableHTTPServerTransport({
         sessionIdGenerator: () => randomUUID(),
       });
-      const mcp = new McpServer({ name: 'oauth-test-server', version: '0.0.1' });
+      const mcp = new McpServer({
+        name: 'oauth-test-server',
+        version: '0.0.1',
+      });
       mcp.tool('echo', { message: z.string() }, async (args) => ({
         content: [{ type: 'text' as const, text: `echo: ${args.message}` }],
       }));

@@ -1,17 +1,17 @@
 import type { AxiosResponse } from 'axios';
-import type * as t from './types';
+import type * as permissions from './accessPermissions';
 import * as endpoints from './api-endpoints';
-import * as a from './types/assistants';
-import * as ag from './types/agents';
-import * as m from './types/mutations';
-import * as q from './types/queries';
-import * as f from './types/files';
-import * as mcp from './types/mcpServers';
 import * as config from './config';
 import request from './request';
+import type * as r from './roles';
 import * as s from './schemas';
-import * as r from './roles';
-import * as permissions from './accessPermissions';
+import type * as t from './types';
+import type * as ag from './types/agents';
+import type * as a from './types/assistants';
+import type * as f from './types/files';
+import type * as mcp from './types/mcpServers';
+import type * as m from './types/mutations';
+import type * as q from './types/queries';
 
 export function revokeUserKey(name: string): Promise<unknown> {
   return request.delete(endpoints.revokeUserKey(name));
@@ -30,7 +30,9 @@ export function getFavorites(): Promise<q.TUserFavorite[]> {
 }
 
 export function updateFavorites(favorites: q.TUserFavorite[]): Promise<q.TUserFavorite[]> {
-  return request.post(`${endpoints.apiBaseUrl()}/api/user/settings/favorites`, { favorites });
+  return request.post(`${endpoints.apiBaseUrl()}/api/user/settings/favorites`, {
+    favorites,
+  });
 }
 
 export function getSharedMessages(shareId: string): Promise<t.TSharedMessagesResponse> {
@@ -55,7 +57,9 @@ export function createSharedLink(
   conversationId: string,
   targetMessageId?: string,
 ): Promise<t.TSharedLinkResponse> {
-  return request.post(endpoints.createSharedLink(conversationId), { targetMessageId });
+  return request.post(endpoints.createSharedLink(conversationId), {
+    targetMessageId,
+  });
 }
 
 export function updateSharedLink(shareId: string): Promise<t.TSharedLinkResponse> {
@@ -706,7 +710,9 @@ export function forkConversation(payload: t.TForkConvoRequest): Promise<t.TForkC
 }
 
 export function deleteConversation(payload: t.TDeleteConversationRequest) {
-  return request.deleteWithOptions(endpoints.deleteConversation(), { data: { arg: payload } });
+  return request.deleteWithOptions(endpoints.deleteConversation(), {
+    data: { arg: payload },
+  });
 }
 
 export function clearAllConversations(): Promise<unknown> {
@@ -753,7 +759,9 @@ export function updateMessage(payload: t.TUpdateMessageRequest): Promise<unknown
     throw new Error('conversationId is required');
   }
 
-  return request.put(endpoints.messages({ conversationId, messageId }), { text });
+  return request.put(endpoints.messages({ conversationId, messageId }), {
+    text,
+  });
 }
 
 export function updateMessageContent(payload: t.TUpdateMessageContent): Promise<unknown> {
@@ -762,7 +770,10 @@ export function updateMessageContent(payload: t.TUpdateMessageContent): Promise<
     throw new Error('conversationId is required');
   }
 
-  return request.put(endpoints.messages({ conversationId, messageId }), { text, index });
+  return request.put(endpoints.messages({ conversationId, messageId }), {
+    text,
+    index,
+  });
 }
 
 export const editArtifact = async ({

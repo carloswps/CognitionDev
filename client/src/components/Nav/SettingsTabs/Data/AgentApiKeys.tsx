@@ -1,28 +1,28 @@
-import React, { useState } from 'react';
-import {
-  useGetAgentApiKeysQuery,
-  useCreateAgentApiKeyMutation,
-  useDeleteAgentApiKeyMutation,
-} from 'librechat-data-provider/react-query';
-import { Permissions, PermissionTypes } from 'librechat-data-provider';
-import { Plus, Trash2, Copy, CopyCheck, Key, Eye, EyeOff, ShieldEllipsis } from 'lucide-react';
 import {
   Button,
   Input,
   Label,
-  Spinner,
   OGDialog,
   OGDialogClose,
-  OGDialogTitle,
-  OGDialogHeader,
   OGDialogContent,
+  OGDialogHeader,
+  OGDialogTitle,
   OGDialogTrigger,
+  Spinner,
   useToastContext,
 } from '@librechat/client';
+import { Permissions, PermissionTypes } from 'librechat-data-provider';
+import {
+  useCreateAgentApiKeyMutation,
+  useDeleteAgentApiKeyMutation,
+  useGetAgentApiKeysQuery,
+} from 'librechat-data-provider/react-query';
+import { Copy, CopyCheck, Eye, EyeOff, Key, Plus, ShieldEllipsis, Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
 import type { PermissionConfig } from '~/components/ui';
-import { useUpdateRemoteAgentsPermissionsMutation } from '~/data-provider';
-import { useLocalize, useCopyToClipboard } from '~/hooks';
 import { AdminSettingsDialog } from '~/components/ui';
+import { useUpdateRemoteAgentsPermissionsMutation } from '~/data-provider';
+import { useCopyToClipboard, useLocalize } from '~/hooks';
 
 function CreateKeyDialog({ onKeyCreated }: { onKeyCreated?: () => void }) {
   const localize = useLocalize();
@@ -37,17 +37,26 @@ function CreateKeyDialog({ onKeyCreated }: { onKeyCreated?: () => void }) {
 
   const handleCreate = async () => {
     if (!name.trim()) {
-      showToast({ message: localize('com_ui_api_key_name_required'), status: 'error' });
+      showToast({
+        message: localize('com_ui_api_key_name_required'),
+        status: 'error',
+      });
       return;
     }
 
     try {
       const result = await createMutation.mutateAsync({ name: name.trim() });
       setNewKey(result.key);
-      showToast({ message: localize('com_ui_api_key_created'), status: 'success' });
+      showToast({
+        message: localize('com_ui_api_key_created'),
+        status: 'success',
+      });
       onKeyCreated?.();
     } catch {
-      showToast({ message: localize('com_ui_api_key_create_error'), status: 'error' });
+      showToast({
+        message: localize('com_ui_api_key_create_error'),
+        status: 'error',
+      });
     }
   };
 
@@ -63,7 +72,10 @@ function CreateKeyDialog({ onKeyCreated }: { onKeyCreated?: () => void }) {
       return;
     }
     copyKey(setIsCopying);
-    showToast({ message: localize('com_ui_api_key_copied'), status: 'success' });
+    showToast({
+      message: localize('com_ui_api_key_copied'),
+      status: 'success',
+    });
   };
 
   return (
@@ -169,9 +181,15 @@ function KeyItem({
   const handleDelete = async () => {
     try {
       await deleteMutation.mutateAsync(id);
-      showToast({ message: localize('com_ui_api_key_deleted'), status: 'success' });
+      showToast({
+        message: localize('com_ui_api_key_deleted'),
+        status: 'success',
+      });
     } catch {
-      showToast({ message: localize('com_ui_api_key_delete_error'), status: 'error' });
+      showToast({
+        message: localize('com_ui_api_key_delete_error'),
+        status: 'error',
+      });
     }
     setConfirmDelete(false);
   };
@@ -243,7 +261,9 @@ function KeyItem({
 
 function ApiKeysContent({ isOpen }: { isOpen: boolean }) {
   const localize = useLocalize();
-  const { data, isLoading, error } = useGetAgentApiKeysQuery({ enabled: isOpen });
+  const { data, isLoading, error } = useGetAgentApiKeysQuery({
+    enabled: isOpen,
+  });
 
   if (error) {
     return <div className="text-sm text-red-500">{localize('com_ui_api_keys_load_error')}</div>;
@@ -288,9 +308,18 @@ function ApiKeysContent({ isOpen }: { isOpen: boolean }) {
 
 const remoteAgentsPermissions: PermissionConfig[] = [
   { permission: Permissions.USE, labelKey: 'com_ui_remote_agents_allow_use' },
-  { permission: Permissions.CREATE, labelKey: 'com_ui_remote_agents_allow_create' },
-  { permission: Permissions.SHARE, labelKey: 'com_ui_remote_agents_allow_share' },
-  { permission: Permissions.SHARE_PUBLIC, labelKey: 'com_ui_remote_agents_allow_share_public' },
+  {
+    permission: Permissions.CREATE,
+    labelKey: 'com_ui_remote_agents_allow_create',
+  },
+  {
+    permission: Permissions.SHARE,
+    labelKey: 'com_ui_remote_agents_allow_share',
+  },
+  {
+    permission: Permissions.SHARE_PUBLIC,
+    labelKey: 'com_ui_remote_agents_allow_share_public',
+  },
 ];
 
 function RemoteAgentsAdminSettings() {
@@ -302,7 +331,10 @@ function RemoteAgentsAdminSettings() {
       showToast({ status: 'success', message: localize('com_ui_saved') });
     },
     onError: () => {
-      showToast({ status: 'error', message: localize('com_ui_error_save_admin_settings') });
+      showToast({
+        status: 'error',
+        message: localize('com_ui_error_save_admin_settings'),
+      });
     },
   });
 

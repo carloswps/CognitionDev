@@ -1,23 +1,25 @@
-import mongoose from 'mongoose';
 import { execSync } from 'child_process';
+import mongoose from 'mongoose';
 import {
   actionSchema,
-  agentSchema,
   agentApiKeySchema,
   agentCategorySchema,
+  agentSchema,
   assistantSchema,
   balanceSchema,
   bannerSchema,
   conversationTagSchema,
   convoSchema,
   fileSchema,
+  groupSchema,
   keySchema,
+  memorySchema,
   messageSchema,
   pluginAuthSchema,
   presetSchema,
   projectSchema,
-  promptSchema,
   promptGroupSchema,
+  promptSchema,
   roleSchema,
   sessionSchema,
   shareSchema,
@@ -25,8 +27,6 @@ import {
   toolCallSchema,
   transactionSchema,
   userSchema,
-  memorySchema,
-  groupSchema,
 } from '~/schema';
 import accessRoleSchema from '~/schema/accessRole';
 import aclEntrySchema from '~/schema/aclEntry';
@@ -399,72 +399,68 @@ describeIfFerretDB('FerretDB Multi-Tenancy Benchmark', () => {
       );
     });
 
-    it.each(SCALE_TIERS)(
-      'scales to %i orgs',
-      async (target) => {
-        const t0 = Date.now();
+    it.each(SCALE_TIERS)('scales to %i orgs', async (target) => {
+      const t0 = Date.now();
 
-        for (let i = orgsCreated + 1; i <= target; i++) {
-          const dbName = `${ORG_PREFIX}s${i}`;
-          createdDbs.push(dbName);
+      for (let i = orgsCreated + 1; i <= target; i++) {
+        const dbName = `${ORG_PREFIX}s${i}`;
+        createdDbs.push(dbName);
 
-          const conn = mongoose.connection.useDb(dbName, { useCache: i === 1 });
-          if (i === 1) {
-            firstOrgConn = conn;
-          }
-
-          const models = registerModels(conn);
-          for (const model of Object.values(models)) {
-            await model.createCollection();
-            await model.createIndexes();
-          }
-
-          if (i === 1) {
-            await models.User.create({
-              name: 'Latency Probe',
-              email: 'probe@scale.test',
-              username: 'probe',
-            });
-          }
-
-          if (i % 10 === 0) {
-            process.stdout.write(`  ${i}/${target} orgs\n`);
-          }
+        const conn = mongoose.connection.useDb(dbName, { useCache: i === 1 });
+        if (i === 1) {
+          firstOrgConn = conn;
         }
 
-        const batchMs = Date.now() - t0;
-        const batchSize = target - orgsCreated;
-        orgsCreated = target;
+        const models = registerModels(conn);
+        for (const model of Object.values(models)) {
+          await model.createCollection();
+          await model.createIndexes();
+        }
 
-        const lat = await measureLatency(firstOrgConn!.model('User'), {
-          email: 'probe@scale.test',
-        });
-        const cat = catalogMetrics();
+        if (i === 1) {
+          await models.User.create({
+            name: 'Latency Probe',
+            email: 'probe@scale.test',
+            username: 'probe',
+          });
+        }
 
-        tierResults.push({
-          tier: target,
-          batchMs,
-          avgPerOrg: batchSize > 0 ? Math.round(batchMs / batchSize) : 0,
-          catalog: cat,
-          latency: lat,
-        });
+        if (i % 10 === 0) {
+          process.stdout.write(`  ${i}/${target} orgs\n`);
+        }
+      }
 
-        console.log(`\n[Phase 3] === ${target} orgs ===`);
-        console.log(
-          `  Init: ${batchMs}ms total (${batchSize > 0 ? Math.round(batchMs / batchSize) : 0}ms/org, batch=${batchSize})`,
-        );
-        console.log(
-          `  Query: avg=${fmt(lat.avg)}ms  median=${fmt(lat.median)}ms  p95=${fmt(lat.p95)}ms`,
-        );
-        console.log(
-          `  Catalog: ${cat.collections} collections, ${cat.catalogIndexes} indexes, ` +
-            `${cat.dataTables} data tables, pg_class=${cat.pgClassTotal}`,
-        );
+      const batchMs = Date.now() - t0;
+      const batchSize = target - orgsCreated;
+      orgsCreated = target;
 
-        expect(cat.collections).toBeGreaterThan(0);
-      },
-      600_000,
-    );
+      const lat = await measureLatency(firstOrgConn!.model('User'), {
+        email: 'probe@scale.test',
+      });
+      const cat = catalogMetrics();
+
+      tierResults.push({
+        tier: target,
+        batchMs,
+        avgPerOrg: batchSize > 0 ? Math.round(batchMs / batchSize) : 0,
+        catalog: cat,
+        latency: lat,
+      });
+
+      console.log(`\n[Phase 3] === ${target} orgs ===`);
+      console.log(
+        `  Init: ${batchMs}ms total (${batchSize > 0 ? Math.round(batchMs / batchSize) : 0}ms/org, batch=${batchSize})`,
+      );
+      console.log(
+        `  Query: avg=${fmt(lat.avg)}ms  median=${fmt(lat.median)}ms  p95=${fmt(lat.p95)}ms`,
+      );
+      console.log(
+        `  Catalog: ${cat.collections} collections, ${cat.catalogIndexes} indexes, ` +
+          `${cat.dataTables} data tables, pg_class=${cat.pgClassTotal}`,
+      );
+
+      expect(cat.collections).toBeGreaterThan(0);
+    }, 600_000);
 
     afterAll(() => {
       if (tierResults.length === 0) {
@@ -517,7 +513,11 @@ describeIfFerretDB('FerretDB Multi-Tenancy Benchmark', () => {
       await HighIdx.createCollection();
       await HighIdx.createIndexes();
 
-      const bareSchema = new mongoose.Schema({ name: String, email: String, ts: Date });
+      const bareSchema = new mongoose.Schema({
+        name: String,
+        email: String,
+        ts: Date,
+      });
       const LowIdx = conn.model('BareDoc', bareSchema);
       await LowIdx.createCollection();
 

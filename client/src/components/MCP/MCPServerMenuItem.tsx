@@ -1,17 +1,17 @@
 import * as Ariakit from '@ariakit/react';
-import { Check } from 'lucide-react';
 import { MCPIcon } from '@librechat/client';
+import { Check } from 'lucide-react';
+import { useLocalize } from '~/hooks';
 import type { MCPServerDefinition } from '~/hooks/MCP/useMCPServerManager';
+import { cn } from '~/utils';
 import type { MCPServerStatusIconProps } from './MCPServerStatusIcon';
 import MCPServerStatusIcon from './MCPServerStatusIcon';
 import {
+  type ConnectionStatusMap,
   getStatusColor,
   getStatusTextKey,
   shouldShowActionButton,
-  type ConnectionStatusMap,
 } from './mcpServerUtils';
-import { useLocalize } from '~/hooks';
-import { cn } from '~/utils';
 
 interface MCPServerMenuItemProps {
   server: MCPServerDefinition;

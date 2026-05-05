@@ -1,6 +1,6 @@
-import { AuthType, EToolResources } from 'librechat-data-provider';
 import type { TPlugin } from 'librechat-data-provider';
-import { filterUniquePlugins, checkPluginAuth, getToolkitKey } from './format';
+import { AuthType, EToolResources } from 'librechat-data-provider';
+import { checkPluginAuth, filterUniquePlugins, getToolkitKey } from './format';
 
 describe('format.ts helper functions', () => {
   describe('filterUniquePlugins', () => {
@@ -18,7 +18,11 @@ describe('format.ts helper functions', () => {
       const plugins: TPlugin[] = [
         { name: 'Plugin1', pluginKey: 'key1', description: 'First plugin' },
         { name: 'Plugin2', pluginKey: 'key2', description: 'Second plugin' },
-        { name: 'Plugin1 Duplicate', pluginKey: 'key1', description: 'Duplicate of first' },
+        {
+          name: 'Plugin1 Duplicate',
+          pluginKey: 'key1',
+          description: 'Duplicate of first',
+        },
         { name: 'Plugin3', pluginKey: 'key3', description: 'Third plugin' },
       ];
 
@@ -32,7 +36,11 @@ describe('format.ts helper functions', () => {
     });
 
     it('should handle plugins with identical data', () => {
-      const plugin: TPlugin = { name: 'Plugin', pluginKey: 'key', description: 'Test' };
+      const plugin: TPlugin = {
+        name: 'Plugin',
+        pluginKey: 'key',
+        description: 'Test',
+      };
       const plugins: TPlugin[] = [plugin, plugin, plugin];
 
       const result = filterUniquePlugins(plugins);
@@ -58,7 +66,11 @@ describe('format.ts helper functions', () => {
     });
 
     it('should return false when authConfig is undefined', () => {
-      const plugin: TPlugin = { name: 'Test', pluginKey: 'test', description: 'Test plugin' };
+      const plugin: TPlugin = {
+        name: 'Test',
+        pluginKey: 'test',
+        description: 'Test plugin',
+      };
       const result = checkPluginAuth(plugin);
       expect(result).toBe(false);
     });
@@ -84,7 +96,11 @@ describe('format.ts helper functions', () => {
         description: 'Test plugin',
         authConfig: [
           { authField: 'API_KEY', label: 'API Key', description: 'API Key' },
-          { authField: 'SECRET_KEY', label: 'Secret Key', description: 'Secret Key' },
+          {
+            authField: 'SECRET_KEY',
+            label: 'Secret Key',
+            description: 'Secret Key',
+          },
         ],
       };
 
@@ -102,7 +118,11 @@ describe('format.ts helper functions', () => {
         description: 'Test plugin',
         authConfig: [
           { authField: 'API_KEY', label: 'API Key', description: 'API Key' },
-          { authField: 'SECRET_KEY', label: 'Secret Key', description: 'Secret Key' },
+          {
+            authField: 'SECRET_KEY',
+            label: 'Secret Key',
+            description: 'Secret Key',
+          },
         ],
       };
 
@@ -160,7 +180,11 @@ describe('format.ts helper functions', () => {
         pluginKey: 'test',
         description: 'Test plugin',
         authConfig: [
-          { authField: 'PRIMARY_KEY||ALTERNATE_KEY', label: 'API Key', description: 'API Key' },
+          {
+            authField: 'PRIMARY_KEY||ALTERNATE_KEY',
+            label: 'API Key',
+            description: 'API Key',
+          },
         ],
       };
 
@@ -196,7 +220,12 @@ describe('format.ts helper functions', () => {
         pluginKey: 'test',
         description: 'Test plugin',
         authConfig: [
-          { authField: 'MISSING_KEY', label: 'API Key', description: 'API Key', optional: true },
+          {
+            authField: 'MISSING_KEY',
+            label: 'API Key',
+            description: 'API Key',
+            optional: true,
+          },
         ],
       };
 
@@ -210,8 +239,18 @@ describe('format.ts helper functions', () => {
         pluginKey: 'test',
         description: 'Test plugin',
         authConfig: [
-          { authField: 'MISSING_KEY_A', label: 'Key A', description: 'Key A', optional: true },
-          { authField: 'MISSING_KEY_B', label: 'Key B', description: 'Key B', optional: true },
+          {
+            authField: 'MISSING_KEY_A',
+            label: 'Key A',
+            description: 'Key A',
+            optional: true,
+          },
+          {
+            authField: 'MISSING_KEY_B',
+            label: 'Key B',
+            description: 'Key B',
+            optional: true,
+          },
         ],
       };
 
@@ -225,7 +264,11 @@ describe('format.ts helper functions', () => {
         pluginKey: 'test',
         description: 'Test plugin',
         authConfig: [
-          { authField: 'MISSING_KEY', label: 'Required Key', description: 'Required' },
+          {
+            authField: 'MISSING_KEY',
+            label: 'Required Key',
+            description: 'Required',
+          },
           {
             authField: 'OPTIONAL_KEY',
             label: 'Optional Key',
@@ -247,7 +290,11 @@ describe('format.ts helper functions', () => {
         pluginKey: 'test',
         description: 'Test plugin',
         authConfig: [
-          { authField: 'REQUIRED_KEY', label: 'Required Key', description: 'Required' },
+          {
+            authField: 'REQUIRED_KEY',
+            label: 'Required Key',
+            description: 'Required',
+          },
           {
             authField: 'OPTIONAL_KEY',
             label: 'Optional Key',
@@ -265,7 +312,11 @@ describe('format.ts helper functions', () => {
   describe('getToolkitKey', () => {
     it('should return undefined when toolName is undefined', () => {
       const toolkits: TPlugin[] = [
-        { name: 'Toolkit1', pluginKey: 'toolkit1', description: 'Test toolkit' },
+        {
+          name: 'Toolkit1',
+          pluginKey: 'toolkit1',
+          description: 'Test toolkit',
+        },
       ];
 
       const result = getToolkitKey({ toolkits, toolName: undefined });
@@ -274,7 +325,11 @@ describe('format.ts helper functions', () => {
 
     it('should return undefined when toolName is empty string', () => {
       const toolkits: TPlugin[] = [
-        { name: 'Toolkit1', pluginKey: 'toolkit1', description: 'Test toolkit' },
+        {
+          name: 'Toolkit1',
+          pluginKey: 'toolkit1',
+          description: 'Test toolkit',
+        },
       ];
 
       const result = getToolkitKey({ toolkits, toolName: '' });
@@ -283,8 +338,16 @@ describe('format.ts helper functions', () => {
 
     it('should return undefined when no matching toolkit is found', () => {
       const toolkits: TPlugin[] = [
-        { name: 'Toolkit1', pluginKey: 'toolkit1', description: 'Test toolkit' },
-        { name: 'Toolkit2', pluginKey: 'toolkit2', description: 'Test toolkit' },
+        {
+          name: 'Toolkit1',
+          pluginKey: 'toolkit1',
+          description: 'Test toolkit',
+        },
+        {
+          name: 'Toolkit2',
+          pluginKey: 'toolkit2',
+          description: 'Test toolkit',
+        },
       ];
 
       const result = getToolkitKey({ toolkits, toolName: 'nonexistent_tool' });
@@ -293,8 +356,16 @@ describe('format.ts helper functions', () => {
 
     it('should match toolkit when toolName starts with pluginKey', () => {
       const toolkits: TPlugin[] = [
-        { name: 'Toolkit1', pluginKey: 'toolkit1', description: 'Test toolkit' },
-        { name: 'Toolkit2', pluginKey: 'toolkit2', description: 'Test toolkit' },
+        {
+          name: 'Toolkit1',
+          pluginKey: 'toolkit1',
+          description: 'Test toolkit',
+        },
+        {
+          name: 'Toolkit2',
+          pluginKey: 'toolkit2',
+          description: 'Test toolkit',
+        },
       ];
 
       const result = getToolkitKey({ toolkits, toolName: 'toolkit2_function' });
@@ -303,8 +374,16 @@ describe('format.ts helper functions', () => {
 
     it('should handle image_edit tools with suffix matching', () => {
       const toolkits: TPlugin[] = [
-        { name: 'Image Editor', pluginKey: 'image_edit_v1', description: 'Image editing' },
-        { name: 'Image Editor 2', pluginKey: 'image_edit_v2', description: 'Image editing v2' },
+        {
+          name: 'Image Editor',
+          pluginKey: 'image_edit_v1',
+          description: 'Image editing',
+        },
+        {
+          name: 'Image Editor 2',
+          pluginKey: 'image_edit_v2',
+          description: 'Image editing v2',
+        },
       ];
 
       const result = getToolkitKey({
@@ -317,7 +396,11 @@ describe('format.ts helper functions', () => {
     it('should match the first toolkit when multiple matches are possible', () => {
       const toolkits: TPlugin[] = [
         { name: 'Toolkit', pluginKey: 'toolkit', description: 'Base toolkit' },
-        { name: 'Toolkit Extended', pluginKey: 'toolkit_extended', description: 'Extended' },
+        {
+          name: 'Toolkit Extended',
+          pluginKey: 'toolkit_extended',
+          description: 'Extended',
+        },
       ];
 
       const result = getToolkitKey({ toolkits, toolName: 'toolkit_function' });

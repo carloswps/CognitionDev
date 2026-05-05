@@ -1,11 +1,11 @@
-import { useState, memo, useRef } from 'react';
 import * as Menu from '@ariakit/react/menu';
+import { Avatar, DropdownMenuSeparator, GearIcon, LinkIcon } from '@librechat/client';
 import { FileText, LogOut } from 'lucide-react';
-import { LinkIcon, GearIcon, DropdownMenuSeparator, Avatar } from '@librechat/client';
+import { memo, useRef, useState } from 'react';
 import { MyFilesModal } from '~/components/Chat/Input/Files/MyFilesModal';
 import { useGetStartupConfig, useGetUserBalance } from '~/data-provider';
-import { useAuthContext } from '~/hooks/AuthContext';
 import { useLocalize } from '~/hooks';
+import { useAuthContext } from '~/hooks/AuthContext';
 import Settings from './Settings';
 
 function AccountSettings({ collapsed = false }: { collapsed?: boolean }) {

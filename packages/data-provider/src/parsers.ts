@@ -1,22 +1,22 @@
 import dayjs from 'dayjs';
+import { formatModelName } from 'src/modelFormatter';
 import type { ZodIssue } from 'zod';
-import type * as a from './types/assistants';
-import type * as s from './schemas';
-import type * as t from './types';
-import { ContentTypes } from './types/runs';
-import {
-  openAISchema,
-  googleSchema,
-  EModelEndpoint,
-  anthropicSchema,
-  assistantSchema,
-  // agentsSchema,
-  compactAgentsSchema,
-  compactGoogleSchema,
-  compactAssistantSchema,
-} from './schemas';
 import { bedrockInputSchema } from './bedrock';
 import { alternateName } from './config';
+import type * as s from './schemas';
+import {
+  anthropicSchema,
+  assistantSchema,
+  compactAgentsSchema,
+  compactAssistantSchema,
+  compactGoogleSchema,
+  EModelEndpoint,
+  googleSchema,
+  openAISchema,
+} from './schemas';
+import type * as t from './types';
+import type * as a from './types/assistants';
+import { ContentTypes } from './types/runs';
 
 type EndpointSchema =
   | typeof openAISchema
@@ -238,7 +238,10 @@ export const getResponseSender = (endpointOption: Partial<t.TEndpointOption>): s
   }
 
   if (endpoint === EModelEndpoint.anthropic) {
-    return modelLabel || 'Claude';
+    if (modelLabel) {
+      return modelLabel;
+    }
+    return formatModelName(model, endpoint);
   }
 
   if (endpoint === EModelEndpoint.bedrock) {
@@ -248,11 +251,8 @@ export const getResponseSender = (endpointOption: Partial<t.TEndpointOption>): s
   if (endpoint === EModelEndpoint.google) {
     if (modelLabel) {
       return modelLabel;
-    } else if (model?.toLowerCase().includes('gemma') === true) {
-      return 'Gemma';
     }
-
-    return 'Gemini';
+    return formatModelName(model, endpoint);
   }
 
   if (endpoint === EModelEndpoint.custom || endpointType === EModelEndpoint.custom) {

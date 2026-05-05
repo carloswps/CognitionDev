@@ -1,6 +1,6 @@
+import { exec } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import { exec } from 'child_process';
 
 async function main(languagesDir: string) {
   const files = fs.readdirSync(languagesDir);

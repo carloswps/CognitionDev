@@ -1,15 +1,15 @@
-import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import {
+  balanceSchema,
   CANCEL_RATE,
   createMethods,
-  balanceSchema,
   transactionSchema,
 } from '@librechat/data-schemas';
-import type { PricingFns, TxMetadata, PreparedEntry } from './transactions';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
+import type { PreparedEntry, PricingFns, TxMetadata } from './transactions';
 import {
-  prepareStructuredTokenSpend,
   bulkWriteTransactions,
+  prepareStructuredTokenSpend,
   prepareTokenSpend,
 } from './transactions';
 
@@ -203,7 +203,10 @@ describe('prepareStructuredTokenSpend', () => {
   it('should prepare prompt + completion for structured tokens', () => {
     const entries = prepareStructuredTokenSpend(
       baseTxData,
-      { promptTokens: { input: 100, write: 50, read: 30 }, completionTokens: 80 },
+      {
+        promptTokens: { input: 100, write: 50, read: 30 },
+        completionTokens: 80,
+      },
       mockPricing,
     );
     expect(entries).toHaveLength(2);
@@ -227,7 +230,10 @@ describe('prepareStructuredTokenSpend', () => {
 
     const entries = prepareStructuredTokenSpend(
       baseTxData,
-      { promptTokens: { input: 100, write: 50, read: 30 }, completionTokens: 0 },
+      {
+        promptTokens: { input: 100, write: 50, read: 30 },
+        completionTokens: 0,
+      },
       mockPricing,
     );
     const prompt = entries.find((e) => e.doc.tokenType === 'prompt');
@@ -312,7 +318,12 @@ describe('bulkWriteTransactions (real DB)', () => {
   it('should create balance document and update credits', async () => {
     const docs: PreparedEntry[] = [
       {
-        doc: { user: testUserId, conversationId: 'c1', tokenType: 'prompt', tokenValue: -300 },
+        doc: {
+          user: testUserId,
+          conversationId: 'c1',
+          tokenType: 'prompt',
+          tokenValue: -300,
+        },
         tokenValue: -300,
         balance: { enabled: true },
       },
@@ -334,7 +345,12 @@ describe('bulkWriteTransactions (real DB)', () => {
   it('should NOT update balance when no docs have balance enabled', async () => {
     const docs: PreparedEntry[] = [
       {
-        doc: { user: testUserId, conversationId: 'c1', tokenType: 'prompt', tokenValue: -100 },
+        doc: {
+          user: testUserId,
+          conversationId: 'c1',
+          tokenType: 'prompt',
+          tokenValue: -100,
+        },
         tokenValue: -100,
         balance: { enabled: false },
       },
@@ -356,12 +372,22 @@ describe('bulkWriteTransactions (real DB)', () => {
 
     const docs: PreparedEntry[] = [
       {
-        doc: { user: testUserId, conversationId: 'c1', tokenType: 'prompt', tokenValue: -100 },
+        doc: {
+          user: testUserId,
+          conversationId: 'c1',
+          tokenType: 'prompt',
+          tokenValue: -100,
+        },
         tokenValue: -100,
         balance: { enabled: true },
       },
       {
-        doc: { user: testUserId, conversationId: 'c1', tokenType: 'completion', tokenValue: -50 },
+        doc: {
+          user: testUserId,
+          conversationId: 'c1',
+          tokenType: 'completion',
+          tokenValue: -50,
+        },
         tokenValue: -50,
         balance: { enabled: false },
       },
@@ -382,7 +408,12 @@ describe('bulkWriteTransactions (real DB)', () => {
   it('should handle null balance gracefully', async () => {
     const docs: PreparedEntry[] = [
       {
-        doc: { user: testUserId, conversationId: 'c1', tokenType: 'prompt', tokenValue: -100 },
+        doc: {
+          user: testUserId,
+          conversationId: 'c1',
+          tokenType: 'prompt',
+          tokenValue: -100,
+        },
         tokenValue: -100,
         balance: null,
       },
@@ -416,7 +447,9 @@ describe('end-to-end: prepare → bulk write → verify', () => {
     };
     await bulkWriteTransactions({ user: testUserId, docs: entries }, dbOps);
 
-    const txns = (await Transaction.find({ user: testUserId }).lean()) as Record<string, unknown>[];
+    const txns = (await Transaction.find({
+      user: testUserId,
+    }).lean()) as Record<string, unknown>[];
     expect(txns).toHaveLength(2);
 
     const prompt = txns.find((t) => t.tokenType === 'prompt');
@@ -448,7 +481,10 @@ describe('end-to-end: prepare → bulk write → verify', () => {
 
     const entries = prepareStructuredTokenSpend(
       baseTxData,
-      { promptTokens: { input: 100, write: 50, read: 200 }, completionTokens: 80 },
+      {
+        promptTokens: { input: 100, write: 50, read: 200 },
+        completionTokens: 80,
+      },
       mockPricing,
     );
     const dbOps = {
@@ -457,7 +493,9 @@ describe('end-to-end: prepare → bulk write → verify', () => {
     };
     await bulkWriteTransactions({ user: testUserId, docs: entries }, dbOps);
 
-    const txns = (await Transaction.find({ user: testUserId }).lean()) as Record<string, unknown>[];
+    const txns = (await Transaction.find({
+      user: testUserId,
+    }).lean()) as Record<string, unknown>[];
     expect(txns).toHaveLength(2);
 
     const prompt = txns.find((t) => t.tokenType === 'prompt');

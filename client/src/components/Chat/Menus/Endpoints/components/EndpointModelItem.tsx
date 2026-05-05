@@ -1,12 +1,12 @@
-import React from 'react';
 import { VisuallyHidden } from '@ariakit/react';
+import { formatModelName, isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
 import { CheckCircle2, EarthIcon, Pin, PinOff } from 'lucide-react';
-import { isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
+import type React from 'react';
 import type { Endpoint } from '~/common';
-import { useFavorites, useLocalize, useIsActiveItem } from '~/hooks';
-import { useModelSelectorContext } from '../ModelSelectorContext';
-import { CustomMenuItem as MenuItem } from '../CustomMenu';
+import { useFavorites, useIsActiveItem, useLocalize } from '~/hooks';
 import { cn } from '~/utils';
+import { CustomMenuItem as MenuItem } from '../CustomMenu';
+import { useModelSelectorContext } from '../ModelSelectorContext';
 
 interface EndpointModelItemProps {
   modelId: string | null;
@@ -29,7 +29,7 @@ export function EndpointModelItem({ modelId, endpoint }: EndpointModelItemProps)
   const { ref: itemRef, isActive } = useIsActiveItem<HTMLDivElement>();
 
   let isGlobal = false;
-  let modelName = modelId;
+  let modelName = formatModelName(modelId, endpoint?.value);
   const avatarUrl = endpoint?.modelIcons?.[modelId ?? ''] || null;
 
   // Use custom names if available

@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Types } from 'mongoose';
+import mongoose, { type Document, Schema, type Types } from 'mongoose';
 
 export interface IKey extends Document {
   userId: Types.ObjectId;

@@ -1,15 +1,15 @@
-import { useRef, useEffect, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
-import { useRecoilValue } from 'recoil';
 import { TextareaAutosize, TooltipAnchor } from '@librechat/client';
 import { useUpdateMessageMutation } from 'librechat-data-provider/react-query';
+import { useCallback, useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import { useRecoilValue } from 'recoil';
 import type { TEditProps } from '~/common';
-import { useMessagesOperations, useMessagesConversation } from '~/Providers';
-import { useGetAddedConvo } from '~/hooks/Chat';
-import { cn, removeFocusRings } from '~/utils';
 import { useLocalize } from '~/hooks';
-import Container from './Container';
+import { useGetAddedConvo } from '~/hooks/Chat';
+import { useMessagesConversation, useMessagesOperations } from '~/Providers';
 import store from '~/store';
+import { cn, removeFocusRings } from '~/utils';
+import Container from './Container';
 
 const EditMessage = ({
   text,

@@ -1,22 +1,22 @@
-import download from 'downloadjs';
-import { useCallback } from 'react';
-import { useParams } from 'react-router-dom';
-import exportFromJSON from 'export-from-json';
 import { useQueryClient } from '@tanstack/react-query';
-import {
-  buildTree,
-  QueryKeys,
-  ContentTypes,
-  ToolCallTypes,
-  imageGenTools,
-  isImageVisionTool,
-} from 'librechat-data-provider';
+import download from 'downloadjs';
+import exportFromJSON from 'export-from-json';
 import type {
-  TMessageContentParts,
   TConversation,
   TMessage,
+  TMessageContentParts,
   TPreset,
 } from 'librechat-data-provider';
+import {
+  buildTree,
+  ContentTypes,
+  imageGenTools,
+  isImageVisionTool,
+  QueryKeys,
+  ToolCallTypes,
+} from 'librechat-data-provider';
+import { useCallback } from 'react';
+import { useParams } from 'react-router-dom';
 import useBuildMessageTree from '~/hooks/Messages/useBuildMessageTree';
 import { useScreenshot } from '~/hooks/ScreenshotContext';
 import { cleanupPreset } from '~/utils';
@@ -372,7 +372,9 @@ export default function useExportConversation({
 
     /** Use JSON.stringify without indentation to minimize file size for deeply nested recursive exports */
     const jsonString = JSON.stringify(data);
-    const blob = new Blob([jsonString], { type: 'application/json;charset=utf-8' });
+    const blob = new Blob([jsonString], {
+      type: 'application/json;charset=utf-8',
+    });
     download(blob, `${filename}.json`, 'application/json');
   };
 

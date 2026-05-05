@@ -34,19 +34,19 @@
  * Use the /v1/models endpoint to list available agents.
  */
 
-export * from './types';
 export * from './handlers';
 export {
-  createAgentChatCompletion,
-  listAgentModels,
-  convertMessages,
-  validateRequest,
-  isChatCompletionValidationFailure,
-  createErrorResponse,
-  sendErrorResponse,
   buildNonStreamingResponse,
   type ChatCompletionDependencies,
+  type ChatCompletionValidationFailure,
   type ChatCompletionValidationResult,
   type ChatCompletionValidationSuccess,
-  type ChatCompletionValidationFailure,
+  convertMessages,
+  createAgentChatCompletion,
+  createErrorResponse,
+  isChatCompletionValidationFailure,
+  listAgentModels,
+  sendErrorResponse,
+  validateRequest,
 } from './service';
+export * from './types';

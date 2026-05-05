@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Search, X } from 'lucide-react';
 import { Input } from '@librechat/client';
+import { Search, X } from 'lucide-react';
+import type React from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDebounce, useLocalize } from '~/hooks';
 
 /**

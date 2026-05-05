@@ -1,14 +1,14 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+import type React from 'react';
 import { RecoilRoot } from 'recoil';
-import { MCPUIResource } from '../MCPUIResource';
+import { useLocalize } from '~/hooks';
 import {
   useMessageContext,
   useOptionalMessagesConversation,
   useOptionalMessagesOperations,
 } from '~/Providers';
-import { useLocalize } from '~/hooks';
 import { handleUIAction } from '~/utils';
+import { MCPUIResource } from '../MCPUIResource';
 
 // Mock dependencies
 jest.mock('~/Providers');
@@ -142,7 +142,9 @@ describe('MCPUIResource', () => {
     });
 
     it('should resolve resources by resourceId across conversation messages', () => {
-      mockUseMessageContext.mockReturnValue({ messageId: 'msg-current' } as any);
+      mockUseMessageContext.mockReturnValue({
+        messageId: 'msg-current',
+      } as any);
       currentTestMessages = [
         {
           messageId: 'msg-previous',

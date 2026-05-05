@@ -1,7 +1,7 @@
-import React from 'react';
+import { Button, Label } from '@librechat/client';
 import { motion } from 'framer-motion';
 import { Download } from 'lucide-react';
-import { Button, Label } from '@librechat/client';
+import type React from 'react';
 import { useLocalize } from '~/hooks';
 
 const fadeAnimation = {

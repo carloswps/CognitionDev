@@ -1,5 +1,6 @@
-import React, { memo, useState } from 'react';
 import { AlertCircle } from 'lucide-react';
+import type React from 'react';
+import { memo, useState } from 'react';
 import { icons } from '~/hooks/Endpoint/Icons';
 
 export const URLIcon = memo(

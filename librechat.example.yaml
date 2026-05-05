@@ -27,6 +27,8 @@ cache: true
 
 # Custom interface configuration
 interface:
+  # Enable/disable for formatting name model
+  modelFormatting: true
   customWelcome: 'Welcome to LibreChat! Enjoy your experience.'
   # Enable/disable file search as a chatarea selection (default: true)
   # Note: This setting does not disable the Agents File Search Capability.
@@ -111,23 +113,23 @@ interface:
   #   public: false
   # MCP Servers configuration example
   # mcpServers:
-    # Controls user permissions for MCP (Model Context Protocol) server management
-    # - use: Allow users to use configured MCP servers
-    # - create: Allow users to create and manage new MCP servers
-    # - share: Allow users to share MCP servers with other users
-    # - public: Allow users to share MCP servers publicly (with everyone)
-     
-    # Creation / edit MCP server config Dialog config example
-    # trustCheckbox:
-    #   label:
-    #     en: 'I understand and I want to continue'
-    #     de: 'Ich verstehe und möchte fortfahren'
-    #     de-DE: 'Ich verstehe und möchte fortfahren' # You can narrow translation to regions like (de-DE or de-CH)
-    #   subLabel:
-    #     en: |
-    #       Librechat hasn't reviewed this MCP server. Attackers may attempt to steal your data or trick the model into taking unintended actions, including destroying data. <a href="https://google.de" target="_blank"><strong>Learn more.</strong></a>
-    #     de: |
-    #       LibreChat hat diesen MCP-Server nicht überprüft. Angreifer könnten versuchen, Ihre Daten zu stehlen oder das Modell zu unbeabsichtigten Aktionen zu verleiten, einschließlich der Zerstörung von Daten. <a href="https://google.de" target="_blank"><strong>Mehr erfahren.</strong></a>
+  # Controls user permissions for MCP (Model Context Protocol) server management
+  # - use: Allow users to use configured MCP servers
+  # - create: Allow users to create and manage new MCP servers
+  # - share: Allow users to share MCP servers with other users
+  # - public: Allow users to share MCP servers publicly (with everyone)
+
+  # Creation / edit MCP server config Dialog config example
+  # trustCheckbox:
+  #   label:
+  #     en: 'I understand and I want to continue'
+  #     de: 'Ich verstehe und möchte fortfahren'
+  #     de-DE: 'Ich verstehe und möchte fortfahren' # You can narrow translation to regions like (de-DE or de-CH)
+  #   subLabel:
+  #     en: |
+  #       Librechat hasn't reviewed this MCP server. Attackers may attempt to steal your data or trick the model into taking unintended actions, including destroying data. <a href="https://google.de" target="_blank"><strong>Learn more.</strong></a>
+  #     de: |
+  #       LibreChat hat diesen MCP-Server nicht überprüft. Angreifer könnten versuchen, Ihre Daten zu stehlen oder das Modell zu unbeabsichtigten Aktionen zu verleiten, einschließlich der Zerstörung von Daten. <a href="https://google.de" target="_blank"><strong>Mehr erfahren.</strong></a>
 
   # Temporary chat retention period in hours (default: 720, min: 1, max: 8760)
   # temporaryChatRetention: 1
@@ -403,6 +405,7 @@ endpoints:
       models:
         default: ['meta-llama/llama-3-70b-instruct']
         fetch: true
+      filterFreeModels: true
       titleConvo: true
       titleModel: 'meta-llama/llama-3-70b-instruct'
       # Recommended: Drop the stop parameter from the request as Openrouter models use a variety of stop tokens.
@@ -418,8 +421,7 @@ endpoints:
       headers:
         x-librechat-body-parentmessageid: '{{LIBRECHAT_BODY_PARENTMESSAGEID}}'
       models:
-        default:
-          ['gpt-4o-mini', 'claude-4.5-sonnet', 'llama-3.1-8b-instruct', 'gemini-2.5-flash-lite']
+        default: ['gpt-4o-mini', 'claude-4.5-sonnet', 'llama-3.1-8b-instruct', 'gemini-2.5-flash-lite']
         fetch: true
       titleConvo: true
       titleModel: 'gpt-4o-mini'
@@ -607,3 +609,55 @@ endpoints:
 #     # instructions: "You are a memory management assistant. Store and manage user information accurately."
 #     # model_parameters:
 #     #   temperature: 0.1
+
+modelSpecs:
+  list:
+    - name: 'feynman-mode'
+      label: 'Feynman Mode'
+      description: 'Forces active learning — explain concepts in your own words before getting any answer'
+      preset:
+        endpoint: 'google'
+        model: 'gemini-2.5-flash'
+        temperature: 0.7
+        instructions: |
+          You are a Feynman Mode assistant. Your sole purpose is to force active learning through the Feynman Technique.
+
+          ## Core Rules
+
+          **Rule 1 — Never answer directly.**
+          When the user asks any question or introduces any concept, NEVER provide the answer or explanation first. Always respond by asking them to explain the concept in their own words, as if teaching it to a 12-year-old with no technical background.
+
+          **Rule 2 — Evaluate every explanation.**
+          After the user provides their explanation, analyze it and respond with:
+          1. A Simplicity Score from 1 to 10
+          2. What they got right
+          3. Knowledge gaps or missing pieces
+          4. Any jargon used without being explained
+
+          **Rule 3 — Simplicity Score criteria**
+          - 1–3: Heavy jargon, incomplete, or shows fundamental misunderstanding
+          - 4–6: Partial understanding, some jargon, missing key concepts
+          - 7–8: Clear explanation, minimal jargon, most concepts covered
+          - 9–10: Simple, complete, analogy-driven — a 12-year-old could understand it
+
+          **Rule 4 — Guide, never tell.**
+          After scoring, ask ONE targeted follow-up question about the most critical knowledge gap. Do not reveal the full answer yet.
+
+          **Rule 5 — Reveal only after score ≥ 8 or 3 attempts.**
+          Only provide the complete correct explanation once the user reaches a Simplicity Score of 8 or higher, or after 3 rounds of attempts.
+
+          ## Response Format
+
+          When the user asks a question, respond with:
+          "Before I explain, tell me: how would YOU describe [concept] to someone with no technical background?"
+
+          When evaluating an explanation, respond with:
+          **Simplicity Score: X/10**
+          ✅ What you got right: ...
+          ❌ Knowledge gaps: ...
+          ⚠️ Jargon without explanation: ...
+
+          Follow-up: [one targeted question about the biggest gap]
+
+          When revealing the answer (score ≥ 8 or 3rd attempt):
+          "Great effort! Here is the complete picture: ..."

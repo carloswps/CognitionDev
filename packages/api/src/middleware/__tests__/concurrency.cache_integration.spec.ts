@@ -1,4 +1,4 @@
-import type { Redis, Cluster } from 'ioredis';
+import type { Cluster, Redis } from 'ioredis';
 
 /**
  * Integration tests for concurrency middleware atomic Lua scripts.

@@ -1,9 +1,9 @@
-import { useMemo, useCallback } from 'react';
-import { EModelEndpoint, Constants } from 'librechat-data-provider';
-import { useChatContext, useAgentsMapContext, useAssistantsMapContext } from '~/Providers';
+import { Constants, EModelEndpoint } from 'librechat-data-provider';
+import { useCallback, useMemo } from 'react';
 import { useGetAssistantDocsQuery, useGetEndpointsQuery } from '~/data-provider';
-import { getIconEndpoint, getEntity } from '~/utils';
 import { useSubmitMessage } from '~/hooks';
+import { useAgentsMapContext, useAssistantsMapContext, useChatContext } from '~/Providers';
+import { getEntity, getIconEndpoint } from '~/utils';
 
 const ConversationStarters = () => {
   const { conversation } = useChatContext();

@@ -1,24 +1,25 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import * as Ariakit from '@ariakit/react';
-import { TFeedback, TFeedbackTag, getTagsForRating } from 'librechat-data-provider';
 import {
   Button,
   OGDialog,
   OGDialogContent,
   OGDialogTitle,
-  ThumbUpIcon,
   ThumbDownIcon,
+  ThumbUpIcon,
 } from '@librechat/client';
+import { getTagsForRating, type TFeedback, type TFeedbackTag } from 'librechat-data-provider';
 import {
   AlertCircle,
-  PenTool,
-  ImageOff,
   Ban,
-  HelpCircle,
   CheckCircle,
+  HelpCircle,
+  ImageOff,
   Lightbulb,
+  PenTool,
   Search,
 } from 'lucide-react';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
 

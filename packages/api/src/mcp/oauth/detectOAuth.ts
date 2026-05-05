@@ -7,8 +7,8 @@
 
 import { discoverOAuthProtectedResourceMetadata } from '@modelcontextprotocol/sdk/client/auth.js';
 import { isSSRFTarget, resolveHostnameSSRF } from '~/auth';
-import { probeResourceMetadataHint } from './resourceHint';
 import { mcpConfig } from '../mcpConfig';
+import { probeResourceMetadataHint } from './resourceHint';
 
 export interface OAuthDetectionResult {
   requiresOAuth: boolean;

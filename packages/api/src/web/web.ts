@@ -1,18 +1,18 @@
-import {
-  AuthType,
-  SafeSearchTypes,
-  SearchCategories,
-  extractVariableName,
-} from 'librechat-data-provider';
+import type { TWebSearchCategories, TWebSearchKeys } from '@librechat/data-schemas';
 import { webSearchAuth } from '@librechat/data-schemas';
 import type {
   RerankerTypes,
-  TCustomConfig,
-  SearchProviders,
   ScraperProviders,
+  SearchProviders,
+  TCustomConfig,
   TWebSearchConfig,
 } from 'librechat-data-provider';
-import type { TWebSearchKeys, TWebSearchCategories } from '@librechat/data-schemas';
+import {
+  AuthType,
+  extractVariableName,
+  SafeSearchTypes,
+  SearchCategories,
+} from 'librechat-data-provider';
 import { isSSRFTarget, resolveHostnameSSRF } from '../auth';
 
 /**
@@ -216,9 +216,7 @@ export async function loadWebSearchAuth({
           authResult.rerankerType = service as RerankerTypes;
         }
         return [true, isUserProvided];
-      } catch {
-        continue;
-      }
+      } catch {}
     }
     return [false, isUserProvided];
   }

@@ -1,7 +1,7 @@
-import React from 'react';
-import { object, string } from 'zod';
 import { Label } from '@librechat/client';
 import { AuthKeys } from 'librechat-data-provider';
+import React from 'react';
+import { object, string } from 'zod';
 import type { TConfigProps } from '~/common';
 import FileUpload from '~/components/Chat/Input/Files/FileUpload';
 import { useLocalize, useMultipleKeys } from '~/hooks';

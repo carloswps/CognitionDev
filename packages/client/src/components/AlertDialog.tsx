@@ -1,12 +1,14 @@
-import * as React from 'react';
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog';
+import * as React from 'react';
 import { cn } from '~/utils';
 
 const AlertDialog = AlertDialogPrimitive.Root;
 
 const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
 
-type AlertPortalProps = AlertDialogPrimitive.AlertDialogPortalProps & { className?: string };
+type AlertPortalProps = AlertDialogPrimitive.AlertDialogPortalProps & {
+  className?: string;
+};
 
 const AlertDialogPortal = ({ className = '', children, ...props }: AlertPortalProps) => (
   <AlertDialogPrimitive.Portal className={cn(className)} {...(props as AlertPortalProps)}>
@@ -120,12 +122,12 @@ AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName;
 
 export {
   AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogTitle,
-  AlertDialogDescription,
   AlertDialogAction,
   AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
 };

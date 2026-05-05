@@ -15,25 +15,25 @@
  * initializer, and MCP connection — runs for real.
  */
 
-import * as net from 'net';
-import * as http from 'http';
-import { Keyv } from 'keyv';
-import { Agent } from 'undici';
-import { Types } from 'mongoose';
-import { randomUUID } from 'crypto';
+import type { IUser } from '@librechat/data-schemas';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import type { IUser } from '@librechat/data-schemas';
+import { randomUUID } from 'crypto';
+import * as http from 'http';
+import { Keyv } from 'keyv';
+import { Types } from 'mongoose';
 import type { Socket } from 'net';
-import type * as t from '~/mcp/types';
+import * as net from 'net';
+import { Agent } from 'undici';
+import { FlowStateManager } from '~/flow/manager';
+import { ConnectionsRepository } from '~/mcp/ConnectionsRepository';
+import { MCPConnection } from '~/mcp/connection';
+import { MCPInspectionFailedError } from '~/mcp/errors';
+import { MCPManager } from '~/mcp/MCPManager';
 import { registryStatusCache } from '~/mcp/registry/cache/RegistryStatusCache';
 import { MCPServersInitializer } from '~/mcp/registry/MCPServersInitializer';
 import { MCPServersRegistry } from '~/mcp/registry/MCPServersRegistry';
-import { ConnectionsRepository } from '~/mcp/ConnectionsRepository';
-import { MCPInspectionFailedError } from '~/mcp/errors';
-import { FlowStateManager } from '~/flow/manager';
-import { MCPConnection } from '~/mcp/connection';
-import { MCPManager } from '~/mcp/MCPManager';
+import type * as t from '~/mcp/types';
 
 jest.mock('@librechat/data-schemas', () => ({
   logger: {
@@ -137,8 +137,13 @@ async function createMCPServerOnPort(port: number): Promise<TestServer> {
     let transport = sid ? sessions.get(sid) : undefined;
 
     if (!transport) {
-      transport = new StreamableHTTPServerTransport({ sessionIdGenerator: () => randomUUID() });
-      const mcp = new McpServer({ name: 'recovery-test-server', version: '0.0.1' });
+      transport = new StreamableHTTPServerTransport({
+        sessionIdGenerator: () => randomUUID(),
+      });
+      const mcp = new McpServer({
+        name: 'recovery-test-server',
+        version: '0.0.1',
+      });
       mcp.tool('echo', 'Echo tool for testing', {}, async () => ({
         content: [{ type: 'text', text: 'ok' }],
       }));
@@ -297,7 +302,10 @@ describe('MCP reinitialize recovery – integration (issue #12143)', () => {
   it('should not attempt connections to stub servers via ConnectionsRepository', async () => {
     const deadPort = await getFreePort();
     await MCPServersInitializer.initialize({
-      'stub-srv': { type: 'streamable-http', url: `http://127.0.0.1:${deadPort}/` },
+      'stub-srv': {
+        type: 'streamable-http',
+        url: `http://127.0.0.1:${deadPort}/`,
+      },
     });
     expect((await registry.getServerConfig('stub-srv'))!.inspectionFailed).toBe(true);
 
@@ -407,7 +415,10 @@ describe('MCP reinitialize recovery – integration (issue #12143)', () => {
      * Replicate reinitMCPServer logic: check inspectionFailed → reinspect → getConnection.
      * Each call uses a distinct user to simulate concurrent requests from different users.
      */
-    async function simulateReinitMCPServer(): Promise<{ success: boolean; tools: number }> {
+    async function simulateReinitMCPServer(): Promise<{
+      success: boolean;
+      tools: number;
+    }> {
       const user = makeUser();
       const config = await registry.getServerConfig(serverName, user.id);
       if (config?.inspectionFailed) {

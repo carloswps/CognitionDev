@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import {
-  useOptionalMessagesOperations,
   useOptionalMessagesConversation,
+  useOptionalMessagesOperations,
 } from '../MessagesViewContext';
 
 describe('useOptionalMessagesOperations', () => {

@@ -1,5 +1,5 @@
-import { Keyv } from 'keyv';
 import { logger, tenantStorage } from '@librechat/data-schemas';
+import { Keyv } from 'keyv';
 import { FlowStateManager } from './manager';
 
 jest.mock('@librechat/data-schemas', () => ({
@@ -26,20 +26,26 @@ describe('FlowStateManager flow keys are not tenant-scoped', () => {
       await manager.initFlow('flow-1', 'oauth', {});
     });
 
-    const found = await manager.completeFlow('flow-1', 'oauth', { token: 'abc' });
+    const found = await manager.completeFlow('flow-1', 'oauth', {
+      token: 'abc',
+    });
     expect(found).toBe(true);
   });
 
   it('completeFlow works when both creation and completion have the same tenant', async () => {
     await tenantStorage.run({ tenantId: 'tenant-a' }, async () => {
       await manager.initFlow('flow-2', 'oauth', {});
-      const found = await manager.completeFlow('flow-2', 'oauth', { token: 'abc' });
+      const found = await manager.completeFlow('flow-2', 'oauth', {
+        token: 'abc',
+      });
       expect(found).toBe(true);
     });
   });
 
   it('completeFlow returns false and logs when flow does not exist', async () => {
-    const found = await manager.completeFlow('ghost-flow', 'oauth', { token: 'x' });
+    const found = await manager.completeFlow('ghost-flow', 'oauth', {
+      token: 'x',
+    });
     expect(found).toBe(false);
     expect(logger.warn).toHaveBeenCalledWith(
       expect.stringContaining('ghost-flow'),

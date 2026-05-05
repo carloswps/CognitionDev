@@ -627,7 +627,12 @@ describe('findMatchingPattern - bestLength selection', () => {
   });
 
   test('should select the longest key among overlapping substring matches', () => {
-    const tokensMap = { 'gpt-': 100, 'gpt-5': 200, 'gpt-5.2': 300, 'gpt-5.2-pro': 400 };
+    const tokensMap = {
+      'gpt-': 100,
+      'gpt-5': 200,
+      'gpt-5.2': 300,
+      'gpt-5.2-pro': 400,
+    };
     expect(findMatchingPattern('gpt-5.2-pro-2025-01-01', tokensMap)).toBe('gpt-5.2-pro');
     expect(findMatchingPattern('gpt-5.2-chat-2025-01-01', tokensMap)).toBe('gpt-5.2');
     expect(findMatchingPattern('gpt-5.1-preview', tokensMap)).toBe('gpt-5');

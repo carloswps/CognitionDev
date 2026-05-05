@@ -19,9 +19,7 @@
       "types": "./dist/types/admin/capabilities.d.ts"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "clean": "rimraf dist",
     "build": "npm run clean && rollup -c --silent --bundleConfigAsCjs",
@@ -78,10 +76,5 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "keywords": [
-    "mongoose",
-    "schema",
-    "typescript",
-    "librechat"
-  ]
+  "keywords": ["mongoose", "schema", "typescript", "librechat"]
 }

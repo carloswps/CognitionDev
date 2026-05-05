@@ -10,8 +10,8 @@ jest.mock('react-router-dom', () => ({
 // Import the component under test and its dependencies
 import { renderHook } from '@testing-library/react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useFocusChatEffect from '../useFocusChatEffect';
 import { logger } from '~/utils';
+import useFocusChatEffect from '../useFocusChatEffect';
 
 describe('useFocusChatEffect', () => {
   // Reset mocks before each test

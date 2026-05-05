@@ -18,27 +18,28 @@
  * });
  * ```
  */
+
+import type { Request, Response as ServerResponse } from 'express';
 import { nanoid } from 'nanoid';
-import type { Response as ServerResponse, Request } from 'express';
-import type {
-  ChatCompletionResponse,
-  OpenAIResponseContext,
-  ChatCompletionRequest,
-  OpenAIErrorResponse,
-  CompletionUsage,
-  ChatMessage,
-  ToolCall,
-} from './types';
-import type { OpenAIStreamHandlerConfig, EventHandler } from './handlers';
+import type { ToolExecuteOptions } from '../handlers';
+import type { EventHandler, OpenAIStreamHandlerConfig } from './handlers';
 import {
-  createOpenAIContentAggregator,
-  createOpenAIStreamTracker,
-  createOpenAIHandlers,
-  sendFinalChunk,
   createChunk,
+  createOpenAIContentAggregator,
+  createOpenAIHandlers,
+  createOpenAIStreamTracker,
+  sendFinalChunk,
   writeSSE,
 } from './handlers';
-import type { ToolExecuteOptions } from '../handlers';
+import type {
+  ChatCompletionRequest,
+  ChatCompletionResponse,
+  ChatMessage,
+  CompletionUsage,
+  OpenAIErrorResponse,
+  OpenAIResponseContext,
+  ToolCall,
+} from './types';
 
 /**
  * Dependencies for the chat completion service
@@ -238,7 +239,10 @@ export function sendErrorResponse(
 /**
  * Validation result types for chat completion requests
  */
-export type ChatCompletionValidationSuccess = { valid: true; request: ChatCompletionRequest };
+export type ChatCompletionValidationSuccess = {
+  valid: true;
+  request: ChatCompletionRequest;
+};
 export type ChatCompletionValidationFailure = { valid: false; error: string };
 export type ChatCompletionValidationResult =
   | ChatCompletionValidationSuccess
@@ -503,7 +507,9 @@ export async function createAgentChatCompletion(
         completion_tokens: aggregator.usage.completionTokens,
         total_tokens: aggregator.usage.promptTokens + aggregator.usage.completionTokens,
         ...(aggregator.usage.reasoningTokens > 0 && {
-          completion_tokens_details: { reasoning_tokens: aggregator.usage.reasoningTokens },
+          completion_tokens_details: {
+            reasoning_tokens: aggregator.usage.reasoningTokens,
+          },
         }),
       };
       const response = buildNonStreamingResponse(

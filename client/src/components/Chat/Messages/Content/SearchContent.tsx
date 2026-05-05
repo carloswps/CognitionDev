@@ -1,19 +1,19 @@
-import { Suspense, useMemo } from 'react';
-import { useRecoilValue } from 'recoil';
 import { DelayedRender } from '@librechat/client';
-import { ContentTypes } from 'librechat-data-provider';
 import type {
   Agents,
-  TMessage,
-  TAttachment,
   SearchResultData,
+  TAttachment,
+  TMessage,
   TMessageContentParts,
 } from 'librechat-data-provider';
-import { UnfinishedMessage } from './MessageContent';
-import { cn, mapAttachments } from '~/utils';
+import { ContentTypes } from 'librechat-data-provider';
+import { Suspense, useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
 import { SearchContext } from '~/Providers';
-import MarkdownLite from './MarkdownLite';
 import store from '~/store';
+import { cn, mapAttachments } from '~/utils';
+import MarkdownLite from './MarkdownLite';
+import { UnfinishedMessage } from './MessageContent';
 import Part from './Part';
 
 const SearchContent = ({

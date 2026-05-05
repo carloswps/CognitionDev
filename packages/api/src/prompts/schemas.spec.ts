@@ -1,7 +1,7 @@
 import {
+  safeValidatePromptGroupUpdate,
   updatePromptGroupSchema,
   validatePromptGroupUpdate,
-  safeValidatePromptGroupUpdate,
 } from './schemas';
 
 describe('updatePromptGroupSchema', () => {
@@ -15,7 +15,9 @@ describe('updatePromptGroupSchema', () => {
     });
 
     it('should accept valid oneliner field', () => {
-      const result = updatePromptGroupSchema.safeParse({ oneliner: 'A short description' });
+      const result = updatePromptGroupSchema.safeParse({
+        oneliner: 'A short description',
+      });
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data.oneliner).toBe('A short description');
@@ -31,7 +33,9 @@ describe('updatePromptGroupSchema', () => {
     });
 
     it('should accept valid command field', () => {
-      const result = updatePromptGroupSchema.safeParse({ command: 'my-command-123' });
+      const result = updatePromptGroupSchema.safeParse({
+        command: 'my-command-123',
+      });
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data.command).toBe('my-command-123');
@@ -143,32 +147,44 @@ describe('updatePromptGroupSchema', () => {
     });
 
     it('should reject name exceeding max length', () => {
-      const result = updatePromptGroupSchema.safeParse({ name: 'a'.repeat(256) });
+      const result = updatePromptGroupSchema.safeParse({
+        name: 'a'.repeat(256),
+      });
       expect(result.success).toBe(false);
     });
 
     it('should reject oneliner exceeding max length', () => {
-      const result = updatePromptGroupSchema.safeParse({ oneliner: 'a'.repeat(501) });
+      const result = updatePromptGroupSchema.safeParse({
+        oneliner: 'a'.repeat(501),
+      });
       expect(result.success).toBe(false);
     });
 
     it('should reject category exceeding max length', () => {
-      const result = updatePromptGroupSchema.safeParse({ category: 'a'.repeat(101) });
+      const result = updatePromptGroupSchema.safeParse({
+        category: 'a'.repeat(101),
+      });
       expect(result.success).toBe(false);
     });
 
     it('should reject command with invalid characters (uppercase)', () => {
-      const result = updatePromptGroupSchema.safeParse({ command: 'MyCommand' });
+      const result = updatePromptGroupSchema.safeParse({
+        command: 'MyCommand',
+      });
       expect(result.success).toBe(false);
     });
 
     it('should reject command with invalid characters (spaces)', () => {
-      const result = updatePromptGroupSchema.safeParse({ command: 'my command' });
+      const result = updatePromptGroupSchema.safeParse({
+        command: 'my command',
+      });
       expect(result.success).toBe(false);
     });
 
     it('should reject command with invalid characters (special)', () => {
-      const result = updatePromptGroupSchema.safeParse({ command: 'my_command!' });
+      const result = updatePromptGroupSchema.safeParse({
+        command: 'my_command!',
+      });
       expect(result.success).toBe(false);
     });
   });

@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { ISession } from '~/types';
+import type { ISession } from '~/types';
 
 const sessionSchema: Schema<ISession> = new Schema({
   refreshTokenHash: {

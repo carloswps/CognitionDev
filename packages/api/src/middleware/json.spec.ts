@@ -1,5 +1,5 @@
+import type { NextFunction, Request, Response } from 'express';
 import { handleJsonParseError } from './json';
-import type { Request, Response, NextFunction } from 'express';
 
 describe('handleJsonParseError', () => {
   let req: Partial<Request>;
@@ -95,7 +95,9 @@ describe('handleJsonParseError', () => {
     });
 
     it('should pass through SyntaxError without status 400', () => {
-      const err = new SyntaxError('Some syntax error') as SyntaxError & { status?: number };
+      const err = new SyntaxError('Some syntax error') as SyntaxError & {
+        status?: number;
+      };
       err.status = 500;
 
       handleJsonParseError(err, req as Request, res as Response, next);
@@ -105,7 +107,9 @@ describe('handleJsonParseError', () => {
     });
 
     it('should pass through SyntaxError without body property', () => {
-      const err = new SyntaxError('Some syntax error') as SyntaxError & { status?: number };
+      const err = new SyntaxError('Some syntax error') as SyntaxError & {
+        status?: number;
+      };
       err.status = 400;
 
       handleJsonParseError(err, req as Request, res as Response, next);

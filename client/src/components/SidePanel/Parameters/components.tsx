@@ -1,14 +1,14 @@
-import { ComponentTypes } from 'librechat-data-provider';
 import type { DynamicSettingProps } from 'librechat-data-provider';
+import { ComponentTypes } from 'librechat-data-provider';
 import {
+  DynamicCheckbox,
   DynamicCombobox,
   DynamicDropdown,
-  DynamicCheckbox,
-  DynamicTextarea,
+  DynamicInput,
   DynamicSlider,
   DynamicSwitch,
-  DynamicInput,
   DynamicTags,
+  DynamicTextarea,
 } from './';
 
 export const componentMapping: Record<

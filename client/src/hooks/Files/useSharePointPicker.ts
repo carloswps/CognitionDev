@@ -1,11 +1,11 @@
-import { useRef, useCallback } from 'react';
-import { useRecoilState } from 'recoil';
 import { useToastContext } from '@librechat/client';
+import { useCallback, useRef } from 'react';
+import { useRecoilState } from 'recoil';
 import type { SPPickerConfig } from '~/components/SidePanel/Agents/config';
-import { useLocalize, useAuthContext } from '~/hooks';
 import { useGetStartupConfig } from '~/data-provider';
-import useSharePointToken from './useSharePointToken';
+import { useAuthContext, useLocalize } from '~/hooks';
 import store from '~/store';
+import useSharePointToken from './useSharePointToken';
 
 interface UseSharePointPickerProps {
   containerNode: HTMLDivElement | null;

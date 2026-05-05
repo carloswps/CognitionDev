@@ -1,31 +1,32 @@
-import React, { useState, useRef } from 'react';
-import * as Tabs from '@radix-ui/react-tabs';
-import { SettingsTabValues } from 'librechat-data-provider';
-import { MessageSquare, Command, DollarSign } from 'lucide-react';
 import { Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import {
-  GearIcon,
   DataIcon,
-  UserIcon,
-  SpeechIcon,
-  useMediaQuery,
+  GearIcon,
   PersonalizationIcon,
+  SpeechIcon,
+  UserIcon,
+  useMediaQuery,
 } from '@librechat/client';
+import * as Tabs from '@radix-ui/react-tabs';
+import { SettingsTabValues } from 'librechat-data-provider';
+import { Command, DollarSign, MessageSquare } from 'lucide-react';
+import type React from 'react';
+import { useRef, useState } from 'react';
 import type { TDialogProps } from '~/common';
+import { useGetStartupConfig } from '~/data-provider';
+import { type TranslationKeys, useLocalize } from '~/hooks';
+import usePersonalizationAccess from '~/hooks/usePersonalizationAccess';
+import { cn } from '~/utils';
 import {
-  General,
+  Account,
+  Balance,
   Chat,
   Commands,
-  Speech,
-  Personalization,
   Data,
-  Balance,
-  Account,
+  General,
+  Personalization,
+  Speech,
 } from './SettingsTabs';
-import usePersonalizationAccess from '~/hooks/usePersonalizationAccess';
-import { useLocalize, TranslationKeys } from '~/hooks';
-import { useGetStartupConfig } from '~/data-provider';
-import { cn } from '~/utils';
 
 export default function Settings({ open, onOpenChange }: TDialogProps) {
   const isSmallScreen = useMediaQuery('(max-width: 767px)');
@@ -115,7 +116,11 @@ export default function Settings({ open, onOpenChange }: TDialogProps) {
             label: 'com_nav_setting_balance' as TranslationKeys,
           },
         ]
-      : ([] as { value: SettingsTabValues; icon: React.JSX.Element; label: TranslationKeys }[])),
+      : ([] as {
+          value: SettingsTabValues;
+          icon: React.JSX.Element;
+          label: TranslationKeys;
+        }[])),
     {
       value: SettingsTabValues.ACCOUNT,
       icon: <UserIcon />,

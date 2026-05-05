@@ -1,5 +1,5 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { DateLabel } from '../Conversations';
 
@@ -35,7 +35,10 @@ describe('DateLabel', () => {
   it('uses raw groupName for unrecognized translation keys', () => {
     render(<DateLabel groupName="Unknown Group" />);
     expect(
-      screen.getByRole('heading', { level: 2, name: 'Chats from Unknown Group' }),
+      screen.getByRole('heading', {
+        level: 2,
+        name: 'Chats from Unknown Group',
+      }),
     ).toBeInTheDocument();
   });
 

@@ -5,38 +5,38 @@
  * Handles input conversion, message formatting, and request validation.
  */
 import type { Response as ServerResponse } from 'express';
-import type {
-  RequestValidationResult,
-  ResponseRequest,
-  ResponseContext,
-  InputContent,
-  ModelContent,
-  InputItem,
-  Response,
-} from './types';
 import {
-  writeDone,
-  emitResponseCompleted,
-  emitMessageItemAdded,
-  emitMessageItemDone,
-  emitTextContentPartAdded,
-  emitOutputTextDelta,
-  emitOutputTextDone,
-  emitTextContentPartDone,
-  emitFunctionCallItemAdded,
   emitFunctionCallArgumentsDelta,
   emitFunctionCallArgumentsDone,
+  emitFunctionCallItemAdded,
   emitFunctionCallItemDone,
   emitFunctionCallOutputItem,
-  emitReasoningItemAdded,
+  emitMessageItemAdded,
+  emitMessageItemDone,
+  emitOutputTextDelta,
+  emitOutputTextDone,
   emitReasoningContentPartAdded,
+  emitReasoningContentPartDone,
   emitReasoningDelta,
   emitReasoningDone,
-  emitReasoningContentPartDone,
+  emitReasoningItemAdded,
   emitReasoningItemDone,
-  updateTrackerUsage,
+  emitResponseCompleted,
+  emitTextContentPartAdded,
+  emitTextContentPartDone,
   type StreamHandlerConfig,
+  updateTrackerUsage,
+  writeDone,
 } from './handlers';
+import type {
+  InputContent,
+  InputItem,
+  ModelContent,
+  RequestValidationResult,
+  Response,
+  ResponseContext,
+  ResponseRequest,
+} from './types';
 
 /* =============================================================================
  * REQUEST VALIDATION
@@ -74,13 +74,19 @@ export function validateResponseRequest(body: unknown): RequestValidationResult 
   if (request.temperature !== undefined) {
     const temp = request.temperature as number;
     if (typeof temp !== 'number' || temp < 0 || temp > 2) {
-      return { valid: false, error: 'temperature must be a number between 0 and 2' };
+      return {
+        valid: false,
+        error: 'temperature must be a number between 0 and 2',
+      };
     }
   }
 
   if (request.max_output_tokens !== undefined) {
     if (typeof request.max_output_tokens !== 'number' || request.max_output_tokens < 1) {
-      return { valid: false, error: 'max_output_tokens must be a positive number' };
+      return {
+        valid: false,
+        error: 'max_output_tokens must be a positive number',
+      };
     }
   }
 
@@ -154,10 +160,16 @@ export function convertInputToMessages(input: string | InputItem[]): InternalMes
           .filter((part): part is InputContent | ModelContent => part != null)
           .map((part) => {
             if (part.type === 'input_text' || part.type === 'output_text') {
-              return { type: 'text', text: (part as { text?: string }).text ?? '' };
+              return {
+                type: 'text',
+                text: (part as { text?: string }).text ?? '',
+              };
             }
             if (part.type === 'refusal') {
-              return { type: 'text', text: (part as { refusal?: string }).refusal ?? '' };
+              return {
+                type: 'text',
+                text: (part as { refusal?: string }).refusal ?? '',
+              };
             }
             if (part.type === 'input_image') {
               return {
@@ -170,7 +182,10 @@ export function convertInputToMessages(input: string | InputItem[]): InternalMes
             }
             if (part.type === 'input_file') {
               const filePart = part as { filename?: string };
-              return { type: 'text', text: `[File: ${filePart.filename ?? 'unknown'}]` };
+              return {
+                type: 'text',
+                text: `[File: ${filePart.filename ?? 'unknown'}]`,
+              };
             }
             return null;
           })
@@ -221,7 +236,11 @@ export function convertInputToMessages(input: string | InputItem[]): InternalMes
 
     if (item.type === 'function_call_output') {
       // Function call output items represent tool results
-      const fcoItem = item as { type: 'function_call_output'; call_id: string; output: string };
+      const fcoItem = item as {
+        type: 'function_call_output';
+        call_id: string;
+        output: string;
+      };
 
       messages.push({
         role: 'tool',
@@ -425,7 +444,9 @@ export function createResponsesEventHandlers(config: StreamHandlerConfig): {
      */
     on_message_delta: {
       handle: (_event: string, data: unknown): void => {
-        const deltaData = data as { delta?: { content?: Array<{ type: string; text?: string }> } };
+        const deltaData = data as {
+          delta?: { content?: Array<{ type: string; text?: string }> };
+        };
         const content = deltaData?.delta?.content;
 
         if (Array.isArray(content)) {
@@ -445,7 +466,9 @@ export function createResponsesEventHandlers(config: StreamHandlerConfig): {
     on_reasoning_delta: {
       handle: (_event: string, data: unknown): void => {
         const deltaData = data as {
-          delta?: { content?: Array<{ type: string; text?: string; think?: string }> };
+          delta?: {
+            content?: Array<{ type: string; text?: string; think?: string }>;
+          };
         };
         const content = deltaData?.delta?.content;
 
@@ -467,7 +490,10 @@ export function createResponsesEventHandlers(config: StreamHandlerConfig): {
     on_run_step: {
       handle: (_event: string, data: unknown): void => {
         const stepData = data as {
-          stepDetails?: { type: string; tool_calls?: Array<{ id?: string; name?: string }> };
+          stepDetails?: {
+            type: string;
+            tool_calls?: Array<{ id?: string; name?: string }>;
+          };
         };
         const stepDetails = stepData?.stepDetails;
 
@@ -494,7 +520,10 @@ export function createResponsesEventHandlers(config: StreamHandlerConfig): {
     on_run_step_delta: {
       handle: (_event: string, data: unknown): void => {
         const deltaData = data as {
-          delta?: { type: string; tool_calls?: Array<{ index?: number; args?: string }> };
+          delta?: {
+            type: string;
+            tool_calls?: Array<{ index?: number; args?: string }>;
+          };
         };
         const delta = deltaData?.delta;
 
@@ -734,7 +763,9 @@ export function buildAggregatedResponse(
       output_tokens: aggregator.usage.outputTokens,
       total_tokens: aggregator.usage.inputTokens + aggregator.usage.outputTokens,
       input_tokens_details: { cached_tokens: aggregator.usage.cachedTokens },
-      output_tokens_details: { reasoning_tokens: aggregator.usage.reasoningTokens },
+      output_tokens_details: {
+        reasoning_tokens: aggregator.usage.reasoningTokens,
+      },
     },
     max_output_tokens: null,
     max_tool_calls: null,
@@ -761,7 +792,9 @@ export function createAggregatorEventHandlers(aggregator: ResponseAggregator): R
   return {
     on_message_delta: {
       handle: (_event: string, data: unknown): void => {
-        const deltaData = data as { delta?: { content?: Array<{ type: string; text?: string }> } };
+        const deltaData = data as {
+          delta?: { content?: Array<{ type: string; text?: string }> };
+        };
         const content = deltaData?.delta?.content;
 
         if (Array.isArray(content)) {
@@ -777,7 +810,9 @@ export function createAggregatorEventHandlers(aggregator: ResponseAggregator): R
     on_reasoning_delta: {
       handle: (_event: string, data: unknown): void => {
         const deltaData = data as {
-          delta?: { content?: Array<{ type: string; text?: string; think?: string }> };
+          delta?: {
+            content?: Array<{ type: string; text?: string; think?: string }>;
+          };
         };
         const content = deltaData?.delta?.content;
 
@@ -795,7 +830,10 @@ export function createAggregatorEventHandlers(aggregator: ResponseAggregator): R
     on_run_step: {
       handle: (_event: string, data: unknown): void => {
         const stepData = data as {
-          stepDetails?: { type: string; tool_calls?: Array<{ id?: string; name?: string }> };
+          stepDetails?: {
+            type: string;
+            tool_calls?: Array<{ id?: string; name?: string }>;
+          };
         };
         const stepDetails = stepData?.stepDetails;
 
@@ -806,7 +844,11 @@ export function createAggregatorEventHandlers(aggregator: ResponseAggregator): R
 
             if (callId && !activeToolCalls.has(callId)) {
               activeToolCalls.add(callId);
-              aggregator.toolCalls.set(callId, { id: callId, name, arguments: '' });
+              aggregator.toolCalls.set(callId, {
+                id: callId,
+                name,
+                arguments: '',
+              });
             }
           }
         }
@@ -816,7 +858,10 @@ export function createAggregatorEventHandlers(aggregator: ResponseAggregator): R
     on_run_step_delta: {
       handle: (_event: string, data: unknown): void => {
         const deltaData = data as {
-          delta?: { type: string; tool_calls?: Array<{ index?: number; args?: string }> };
+          delta?: {
+            type: string;
+            tool_calls?: Array<{ index?: number; args?: string }>;
+          };
         };
         const delta = deltaData?.delta;
 

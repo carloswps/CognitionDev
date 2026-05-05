@@ -1,5 +1,5 @@
+import { type SearchResultData, type TAttachment, Tools } from 'librechat-data-provider';
 import { useMemo } from 'react';
-import { TAttachment, Tools, SearchResultData } from 'librechat-data-provider';
 import { useLocalize } from '~/hooks';
 
 interface FileSource {
@@ -62,7 +62,10 @@ export function useSearchResultsByTurn(attachments?: TAttachment[]) {
               // Merge page relevance mappings
               const existingPageRelevance = existing.pageRelevance || {};
               const newPageRelevance = source.pageRelevance || {};
-              const mergedPageRelevance = { ...existingPageRelevance, ...newPageRelevance };
+              const mergedPageRelevance = {
+                ...existingPageRelevance,
+                ...newPageRelevance,
+              };
 
               existing.pages = uniquePages;
               existing.relevance = Math.max(existing.relevance || 0, source.relevance || 0);
@@ -94,7 +97,9 @@ export function useSearchResultsByTurn(attachments?: TAttachment[]) {
                 attribution: source.fileName || localize('com_file_unknown'), // Show filename in inline display
                 snippet:
                   source.pages && source.pages.length > 0
-                    ? localize('com_file_pages', { pages: source.pages.join(', ') })
+                    ? localize('com_file_pages', {
+                        pages: source.pages.join(', '),
+                      })
                     : '', // Only page numbers for hover
                 type: 'file' as const,
                 // Store additional agent-specific data as properties on the reference

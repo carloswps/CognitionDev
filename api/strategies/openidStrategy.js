@@ -664,7 +664,7 @@ async function processOpenIDAuth(tokenset, existingUsersOnly = false) {
     }
   }
 
-  if (!!userinfo && userinfo.picture && !user.avatar?.includes('manual=true')) {
+  if (userinfo && userinfo.picture && !user.avatar?.includes('manual=true')) {
     /** @type {string | undefined} */
     const imageUrl = userinfo.picture;
 

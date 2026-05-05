@@ -1,4 +1,4 @@
-import { SSEOptionsSchema, MCPServerUserInputSchema } from '../src/mcp';
+import { MCPServerUserInputSchema, SSEOptionsSchema } from '../src/mcp';
 
 describe('MCPServerUserInputSchema', () => {
   describe('env variable exfiltration prevention', () => {

@@ -1,33 +1,33 @@
-import React, { useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  Checkbox,
+  Label,
+  OGDialog,
+  OGDialogTemplate,
+  OGDialogTrigger,
+  TooltipAnchor,
+  TrashIcon,
+} from '@librechat/client';
+import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import { Constants } from 'librechat-data-provider';
 import { ChevronDown, Clock, Code2 } from 'lucide-react';
-import * as AccordionPrimitive from '@radix-ui/react-accordion';
-import {
-  Label,
-  Checkbox,
-  OGDialog,
-  Accordion,
-  TrashIcon,
-  TooltipAnchor,
-  AccordionItem,
-  OGDialogTrigger,
-  AccordionContent,
-  OGDialogTemplate,
-} from '@librechat/client';
+import React, { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import type { AgentForm, MCPServerInfo } from '~/common';
+import MCPConfigDialog from '~/components/MCP/MCPConfigDialog';
+import MCPServerStatusIcon from '~/components/MCP/MCPServerStatusIcon';
 import {
   useAgentCapabilities,
-  useMCPServerManager,
   useGetAgentsConfig,
+  useLocalize,
+  useMCPServerManager,
   useMCPToolOptions,
   useRemoveMCPTool,
-  useLocalize,
 } from '~/hooks';
-import MCPServerStatusIcon from '~/components/MCP/MCPServerStatusIcon';
-import MCPConfigDialog from '~/components/MCP/MCPConfigDialog';
-import MCPToolItem from './MCPToolItem';
 import { cn } from '~/utils';
+import MCPToolItem from './MCPToolItem';
 
 export default function MCPTool({ serverInfo }: { serverInfo?: MCPServerInfo }) {
   const localize = useLocalize();
@@ -132,7 +132,11 @@ export default function MCPTool({ serverInfo }: { serverInfo?: MCPServerInfo }) 
                 )}
                 <div
                   className="grow px-2 py-1.5"
-                  style={{ textOverflow: 'ellipsis', wordBreak: 'break-all', overflow: 'hidden' }}
+                  style={{
+                    textOverflow: 'ellipsis',
+                    wordBreak: 'break-all',
+                    overflow: 'hidden',
+                  }}
                 >
                   {currentServerName}
                 </div>

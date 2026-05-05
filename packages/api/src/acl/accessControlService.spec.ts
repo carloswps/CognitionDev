@@ -1,7 +1,7 @@
-import mongoose, { Types, Model } from 'mongoose';
-import { createModels, createMethods, RoleBits } from '@librechat/data-schemas';
+import { createMethods, createModels, RoleBits } from '@librechat/data-schemas';
+import { AccessRoleIds, PrincipalType, ResourceType } from 'librechat-data-provider';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { ResourceType, AccessRoleIds, PrincipalType } from 'librechat-data-provider';
+import mongoose, { type Model, Types } from 'mongoose';
 import { AccessControlService } from './accessControlService';
 
 // Mock the logger
@@ -687,7 +687,10 @@ describe('AccessControlService', () => {
           resourceIds: [resource1],
         });
 
-        expect(mockGetUserPrincipals).toHaveBeenCalledWith({ userId, role: 'admin' });
+        expect(mockGetUserPrincipals).toHaveBeenCalledWith({
+          userId,
+          role: 'admin',
+        });
       });
     });
   });

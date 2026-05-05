@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
+import { isEphemeralAgent, Panel } from '~/common';
 import { AgentPanelProvider, useAgentPanelContext } from '~/Providers/AgentPanelContext';
-import { Panel, isEphemeralAgent } from '~/common';
-import VersionPanel from './Version/VersionPanel';
+import store from '~/store';
 import ActionsPanel from './ActionsPanel';
 import AgentPanel from './AgentPanel';
-import store from '~/store';
+import VersionPanel from './Version/VersionPanel';
 
 export default function AgentPanelSwitch() {
   return (

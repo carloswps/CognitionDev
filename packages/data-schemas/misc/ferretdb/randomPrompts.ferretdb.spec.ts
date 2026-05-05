@@ -34,7 +34,9 @@ async function getRandomPromptGroups(
   PromptGroup: mongoose.Model<any>,
   filter: { limit: number; skip: number },
 ) {
-  const categories: string[] = await PromptGroup.distinct('category', { category: { $ne: '' } });
+  const categories: string[] = await PromptGroup.distinct('category', {
+    category: { $ne: '' },
+  });
 
   for (let i = categories.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -49,7 +51,9 @@ async function getRandomPromptGroups(
     return { prompts: [] };
   }
 
-  const groups = await PromptGroup.find({ category: { $in: selectedCategories } }).lean();
+  const groups = await PromptGroup.find({
+    category: { $in: selectedCategories },
+  }).lean();
 
   const groupByCategory = new Map();
   for (const group of groups) {
@@ -86,14 +90,42 @@ describeIfFerretDB('Random prompts $sample replacement - FerretDB compatibility'
   describe('distinct categories + $in query', () => {
     it('should return one group per category', async () => {
       await PromptGroup.insertMany([
-        { name: 'Code A', category: 'code', author: authorId, authorName: 'User' },
-        { name: 'Code B', category: 'code', author: authorId, authorName: 'User' },
-        { name: 'Write A', category: 'writing', author: authorId, authorName: 'User' },
-        { name: 'Write B', category: 'writing', author: authorId, authorName: 'User' },
-        { name: 'Math A', category: 'math', author: authorId, authorName: 'User' },
+        {
+          name: 'Code A',
+          category: 'code',
+          author: authorId,
+          authorName: 'User',
+        },
+        {
+          name: 'Code B',
+          category: 'code',
+          author: authorId,
+          authorName: 'User',
+        },
+        {
+          name: 'Write A',
+          category: 'writing',
+          author: authorId,
+          authorName: 'User',
+        },
+        {
+          name: 'Write B',
+          category: 'writing',
+          author: authorId,
+          authorName: 'User',
+        },
+        {
+          name: 'Math A',
+          category: 'math',
+          author: authorId,
+          authorName: 'User',
+        },
       ]);
 
-      const result = await getRandomPromptGroups(PromptGroup, { limit: 10, skip: 0 });
+      const result = await getRandomPromptGroups(PromptGroup, {
+        limit: 10,
+        skip: 0,
+      });
       expect(result.prompts).toHaveLength(3);
 
       const categories = result.prompts.map((p: Record<string, unknown>) => p.category).sort();
@@ -102,27 +134,56 @@ describeIfFerretDB('Random prompts $sample replacement - FerretDB compatibility'
 
     it('should exclude groups with empty category', async () => {
       await PromptGroup.insertMany([
-        { name: 'Has Category', category: 'code', author: authorId, authorName: 'User' },
-        { name: 'Empty Category', category: '', author: authorId, authorName: 'User' },
+        {
+          name: 'Has Category',
+          category: 'code',
+          author: authorId,
+          authorName: 'User',
+        },
+        {
+          name: 'Empty Category',
+          category: '',
+          author: authorId,
+          authorName: 'User',
+        },
       ]);
 
-      const result = await getRandomPromptGroups(PromptGroup, { limit: 10, skip: 0 });
+      const result = await getRandomPromptGroups(PromptGroup, {
+        limit: 10,
+        skip: 0,
+      });
       expect(result.prompts).toHaveLength(1);
       expect((result.prompts[0] as Record<string, unknown>).name).toBe('Has Category');
     });
 
     it('should return empty array when no groups have categories', async () => {
       await PromptGroup.insertMany([
-        { name: 'No Cat 1', category: '', author: authorId, authorName: 'User' },
-        { name: 'No Cat 2', category: '', author: authorId, authorName: 'User' },
+        {
+          name: 'No Cat 1',
+          category: '',
+          author: authorId,
+          authorName: 'User',
+        },
+        {
+          name: 'No Cat 2',
+          category: '',
+          author: authorId,
+          authorName: 'User',
+        },
       ]);
 
-      const result = await getRandomPromptGroups(PromptGroup, { limit: 10, skip: 0 });
+      const result = await getRandomPromptGroups(PromptGroup, {
+        limit: 10,
+        skip: 0,
+      });
       expect(result.prompts).toHaveLength(0);
     });
 
     it('should return empty array when collection is empty', async () => {
-      const result = await getRandomPromptGroups(PromptGroup, { limit: 10, skip: 0 });
+      const result = await getRandomPromptGroups(PromptGroup, {
+        limit: 10,
+        skip: 0,
+      });
       expect(result.prompts).toHaveLength(0);
     });
   });
@@ -137,7 +198,10 @@ describeIfFerretDB('Random prompts $sample replacement - FerretDB compatibility'
         { name: 'E', category: 'cat5', author: authorId, authorName: 'User' },
       ]);
 
-      const result = await getRandomPromptGroups(PromptGroup, { limit: 3, skip: 0 });
+      const result = await getRandomPromptGroups(PromptGroup, {
+        limit: 3,
+        skip: 0,
+      });
       expect(result.prompts).toHaveLength(3);
     });
 
@@ -149,7 +213,10 @@ describeIfFerretDB('Random prompts $sample replacement - FerretDB compatibility'
         { name: 'D', category: 'cat4', author: authorId, authorName: 'User' },
       ]);
 
-      const result = await getRandomPromptGroups(PromptGroup, { limit: 10, skip: 2 });
+      const result = await getRandomPromptGroups(PromptGroup, {
+        limit: 10,
+        skip: 2,
+      });
       expect(result.prompts).toHaveLength(2);
     });
 
@@ -159,7 +226,10 @@ describeIfFerretDB('Random prompts $sample replacement - FerretDB compatibility'
         { name: 'B', category: 'cat2', author: authorId, authorName: 'User' },
       ]);
 
-      const result = await getRandomPromptGroups(PromptGroup, { limit: 10, skip: 5 });
+      const result = await getRandomPromptGroups(PromptGroup, {
+        limit: 10,
+        skip: 5,
+      });
       expect(result.prompts).toHaveLength(0);
     });
   });
@@ -178,7 +248,10 @@ describeIfFerretDB('Random prompts $sample replacement - FerretDB compatibility'
 
       const orderings = new Set<string>();
       for (let i = 0; i < 20; i++) {
-        const result = await getRandomPromptGroups(PromptGroup, { limit: 10, skip: 0 });
+        const result = await getRandomPromptGroups(PromptGroup, {
+          limit: 10,
+          skip: 0,
+        });
         const order = result.prompts.map((p: Record<string, unknown>) => p.category).join(',');
         orderings.add(order);
       }
@@ -200,7 +273,10 @@ describeIfFerretDB('Random prompts $sample replacement - FerretDB compatibility'
       }
       await PromptGroup.insertMany(docs);
 
-      const result = await getRandomPromptGroups(PromptGroup, { limit: 10, skip: 0 });
+      const result = await getRandomPromptGroups(PromptGroup, {
+        limit: 10,
+        skip: 0,
+      });
       expect(result.prompts).toHaveLength(5);
 
       const categories = result.prompts.map((p: Record<string, unknown>) => p.category).sort();

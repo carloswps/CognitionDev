@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Download, CircleCheckBig } from 'lucide-react';
-import type { Artifact } from '~/common';
 import { Button } from '@librechat/client';
+import { CircleCheckBig, Download } from 'lucide-react';
+import React, { useState } from 'react';
+import type { Artifact } from '~/common';
+import { useLocalize } from '~/hooks';
 import useArtifactProps from '~/hooks/Artifacts/useArtifactProps';
 import { useCodeState } from '~/Providers/EditorContext';
-import { useLocalize } from '~/hooks';
 
 const DownloadArtifact = ({ artifact }: { artifact: Artifact }) => {
   const localize = useLocalize();

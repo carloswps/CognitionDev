@@ -1,32 +1,32 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
-import { v4 } from 'uuid';
-import { SSE } from 'sse.js';
-import { useSetRecoilState } from 'recoil';
 import { useQueryClient } from '@tanstack/react-query';
+import type { EventSubmission, TMessage, TPayload, TSubmission } from 'librechat-data-provider';
 import {
-  request,
-  Constants,
-  QueryKeys,
-  ErrorTypes,
-  StepEvents,
   apiBaseUrl,
+  Constants,
   createPayload,
-  ViolationTypes,
+  ErrorTypes,
+  QueryKeys,
   removeNullishValues,
+  request,
+  StepEvents,
+  ViolationTypes,
 } from 'librechat-data-provider';
-import type { TMessage, TPayload, TSubmission, EventSubmission } from 'librechat-data-provider';
-import type { EventHandlerParams } from './useEventHandlers';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { SSE } from 'sse.js';
+import { v4 } from 'uuid';
+import type { ActiveJobsResponse } from '~/data-provider';
 import {
-  useGetUserBalance,
-  useGetStartupConfig,
   queueTitleGeneration,
   streamStatusQueryKey,
+  useGetStartupConfig,
+  useGetUserBalance,
 } from '~/data-provider';
-import type { ActiveJobsResponse } from '~/data-provider';
 import { useAuthContext } from '~/hooks/AuthContext';
-import useEventHandlers from './useEventHandlers';
-import { clearAllDrafts } from '~/utils';
 import store from '~/store';
+import { clearAllDrafts } from '~/utils';
+import type { EventHandlerParams } from './useEventHandlers';
+import useEventHandlers from './useEventHandlers';
 
 type ChatHelpers = Pick<
   EventHandlerParams,
@@ -202,7 +202,10 @@ export default function useResumableSSE(
               ...data.message,
               overrideParentMessageId: userMessage.overrideParentMessageId,
             };
-            createdHandler(data, { ...currentSubmission, userMessage } as EventSubmission);
+            createdHandler(data, {
+              ...currentSubmission,
+              userMessage,
+            } as EventSubmission);
             return;
           }
 
@@ -215,7 +218,10 @@ export default function useResumableSSE(
           }
 
           if (data.event != null) {
-            stepHandler(data, { ...currentSubmission, userMessage } as EventSubmission);
+            stepHandler(data, {
+              ...currentSubmission,
+              userMessage,
+            } as EventSubmission);
             return;
           }
 
@@ -297,7 +303,10 @@ export default function useResumableSSE(
 
             if (data.pendingEvents?.length > 0) {
               console.log(`[ResumableSSE] Replaying ${data.pendingEvents.length} pending events`);
-              const submission = { ...currentSubmission, userMessage } as EventSubmission;
+              const submission = {
+                ...currentSubmission,
+                userMessage,
+              } as EventSubmission;
               for (const pendingEvent of data.pendingEvents) {
                 if (pendingEvent.event != null) {
                   stepHandler(pendingEvent, submission);
@@ -317,7 +326,10 @@ export default function useResumableSSE(
             if (text != null && index !== textIndex) {
               textIndex = index;
             }
-            contentHandler({ data, submission: currentSubmission as EventSubmission });
+            contentHandler({
+              data,
+              submission: currentSubmission as EventSubmission,
+            });
             return;
           }
 
@@ -328,7 +340,11 @@ export default function useResumableSSE(
               parentMessageId: data.parentMessageId,
               messageId: data.messageId,
             };
-            messageHandler(text, { ...currentSubmission, userMessage, initialResponse });
+            messageHandler(text, {
+              ...currentSubmission,
+              userMessage,
+              initialResponse,
+            });
           }
         } catch (error) {
           console.error('[ResumableSSE] Error processing message:', error);
@@ -345,7 +361,7 @@ export default function useResumableSSE(
       sse.addEventListener('error', async (e: MessageEvent) => {
         (startupConfig?.balance?.enabled ?? false) && balanceQuery.refetch();
 
-        /* @ts-ignore - sse.js types don't expose responseCode */
+        /* @ts-expect-error - sse.js types don't expose responseCode */
         const responseCode = e.responseCode;
 
         // 404 → job completed & was cleaned up; messages are persisted in DB.
@@ -358,8 +374,12 @@ export default function useResumableSSE(
           clearAllDrafts(convoId);
           clearStepMaps();
           if (convoId) {
-            queryClient.invalidateQueries({ queryKey: [QueryKeys.messages, convoId] });
-            queryClient.removeQueries({ queryKey: streamStatusQueryKey(convoId) });
+            queryClient.invalidateQueries({
+              queryKey: [QueryKeys.messages, convoId],
+            });
+            queryClient.removeQueries({
+              queryKey: streamStatusQueryKey(convoId),
+            });
           }
           setIsSubmitting(false);
           setShowStopButton(false);
@@ -417,7 +437,10 @@ export default function useResumableSSE(
               // Not JSON or parsing failed - treat as generic error
             }
 
-            console.log('[ResumableSSE] Error type check:', { isKnownError, errorString });
+            console.log('[ResumableSSE] Error type check:', {
+              isKnownError,
+              errorString,
+            });
 
             // Display the error to user via errorHandler
             errorHandler({
@@ -448,7 +471,7 @@ export default function useResumableSSE(
         if (reconnectAttemptRef.current < MAX_RETRIES) {
           // Increment counter BEFORE close() so abort handler knows we're reconnecting
           reconnectAttemptRef.current++;
-          const delay = Math.min(1000 * Math.pow(2, reconnectAttemptRef.current - 1), 30000);
+          const delay = Math.min(1000 * 2 ** (reconnectAttemptRef.current - 1), 30000);
 
           console.log(
             `[ResumableSSE] Reconnecting in ${delay}ms (attempt ${reconnectAttemptRef.current}/${MAX_RETRIES})`,
@@ -470,7 +493,10 @@ export default function useResumableSSE(
         } else {
           console.error('[ResumableSSE] Max reconnect attempts reached');
           sse.close();
-          errorHandler({ data: undefined, submission: currentSubmission as EventSubmission });
+          errorHandler({
+            data: undefined,
+            submission: currentSubmission as EventSubmission,
+          });
           // Optimistically remove from active jobs on max retries
           removeActiveJob(currentStreamId);
           setIsSubmitting(false);
@@ -519,7 +545,7 @@ export default function useResumableSSE(
         /** Simulate network drop - triggers error event → reconnection */
         debugWindow.__killNetwork = () => {
           console.log('[Debug] Simulating network drop...');
-          // @ts-ignore - sse.js types are incorrect, dispatchEvent actually takes Event
+          // @ts-expect-error - sse.js types are incorrect, dispatchEvent actually takes Event
           sse.dispatchEvent(new Event('error'));
         };
 
@@ -576,8 +602,12 @@ export default function useResumableSSE(
       for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
           // Use request.post which handles auth token refresh via axios interceptors
-          const data = (await request.post(url, payload)) as { streamId: string };
-          console.log('[ResumableSSE] Generation started:', { streamId: data.streamId });
+          const data = (await request.post(url, payload)) as {
+            streamId: string;
+          };
+          console.log('[ResumableSSE] Generation started:', {
+            streamId: data.streamId,
+          });
           return data.streamId;
         } catch (error) {
           lastError = error;
@@ -588,7 +618,7 @@ export default function useResumableSSE(
             (error.code === 'ERR_NETWORK' || error.code === 'ERR_INTERNET_DISCONNECTED');
 
           if (isNetworkError && attempt < maxRetries) {
-            const delay = Math.min(1000 * Math.pow(2, attempt - 1), 8000);
+            const delay = Math.min(1000 * 2 ** (attempt - 1), 8000);
             console.log(
               `[ResumableSSE] Network error starting generation, retrying in ${delay}ms (attempt ${attempt}/${maxRetries})`,
             );
@@ -603,7 +633,9 @@ export default function useResumableSSE(
 
       console.error('[ResumableSSE] Error starting generation:', lastError);
 
-      const axiosError = lastError as { response?: { data?: Record<string, unknown> } };
+      const axiosError = lastError as {
+        response?: { data?: Record<string, unknown> };
+      };
       const errorData = axiosError?.response?.data;
       if (errorData) {
         errorHandler({
@@ -613,7 +645,10 @@ export default function useResumableSSE(
           submission: currentSubmission as EventSubmission,
         });
       } else {
-        errorHandler({ data: undefined, submission: currentSubmission as EventSubmission });
+        errorHandler({
+          data: undefined,
+          submission: currentSubmission as EventSubmission,
+        });
       }
       setIsSubmitting(false);
       return null;

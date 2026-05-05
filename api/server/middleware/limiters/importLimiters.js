@@ -48,7 +48,9 @@ const createImportHandler = (ip = true) => {
     };
 
     await logViolation(req, res, type, errorMessage, importViolationScore);
-    res.status(429).json({ message: 'Too many conversation import requests. Try again later' });
+    res.status(429).json({
+      message: 'Too many conversation import requests. Try again later',
+    });
   };
 };
 
@@ -67,9 +69,7 @@ const createImportLimiters = () => {
     windowMs: importUserWindowMs,
     max: importUserMax,
     handler: createImportHandler(false),
-    keyGenerator: function (req) {
-      return req.user?.id;
-    },
+    keyGenerator: (req) => req.user?.id,
     store: limiterCache('import_user_limiter'),
   };
 

@@ -1,18 +1,18 @@
-import { useState, useMemo, useEffect } from 'react';
-import TextareaAutosize from 'react-textarea-autosize';
-import { Label, HoverCard, SelectDropDown, HoverCardTrigger } from '@librechat/client';
+import { HoverCard, HoverCardTrigger, Label, SelectDropDown } from '@librechat/client';
 import type { Assistant, TPreset } from 'librechat-data-provider';
-import type { TModelSelectProps, Option } from '~/common';
+import { useEffect, useMemo, useState } from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
+import type { Option, TModelSelectProps } from '~/common';
+import { ESide } from '~/common';
+import { useAssistantListMap, useDebouncedInput, useLocalize } from '~/hooks';
 import {
   cn,
-  defaultTextProps,
-  removeFocusRings,
-  mapAssistants,
   createDropdownSetter,
+  defaultTextProps,
+  mapAssistants,
+  removeFocusRings,
 } from '~/utils';
-import { useLocalize, useDebouncedInput, useAssistantListMap } from '~/hooks';
 import OptionHover from './OptionHover';
-import { ESide } from '~/common';
 
 export default function Settings({ conversation, setOption, models, readonly }: TModelSelectProps) {
   const localize = useLocalize();

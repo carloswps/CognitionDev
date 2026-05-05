@@ -12,8 +12,8 @@ jest.mock(
   { virtual: true },
 );
 
-import { stripCodeChallenge, storeAndStripChallenge } from './exchange';
 import type { PkceStrippableRequest } from './exchange';
+import { storeAndStripChallenge, stripCodeChallenge } from './exchange';
 
 function makeReq(overrides: Partial<PkceStrippableRequest> = {}): PkceStrippableRequest {
   return { query: {}, originalUrl: '', url: '', ...overrides };

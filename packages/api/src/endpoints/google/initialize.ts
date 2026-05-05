@@ -1,12 +1,12 @@
+import { AuthKeys, EModelEndpoint } from 'librechat-data-provider';
 import path from 'path';
-import { EModelEndpoint, AuthKeys } from 'librechat-data-provider';
 import type {
   BaseInitializeParams,
-  InitializeResultBase,
   GoogleConfigOptions,
   GoogleCredentials,
+  InitializeResultBase,
 } from '~/types';
-import { isEnabled, loadServiceKey, checkUserKeyExpiry } from '~/utils';
+import { checkUserKeyExpiry, isEnabled, loadServiceKey } from '~/utils';
 import { getGoogleConfig } from './llm';
 
 /**
@@ -32,7 +32,10 @@ export async function initializeGoogle({
   let userKey = null;
   if (expiresAt && isUserProvided) {
     checkUserKeyExpiry(expiresAt, EModelEndpoint.google);
-    userKey = await db.getUserKey({ userId: req.user?.id, name: EModelEndpoint.google });
+    userKey = await db.getUserKey({
+      userId: req.user?.id,
+      name: EModelEndpoint.google,
+    });
   }
 
   let serviceKey: Record<string, unknown> = {};

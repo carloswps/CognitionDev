@@ -1,19 +1,20 @@
-import debounce from 'lodash/debounce';
-import React, { createContext, useContext, useState, useMemo, useCallback } from 'react';
-import { EModelEndpoint, isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
 import type * as t from 'librechat-data-provider';
+import { EModelEndpoint, isAgentsEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
+import debounce from 'lodash/debounce';
+import type React from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import type { Endpoint, SelectedValues } from '~/common';
+import { useGetEndpointsQuery, useListAgentsQuery } from '~/data-provider';
 import {
   useAgentDefaultPermissionLevel,
-  useSelectorEffects,
-  useKeyDialog,
   useEndpoints,
+  useKeyDialog,
   useLocalize,
+  useSelectorEffects,
 } from '~/hooks';
-import { useAgentsMapContext, useAssistantsMapContext, useLiveAnnouncer } from '~/Providers';
-import { useGetEndpointsQuery, useListAgentsQuery } from '~/data-provider';
-import { useModelSelectorChatContext } from './ModelSelectorChatContext';
 import useSelectMention from '~/hooks/Input/useSelectMention';
+import { useAgentsMapContext, useAssistantsMapContext, useLiveAnnouncer } from '~/Providers';
+import { useModelSelectorChatContext } from './ModelSelectorChatContext';
 import { filterItems } from './utils';
 
 type ModelSelectorContextType = {
@@ -234,7 +235,9 @@ export function ModelSelectorProvider({ children, startupConfig }: ModelSelector
       });
 
       const modelDisplayName = getModelDisplayName(endpoint, model);
-      const announcement = localize('com_ui_model_selected', { 0: modelDisplayName });
+      const announcement = localize('com_ui_model_selected', {
+        0: modelDisplayName,
+      });
       announcePolite({ message: announcement, isStatus: true });
     },
     [agentsMap, announcePolite, assistantsMap, getModelDisplayName, localize, onSelectEndpoint],
@@ -272,7 +275,6 @@ export function ModelSelectorProvider({ children, startupConfig }: ModelSelector
       endpointsConfig,
       handleSelectSpec,
       handleSelectModel,
-      setSelectedValues,
       handleSelectEndpoint,
       setEndpointSearchValue,
       endpointRequiresUserKey,

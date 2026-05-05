@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { useClearConversationsMutation } from 'librechat-data-provider/react-query';
 import {
-  OGDialogTemplate,
-  Label,
   Button,
+  Label,
   OGDialog,
+  OGDialogTemplate,
   OGDialogTrigger,
   Spinner,
 } from '@librechat/client';
-import { clearAllConversationStorage } from '~/utils';
+import { useClearConversationsMutation } from 'librechat-data-provider/react-query';
+import React, { useState } from 'react';
 import { useLocalize, useNewConvo } from '~/hooks';
+import { clearAllConversationStorage } from '~/utils';
 
 export const ClearChats = () => {
   const localize = useLocalize();

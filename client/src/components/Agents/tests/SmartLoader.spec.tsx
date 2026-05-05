@@ -1,5 +1,5 @@
-import React from 'react';
-import { render, screen, waitFor, act } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
+import type React from 'react';
 import { SmartLoader, useHasData } from '../SmartLoader';
 
 // Mock setTimeout and clearTimeout for testing

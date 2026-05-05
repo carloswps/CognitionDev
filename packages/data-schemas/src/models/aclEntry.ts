@@ -1,5 +1,5 @@
-import aclEntrySchema from '~/schema/aclEntry';
 import { applyTenantIsolation } from '~/models/plugins/tenantIsolation';
+import aclEntrySchema from '~/schema/aclEntry';
 import type * as t from '~/types';
 
 export function createAclEntryModel(mongoose: typeof import('mongoose')) {

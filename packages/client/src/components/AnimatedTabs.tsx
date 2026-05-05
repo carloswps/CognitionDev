@@ -1,6 +1,6 @@
 import * as Ariakit from '@ariakit/react';
-import { forwardRef, useEffect, useRef } from 'react';
 import type { ElementRef } from 'react';
+import { forwardRef, useEffect, useRef } from 'react';
 import { cn } from '~/utils';
 import './AnimatedTabs.css';
 
@@ -44,7 +44,10 @@ const Tab = forwardRef<ElementRef<typeof Ariakit.Tab>, Ariakit.TabProps>(functio
     updateState();
 
     const observer = new MutationObserver(updateState);
-    observer.observe(tabElement, { attributes: true, attributeFilter: ['aria-selected'] });
+    observer.observe(tabElement, {
+      attributes: true,
+      attributeFilter: ['aria-selected'],
+    });
 
     return () => observer.disconnect();
   }, []);
@@ -110,7 +113,11 @@ export function AnimatedTabs({
     updateUnderline();
 
     const observer = new MutationObserver(updateUnderline);
-    observer.observe(tabList, { attributes: true, subtree: true, attributeFilter: ['data-state'] });
+    observer.observe(tabList, {
+      attributes: true,
+      subtree: true,
+      attributeFilter: ['data-state'],
+    });
 
     return () => observer.disconnect();
   }, [tabs]);

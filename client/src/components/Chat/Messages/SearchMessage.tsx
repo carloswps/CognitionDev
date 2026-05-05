@@ -1,16 +1,16 @@
-import { useMemo } from 'react';
 import { useAtomValue } from 'jotai';
+import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
-import { useAuthContext, useLocalize } from '~/hooks';
-import type { TMessageProps, TMessageIcon } from '~/common';
-import MinimalHoverButtons from '~/components/Chat/Messages/MinimalHoverButtons';
+import type { TMessageIcon, TMessageProps } from '~/common';
 import Icon from '~/components/Chat/Messages/MessageIcon';
-import SearchContent from './Content/SearchContent';
+import MinimalHoverButtons from '~/components/Chat/Messages/MinimalHoverButtons';
+import { useAuthContext, useLocalize } from '~/hooks';
+import store from '~/store';
 import { fontSizeAtom } from '~/store/fontSize';
+import { cn } from '~/utils';
+import SearchContent from './Content/SearchContent';
 import SearchButtons from './SearchButtons';
 import SubRow from './SubRow';
-import { cn } from '~/utils';
-import store from '~/store';
 
 const MessageAvatar = ({ iconData }: { iconData: TMessageIcon }) => (
   <div className="relative flex flex-shrink-0 flex-col items-end">

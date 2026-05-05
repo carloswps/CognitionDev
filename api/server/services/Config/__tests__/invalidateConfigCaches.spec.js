@@ -53,7 +53,9 @@ describe('invalidateConfigCaches', () => {
 
     expect(mockClearAppConfigCache).toHaveBeenCalledTimes(1);
     expect(mockClearOverrideCache).toHaveBeenCalledTimes(1);
-    expect(mockInvalidateCachedTools).toHaveBeenCalledWith({ invalidateGlobal: true });
+    expect(mockInvalidateCachedTools).toHaveBeenCalledWith({
+      invalidateGlobal: true,
+    });
     expect(mockClearMcpConfigCache).toHaveBeenCalledTimes(1);
   });
 
@@ -62,7 +64,9 @@ describe('invalidateConfigCaches', () => {
 
     expect(mockClearOverrideCache).toHaveBeenCalledWith('tenant-a');
     expect(mockClearAppConfigCache).toHaveBeenCalledTimes(1);
-    expect(mockInvalidateCachedTools).toHaveBeenCalledWith({ invalidateGlobal: true });
+    expect(mockInvalidateCachedTools).toHaveBeenCalledWith({
+      invalidateGlobal: true,
+    });
   });
 
   it('all operations run in parallel (not sequentially)', async () => {
@@ -117,6 +121,8 @@ describe('invalidateConfigCaches', () => {
     await expect(invalidateConfigCaches()).resolves.not.toThrow();
 
     expect(mockClearOverrideCache).toHaveBeenCalledTimes(1);
-    expect(mockInvalidateCachedTools).toHaveBeenCalledWith({ invalidateGlobal: true });
+    expect(mockInvalidateCachedTools).toHaveBeenCalledWith({
+      invalidateGlobal: true,
+    });
   });
 });

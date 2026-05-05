@@ -1,8 +1,8 @@
-import { format } from 'date-fns';
 import { TooltipAnchor } from '@librechat/client';
-import { User, Calendar, EarthIcon, BarChart3 } from 'lucide-react';
+import { format } from 'date-fns';
 import type { TPromptGroup } from 'librechat-data-provider';
-import { useLocalize, useAuthContext } from '~/hooks';
+import { BarChart3, Calendar, EarthIcon, User } from 'lucide-react';
+import { useAuthContext, useLocalize } from '~/hooks';
 import CategoryIcon from '../utils/CategoryIcon';
 
 interface PromptDetailHeaderProps {

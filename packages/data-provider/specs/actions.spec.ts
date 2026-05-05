@@ -1,26 +1,26 @@
-import { z } from 'zod';
 import axios from 'axios';
 import type { OpenAPIV3 } from 'openapi-types';
+import { z } from 'zod';
 import type { ParametersSchema } from '../src/actions';
-import type { FlowchartSchema } from './openapiSpecs';
 import {
-  createURL,
-  resolveRef,
   ActionRequest,
-  openapiToFunction,
-  FunctionSignature,
+  createURL,
   extractDomainFromUrl,
+  FunctionSignature,
+  openapiToFunction,
+  resolveRef,
   validateActionDomain,
   validateAndParseOpenAPISpec,
 } from '../src/actions';
-import {
-  getWeatherOpenapiSpec,
-  whimsicalOpenapiSpec,
-  scholarAIOpenapiSpec,
-  formOpenAPISpec,
-  swapidev,
-} from './openapiSpecs';
 import { AuthorizationTypeEnum, AuthTypeEnum } from '../src/types/agents';
+import type { FlowchartSchema } from './openapiSpecs';
+import {
+  formOpenAPISpec,
+  getWeatherOpenapiSpec,
+  scholarAIOpenapiSpec,
+  swapidev,
+  whimsicalOpenapiSpec,
+} from './openapiSpecs';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -49,11 +49,21 @@ describe('FunctionSignature', () => {
 describe('ActionRequest', () => {
   // Mocking responses for each method
   beforeEach(() => {
-    mockedAxios.get.mockResolvedValue({ data: { success: true, method: 'GET' } });
-    mockedAxios.post.mockResolvedValue({ data: { success: true, method: 'POST' } });
-    mockedAxios.put.mockResolvedValue({ data: { success: true, method: 'PUT' } });
-    mockedAxios.delete.mockResolvedValue({ data: { success: true, method: 'DELETE' } });
-    mockedAxios.patch.mockResolvedValue({ data: { success: true, method: 'PATCH' } });
+    mockedAxios.get.mockResolvedValue({
+      data: { success: true, method: 'GET' },
+    });
+    mockedAxios.post.mockResolvedValue({
+      data: { success: true, method: 'POST' },
+    });
+    mockedAxios.put.mockResolvedValue({
+      data: { success: true, method: 'PUT' },
+    });
+    mockedAxios.delete.mockResolvedValue({
+      data: { success: true, method: 'DELETE' },
+    });
+    mockedAxios.patch.mockResolvedValue({
+      data: { success: true, method: 'PATCH' },
+    });
   });
 
   afterEach(() => {
@@ -479,7 +489,10 @@ describe('ActionRequest', () => {
       );
       const executor = actionRequest.createExecutor();
       executor.setParams({ key: 'value' });
-      await executor.execute({ httpAgent: mockHttpAgent, httpsAgent: mockHttpsAgent });
+      await executor.execute({
+        httpAgent: mockHttpAgent,
+        httpsAgent: mockHttpsAgent,
+      });
 
       expect(mockedAxios.create).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -719,7 +732,9 @@ describe('ActionRequest', () => {
       responses.forEach((response, index) => {
         const expectedUrl = `https://example.com/users/${requests[index].userId}/posts/${requests[index].postId}`;
         expect(response.data.url).toBe(expectedUrl);
-        expect(response.data.params).toEqual({ filter: requests[index].filter });
+        expect(response.data.params).toEqual({
+          filter: requests[index].filter,
+        });
       });
     });
 
@@ -948,7 +963,9 @@ describe('resolveRef general cases', () => {
   } satisfies OpenAPIV3.Document;
 
   it('resolves schema refs correctly', () => {
-    const schemaRef: OpenAPIV3.ReferenceObject = { $ref: '#/components/schemas/TestSchema' };
+    const schemaRef: OpenAPIV3.ReferenceObject = {
+      $ref: '#/components/schemas/TestSchema',
+    };
     const resolvedSchema = resolveRef<OpenAPIV3.ReferenceObject | OpenAPIV3.SchemaObject>(
       schemaRef,
       spec.components,
@@ -957,7 +974,9 @@ describe('resolveRef general cases', () => {
   });
 
   it('resolves parameter refs correctly, then schema within parameter', () => {
-    const paramRef: OpenAPIV3.ReferenceObject = { $ref: '#/components/parameters/TestParam' };
+    const paramRef: OpenAPIV3.ReferenceObject = {
+      $ref: '#/components/parameters/TestParam',
+    };
     const resolvedParam = resolveRef<OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject>(
       paramRef,
       spec.components,
@@ -1169,7 +1188,9 @@ describe('validateAndParseOpenAPISpec', () => {
             responses: {
               '200': {
                 content: {
-                  'application/json': { schema: { $ref: '#/components/schemas/Missing' } },
+                  'application/json': {
+                    schema: { $ref: '#/components/schemas/Missing' },
+                  },
                 },
               },
             },
@@ -1315,7 +1336,12 @@ describe('createURL', () => {
         const validData = {
           location: 'New York',
           locations: [
-            { city: 'New York', state: 'NY', countryCode: 'US', time: '2023-12-04T14:00:00Z' },
+            {
+              city: 'New York',
+              state: 'NY',
+              countryCode: 'US',
+              time: '2023-12-04T14:00:00Z',
+            },
           ],
         };
         expect(() => GetCurrentWeatherSchema.parse(validData)).not.toThrow();
@@ -1325,7 +1351,14 @@ describe('createURL', () => {
         const GetCurrentWeatherSchema = zodSchemas?.GetCurrentWeather as z.ZodTypeAny;
         const invalidData = {
           location: 123,
-          locations: [{ city: 'New York', state: 'NY', countryCode: 'US', time: 'invalid-time' }],
+          locations: [
+            {
+              city: 'New York',
+              state: 'NY',
+              countryCode: 'US',
+              time: 'invalid-time',
+            },
+          ],
         };
         expect(() => GetCurrentWeatherSchema.parse(invalidData)).toThrow();
       });
@@ -1537,7 +1570,10 @@ describe('createURL', () => {
             name: 'point',
             in: 'path',
             required: true,
-            schema: { type: 'string', pattern: '^(-?\\d+(?:\\.\\d+)?),(-?\\d+(?:\\.\\d+)?)$' },
+            schema: {
+              type: 'string',
+              pattern: '^(-?\\d+(?:\\.\\d+)?),(-?\\d+(?:\\.\\d+)?)$',
+            },
           },
         },
       },
@@ -1757,7 +1793,9 @@ describe('SSRF Protection', () => {
         openapi: '3.0.0',
         info: { title: 'Malicious API', version: '1.0.0' },
         servers: [{ url: 'http://169.254.169.254/latest/meta-data/' }], // AWS metadata service
-        paths: { '/': { get: { summary: 'Get metadata', operationId: 'getMetadata' } } },
+        paths: {
+          '/': { get: { summary: 'Get metadata', operationId: 'getMetadata' } },
+        },
       });
 
       const result = validateAndParseOpenAPISpec(maliciousSpec);
@@ -1777,7 +1815,9 @@ describe('SSRF Protection', () => {
         openapi: '3.0.0',
         info: { title: 'Internal API', version: '1.0.0' },
         servers: [{ url: 'http://10.0.0.1:8080/admin' }],
-        paths: { '/': { get: { summary: 'Admin endpoint', operationId: 'getAdmin' } } },
+        paths: {
+          '/': { get: { summary: 'Admin endpoint', operationId: 'getAdmin' } },
+        },
       });
 
       const result = validateAndParseOpenAPISpec(internalNetworkSpec);
@@ -1794,7 +1834,11 @@ describe('SSRF Protection', () => {
         openapi: '3.0.0',
         info: { title: 'GCP Metadata', version: '1.0.0' },
         servers: [{ url: 'http://metadata.google.internal/computeMetadata/v1/' }],
-        paths: { '/': { get: { summary: 'Get GCP metadata', operationId: 'getGCPMetadata' } } },
+        paths: {
+          '/': {
+            get: { summary: 'Get GCP metadata', operationId: 'getGCPMetadata' },
+          },
+        },
       });
 
       const result = validateAndParseOpenAPISpec(gcpMetadataSpec);
@@ -1811,7 +1855,9 @@ describe('SSRF Protection', () => {
         openapi: '3.0.0',
         info: { title: 'Legitimate API', version: '1.0.0' },
         servers: [{ url: 'https://api.example.com/v1' }],
-        paths: { '/data': { get: { summary: 'Get data', operationId: 'getData' } } },
+        paths: {
+          '/data': { get: { summary: 'Get data', operationId: 'getData' } },
+        },
       });
 
       const result = validateAndParseOpenAPISpec(legitimateSpec);
@@ -1832,7 +1878,9 @@ describe('SSRF Protection', () => {
         openapi: '3.0.0',
         info: { title: 'HTTP API', version: '1.0.0' },
         servers: [{ url: 'http://example.com' }],
-        paths: { '/': { get: { summary: 'Get data', operationId: 'getData' } } },
+        paths: {
+          '/': { get: { summary: 'Get data', operationId: 'getData' } },
+        },
       });
 
       const result = validateAndParseOpenAPISpec(httpSpec);

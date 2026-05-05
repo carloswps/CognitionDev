@@ -1,5 +1,5 @@
 import { Permissions, PermissionTypes, permissionsSchema } from './permissions';
-import { SystemRoles, roleDefaults } from './roles';
+import { roleDefaults, SystemRoles } from './roles';
 
 const RESOURCE_MANAGEMENT_FIELDS: Permissions[] = [
   Permissions.CREATE,
@@ -31,8 +31,7 @@ describe('roleDefaults', () => {
           continue;
         }
 
-        const userValues =
-          userPerms[permType as PermissionTypes] as Record<string, boolean>;
+        const userValues = userPerms[permType as PermissionTypes] as Record<string, boolean>;
 
         for (const field of fieldNames) {
           expect({
@@ -78,7 +77,9 @@ describe('roleDefaults', () => {
 
       for (const [permType, subSchema] of Object.entries(schemaShape)) {
         const fieldNames = Object.keys(subSchema.shape);
-        const hasResourceFields = fieldNames.some((f) => RESOURCE_MANAGEMENT_FIELDS.includes(f as Permissions));
+        const hasResourceFields = fieldNames.some((f) =>
+          RESOURCE_MANAGEMENT_FIELDS.includes(f as Permissions),
+        );
         if (!hasResourceFields) {
           continue;
         }
@@ -110,8 +111,7 @@ describe('roleDefaults', () => {
 
       for (const [permType, subSchema] of Object.entries(schemaShape)) {
         const fieldNames = Object.keys(subSchema.shape);
-        const adminValues =
-          adminPerms[permType as PermissionTypes] as Record<string, boolean>;
+        const adminValues = adminPerms[permType as PermissionTypes] as Record<string, boolean>;
 
         for (const field of fieldNames) {
           expect({

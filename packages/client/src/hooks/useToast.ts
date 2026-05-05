@@ -1,8 +1,8 @@
 import { useAtom } from 'jotai';
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import type { TShowToast } from '~/common';
 import { NotificationSeverity } from '~/common';
-import { toastState, type ToastState } from '~/store';
+import { type ToastState, toastState } from '~/store';
 
 export default function useToast(showDelay = 100) {
   const [toast, setToast] = useAtom(toastState);

@@ -1,19 +1,20 @@
-import React, { memo, useState, useCallback, useRef, useEffect } from 'react';
-import copy from 'copy-to-clipboard';
-import { X, ChevronUp, ChevronDown } from 'lucide-react';
 import {
   Button,
-  OGDialog,
-  Clipboard,
   CheckMark,
+  Clipboard,
+  OGDialog,
   OGDialogClose,
-  OGDialogTitle,
   OGDialogContent,
+  OGDialogTitle,
 } from '@librechat/client';
-import useMermaidZoom from './useMermaidZoom';
-import ZoomControls from './ZoomControls';
+import copy from 'copy-to-clipboard';
+import { ChevronDown, ChevronUp, X } from 'lucide-react';
+import type React from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useLocalize } from '~/hooks';
 import cn from '~/utils/cn';
+import useMermaidZoom from './useMermaidZoom';
+import ZoomControls from './ZoomControls';
 
 interface MermaidDialogProps {
   open: boolean;
@@ -113,7 +114,9 @@ const MermaidDialog: React.FC<MermaidDialogProps> = memo(
               'relative flex-1 overflow-hidden bg-surface-primary-alt p-4',
               isPanning ? 'cursor-grabbing' : 'cursor-grab',
             )}
-            style={{ height: showCode ? 'calc(85vh - 200px)' : 'calc(85vh - 50px)' }}
+            style={{
+              height: showCode ? 'calc(85vh - 200px)' : 'calc(85vh - 50px)',
+            }}
             onWheel={handleWheel}
             onMouseDown={handleMouseDown}
           >

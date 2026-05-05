@@ -1,14 +1,14 @@
-import { logger } from '@librechat/data-schemas';
 import type { AppConfig } from '@librechat/data-schemas';
+import { logger } from '@librechat/data-schemas';
+import type { Agent, TConversation } from 'librechat-data-provider';
 import {
-  Tools,
+  appendAgentIdSuffix,
   Constants,
+  encodeEphemeralAgentId,
   isAgentsEndpoint,
   isEphemeralAgentId,
-  appendAgentIdSuffix,
-  encodeEphemeralAgentId,
+  Tools,
 } from 'librechat-data-provider';
-import type { Agent, TConversation } from 'librechat-data-provider';
 import { getCustomEndpointConfig } from '~/app/config';
 
 const { mcp_all, mcp_delimiter } = Constants;
@@ -95,15 +95,29 @@ export async function loadAddedAgent(
       }
     }
 
-    const modelSpecs = (appConfig?.modelSpecs as { list?: Array<{ name: string; label?: string }> })
-      ?.list;
+    const modelSpecs = (
+      appConfig?.modelSpecs as {
+        list?: Array<{
+          name: string;
+          label?: string;
+          preset?: {
+            instructions?: string;
+          };
+        }>;
+      }
+    )?.list;
     const modelSpec = spec != null && spec !== '' ? modelSpecs?.find((s) => s.name === spec) : null;
     const sender =
       rest.modelLabel ??
       modelSpec?.label ??
       (endpointConfig?.modelDisplayLabel as string | undefined) ??
       '';
-    const ephemeralId = encodeEphemeralAgentId({ endpoint, model, sender, index: 1 });
+    const ephemeralId = encodeEphemeralAgentId({
+      endpoint,
+      model,
+      sender,
+      index: 1,
+    });
 
     return {
       id: ephemeralId,
@@ -136,6 +150,9 @@ export async function loadAddedAgent(
         executeCode?: boolean;
         fileSearch?: boolean;
         webSearch?: boolean;
+        preset?: {
+          instructions?: string;
+        };
       }>;
     }
   )?.list;
@@ -211,7 +228,12 @@ export async function loadAddedAgent(
     modelSpec?.label ??
     (endpointConfig?.modelDisplayLabel as string | undefined) ??
     '';
-  const ephemeralId = encodeEphemeralAgentId({ endpoint, model, sender, index: 1 });
+  const ephemeralId = encodeEphemeralAgentId({
+    endpoint,
+    model,
+    sender,
+    index: 1,
+  });
 
   const result: Record<string, unknown> = {
     id: ephemeralId,

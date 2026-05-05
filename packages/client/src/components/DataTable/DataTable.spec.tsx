@@ -1,9 +1,9 @@
-import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import type { SortingState } from '@tanstack/react-table';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Provider as JotaiProvider } from 'jotai';
+import type React from 'react';
 import DataTable from './DataTable';
 import type { TableColumn } from './DataTable.types';
-import type { SortingState } from '@tanstack/react-table';
 
 // Mock utilities
 jest.mock('~/utils', () => ({
@@ -389,7 +389,9 @@ describe('DataTable', () => {
         </TestWrapper>,
       );
 
-      const container = screen.getByRole('region', { name: 'com_ui_data_table' });
+      const container = screen.getByRole('region', {
+        name: 'com_ui_data_table',
+      });
       expect(container.className).toContain('custom-table-class');
     });
 
@@ -683,7 +685,9 @@ describe('DataTable', () => {
           <DataTable
             columns={columns}
             data={data}
-            config={{ selection: { enableRowSelection: true, showCheckboxes: true } }}
+            config={{
+              selection: { enableRowSelection: true, showCheckboxes: true },
+            }}
           />
         </TestWrapper>,
       );
@@ -702,7 +706,9 @@ describe('DataTable', () => {
           <DataTable
             columns={columns}
             data={data}
-            config={{ selection: { enableRowSelection: true, showCheckboxes: false } }}
+            config={{
+              selection: { enableRowSelection: true, showCheckboxes: false },
+            }}
           />
         </TestWrapper>,
       );

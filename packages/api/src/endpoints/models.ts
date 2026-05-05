@@ -1,25 +1,19 @@
-import crypto from 'crypto';
-import axios from 'axios';
-import { logger } from '@librechat/data-schemas';
-import { HttpsProxyAgent } from 'https-proxy-agent';
-import {
-  Time,
-  CacheKeys,
-  KnownEndpoints,
-  EModelEndpoint,
-  defaultModels,
-} from 'librechat-data-provider';
 import type { IUser } from '@librechat/data-schemas';
-import {
-  processModelData,
-  extractBaseURL,
-  isUserProvided,
-  resolveHeaders,
-  deriveBaseURL,
-  logAxiosError,
-  inputSchema,
-} from '~/utils';
+import { logger } from '@librechat/data-schemas';
+import axios from 'axios';
+import crypto from 'crypto';
+import { HttpsProxyAgent } from 'https-proxy-agent';
+import { CacheKeys, defaultModels, EModelEndpoint, KnownEndpoints, Time } from 'librechat-data-provider';
 import { standardCache, tokenConfigCache } from '~/cache';
+import {
+  deriveBaseURL,
+  extractBaseURL,
+  inputSchema,
+  isUserProvided,
+  logAxiosError,
+  processModelData,
+  resolveHeaders,
+} from '~/utils';
 
 export interface FetchModelsParams {
   /** User ID for API requests */
@@ -46,6 +40,8 @@ export interface FetchModelsParams {
   userObject?: Partial<IUser>;
   /** Skip MODEL_QUERIES cache (e.g., for user-provided keys) */
   skipCache?: boolean;
+  /** Filter for free models in openRouter*/
+  filterFreeModels?: boolean;
 }
 
 /**
@@ -56,7 +52,10 @@ export interface FetchModelsParams {
  */
 async function fetchOllamaModels(
   baseURL: string,
-  options: { headers?: Record<string, string> | null; user?: Partial<IUser> } = {},
+  options: {
+    headers?: Record<string, string> | null;
+    user?: Partial<IUser>;
+  } = {},
 ): Promise<string[]> {
   if (!baseURL) {
     return [];
@@ -114,6 +113,7 @@ export async function fetchModels({
   headers,
   userObject,
   skipCache = false,
+  filterFreeModels = false,
 }: FetchModelsParams): Promise<string[]> {
   let models: string[] = [];
   const baseURL = direct ? extractBaseURL(_baseURL ?? '') : _baseURL;
@@ -139,7 +139,10 @@ export async function fetchModels({
   if (name && name.toLowerCase().startsWith(KnownEndpoints.ollama)) {
     let ollamaModels: string[] | null = null;
     try {
-      ollamaModels = await fetchOllamaModels(baseURL ?? '', { headers, user: userObject });
+      ollamaModels = await fetchOllamaModels(baseURL ?? '', {
+        headers,
+        user: userObject,
+      });
     } catch (ollamaError) {
       logAxiosError({
         message:
@@ -192,12 +195,22 @@ export async function fetchModels({
 
     const input = res.data;
 
-    const validationResult = inputSchema.safeParse(input);
+    let _modelData = input.data;
+    if (filterFreeModels) {
+      _modelData = input.data.filter(
+        (i: { id: string; pricing: { prompt: string; completion: string; total: string } }) => {
+          return i.pricing.prompt === '0' && i.pricing.completion === '0';
+        },
+      );
+    }
+
+    const filteredInput = { data: _modelData };
+    const validationResult = inputSchema.safeParse(filteredInput);
     if (validationResult.success && createTokenConfig) {
-      const endpointTokenConfig = processModelData(input);
+      const endpointTokenConfig = processModelData(filteredInput);
       await tokenConfigCache().set(tokenKey ?? name, endpointTokenConfig);
     }
-    models = input.data.map((item: { id: string }) => item.id);
+    models = _modelData.map((item: { id: string }) => item.id);
   } catch (error) {
     const logMessage = `Failed to fetch models from ${azure ? 'Azure ' : ''}${name} API`;
     logAxiosError({ message: logMessage, error: error as Error });

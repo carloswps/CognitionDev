@@ -55,7 +55,7 @@ const inlineFlowchartConfig = {
   htmlLabels: false,
 };
 
-export { inlineFlowchartConfig, artifactFlowchartConfig };
+export { artifactFlowchartConfig, inlineFlowchartConfig };
 
 /** Perceived luminance (0 = black, 1 = white) via BT.601 luma coefficients */
 const hexLuminance = (hex: string): number => {

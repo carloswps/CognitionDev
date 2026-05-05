@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import type * as t from '~/types';
-import { createUserGroupMethods } from './userGroup';
+import mongoose from 'mongoose';
 import groupSchema from '~/schema/group';
 import userSchema from '~/schema/user';
+import type * as t from '~/types';
+import { createUserGroupMethods } from './userGroup';
 
 /** Mocking logger */
 jest.mock('~/config/winston', () => ({
@@ -603,9 +603,24 @@ describe('UserGroup Methods - Detailed Tests', () => {
   describe('listGroups', () => {
     beforeEach(async () => {
       await Group.create([
-        { name: 'Beta', source: 'local', memberIds: [], email: 'beta@test.com' },
-        { name: 'Alpha', source: 'local', memberIds: [], description: 'first group' },
-        { name: 'Gamma', source: 'entra', idOnTheSource: 'ext-g', memberIds: [] },
+        {
+          name: 'Beta',
+          source: 'local',
+          memberIds: [],
+          email: 'beta@test.com',
+        },
+        {
+          name: 'Alpha',
+          source: 'local',
+          memberIds: [],
+          description: 'first group',
+        },
+        {
+          name: 'Gamma',
+          source: 'entra',
+          idOnTheSource: 'ext-g',
+          memberIds: [],
+        },
       ]);
     });
 
@@ -690,7 +705,11 @@ describe('UserGroup Methods - Detailed Tests', () => {
 
   describe('deleteGroup', () => {
     test('returns deleted group', async () => {
-      const group = await Group.create({ name: 'ToDelete', source: 'local', memberIds: [] });
+      const group = await Group.create({
+        name: 'ToDelete',
+        source: 'local',
+        memberIds: [],
+      });
 
       const deleted = await methods.deleteGroup(group._id as mongoose.Types.ObjectId);
 
@@ -716,10 +735,7 @@ describe('UserGroup Methods - Detailed Tests', () => {
         memberIds: ['m1', 'm2', 'm3'],
       });
 
-      const updated = await methods.removeMemberById(
-        group._id as mongoose.Types.ObjectId,
-        'm2',
-      );
+      const updated = await methods.removeMemberById(group._id as mongoose.Types.ObjectId, 'm2');
 
       expect(updated).toBeDefined();
       expect(updated?.memberIds).toEqual(['m1', 'm3']);
@@ -752,9 +768,24 @@ describe('UserGroup Methods - Detailed Tests', () => {
   describe('sortPrincipalsByRelevance', () => {
     test('should sort principals by relevance score', async () => {
       const principals = [
-        { id: '1', name: 'Test User', type: 'user' as const, source: 'local' as const },
-        { id: '2', name: 'Admin Test', type: 'user' as const, source: 'local' as const },
-        { id: '3', name: 'Test Group', type: 'group' as const, source: 'local' as const },
+        {
+          id: '1',
+          name: 'Test User',
+          type: 'user' as const,
+          source: 'local' as const,
+        },
+        {
+          id: '2',
+          name: 'Admin Test',
+          type: 'user' as const,
+          source: 'local' as const,
+        },
+        {
+          id: '3',
+          name: 'Test Group',
+          type: 'group' as const,
+          source: 'local' as const,
+        },
       ];
 
       // Store original query in closure or pass it through

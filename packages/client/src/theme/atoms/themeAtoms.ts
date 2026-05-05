@@ -2,7 +2,7 @@
 // Theme state is now managed via React useState + localStorage in ThemeProvider.
 
 import { atomWithStorage } from 'jotai/utils';
-import { IThemeRGB } from '../types';
+import type { IThemeRGB } from '../types';
 
 /**
  * @deprecated Use ThemeContext instead. This atom is no longer used internally.

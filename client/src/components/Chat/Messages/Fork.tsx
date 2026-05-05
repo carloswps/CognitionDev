@@ -1,15 +1,15 @@
-import React, { useState, useRef } from 'react';
-import { useRecoilState } from 'recoil';
 import * as Ariakit from '@ariakit/react';
 import { VisuallyHidden } from '@ariakit/react';
-import { GitFork, InfoIcon } from 'lucide-react';
 import { useToastContext } from '@librechat/client';
 import { ForkOptions } from 'librechat-data-provider';
-import { GitCommit, GitBranchPlus, ListTree } from 'lucide-react';
-import { TranslationKeys, useLocalize, useNavigateToConvo } from '~/hooks';
+import { GitBranchPlus, GitCommit, GitFork, InfoIcon, ListTree } from 'lucide-react';
+import type React from 'react';
+import { useRef, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { useForkConvoMutation } from '~/data-provider';
-import { cn } from '~/utils';
+import { type TranslationKeys, useLocalize, useNavigateToConvo } from '~/hooks';
 import store from '~/store';
+import { cn } from '~/utils';
 
 interface PopoverButtonProps {
   children: React.ReactNode;
@@ -433,7 +433,10 @@ export default function Fork({
           checked={remember}
           onToggle={(checked) => {
             if (checked)
-              showToast({ message: localize('com_ui_fork_remember_checked'), status: 'info' });
+              showToast({
+                message: localize('com_ui_fork_remember_checked'),
+                status: 'info',
+              });
             setRemember(checked);
           }}
           labelKey="com_ui_fork_remember"

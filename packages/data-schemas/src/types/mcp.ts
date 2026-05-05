@@ -1,5 +1,5 @@
-import { Document, Types } from 'mongoose';
 import type { MCPServerDB } from 'librechat-data-provider';
+import type { Document, Types } from 'mongoose';
 
 /**
  * Mongoose document interface for MCP Server

@@ -1,12 +1,12 @@
 import { logger } from '@librechat/data-schemas';
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import type * as t from './types';
-import { MCPServersRegistry } from '~/mcp/registry/MCPServersRegistry';
-import { ConnectionsRepository } from '~/mcp/ConnectionsRepository';
+import type { ConnectionsRepository } from '~/mcp/ConnectionsRepository';
 import { MCPConnectionFactory } from '~/mcp/MCPConnectionFactory';
-import { isUserSourced } from './utils';
+import { MCPServersRegistry } from '~/mcp/registry/MCPServersRegistry';
 import { MCPConnection } from './connection';
 import { mcpConfig } from './mcpConfig';
+import type * as t from './types';
+import { isUserSourced } from './utils';
 
 /**
  * Abstract base class for managing user-specific MCP connections with lifecycle management.

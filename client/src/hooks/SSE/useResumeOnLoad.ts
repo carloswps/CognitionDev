@@ -1,7 +1,7 @@
+import type { Agents, TConversation, TMessage, TSubmission } from 'librechat-data-provider';
+import { Constants, isAssistantsEndpoint, tMessageSchema } from 'librechat-data-provider';
 import { useEffect, useRef } from 'react';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
-import { Constants, tMessageSchema, isAssistantsEndpoint } from 'librechat-data-provider';
-import type { TMessage, TConversation, TSubmission, Agents } from 'librechat-data-provider';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useStreamStatus } from '~/data-provider';
 import store from '~/store';
 
@@ -227,7 +227,10 @@ export default function useResumeOnLoad(
           text: '',
           content: streamStatus.aggregatedContent ?? [{ type: 'text', text: '' }],
         } as TMessage,
-        conversation: { conversationId, title: 'Resumed Chat' } as TConversation,
+        conversation: {
+          conversationId,
+          title: 'Resumed Chat',
+        } as TConversation,
         isRegenerate: false,
         isTemporary: false,
         endpointOption: {},

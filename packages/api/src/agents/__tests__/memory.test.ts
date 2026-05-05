@@ -1,7 +1,7 @@
-import { Response } from 'express';
 import { Providers } from '@librechat/agents';
-import { Tools } from 'librechat-data-provider';
+import type { Response } from 'express';
 import type { MemoryArtifact } from 'librechat-data-provider';
+import { Tools } from 'librechat-data-provider';
 import { createMemoryTool, processMemory } from '../memory';
 
 // Mock the logger
@@ -93,7 +93,10 @@ describe('createMemoryTool', () => {
       });
 
       // This would put us at 101 tokens total, exceeding the limit
-      const result = await tool.func({ key: 'test', value: 'This is a 20 char str' });
+      const result = await tool.func({
+        key: 'test',
+        value: 'This is a 20 char str',
+      });
       expect(result).toHaveLength(2);
       expect(result[0]).toBe('Memory storage would exceed limit. Cannot save this memory.');
 

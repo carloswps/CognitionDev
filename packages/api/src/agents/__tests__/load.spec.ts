@@ -1,10 +1,10 @@
-import mongoose from 'mongoose';
-import { v4 as uuidv4 } from 'uuid';
-import { Constants } from 'librechat-data-provider';
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import { agentSchema, createMethods } from '@librechat/data-schemas';
 import type { AgentModelParameters } from 'librechat-data-provider';
-import type { LoadAgentParams, LoadAgentDeps } from '../load';
+import { Constants } from 'librechat-data-provider';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
+import type { LoadAgentDeps, LoadAgentParams } from '../load';
 import { loadAgent } from '../load';
 
 let Agent: mongoose.Model<unknown>;
@@ -101,7 +101,10 @@ describe('loadAgent', () => {
         req: mockReq,
         agent_id: EPHEMERAL_AGENT_ID as string,
         endpoint: 'openai',
-        model_parameters: { model: 'gpt-4', temperature: 0.7 } as unknown as AgentModelParameters,
+        model_parameters: {
+          model: 'gpt-4',
+          temperature: 0.7,
+        } as unknown as AgentModelParameters,
       },
       deps,
     );
@@ -220,7 +223,9 @@ describe('loadAgent', () => {
         req: mockReq,
         agent_id: EPHEMERAL_AGENT_ID as string,
         endpoint: 'openai',
-        model_parameters: { model: 'gpt-3.5-turbo' } as unknown as AgentModelParameters,
+        model_parameters: {
+          model: 'gpt-3.5-turbo',
+        } as unknown as AgentModelParameters,
       },
       deps,
     );
@@ -267,7 +272,9 @@ describe('loadAgent', () => {
           req: null as unknown as LoadAgentParams['req'],
           agent_id: 'agent_test',
           endpoint: 'openai',
-          model_parameters: { model: 'gpt-4' } as unknown as AgentModelParameters,
+          model_parameters: {
+            model: 'gpt-4',
+          } as unknown as AgentModelParameters,
         },
         deps,
       );
@@ -309,7 +316,9 @@ describe('loadAgent', () => {
           req: mockReq,
           agent_id: EPHEMERAL_AGENT_ID as string,
           endpoint: 'openai',
-          model_parameters: { model: 'gpt-4' } as unknown as AgentModelParameters,
+          model_parameters: {
+            model: 'gpt-4',
+          } as unknown as AgentModelParameters,
         },
         deps,
       );
@@ -338,7 +347,9 @@ describe('loadAgent', () => {
           req: mockReq,
           agent_id: agentId,
           endpoint: 'openai',
-          model_parameters: { model: 'gpt-4' } as unknown as AgentModelParameters,
+          model_parameters: {
+            model: 'gpt-4',
+          } as unknown as AgentModelParameters,
         },
         deps,
       );
@@ -381,7 +392,9 @@ describe('loadAgent', () => {
           req: mockReq,
           agent_id: EPHEMERAL_AGENT_ID as string,
           endpoint: 'openai',
-          model_parameters: { model: 'gpt-4' } as unknown as AgentModelParameters,
+          model_parameters: {
+            model: 'gpt-4',
+          } as unknown as AgentModelParameters,
         },
         deps,
       );

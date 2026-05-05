@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useResetRecoilState } from 'recoil';
-import { logger } from '~/utils';
 import store from '~/store';
+import { logger } from '~/utils';
 
 /**
  * Hook to reset visible artifacts when the conversation ID changes

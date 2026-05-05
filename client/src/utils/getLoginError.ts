@@ -1,4 +1,4 @@
-import { TranslationKeys } from '~/hooks';
+import type { TranslationKeys } from '~/hooks';
 
 const getLoginError = (errorText: string): TranslationKeys => {
   const defaultError: TranslationKeys = 'com_auth_error_login';

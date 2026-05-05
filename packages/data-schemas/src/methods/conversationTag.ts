@@ -1,6 +1,6 @@
 import type { Model } from 'mongoose';
-import { tenantSafeBulkWrite } from '~/utils/tenantBulkWrite';
 import logger from '~/config/winston';
+import { tenantSafeBulkWrite } from '~/utils/tenantBulkWrite';
 
 interface IConversationTag {
   user: string;
@@ -122,13 +122,19 @@ export function createConversationTagMethods(mongoose: typeof import('mongoose')
       const Conversation = mongoose.models.Conversation;
       const { tag: newTag, description, position } = data;
 
-      const existingTag = await ConversationTag.findOne({ user, tag: oldTag }).lean();
+      const existingTag = await ConversationTag.findOne({
+        user,
+        tag: oldTag,
+      }).lean();
       if (!existingTag) {
         return null;
       }
 
       if (newTag && newTag !== oldTag) {
-        const tagAlreadyExists = await ConversationTag.findOne({ user, tag: newTag }).lean();
+        const tagAlreadyExists = await ConversationTag.findOne({
+          user,
+          tag: newTag,
+        }).lean();
         if (tagAlreadyExists) {
           throw new Error('Tag already exists');
         }
@@ -166,7 +172,10 @@ export function createConversationTagMethods(mongoose: typeof import('mongoose')
       const ConversationTag = mongoose.models.ConversationTag as Model<IConversationTag>;
       const Conversation = mongoose.models.Conversation;
 
-      const deletedTag = await ConversationTag.findOneAndDelete({ user, tag }).lean();
+      const deletedTag = await ConversationTag.findOneAndDelete({
+        user,
+        tag,
+      }).lean();
       if (!deletedTag) {
         return null;
       }
@@ -193,7 +202,10 @@ export function createConversationTagMethods(mongoose: typeof import('mongoose')
       const ConversationTag = mongoose.models.ConversationTag as Model<IConversationTag>;
       const Conversation = mongoose.models.Conversation;
 
-      const conversation = await Conversation.findOne({ user, conversationId }).lean();
+      const conversation = await Conversation.findOne({
+        user,
+        conversationId,
+      }).lean();
       if (!conversation) {
         throw new Error('Conversation not found');
       }

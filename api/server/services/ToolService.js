@@ -611,8 +611,14 @@ async function loadToolDefinitionsWrapper({ req, res, agent, streamId = null, to
         },
       };
 
-      const runStepEvent = { event: GraphEvents.ON_RUN_STEP, data: runStepData };
-      const runStepDeltaEvent = { event: GraphEvents.ON_RUN_STEP_DELTA, data: runStepDeltaData };
+      const runStepEvent = {
+        event: GraphEvents.ON_RUN_STEP,
+        data: runStepData,
+      };
+      const runStepDeltaEvent = {
+        event: GraphEvents.ON_RUN_STEP_DELTA,
+        data: runStepDeltaData,
+      };
 
       if (streamId) {
         await GenerationJobManager.emitChunk(streamId, runStepEvent);
@@ -890,7 +896,13 @@ async function loadAgentTools({
   definitionsOnly = true,
 }) {
   if (definitionsOnly) {
-    return loadToolDefinitionsWrapper({ req, res, agent, streamId, tool_resources });
+    return loadToolDefinitionsWrapper({
+      req,
+      res,
+      agent,
+      streamId,
+      tool_resources,
+    });
   }
 
   if (!agent.tools || agent.tools.length === 0) {
@@ -1259,7 +1271,9 @@ async function loadToolsForExecution({
       const codeApiKey = authValues[EnvVar.CODE_API_KEY];
 
       if (codeApiKey) {
-        const ptcTool = createProgrammaticToolCallingTool({ apiKey: codeApiKey });
+        const ptcTool = createProgrammaticToolCallingTool({
+          apiKey: codeApiKey,
+        });
         allLoadedTools.push(ptcTool);
       } else {
         logger.warn('[loadToolsForExecution] PTC requested but CODE_API_KEY not available');

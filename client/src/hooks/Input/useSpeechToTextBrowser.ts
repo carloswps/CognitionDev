@@ -1,11 +1,11 @@
-import { useEffect, useRef, useMemo } from 'react';
-import { useRecoilState } from 'recoil';
 import { useToastContext } from '@librechat/client';
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import { useGetCustomConfigSpeechQuery } from 'librechat-data-provider/react-query';
-import useGetAudioSettings from './useGetAudioSettings';
+import { useEffect, useMemo, useRef } from 'react';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import { useRecoilState } from 'recoil';
 import { useLocalize } from '~/hooks';
 import store from '~/store';
+import useGetAudioSettings from './useGetAudioSettings';
 
 const useSpeechToTextBrowser = (
   setText: (text: string) => void,
@@ -15,7 +15,9 @@ const useSpeechToTextBrowser = (
   const { showToast } = useToastContext();
   const { speechToTextEndpoint } = useGetAudioSettings();
   const isBrowserSTTEnabled = speechToTextEndpoint === 'browser';
-  const { data: speechConfig } = useGetCustomConfigSpeechQuery({ enabled: true });
+  const { data: speechConfig } = useGetCustomConfigSpeechQuery({
+    enabled: true,
+  });
   const sttExternal = Boolean(speechConfig?.sttExternal);
 
   const lastTranscript = useRef<string | null>(null);

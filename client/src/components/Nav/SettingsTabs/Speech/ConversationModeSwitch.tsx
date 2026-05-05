@@ -1,6 +1,6 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
-import ToggleSwitch from '../ToggleSwitch';
 import store from '~/store';
+import ToggleSwitch from '../ToggleSwitch';
 
 export default function ConversationModeSwitch({
   onCheckedChange,

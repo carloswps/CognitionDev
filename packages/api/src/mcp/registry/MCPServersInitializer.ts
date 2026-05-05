@@ -1,10 +1,10 @@
 import { logger } from '@librechat/data-schemas';
+import { isLeader } from '~/cluster';
 import type * as t from '~/mcp/types';
-import { registryStatusCache as statusCache } from './cache/RegistryStatusCache';
-import { MCPServersRegistry } from './MCPServersRegistry';
 import { sanitizeUrlForLogging } from '~/mcp/utils';
 import { withTimeout } from '~/utils';
-import { isLeader } from '~/cluster';
+import { registryStatusCache as statusCache } from './cache/RegistryStatusCache';
+import { MCPServersRegistry } from './MCPServersRegistry';
 
 const MCP_INIT_TIMEOUT_MS =
   process.env.MCP_INIT_TIMEOUT_MS != null ? parseInt(process.env.MCP_INIT_TIMEOUT_MS) : 30_000;
@@ -64,7 +64,7 @@ export class MCPServersInitializer {
     } else {
       // Followers try again after a delay if not initialized
       await new Promise((resolve) => setTimeout(resolve, 3000));
-      await this.initialize(rawConfigs);
+      await MCPServersInitializer.initialize(rawConfigs);
     }
   }
 

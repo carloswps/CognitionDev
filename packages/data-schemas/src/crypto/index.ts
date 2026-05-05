@@ -1,7 +1,7 @@
 import 'dotenv/config';
-import jwt from 'jsonwebtoken';
 import crypto from 'node:crypto';
-import { SignPayloadParams } from '~/types';
+import jwt from 'jsonwebtoken';
+import type { SignPayloadParams } from '~/types';
 
 const { webcrypto } = crypto;
 

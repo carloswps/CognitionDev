@@ -1,5 +1,5 @@
 // client/src/a11y/Announcer.tsx
-import React from 'react';
+import type React from 'react';
 
 interface AnnouncerProps {
   statusMessage: string;

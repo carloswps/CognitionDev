@@ -332,7 +332,10 @@ describe('checkBan middleware', () => {
     });
 
     it('returns 403 without caching when expiresAt is NaN-producing', async () => {
-      mockBanLogsGet.mockResolvedValueOnce({ type: 'ban', expiresAt: 'not-a-number' });
+      mockBanLogsGet.mockResolvedValueOnce({
+        type: 'ban',
+        expiresAt: 'not-a-number',
+      });
       const next = jest.fn();
       const res = createRes();
 
@@ -388,7 +391,10 @@ describe('checkBan middleware', () => {
 
   describe('user lookup by email', () => {
     it('resolves userId from email when not on request', async () => {
-      const req = createReq({ user: null, body: { email: 'test@example.com' } });
+      const req = createReq({
+        user: null,
+        body: { email: 'test@example.com' },
+      });
       findUser.mockResolvedValueOnce({ _id: 'resolved-user-id' });
       const expiresAt = Date.now() + 3600000;
       mockBanLogsGet
@@ -402,7 +408,10 @@ describe('checkBan middleware', () => {
     });
 
     it('continues with IP-only check when email lookup finds no user', async () => {
-      const req = createReq({ user: null, body: { email: 'unknown@example.com' } });
+      const req = createReq({
+        user: null,
+        body: { email: 'unknown@example.com' },
+      });
       findUser.mockResolvedValueOnce(null);
       const next = jest.fn();
 

@@ -1,11 +1,12 @@
-import React, { useMemo, useEffect, useRef } from 'react';
+import type * as t from 'librechat-data-provider';
 import {
   isAgentsEndpoint,
-  LocalStorageKeys,
-  isEphemeralAgentId,
   isAssistantsEndpoint,
+  isEphemeralAgentId,
+  LocalStorageKeys,
 } from 'librechat-data-provider';
-import type * as t from 'librechat-data-provider';
+import type React from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import type { SelectedValues } from '~/common';
 import useSetIndexOptions from '~/hooks/Conversations/useSetIndexOptions';
 

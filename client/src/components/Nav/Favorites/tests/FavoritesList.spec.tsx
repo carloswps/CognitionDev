@@ -1,13 +1,13 @@
-import React from 'react';
 import { render, waitFor } from '@testing-library/react';
+import type React from 'react';
 import '@testing-library/jest-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { RecoilRoot } from 'recoil';
+import type { Agent } from 'librechat-data-provider';
+import { dataService } from 'librechat-data-provider';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { BrowserRouter } from 'react-router-dom';
-import { dataService } from 'librechat-data-provider';
-import type { Agent } from 'librechat-data-provider';
+import { RecoilRoot } from 'recoil';
 
 // Mock store before importing FavoritesList
 jest.mock('~/store', () => {
@@ -27,6 +27,7 @@ jest.mock('~/store', () => {
     },
   };
 });
+
 import FavoritesList from '../FavoritesList';
 
 type FavoriteItem = {
@@ -198,7 +199,9 @@ describe('FavoritesList', () => {
       mockFavorites.push({ agentId: 'deleted-agent' });
 
       // Mock getAgentById to return 404
-      (dataService.getAgentById as jest.Mock).mockRejectedValue({ response: { status: 404 } });
+      (dataService.getAgentById as jest.Mock).mockRejectedValue({
+        response: { status: 404 },
+      });
 
       const { queryAllByTestId } = renderWithProviders(<FavoritesList />);
 
@@ -249,7 +252,9 @@ describe('FavoritesList', () => {
         isLoading: false,
       });
 
-      (dataService.getAgentById as jest.Mock).mockRejectedValue({ response: { status: 403 } });
+      (dataService.getAgentById as jest.Mock).mockRejectedValue({
+        response: { status: 403 },
+      });
 
       renderWithProviders(<FavoritesList />);
 
@@ -267,7 +272,9 @@ describe('FavoritesList', () => {
         isLoading: false,
       });
 
-      (dataService.getAgentById as jest.Mock).mockRejectedValue({ response: { status: 403 } });
+      (dataService.getAgentById as jest.Mock).mockRejectedValue({
+        response: { status: 403 },
+      });
 
       const { rerender } = renderWithProviders(<FavoritesList />);
 

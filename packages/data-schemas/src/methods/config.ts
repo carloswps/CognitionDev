@@ -1,8 +1,7 @@
-import { Types } from 'mongoose';
-import { PrincipalType, PrincipalModel } from 'librechat-data-provider';
-import { BASE_CONFIG_PRINCIPAL_ID } from '~/admin/capabilities';
 import type { TCustomConfig } from 'librechat-data-provider';
-import type { Model, ClientSession } from 'mongoose';
+import { type PrincipalModel, PrincipalType } from 'librechat-data-provider';
+import type { ClientSession, Model, Types } from 'mongoose';
+import { BASE_CONFIG_PRINCIPAL_ID } from '~/admin/capabilities';
 import type { IConfig } from '~/types';
 
 export function createConfigMethods(mongoose: typeof import('mongoose')) {
@@ -13,7 +12,11 @@ export function createConfigMethods(mongoose: typeof import('mongoose')) {
     session?: ClientSession,
   ): Promise<IConfig | null> {
     const Config = mongoose.models.Config as Model<IConfig>;
-    const filter: { principalType: PrincipalType; principalId: string; isActive?: boolean } = {
+    const filter: {
+      principalType: PrincipalType;
+      principalId: string;
+      isActive?: boolean;
+    } = {
       principalType,
       principalId: principalId.toString(),
     };
@@ -41,7 +44,10 @@ export function createConfigMethods(mongoose: typeof import('mongoose')) {
   }
 
   async function getApplicableConfigs(
-    principals?: Array<{ principalType: string; principalId?: string | Types.ObjectId }>,
+    principals?: Array<{
+      principalType: string;
+      principalId?: string | Types.ObjectId;
+    }>,
     session?: ClientSession,
   ): Promise<IConfig[]> {
     const Config = mongoose.models.Config as Model<IConfig>;
@@ -129,11 +135,14 @@ export function createConfigMethods(mongoose: typeof import('mongoose')) {
   ): Promise<IConfig | null> {
     const Config = mongoose.models.Config as Model<IConfig>;
 
-    const setPayload: { principalModel: PrincipalModel; priority: number; [key: string]: unknown } =
-      {
-        principalModel,
-        priority,
-      };
+    const setPayload: {
+      principalModel: PrincipalModel;
+      priority: number;
+      [key: string]: unknown;
+    } = {
+      principalModel,
+      priority,
+    };
 
     for (const [path, value] of Object.entries(fields)) {
       setPayload[`overrides.${path}`] = value;
@@ -168,7 +177,10 @@ export function createConfigMethods(mongoose: typeof import('mongoose')) {
 
     return await Config.findOneAndUpdate(
       { principalType, principalId: principalId.toString() },
-      { $unset: { [`overrides.${fieldPath}`]: '' }, $inc: { configVersion: 1 } },
+      {
+        $unset: { [`overrides.${fieldPath}`]: '' },
+        $inc: { configVersion: 1 },
+      },
       options,
     );
   }

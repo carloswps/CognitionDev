@@ -1,15 +1,15 @@
-import React, { useState, useRef } from 'react';
-import { Wrench, ArrowRight } from 'lucide-react';
-import { CheckMark, useOnClickOutside, useMultiSearch } from '@librechat/client';
 import {
+  Label,
   Listbox,
   ListboxButton,
-  Label,
-  ListboxOptions,
   ListboxOption,
+  ListboxOptions,
   Transition,
 } from '@headlessui/react';
+import { CheckMark, useMultiSearch, useOnClickOutside } from '@librechat/client';
 import type { TPlugin } from 'librechat-data-provider';
+import { ArrowRight, Wrench } from 'lucide-react';
+import React, { useRef, useState } from 'react';
 import { cn } from '~/utils/';
 
 export type TMultiSelectDropDownProps = {

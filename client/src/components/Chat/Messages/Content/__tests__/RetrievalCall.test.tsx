@@ -1,7 +1,7 @@
-import React from 'react';
-import { RecoilRoot } from 'recoil';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import type { TAttachment } from 'librechat-data-provider';
+import type React from 'react';
+import { RecoilRoot } from 'recoil';
 import RetrievalCall from '../RetrievalCall';
 
 jest.mock('~/hooks', () => ({
@@ -185,13 +185,19 @@ describe('RetrievalCall - LGCY-03: Localization', () => {
   });
 
   it('does not contain hardcoded "Searching my knowledge" text', () => {
-    const { container } = renderRetrievalCall({ initialProgress: 0.5, isSubmitting: true });
+    const { container } = renderRetrievalCall({
+      initialProgress: 0.5,
+      isSubmitting: true,
+    });
 
     expect(container.textContent).not.toContain('Searching my knowledge');
   });
 
   it('does not contain hardcoded "Used Retrieval" text', () => {
-    const { container } = renderRetrievalCall({ initialProgress: 1, isSubmitting: false });
+    const { container } = renderRetrievalCall({
+      initialProgress: 1,
+      isSubmitting: false,
+    });
 
     expect(container.textContent).not.toContain('Used Retrieval');
   });

@@ -1,16 +1,16 @@
-import { Feather } from 'lucide-react';
-import { EModelEndpoint, alternateName } from 'librechat-data-provider';
 import {
-  Sparkles,
-  BedrockIcon,
   AnthropicIcon,
   AzureMinimalIcon,
-  OpenAIMinimalIcon,
-  GoogleMinimalIcon,
+  BedrockIcon,
   CustomMinimalIcon,
+  GoogleMinimalIcon,
+  OpenAIMinimalIcon,
+  Sparkles,
 } from '@librechat/client';
+import { alternateName, EModelEndpoint } from 'librechat-data-provider';
+import { Feather } from 'lucide-react';
+import type { IconProps } from '~/common';
 import UnknownIcon from '~/hooks/Endpoint/UnknownIcon';
-import { IconProps } from '~/common';
 import { cn } from '~/utils';
 
 const MinimalIcon: React.FC<IconProps> = (props) => {
@@ -31,7 +31,10 @@ const MinimalIcon: React.FC<IconProps> = (props) => {
       icon: <OpenAIMinimalIcon className={iconClassName} />,
       name: props.chatGptLabel ?? 'ChatGPT',
     },
-    [EModelEndpoint.google]: { icon: <GoogleMinimalIcon />, name: props.modelLabel ?? 'Google' },
+    [EModelEndpoint.google]: {
+      icon: <GoogleMinimalIcon />,
+      name: props.modelLabel ?? 'Google',
+    },
     [EModelEndpoint.anthropic]: {
       icon: <AnthropicIcon className="icon-md shrink-0 dark:text-white" />,
       name: props.modelLabel ?? 'Claude',
@@ -40,8 +43,14 @@ const MinimalIcon: React.FC<IconProps> = (props) => {
       icon: <CustomMinimalIcon />,
       name: 'Custom',
     },
-    [EModelEndpoint.assistants]: { icon: <Sparkles className="icon-sm" />, name: 'Assistant' },
-    [EModelEndpoint.azureAssistants]: { icon: <Sparkles className="icon-sm" />, name: 'Assistant' },
+    [EModelEndpoint.assistants]: {
+      icon: <Sparkles className="icon-sm" />,
+      name: 'Assistant',
+    },
+    [EModelEndpoint.azureAssistants]: {
+      icon: <Sparkles className="icon-sm" />,
+      name: 'Assistant',
+    },
     [EModelEndpoint.agents]: {
       icon: <Feather className="icon-sm" aria-hidden="true" />,
       name: props.modelLabel ?? alternateName[EModelEndpoint.agents],

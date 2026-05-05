@@ -94,7 +94,9 @@ describe('MCPConnection Error Detection', () => {
     });
 
     it('should detect rate limit error by message containing 429', () => {
-      const error = { message: 'Error POSTing to endpoint (HTTP 429): Too many requests' };
+      const error = {
+        message: 'Error POSTing to endpoint (HTTP 429): Too many requests',
+      };
       expect(isRateLimitError(error)).toBe(true);
     });
 
@@ -150,7 +152,9 @@ describe('MCPConnection Error Detection', () => {
     });
 
     it('should detect OAuth error by message containing 401', () => {
-      const error = { message: 'Error POSTing to endpoint (HTTP 401): Unauthorized' };
+      const error = {
+        message: 'Error POSTing to endpoint (HTTP 401): Unauthorized',
+      };
       expect(isOAuthError(error)).toBe(true);
     });
 
@@ -214,7 +218,11 @@ describe('extractSSEErrorMessage', () => {
       };
     }
 
-    const errorObj = error as { message?: string; code?: number; event?: unknown };
+    const errorObj = error as {
+      message?: string;
+      code?: number;
+      event?: unknown;
+    };
     const rawMessage = errorObj.message ?? '';
     const code = errorObj.code;
 
@@ -401,7 +409,9 @@ describe('extractSSEErrorMessage', () => {
 
     it('should NOT match "timeout" in unrelated context', () => {
       // URL containing "timeout" should not trigger timeout detection
-      const error = { message: 'Failed to connect to https://api.example.com/timeout-settings' };
+      const error = {
+        message: 'Failed to connect to https://api.example.com/timeout-settings',
+      };
       const result = extractSSEErrorMessage(error);
 
       expect(result.message).not.toContain('SSE connection timed out');
@@ -626,7 +636,7 @@ describe('MCPConnection Circuit Breaker', () => {
     cb.failedRounds++;
     if (cb.failedRounds >= CB_MAX_FAILED_ROUNDS) {
       const backoff = Math.min(
-        CB_BASE_BACKOFF_MS * Math.pow(2, cb.failedRounds - CB_MAX_FAILED_ROUNDS),
+        CB_BASE_BACKOFF_MS * 2 ** (cb.failedRounds - CB_MAX_FAILED_ROUNDS),
         CB_MAX_BACKOFF_MS,
       );
       cb.failedBackoffUntil = now + backoff;

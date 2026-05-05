@@ -1,19 +1,19 @@
+import type { EModelEndpoint, TConversation, TEndpointsConfig } from 'librechat-data-provider';
+import {
+  getDefaultParamsEndpoint,
+  getEndpointField,
+  isAssistantsEndpoint,
+  LocalStorageKeys,
+} from 'librechat-data-provider';
+import { useGetModelsQuery } from 'librechat-data-provider/react-query';
 import { useCallback, useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
-import { useGetModelsQuery } from 'librechat-data-provider/react-query';
-import {
-  getEndpointField,
-  LocalStorageKeys,
-  isAssistantsEndpoint,
-  getDefaultParamsEndpoint,
-} from 'librechat-data-provider';
-import type { TEndpointsConfig, EModelEndpoint, TConversation } from 'librechat-data-provider';
 import type { AssistantListItem, NewConversationParams } from '~/common';
-import useAssistantListMap from '~/hooks/Assistants/useAssistantListMap';
-import { buildDefaultConvo, getDefaultEndpoint } from '~/utils';
-import { useGetEndpointsQuery } from '~/data-provider';
 import { mainTextareaId } from '~/common';
+import { useGetEndpointsQuery } from '~/data-provider';
+import useAssistantListMap from '~/hooks/Assistants/useAssistantListMap';
 import store from '~/store';
+import { buildDefaultConvo, getDefaultEndpoint } from '~/utils';
 
 const ADDED_INDEX = 1;
 

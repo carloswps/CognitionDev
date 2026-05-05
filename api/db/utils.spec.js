@@ -52,9 +52,24 @@ describe('batchResetMeiliFlags', () => {
     it('should reset _meiliIndex flag for documents with expiredAt: null and _meiliIndex: true', async () => {
       // Insert test documents
       await testCollection.insertMany([
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true, name: 'doc1' },
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true, name: 'doc2' },
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true, name: 'doc3' },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+          name: 'doc1',
+        },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+          name: 'doc2',
+        },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+          name: 'doc3',
+        },
       ]);
 
       const result = await batchResetMeiliFlags(testCollection);
@@ -71,22 +86,40 @@ describe('batchResetMeiliFlags', () => {
     it('should not modify documents with expiredAt set', async () => {
       const expiredDate = new Date();
       await testCollection.insertMany([
-        { _id: new mongoose.Types.ObjectId(), expiredAt: expiredDate, _meiliIndex: true },
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: expiredDate,
+          _meiliIndex: true,
+        },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
       ]);
 
       const result = await batchResetMeiliFlags(testCollection);
 
       expect(result).toBe(1);
 
-      const expiredDoc = await testCollection.findOne({ expiredAt: expiredDate });
+      const expiredDoc = await testCollection.findOne({
+        expiredAt: expiredDate,
+      });
       expect(expiredDoc._meiliIndex).toBe(true);
     });
 
     it('should not modify documents with _meiliIndex: false', async () => {
       await testCollection.insertMany([
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: false },
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: false,
+        },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
       ]);
 
       const result = await batchResetMeiliFlags(testCollection);
@@ -96,8 +129,16 @@ describe('batchResetMeiliFlags', () => {
 
     it('should return 0 when no documents match the criteria', async () => {
       await testCollection.insertMany([
-        { _id: new mongoose.Types.ObjectId(), expiredAt: new Date(), _meiliIndex: true },
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: false },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: new Date(),
+          _meiliIndex: true,
+        },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: false,
+        },
       ]);
 
       const result = await batchResetMeiliFlags(testCollection);
@@ -174,7 +215,11 @@ describe('batchResetMeiliFlags', () => {
   describe('return value', () => {
     it('should return correct modified count', async () => {
       await testCollection.insertMany([
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
       ]);
 
       await expect(batchResetMeiliFlags(testCollection)).resolves.toBe(1);
@@ -231,7 +276,9 @@ describe('batchResetMeiliFlags', () => {
       // Just verify it completes and returns the correct count
       expect(elapsed).toBeLessThan(1000); // More reasonable upper bound
 
-      const result = await testCollection.countDocuments({ _meiliIndex: false });
+      const result = await testCollection.countDocuments({
+        _meiliIndex: false,
+      });
       expect(result).toBe(5);
     });
 
@@ -241,9 +288,21 @@ describe('batchResetMeiliFlags', () => {
 
       // Exactly 3 documents - should fit in one batch, no delay
       await testCollection.insertMany([
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
       ]);
 
       const result = await batchResetMeiliFlags(testCollection);
@@ -251,7 +310,9 @@ describe('batchResetMeiliFlags', () => {
       // Verify all 3 documents were processed in a single batch
       expect(result).toBe(3);
 
-      const updatedDocs = await testCollection.countDocuments({ _meiliIndex: false });
+      const updatedDocs = await testCollection.countDocuments({
+        _meiliIndex: false,
+      });
       expect(updatedDocs).toBe(3);
     });
   });
@@ -260,7 +321,11 @@ describe('batchResetMeiliFlags', () => {
     it('should handle documents without _meiliIndex field', async () => {
       await testCollection.insertMany([
         { _id: new mongoose.Types.ObjectId(), expiredAt: null },
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
       ]);
 
       const result = await batchResetMeiliFlags(testCollection);
@@ -271,11 +336,31 @@ describe('batchResetMeiliFlags', () => {
 
     it('should handle mixed document states correctly', async () => {
       await testCollection.insertMany([
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: false },
-        { _id: new mongoose.Types.ObjectId(), expiredAt: new Date(), _meiliIndex: true },
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: null },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: false,
+        },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: new Date(),
+          _meiliIndex: true,
+        },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: null,
+        },
         { _id: new mongoose.Types.ObjectId(), expiredAt: null },
       ]);
 
@@ -406,7 +491,11 @@ describe('batchResetMeiliFlags', () => {
       process.env.MEILI_SYNC_BATCH_SIZE = 'abc';
 
       await testCollection.insertMany([
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
       ]);
 
       const result = await batchResetMeiliFlags(testCollection);
@@ -422,7 +511,11 @@ describe('batchResetMeiliFlags', () => {
       process.env.MEILI_SYNC_DELAY_MS = 'xyz';
 
       await testCollection.insertMany([
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
       ]);
 
       const result = await batchResetMeiliFlags(testCollection);
@@ -438,7 +531,11 @@ describe('batchResetMeiliFlags', () => {
       process.env.MEILI_SYNC_BATCH_SIZE = '-50';
 
       await testCollection.insertMany([
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
       ]);
 
       const result = await batchResetMeiliFlags(testCollection);
@@ -453,7 +550,11 @@ describe('batchResetMeiliFlags', () => {
       process.env.MEILI_SYNC_DELAY_MS = '-100';
 
       await testCollection.insertMany([
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
       ]);
 
       const result = await batchResetMeiliFlags(testCollection);
@@ -469,7 +570,11 @@ describe('batchResetMeiliFlags', () => {
       process.env.MEILI_SYNC_DELAY_MS = '50';
 
       await testCollection.insertMany([
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
       ]);
 
       const result = await batchResetMeiliFlags(testCollection);
@@ -482,7 +587,11 @@ describe('batchResetMeiliFlags', () => {
       process.env.MEILI_SYNC_BATCH_SIZE = '0';
 
       await testCollection.insertMany([
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
       ]);
 
       const result = await batchResetMeiliFlags(testCollection);
@@ -497,7 +606,11 @@ describe('batchResetMeiliFlags', () => {
       process.env.MEILI_SYNC_DELAY_MS = '0';
 
       await testCollection.insertMany([
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
       ]);
 
       const result = await batchResetMeiliFlags(testCollection);
@@ -511,7 +624,11 @@ describe('batchResetMeiliFlags', () => {
       delete process.env.MEILI_SYNC_DELAY_MS;
 
       await testCollection.insertMany([
-        { _id: new mongoose.Types.ObjectId(), expiredAt: null, _meiliIndex: true },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          expiredAt: null,
+          _meiliIndex: true,
+        },
       ]);
 
       const result = await batchResetMeiliFlags(testCollection);

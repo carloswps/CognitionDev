@@ -1,6 +1,6 @@
-import type { IUser, AppConfig } from '@librechat/data-schemas';
-import type { TEndpointOption } from 'librechat-data-provider';
+import type { AppConfig, IUser } from '@librechat/data-schemas';
 import type { Request } from 'express';
+import type { TEndpointOption } from 'librechat-data-provider';
 
 /**
  * LibreChat-specific request body type that extends Express Request body

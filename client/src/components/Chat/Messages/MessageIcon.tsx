@@ -1,11 +1,11 @@
-import { useMemo, memo } from 'react';
+import type { Agent, Assistant } from 'librechat-data-provider';
 import { getEndpointField } from 'librechat-data-provider';
-import type { Assistant, Agent } from 'librechat-data-provider';
+import { memo, useMemo } from 'react';
 import type { TMessageIcon } from '~/common';
 import ConvoIconURL from '~/components/Endpoints/ConvoIconURL';
+import Icon from '~/components/Endpoints/Icon';
 import { useGetEndpointsQuery } from '~/data-provider';
 import { getIconEndpoint } from '~/utils';
-import Icon from '~/components/Endpoints/Icon';
 
 type MessageIconProps = {
   iconData?: TMessageIcon;
@@ -55,7 +55,12 @@ const MessageIcon = memo(({ iconData, assistant, agent }: MessageIconProps) => {
 
   const iconURL = iconData?.iconURL;
   const endpoint = useMemo(
-    () => getIconEndpoint({ endpointsConfig, iconURL, endpoint: iconData?.endpoint }),
+    () =>
+      getIconEndpoint({
+        endpointsConfig,
+        iconURL,
+        endpoint: iconData?.endpoint,
+      }),
     [endpointsConfig, iconURL, iconData?.endpoint],
   );
 

@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useForm } from 'react-hook-form';
+import { Button, isDark, Spinner, ThemeContext } from '@librechat/client';
 import { Turnstile } from '@marsidev/react-turnstile';
-import { ThemeContext, Spinner, Button, isDark } from '@librechat/client';
 import type { TLoginUser, TStartupConfig } from 'librechat-data-provider';
+import type React from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import type { TAuthContext } from '~/common';
-import { useResendVerificationEmail, useGetStartupConfig } from '~/data-provider';
-import { validateEmail } from '~/utils';
+import { useGetStartupConfig, useResendVerificationEmail } from '~/data-provider';
 import { useLocalize } from '~/hooks';
+import { validateEmail } from '~/utils';
 
 type TLoginFormProps = {
   onSubmit: (data: TLoginUser) => void;
@@ -96,7 +97,10 @@ const LoginForm: React.FC<TLoginFormProps> = ({ onSubmit, startupConfig, error, 
               aria-label={localize('com_auth_email')}
               {...register('email', {
                 required: localize('com_auth_email_required'),
-                maxLength: { value: 120, message: localize('com_auth_email_max_length') },
+                maxLength: {
+                  value: 120,
+                  message: localize('com_auth_email_max_length'),
+                },
                 validate: useUsernameLogin
                   ? undefined
                   : (value) => validateEmail(value, localize('com_auth_email_pattern')),
@@ -129,7 +133,10 @@ const LoginForm: React.FC<TLoginFormProps> = ({ onSubmit, startupConfig, error, 
                   value: startupConfig?.minPasswordLength || 8,
                   message: localize('com_auth_password_min_length'),
                 },
-                maxLength: { value: 128, message: localize('com_auth_password_max_length') },
+                maxLength: {
+                  value: 128,
+                  message: localize('com_auth_password_max_length'),
+                },
               })}
               aria-invalid={!!errors.password}
               className="webkit-dark-styles transition-color peer w-full rounded-2xl border border-border-light bg-surface-primary px-3.5 pb-2.5 pt-3 text-text-primary duration-200 focus:border-green-500 focus:outline-none"

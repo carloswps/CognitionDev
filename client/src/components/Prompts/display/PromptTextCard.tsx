@@ -1,15 +1,15 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
-import remarkGfm from 'remark-gfm';
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
-import supersub from 'remark-supersub';
+import { Button, TooltipAnchor, useToastContext } from '@librechat/client';
+import { Check, Copy, FileText } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
-import { Copy, Check, FileText } from 'lucide-react';
-import { Button, TooltipAnchor, useToastContext } from '@librechat/client';
+import rehypeKatex from 'rehype-katex';
+import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import supersub from 'remark-supersub';
 import { codeNoExecution } from '~/components/Chat/Messages/Content/MarkdownComponents';
-import { PromptVariableGfm } from '../editor/Markdown';
 import { useLocalize } from '~/hooks';
+import { PromptVariableGfm } from '../editor/Markdown';
 
 interface PromptTextCardProps {
   mainText: string;
@@ -85,18 +85,18 @@ const PromptTextCard = ({ mainText }: PromptTextCardProps) => {
       <div className="min-h-0 flex-1 overflow-y-auto p-3">
         <ReactMarkdown
           remarkPlugins={[
-            /** @ts-ignore */
+            /** @ts-expect-error */
             supersub,
             remarkGfm,
             [remarkMath, { singleDollarTextMath: false }],
           ]}
           rehypePlugins={[
-            /** @ts-ignore */
+            /** @ts-expect-error */
             [rehypeKatex],
-            /** @ts-ignore */
+            /** @ts-expect-error */
             [rehypeHighlight, { ignoreMissing: true }],
           ]}
-          /** @ts-ignore */
+          /** @ts-expect-error */
           components={{ p: PromptVariableGfm, code: codeNoExecution }}
           className="markdown prose dark:prose-invert light my-1 max-w-none break-words text-text-primary"
         >

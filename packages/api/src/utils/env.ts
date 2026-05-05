@@ -1,8 +1,8 @@
-import { extractEnvVariable } from 'librechat-data-provider';
-import type { MCPOptions } from 'librechat-data-provider';
 import type { IUser } from '@librechat/data-schemas';
+import type { MCPOptions } from 'librechat-data-provider';
+import { extractEnvVariable } from 'librechat-data-provider';
 import type { RequestBody } from '~/types';
-import { extractOpenIDTokenInfo, processOpenIDPlaceholders, isOpenIDTokenValid } from './oidc';
+import { extractOpenIDTokenInfo, isOpenIDTokenValid, processOpenIDPlaceholders } from './oidc';
 
 /**
  * List of allowed user fields that can be used in MCP environment variables.
@@ -89,7 +89,9 @@ export function createSafeUser(
     return {};
   }
 
-  const safeUser: Partial<SafeUser> & { federatedTokens?: IUser['federatedTokens'] } = {};
+  const safeUser: Partial<SafeUser> & {
+    federatedTokens?: IUser['federatedTokens'];
+  } = {};
   for (const field of ALLOWED_USER_FIELDS) {
     if (field in user) {
       safeUser[field] = user[field];
@@ -342,7 +344,13 @@ export function processMCPEnv(params: {
     const processedArgs: string[] = [];
     for (const originalValue of newObj.args) {
       processedArgs.push(
-        processSingleValue({ originalValue, customUserVars, user, body, dbSourced }),
+        processSingleValue({
+          originalValue,
+          customUserVars,
+          user,
+          body,
+          dbSourced,
+        }),
       );
     }
     newObj.args = processedArgs;

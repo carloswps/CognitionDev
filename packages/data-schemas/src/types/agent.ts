@@ -1,5 +1,5 @@
-import { Document, Types } from 'mongoose';
-import type { GraphEdge, AgentToolOptions, AgentToolResources } from 'librechat-data-provider';
+import type { AgentToolOptions, AgentToolResources, GraphEdge } from 'librechat-data-provider';
+import type { Document, Types } from 'mongoose';
 
 export interface ISupportContact {
   name?: string;

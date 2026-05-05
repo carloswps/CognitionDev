@@ -1,5 +1,5 @@
-import { EToolResources } from 'librechat-data-provider';
 import type { AgentToolResources } from 'librechat-data-provider';
+import { EToolResources } from 'librechat-data-provider';
 
 /**
  * Every `EToolResources` member that can carry `file_ids` on an agent document.
@@ -48,7 +48,10 @@ export function collectToolResourceFileIds(
 export function stripFileIdsFromToolResources(
   tool_resources: AgentToolResources | undefined | null,
   idsToRemove: Iterable<string>,
-): { tool_resources: AgentToolResources | undefined | null; removedCount: number } {
+): {
+  tool_resources: AgentToolResources | undefined | null;
+  removedCount: number;
+} {
   if (!tool_resources) {
     return { tool_resources, removedCount: 0 };
   }

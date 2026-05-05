@@ -1,27 +1,26 @@
-import { useRecoilValue } from 'recoil';
-import { Close } from '@radix-ui/react-popover';
-import { Flipper, Flipped } from 'react-flip-toolkit';
-import { getEndpointField } from 'librechat-data-provider';
 import {
   Dialog,
+  DialogTemplate,
+  DialogTrigger,
+  EditIcon,
   Label,
   PinIcon,
-  EditIcon,
-  TrashIcon,
-  DialogTrigger,
   TooltipAnchor,
-  DialogTemplate,
+  TrashIcon,
 } from '@librechat/client';
+import { Close } from '@radix-ui/react-popover';
 import type { TPreset } from 'librechat-data-provider';
+import { getEndpointField } from 'librechat-data-provider';
 import type { FC } from 'react';
+import { Flipped, Flipper } from 'react-flip-toolkit';
+import { useRecoilValue } from 'recoil';
 import FileUpload from '~/components/Chat/Input/Files/FileUpload';
 import { useGetEndpointsQuery } from '~/data-provider';
-import { getPresetTitle, getIconKey } from '~/utils';
-import { MenuSeparator, MenuItem } from '../UI';
-import { icons } from '~/hooks/Endpoint/Icons';
 import { useLocalize } from '~/hooks';
-import { cn } from '~/utils';
+import { icons } from '~/hooks/Endpoint/Icons';
 import store from '~/store';
+import { cn, getIconKey, getPresetTitle } from '~/utils';
+import { MenuItem, MenuSeparator } from '../UI';
 
 const PresetItems: FC<{
   presets?: Array<TPreset | undefined>;
@@ -134,7 +133,10 @@ const PresetItems: FC<{
               return null;
             }
 
-            const iconKey = getIconKey({ endpoint: preset.endpoint, endpointsConfig });
+            const iconKey = getIconKey({
+              endpoint: preset.endpoint,
+              endpointsConfig,
+            });
             const Icon = icons[iconKey];
 
             return (

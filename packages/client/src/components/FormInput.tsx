@@ -1,8 +1,8 @@
-import React from 'react';
-import type { ControllerRenderProps, FieldValues, FieldPath } from 'react-hook-form';
-import { Label } from './Label';
-import { Input } from './Input';
+import type React from 'react';
+import type { ControllerRenderProps, FieldPath, FieldValues } from 'react-hook-form';
 import { cn } from '~/utils';
+import { Input } from './Input';
+import { Label } from './Label';
 
 export default function FormInput<
   TFieldValues extends FieldValues = FieldValues,

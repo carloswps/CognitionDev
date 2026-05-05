@@ -26,7 +26,10 @@ const { getLogStores } = require('~/cache');
 const db = require('~/models');
 
 const getUserController = async (req, res) => {
-  const appConfig = await getAppConfig({ role: req.user?.role, tenantId: req.user?.tenantId });
+  const appConfig = await getAppConfig({
+    role: req.user?.role,
+    tenantId: req.user?.tenantId,
+  });
   /** @type {IUser} */
   const userData = req.user.toObject != null ? req.user.toObject() : { ...req.user };
   /**
@@ -165,7 +168,10 @@ const deleteUserMcpServers = async (userId) => {
 };
 
 const updateUserPluginsController = async (req, res) => {
-  const appConfig = await getAppConfig({ role: req.user?.role, tenantId: req.user?.tenantId });
+  const appConfig = await getAppConfig({
+    role: req.user?.role,
+    tenantId: req.user?.tenantId,
+  });
   const { user } = req;
   const { pluginKey, action, auth, isEntityTool } = req.body;
   try {
@@ -300,7 +306,11 @@ const deleteUserController = async (req, res) => {
     );
     if (existingUser && existingUser.twoFactorEnabled) {
       const { token, backupCode } = req.body;
-      const result = await verifyOTPOrBackupCode({ user: existingUser, token, backupCode });
+      const result = await verifyOTPOrBackupCode({
+        user: existingUser,
+        token,
+        backupCode,
+      });
 
       if (!result.verified) {
         const msg =

@@ -1,18 +1,18 @@
-import { useRef, useEffect, useCallback, useMemo } from 'react';
-import { useRecoilValue } from 'recoil';
-import { useForm } from 'react-hook-form';
 import { TextareaAutosize } from '@librechat/client';
-import { ContentTypes } from 'librechat-data-provider';
-import { Lightbulb, MessageSquare } from 'lucide-react';
-import { useUpdateMessageContentMutation } from 'librechat-data-provider/react-query';
 import type { Agents } from 'librechat-data-provider';
+import { ContentTypes } from 'librechat-data-provider';
+import { useUpdateMessageContentMutation } from 'librechat-data-provider/react-query';
+import { Lightbulb, MessageSquare } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import { useRecoilValue } from 'recoil';
 import type { TEditProps } from '~/common';
-import { useMessagesOperations, useMessagesConversation } from '~/Providers';
 import Container from '~/components/Chat/Messages/Content/Container';
-import { useGetAddedConvo } from '~/hooks/Chat';
-import { cn, removeFocusRings } from '~/utils';
 import { useLocalize } from '~/hooks';
+import { useGetAddedConvo } from '~/hooks/Chat';
+import { useMessagesConversation, useMessagesOperations } from '~/Providers';
 import store from '~/store';
+import { cn, removeFocusRings } from '~/utils';
 
 const EditTextPart = ({
   part,

@@ -1,8 +1,8 @@
+import { fireEvent, render, screen } from '@testing-library/react';
+import { AuthType, RerankerTypes, SearchCategories } from 'librechat-data-provider';
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import ApiKeyDialog from './ApiKeyDialog';
-import { AuthType, SearchCategories, RerankerTypes } from 'librechat-data-provider';
 import { useGetStartupConfig } from '~/data-provider';
+import ApiKeyDialog from './ApiKeyDialog';
 
 // Mock useLocalize to just return the key
 jest.mock('~/hooks', () => ({
@@ -49,7 +49,9 @@ describe('ApiKeyDialog', () => {
     ).toBeInTheDocument();
     // Scraper dropdown button
     expect(
-      screen.getByRole('button', { name: 'com_ui_web_search_scraper_firecrawl' }),
+      screen.getByRole('button', {
+        name: 'com_ui_web_search_scraper_firecrawl',
+      }),
     ).toBeInTheDocument();
     // Reranker dropdown button
     expect(
@@ -63,7 +65,9 @@ describe('ApiKeyDialog', () => {
   });
 
   it('shows static text for provider and only provider input if provider is set', () => {
-    mockUseGetStartupConfig.mockReturnValue({ data: { webSearch: { searchProvider: 'serper' } } });
+    mockUseGetStartupConfig.mockReturnValue({
+      data: { webSearch: { searchProvider: 'serper' } },
+    });
     render(<ApiKeyDialog {...defaultProps} />);
     expect(screen.getByText('com_ui_web_search_provider_serper')).toBeInTheDocument();
     // Should not find a dropdown button for provider

@@ -16,9 +16,7 @@
       "types": "./dist/types/index.d.ts"
     }
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "clean": "rimraf dist",
     "b:clean": "bun run rimraf dist",

@@ -13,7 +13,11 @@ const SUPERSEDED_PROMPT_GROUP_INDEXES = ['createdAt_1_updatedAt_1'];
 export async function dropSupersededPromptGroupIndexes(
   connection: Connection,
 ): Promise<{ dropped: string[]; skipped: string[]; errors: string[] }> {
-  const result = { dropped: [] as string[], skipped: [] as string[], errors: [] as string[] };
+  const result = {
+    dropped: [] as string[],
+    skipped: [] as string[],
+    errors: [] as string[],
+  };
   const collectionName = 'promptgroups';
 
   let collection;

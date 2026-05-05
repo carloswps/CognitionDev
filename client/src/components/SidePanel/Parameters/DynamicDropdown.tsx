@@ -1,12 +1,12 @@
-import { useMemo, useState } from 'react';
-import { OptionTypes } from 'librechat-data-provider';
-import { Label, HoverCard, HoverCardTrigger, SelectDropDown } from '@librechat/client';
+import { HoverCard, HoverCardTrigger, Label, SelectDropDown } from '@librechat/client';
 import type { DynamicSettingProps } from 'librechat-data-provider';
-import { TranslationKeys, useLocalize, useParameterEffects } from '~/hooks';
-import { useChatContext } from '~/Providers';
-import OptionHover from './OptionHover';
+import { OptionTypes } from 'librechat-data-provider';
+import { useMemo, useState } from 'react';
 import { ESide } from '~/common';
+import { type TranslationKeys, useLocalize, useParameterEffects } from '~/hooks';
+import { useChatContext } from '~/Providers';
 import { cn } from '~/utils';
+import OptionHover from './OptionHover';
 
 function DynamicDropdown({
   label = '',

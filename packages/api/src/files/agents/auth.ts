@@ -1,8 +1,8 @@
 import type { IUser } from '@librechat/data-schemas';
-import type { Response } from 'express';
-import type { Types } from 'mongoose';
 import { logger } from '@librechat/data-schemas';
-import { SystemRoles, ResourceType, PermissionBits } from 'librechat-data-provider';
+import type { Response } from 'express';
+import { PermissionBits, ResourceType, SystemRoles } from 'librechat-data-provider';
+import type { Types } from 'mongoose';
 import type { ServerRequest } from '~/types';
 
 export type AgentUploadAuthResult =
@@ -49,7 +49,12 @@ export async function checkAgentUploadAuth(
 
   const agent = await getAgent({ id: agentId });
   if (!agent) {
-    return { allowed: false, status: 404, error: 'Not Found', message: 'Agent not found' };
+    return {
+      allowed: false,
+      status: 404,
+      error: 'Not Found',
+      message: 'Agent not found',
+    };
   }
 
   if (agent.author?.toString() === userId) {
@@ -89,7 +94,11 @@ export async function verifyAgentUploadPermission({
 }: {
   req: ServerRequest;
   res: Response;
-  metadata: { agent_id?: string; tool_resource?: string | null; message_file?: boolean | string };
+  metadata: {
+    agent_id?: string;
+    tool_resource?: string | null;
+    message_file?: boolean | string;
+  };
   getAgent: AgentUploadAuthDeps['getAgent'];
   checkPermission: AgentUploadAuthDeps['checkPermission'];
 }): Promise<boolean> {

@@ -148,7 +148,10 @@ describe('AgentClient - recordCollectedUsage', () => {
     });
 
     it('should set this.usage from recordCollectedUsage result', async () => {
-      mockRecordCollectedUsage.mockResolvedValue({ input_tokens: 200, output_tokens: 75 });
+      mockRecordCollectedUsage.mockResolvedValue({
+        input_tokens: 200,
+        output_tokens: 75,
+      });
       const collectedUsage = [{ input_tokens: 200, output_tokens: 75, model: 'gpt-4' }];
 
       await client.recordCollectedUsage({
@@ -169,7 +172,10 @@ describe('AgentClient - recordCollectedUsage', () => {
         { input_tokens: 180, output_tokens: 20, model: 'gpt-4' },
       ];
 
-      mockRecordCollectedUsage.mockResolvedValue({ input_tokens: 100, output_tokens: 100 });
+      mockRecordCollectedUsage.mockResolvedValue({
+        input_tokens: 100,
+        output_tokens: 100,
+      });
 
       await client.recordCollectedUsage({
         collectedUsage,
@@ -192,7 +198,10 @@ describe('AgentClient - recordCollectedUsage', () => {
         { input_tokens: 80, output_tokens: 40, model: 'gpt-4' },
       ];
 
-      mockRecordCollectedUsage.mockResolvedValue({ input_tokens: 100, output_tokens: 90 });
+      mockRecordCollectedUsage.mockResolvedValue({
+        input_tokens: 100,
+        output_tokens: 90,
+      });
 
       await client.recordCollectedUsage({
         collectedUsage,
@@ -212,7 +221,10 @@ describe('AgentClient - recordCollectedUsage', () => {
         { input_tokens: 50, output_tokens: 30, model: 'gpt-4' },
       ];
 
-      mockRecordCollectedUsage.mockResolvedValue({ input_tokens: 200, output_tokens: 130 });
+      mockRecordCollectedUsage.mockResolvedValue({
+        input_tokens: 200,
+        output_tokens: 130,
+      });
 
       await client.recordCollectedUsage({
         collectedUsage,
@@ -228,14 +240,37 @@ describe('AgentClient - recordCollectedUsage', () => {
   describe('real-world scenarios', () => {
     it('should correctly handle sequential tool calls with growing context', async () => {
       const collectedUsage = [
-        { input_tokens: 31596, output_tokens: 151, model: 'claude-opus-4-5-20251101' },
-        { input_tokens: 35368, output_tokens: 150, model: 'claude-opus-4-5-20251101' },
-        { input_tokens: 58362, output_tokens: 295, model: 'claude-opus-4-5-20251101' },
-        { input_tokens: 112604, output_tokens: 193, model: 'claude-opus-4-5-20251101' },
-        { input_tokens: 257440, output_tokens: 2217, model: 'claude-opus-4-5-20251101' },
+        {
+          input_tokens: 31596,
+          output_tokens: 151,
+          model: 'claude-opus-4-5-20251101',
+        },
+        {
+          input_tokens: 35368,
+          output_tokens: 150,
+          model: 'claude-opus-4-5-20251101',
+        },
+        {
+          input_tokens: 58362,
+          output_tokens: 295,
+          model: 'claude-opus-4-5-20251101',
+        },
+        {
+          input_tokens: 112604,
+          output_tokens: 193,
+          model: 'claude-opus-4-5-20251101',
+        },
+        {
+          input_tokens: 257440,
+          output_tokens: 2217,
+          model: 'claude-opus-4-5-20251101',
+        },
       ];
 
-      mockRecordCollectedUsage.mockResolvedValue({ input_tokens: 31596, output_tokens: 3006 });
+      mockRecordCollectedUsage.mockResolvedValue({
+        input_tokens: 31596,
+        output_tokens: 3006,
+      });
 
       await client.recordCollectedUsage({
         collectedUsage,
@@ -257,7 +292,10 @@ describe('AgentClient - recordCollectedUsage', () => {
         },
       ];
 
-      mockRecordCollectedUsage.mockResolvedValue({ input_tokens: 31596, output_tokens: 163 });
+      mockRecordCollectedUsage.mockResolvedValue({
+        input_tokens: 31596,
+        output_tokens: 163,
+      });
 
       await client.recordCollectedUsage({
         collectedUsage,
@@ -272,7 +310,10 @@ describe('AgentClient - recordCollectedUsage', () => {
 
   describe('model fallback', () => {
     it('should use param model when available', async () => {
-      mockRecordCollectedUsage.mockResolvedValue({ input_tokens: 100, output_tokens: 50 });
+      mockRecordCollectedUsage.mockResolvedValue({
+        input_tokens: 100,
+        output_tokens: 50,
+      });
       const collectedUsage = [{ input_tokens: 100, output_tokens: 50 }];
 
       await client.recordCollectedUsage({
@@ -288,7 +329,10 @@ describe('AgentClient - recordCollectedUsage', () => {
 
     it('should fallback to client.model when param model is missing', async () => {
       client.model = 'client-model';
-      mockRecordCollectedUsage.mockResolvedValue({ input_tokens: 100, output_tokens: 50 });
+      mockRecordCollectedUsage.mockResolvedValue({
+        input_tokens: 100,
+        output_tokens: 50,
+      });
       const collectedUsage = [{ input_tokens: 100, output_tokens: 50 }];
 
       await client.recordCollectedUsage({
@@ -302,7 +346,10 @@ describe('AgentClient - recordCollectedUsage', () => {
     });
 
     it('should fallback to agent model_parameters.model as last resort', async () => {
-      mockRecordCollectedUsage.mockResolvedValue({ input_tokens: 100, output_tokens: 50 });
+      mockRecordCollectedUsage.mockResolvedValue({
+        input_tokens: 100,
+        output_tokens: 50,
+      });
       const collectedUsage = [{ input_tokens: 100, output_tokens: 50 }];
 
       await client.recordCollectedUsage({
@@ -318,7 +365,10 @@ describe('AgentClient - recordCollectedUsage', () => {
 
   describe('getStreamUsage integration', () => {
     it('should return the usage object set by recordCollectedUsage', async () => {
-      mockRecordCollectedUsage.mockResolvedValue({ input_tokens: 100, output_tokens: 50 });
+      mockRecordCollectedUsage.mockResolvedValue({
+        input_tokens: 100,
+        output_tokens: 50,
+      });
       const collectedUsage = [{ input_tokens: 100, output_tokens: 50, model: 'gpt-4' }];
 
       await client.recordCollectedUsage({
@@ -338,7 +388,10 @@ describe('AgentClient - recordCollectedUsage', () => {
 
     /** Verifies usage passes the check in BaseClient.sendMessage: if (usage != null && Number(usage[this.outputTokensKey]) > 0) */
     it('should have output_tokens > 0 for BaseClient.sendMessage check', async () => {
-      mockRecordCollectedUsage.mockResolvedValue({ input_tokens: 200, output_tokens: 130 });
+      mockRecordCollectedUsage.mockResolvedValue({
+        input_tokens: 200,
+        output_tokens: 130,
+      });
       const collectedUsage = [
         { input_tokens: 200, output_tokens: 100, model: 'gpt-4' },
         { input_tokens: 50, output_tokens: 30, model: 'gpt-4' },

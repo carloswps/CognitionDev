@@ -1,5 +1,5 @@
-import promptSchema from '~/schema/prompt';
 import { applyTenantIsolation } from '~/models/plugins/tenantIsolation';
+import promptSchema from '~/schema/prompt';
 import type { IPrompt } from '~/types/prompts';
 
 export function createPromptModel(mongoose: typeof import('mongoose')) {

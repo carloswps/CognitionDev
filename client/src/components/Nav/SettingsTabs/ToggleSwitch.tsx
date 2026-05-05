@@ -1,6 +1,6 @@
-import { WritableAtom, useAtom } from 'jotai';
-import { RecoilState, useRecoilState } from 'recoil';
-import { Switch, InfoHoverCard, ESide } from '@librechat/client';
+import { ESide, InfoHoverCard, Switch } from '@librechat/client';
+import { useAtom, type WritableAtom } from 'jotai';
+import { type RecoilState, useRecoilState } from 'recoil';
 import { useLocalize } from '~/hooks';
 
 type LocalizeFn = ReturnType<typeof useLocalize>;
@@ -64,7 +64,9 @@ const RecoilToggle: React.FC<
 };
 
 const JotaiToggle: React.FC<
-  Omit<ToggleSwitchProps, 'stateAtom'> & { stateAtom: WritableAtom<boolean, [boolean], void> }
+  Omit<ToggleSwitchProps, 'stateAtom'> & {
+    stateAtom: WritableAtom<boolean, [boolean], void>;
+  }
 > = ({
   stateAtom,
   localizationKey,

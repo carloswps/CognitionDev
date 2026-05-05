@@ -1,6 +1,6 @@
-import React from 'react';
-import { FileSources } from 'librechat-data-provider';
 import { useToastContext } from '@librechat/client';
+import { FileSources } from 'librechat-data-provider';
+import type React from 'react';
 import { useCodeOutputDownload, useFileDownload } from '~/data-provider';
 
 interface LogLinkProps {
@@ -75,7 +75,13 @@ export const useAttachmentLink = ({
 };
 
 const LogLink: React.FC<LogLinkProps> = ({ href, filename, file_id, user, source, children }) => {
-  const { handleDownload } = useAttachmentLink({ href, filename, file_id, user, source });
+  const { handleDownload } = useAttachmentLink({
+    href,
+    filename,
+    file_id,
+    user,
+    source,
+  });
   return (
     <a
       href={href}

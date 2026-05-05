@@ -1,9 +1,9 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 import '@testing-library/jest-dom';
-import CategoryTabs from '../CategoryTabs';
 import type t from 'librechat-data-provider';
+import CategoryTabs from '../CategoryTabs';
 
 // Mock useLocalize hook
 jest.mock('~/hooks/useLocalize', () => () => (key: string) => {
@@ -26,11 +26,31 @@ jest.mock('~/hooks/useLocalize', () => () => (key: string) => {
 
 describe('CategoryTabs', () => {
   const mockCategories: t.TMarketplaceCategory[] = [
-    { value: 'promoted', label: 'Top Picks', description: 'Our recommended agents', count: 5 },
-    { value: 'all', label: 'All', description: 'All available agents', count: 20 },
-    { value: 'general', label: 'General', description: 'General purpose agents', count: 8 },
+    {
+      value: 'promoted',
+      label: 'Top Picks',
+      description: 'Our recommended agents',
+      count: 5,
+    },
+    {
+      value: 'all',
+      label: 'All',
+      description: 'All available agents',
+      count: 20,
+    },
+    {
+      value: 'general',
+      label: 'General',
+      description: 'General purpose agents',
+      count: 8,
+    },
     { value: 'hr', label: 'HR', description: 'HR agents', count: 3 },
-    { value: 'finance', label: 'Finance', description: 'Finance agents', count: 4 },
+    {
+      value: 'finance',
+      label: 'Finance',
+      description: 'Finance agents',
+      count: 4,
+    },
   ];
 
   const mockOnChange = jest.fn();

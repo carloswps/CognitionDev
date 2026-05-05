@@ -144,7 +144,10 @@ describe('Apple Login Strategy', () => {
     it('should throw an error if idToken cannot be decoded', () => {
       jwt.decode.mockReturnValue(null);
       expect(() => {
-        getProfileDetails({ idToken: 'invalid_id_token', profile: mockProfile });
+        getProfileDetails({
+          idToken: 'invalid_id_token',
+          profile: mockProfile,
+        });
       }).toThrow('idToken is invalid');
       expect(logger.error).toHaveBeenCalledWith('Failed to decode idToken');
     });

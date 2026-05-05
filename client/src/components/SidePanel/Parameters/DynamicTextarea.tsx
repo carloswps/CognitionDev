@@ -1,11 +1,11 @@
-import { OptionTypes } from 'librechat-data-provider';
-import { Label, TextareaAutosize, HoverCard, HoverCardTrigger } from '@librechat/client';
+import { HoverCard, HoverCardTrigger, Label, TextareaAutosize } from '@librechat/client';
 import type { DynamicSettingProps } from 'librechat-data-provider';
-import { useLocalize, useDebouncedInput, useParameterEffects, TranslationKeys } from '~/hooks';
-import { useChatContext } from '~/Providers';
-import OptionHover from './OptionHover';
+import { OptionTypes } from 'librechat-data-provider';
 import { ESide } from '~/common';
+import { type TranslationKeys, useDebouncedInput, useLocalize, useParameterEffects } from '~/hooks';
+import { useChatContext } from '~/Providers';
 import { cn } from '~/utils';
+import OptionHover from './OptionHover';
 
 function DynamicTextarea({
   label = '',

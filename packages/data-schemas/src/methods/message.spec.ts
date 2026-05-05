@@ -1,10 +1,10 @@
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import { MongoMemoryServer } from 'mongodb-memory-server';
+import { runAsSystem, tenantStorage } from '~/config/tenantContext';
 import type { IMessage } from '..';
-import { createMessageMethods } from './message';
-import { tenantStorage, runAsSystem } from '~/config/tenantContext';
 import { createModels } from '../models';
+import { createMessageMethods } from './message';
 
 jest.mock('~/config/winston', () => ({
   error: jest.fn(),
@@ -91,7 +91,10 @@ describe('Message Operations', () => {
       expect(result?.text).toBe('Hello, world!');
 
       // Verify the message was actually saved to the database
-      const savedMessage = await Message.findOne({ messageId: 'msg123', user: 'user123' });
+      const savedMessage = await Message.findOne({
+        messageId: 'msg123',
+        user: 'user123',
+      });
       expect(savedMessage).toBeTruthy();
       expect(savedMessage?.text).toBe('Hello, world!');
     });
@@ -114,10 +117,16 @@ describe('Message Operations', () => {
       await saveMessage(mockCtx, mockMessageData);
 
       // Then update it
-      await updateMessageText(mockCtx.userId, { messageId: 'msg123', text: 'Updated text' });
+      await updateMessageText(mockCtx.userId, {
+        messageId: 'msg123',
+        text: 'Updated text',
+      });
 
       // Verify the update
-      const updatedMessage = await Message.findOne({ messageId: 'msg123', user: 'user123' });
+      const updatedMessage = await Message.findOne({
+        messageId: 'msg123',
+        user: 'user123',
+      });
       expect(updatedMessage?.text).toBe('Updated text');
     });
   });
@@ -136,13 +145,19 @@ describe('Message Operations', () => {
       expect(result?.text).toBe('Updated text');
 
       // Verify in database
-      const updatedMessage = await Message.findOne({ messageId: 'msg123', user: 'user123' });
+      const updatedMessage = await Message.findOne({
+        messageId: 'msg123',
+        user: 'user123',
+      });
       expect(updatedMessage?.text).toBe('Updated text');
     });
 
     it('should throw an error if message is not found', async () => {
       await expect(
-        updateMessage(mockCtx.userId, { messageId: 'nonexistent', text: 'Test' }),
+        updateMessage(mockCtx.userId, {
+          messageId: 'nonexistent',
+          text: 'Test',
+        }),
       ).rejects.toThrow('Message not found or user not authorized.');
     });
   });
@@ -180,7 +195,10 @@ describe('Message Operations', () => {
       });
 
       // Verify msg1 and msg2 remain, msg3 is deleted
-      const remainingMessages = await Message.find({ conversationId, user: 'user123' });
+      const remainingMessages = await Message.find({
+        conversationId,
+        user: 'user123',
+      });
       expect(remainingMessages).toHaveLength(2);
       expect(remainingMessages.map((m) => m.messageId)).toContain('msg1');
       expect(remainingMessages.map((m) => m.messageId)).toContain('msg2');
@@ -350,7 +368,9 @@ describe('Message Operations', () => {
       );
 
       // Anyone should be able to retrieve messages by conversation ID
-      const messages = await getMessages({ conversationId: victimConversationId });
+      const messages = await getMessages({
+        conversationId: victimConversationId,
+      });
       expect(messages).toHaveLength(1);
       expect(messages[0].text).toBe('Victim message');
     });
@@ -544,7 +564,10 @@ describe('Message Operations', () => {
       expect(updatedMessage?.expiredAt).toBeUndefined();
 
       // Verify in database that expiredAt wasn't changed
-      const dbMessage = await Message.findOne({ messageId: 'msg123', user: 'user123' });
+      const dbMessage = await Message.findOne({
+        messageId: 'msg123',
+        user: 'user123',
+      });
       expect(dbMessage?.expiredAt).toEqual(originalExpiredAt);
     });
 
@@ -947,7 +970,12 @@ describe('Message Operations', () => {
       const conversationId = uuidv4();
       const result = await saveMessage(
         { userId: 'user123' },
-        { messageId, conversationId, text: 'Tenant test', tenantId: 'malicious-tenant' },
+        {
+          messageId,
+          conversationId,
+          text: 'Tenant test',
+          tenantId: 'malicious-tenant',
+        },
       );
 
       expect(result).not.toBeNull();

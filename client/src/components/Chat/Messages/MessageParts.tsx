@@ -1,18 +1,18 @@
-import React, { useMemo } from 'react';
 import { useAtomValue } from 'jotai';
-import { useRecoilValue } from 'recoil';
 import type { TMessageContentParts } from 'librechat-data-provider';
-import type { TMessageProps, TMessageIcon } from '~/common';
-import { useMessageHelpers, useLocalize, useAttachments, useContentMetadata } from '~/hooks';
-import { cn, getHeaderPrefixForScreenReader, getMessageAriaLabel } from '~/utils';
+import React, { useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
+import type { TMessageIcon, TMessageProps } from '~/common';
 import MessageIcon from '~/components/Chat/Messages/MessageIcon';
-import ContentParts from './Content/ContentParts';
-import { fontSizeAtom } from '~/store/fontSize';
-import SiblingSwitch from './SiblingSwitch';
-import MultiMessage from './MultiMessage';
-import HoverButtons from './HoverButtons';
-import SubRow from './SubRow';
+import { useAttachments, useContentMetadata, useLocalize, useMessageHelpers } from '~/hooks';
 import store from '~/store';
+import { fontSizeAtom } from '~/store/fontSize';
+import { cn, getHeaderPrefixForScreenReader, getMessageAriaLabel } from '~/utils';
+import ContentParts from './Content/ContentParts';
+import HoverButtons from './HoverButtons';
+import MultiMessage from './MultiMessage';
+import SiblingSwitch from './SiblingSwitch';
+import SubRow from './SubRow';
 
 export default function Message(props: TMessageProps) {
   const localize = useLocalize();

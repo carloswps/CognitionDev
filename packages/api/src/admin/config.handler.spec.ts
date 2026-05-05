@@ -46,9 +46,10 @@ function createHandlers(overrides = {}) {
       overrides: {},
       configVersion: 1,
     }),
-    patchConfigFields: jest
-      .fn()
-      .mockResolvedValue({ _id: 'c1', overrides: { registration: { enabled: false } } }),
+    patchConfigFields: jest.fn().mockResolvedValue({
+      _id: 'c1',
+      overrides: { registration: { enabled: false } },
+    }),
     unsetConfigField: jest.fn().mockResolvedValue({ _id: 'c1', overrides: {} }),
     deleteConfig: jest.fn().mockResolvedValue({ _id: 'c1' }),
     toggleConfigActive: jest.fn().mockResolvedValue({ _id: 'c1', isActive: false }),
@@ -67,7 +68,9 @@ describe('createAdminConfigHandlers', () => {
       const { handlers, deps } = createHandlers({
         hasConfigCapability: jest.fn().mockResolvedValue(false),
       });
-      const req = mockReq({ params: { principalType: 'role', principalId: 'admin' } });
+      const req = mockReq({
+        params: { principalType: 'role', principalId: 'admin' },
+      });
       const res = mockRes();
 
       await handlers.getConfig(req, res);
@@ -78,7 +81,9 @@ describe('createAdminConfigHandlers', () => {
 
     it('returns 404 when config does not exist', async () => {
       const { handlers } = createHandlers();
-      const req = mockReq({ params: { principalType: 'role', principalId: 'nonexistent' } });
+      const req = mockReq({
+        params: { principalType: 'role', principalId: 'nonexistent' },
+      });
       const res = mockRes();
 
       await handlers.getConfig(req, res);
@@ -96,7 +101,9 @@ describe('createAdminConfigHandlers', () => {
       const { handlers } = createHandlers({
         findConfigByPrincipal: jest.fn().mockResolvedValue(config),
       });
-      const req = mockReq({ params: { principalType: 'role', principalId: 'admin' } });
+      const req = mockReq({
+        params: { principalType: 'role', principalId: 'admin' },
+      });
       const res = mockRes();
 
       await handlers.getConfig(req, res);
@@ -107,7 +114,9 @@ describe('createAdminConfigHandlers', () => {
 
     it('returns 400 for invalid principalType', async () => {
       const { handlers } = createHandlers();
-      const req = mockReq({ params: { principalType: 'invalid', principalId: 'x' } });
+      const req = mockReq({
+        params: { principalType: 'invalid', principalId: 'x' },
+      });
       const res = mockRes();
 
       await handlers.getConfig(req, res);
@@ -117,7 +126,9 @@ describe('createAdminConfigHandlers', () => {
 
     it('rejects public principalType — not usable for config overrides', async () => {
       const { handlers } = createHandlers();
-      const req = mockReq({ params: { principalType: 'public', principalId: 'x' } });
+      const req = mockReq({
+        params: { principalType: 'public', principalId: 'x' },
+      });
       const res = mockRes();
 
       await handlers.getConfig(req, res);
@@ -178,7 +189,11 @@ describe('createAdminConfigHandlers', () => {
         params: { principalType: 'role', principalId: 'admin' },
         body: {
           overrides: {
-            interface: { modelSelect: false, prompts: false, agents: { use: false } },
+            interface: {
+              modelSelect: false,
+              prompts: false,
+              agents: { use: false },
+            },
           },
         },
       });
@@ -229,7 +244,9 @@ describe('createAdminConfigHandlers', () => {
         params: { principalType: 'role', principalId: 'admin' },
         body: {
           overrides: {
-            interface: { peoplePicker: { users: false, groups: true, roles: true } },
+            interface: {
+              peoplePicker: { users: false, groups: true, roles: true },
+            },
           },
         },
       });
@@ -384,7 +401,9 @@ describe('createAdminConfigHandlers', () => {
       });
       const req = mockReq({
         params: { principalType: 'role', principalId: 'admin' },
-        body: { entries: [{ fieldPath: 'registration.enabled', value: false }] },
+        body: {
+          entries: [{ fieldPath: 'registration.enabled', value: false }],
+        },
       });
       const res = mockRes();
 
@@ -437,7 +456,10 @@ describe('createAdminConfigHandlers', () => {
         params: { principalType: 'role', principalId: 'admin' },
         body: {
           entries: [
-            { fieldPath: 'interface.mcpServers.placeholder', value: 'Search...' },
+            {
+              fieldPath: 'interface.mcpServers.placeholder',
+              value: 'Search...',
+            },
             { fieldPath: 'interface.mcpServers.use', value: true },
           ],
         },
@@ -631,7 +653,9 @@ describe('createAdminConfigHandlers', () => {
       name: 'patchConfigField',
       reqOverrides: {
         params: { principalType: 'role', principalId: 'admin' },
-        body: { entries: [{ fieldPath: 'interface.modelSelect', value: false }] },
+        body: {
+          entries: [{ fieldPath: 'interface.modelSelect', value: false }],
+        },
       },
     },
     {
@@ -693,12 +717,17 @@ describe('createAdminConfigHandlers', () => {
   });
 
   describe('invariant: all read handlers return 403 without capability', () => {
-    const READ_HANDLERS: Array<{ name: string; reqOverrides: Record<string, unknown> }> = [
+    const READ_HANDLERS: Array<{
+      name: string;
+      reqOverrides: Record<string, unknown>;
+    }> = [
       { name: 'listConfigs', reqOverrides: {} },
       { name: 'getBaseConfig', reqOverrides: {} },
       {
         name: 'getConfig',
-        reqOverrides: { params: { principalType: 'role', principalId: 'admin' } },
+        reqOverrides: {
+          params: { principalType: 'role', principalId: 'admin' },
+        },
       },
     ];
 
@@ -721,12 +750,17 @@ describe('createAdminConfigHandlers', () => {
   });
 
   describe('invariant: all read handlers return 401 without auth', () => {
-    const READ_HANDLERS: Array<{ name: string; reqOverrides: Record<string, unknown> }> = [
+    const READ_HANDLERS: Array<{
+      name: string;
+      reqOverrides: Record<string, unknown>;
+    }> = [
       { name: 'listConfigs', reqOverrides: {} },
       { name: 'getBaseConfig', reqOverrides: {} },
       {
         name: 'getConfig',
-        reqOverrides: { params: { principalType: 'role', principalId: 'admin' } },
+        reqOverrides: {
+          params: { principalType: 'role', principalId: 'admin' },
+        },
       },
     ];
 

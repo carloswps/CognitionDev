@@ -34,7 +34,9 @@ const getProfileDetails = ({ idToken, profile }) => {
 
 // Initialize the social login handler for Apple
 const appleLogin = socialLogin('apple', getProfileDetails);
-const appleAdminLogin = socialLogin('apple', getProfileDetails, { existingUsersOnly: true });
+const appleAdminLogin = socialLogin('apple', getProfileDetails, {
+  existingUsersOnly: true,
+});
 
 const getAppleConfig = (callbackURL) => ({
   clientID: process.env.APPLE_CLIENT_ID,

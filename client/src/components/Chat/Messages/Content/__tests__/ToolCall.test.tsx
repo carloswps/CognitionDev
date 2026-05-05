@@ -1,7 +1,7 @@
-import React from 'react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { Constants, Tools } from 'librechat-data-provider';
+import type React from 'react';
 import { RecoilRoot } from 'recoil';
-import { Tools, Constants } from 'librechat-data-provider';
-import { render, screen, fireEvent } from '@testing-library/react';
 import ToolCall from '../ToolCall';
 
 // Mock dependencies

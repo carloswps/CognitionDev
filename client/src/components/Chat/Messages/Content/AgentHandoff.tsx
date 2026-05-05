@@ -1,9 +1,10 @@
-import React, { useMemo, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
-import { EModelEndpoint, Constants } from 'librechat-data-provider';
 import type { TMessage } from 'librechat-data-provider';
+import { Constants, EModelEndpoint } from 'librechat-data-provider';
+import { ChevronDown } from 'lucide-react';
+import type React from 'react';
+import { useMemo, useState } from 'react';
 import MessageIcon from '~/components/Share/MessageIcon';
-import { useLocalize, useExpandCollapse } from '~/hooks';
+import { useExpandCollapse, useLocalize } from '~/hooks';
 import { useAgentsMapContext } from '~/Providers';
 import { cn } from '~/utils';
 

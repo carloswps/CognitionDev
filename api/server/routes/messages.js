@@ -31,8 +31,15 @@ router.get('/', async (req, res) => {
     const sortOrder = sortDirection === 'asc' ? 1 : -1;
 
     if (conversationId && messageId) {
-      const messages = await db.getMessages({ conversationId, messageId, user });
-      response = { messages: messages?.length ? [messages[0]] : [], nextCursor: null };
+      const messages = await db.getMessages({
+        conversationId,
+        messageId,
+        user,
+      });
+      response = {
+        messages: messages?.length ? [messages[0]] : [],
+        nextCursor: null,
+      };
     } else if (conversationId) {
       response = await db.getMessagesByCursor(
         { conversationId, user },
@@ -48,7 +55,7 @@ router.get('/', async (req, res) => {
       const messageIds = [];
       const cleanedMessages = [];
       for (let i = 0; i < messages.length; i++) {
-        let message = messages[i];
+        const message = messages[i];
         if (result.convoMap[message.conversationId]) {
           messageIds.push(message.messageId);
           cleanedMessages.push(message);
@@ -127,9 +134,9 @@ router.post('/branch', async (req, res) => {
 
     const hasAgentMetadata = sourceMessage.content.some((part) => part?.agentId);
     if (!hasAgentMetadata) {
-      return res
-        .status(400)
-        .json({ error: 'Message does not have parallel content with attributions' });
+      return res.status(400).json({
+        error: 'Message does not have parallel content with attributions',
+      });
     }
 
     /** @type {Array<import('librechat-data-provider').TMessageContentParts>} */
@@ -293,7 +300,9 @@ router.post('/:conversationId', validateMessageReq, async (req, res) => {
     if (!savedMessage) {
       return res.status(400).json({ error: 'Message not saved' });
     }
-    await db.saveConvo(reqCtx, savedMessage, { context: 'POST /api/messages/:conversationId' });
+    await db.saveConvo(reqCtx, savedMessage, {
+      context: 'POST /api/messages/:conversationId',
+    });
     res.status(201).json(savedMessage);
   } catch (error) {
     logger.error('Error saving message:', error);
@@ -322,7 +331,11 @@ router.put('/:conversationId/:messageId', validateMessageReq, async (req, res) =
 
     if (index === undefined) {
       const tokenCount = await countTokens(text, model);
-      const result = await db.updateMessage(req?.user?.id, { messageId, text, tokenCount });
+      const result = await db.updateMessage(req?.user?.id, {
+        messageId,
+        text,
+        tokenCount,
+      });
       return res.status(200).json(result);
     }
 
@@ -353,7 +366,10 @@ router.put('/:conversationId/:messageId', validateMessageReq, async (req, res) =
     }
 
     const oldText = updatedContent[index][currentPartType];
-    updatedContent[index] = { type: currentPartType, [currentPartType]: text };
+    updatedContent[index] = {
+      type: currentPartType,
+      [currentPartType]: text,
+    };
 
     let tokenCount = message.tokenCount;
     if (tokenCount !== undefined) {

@@ -15,11 +15,11 @@ const connect = require('./connect');
   console.purple('Show the stats of all users');
   console.purple('-----------------------------');
 
-  let users = await User.find({});
-  let userData = [];
+  const users = await User.find({});
+  const userData = [];
   for (const user of users) {
-    let conversationsCount = (await Conversation.countDocuments({ user: user._id })) ?? 0;
-    let messagesCount = (await Message.countDocuments({ user: user._id })) ?? 0;
+    const conversationsCount = (await Conversation.countDocuments({ user: user._id })) ?? 0;
+    const messagesCount = (await Message.countDocuments({ user: user._id })) ?? 0;
 
     userData.push({
       User: user.name,

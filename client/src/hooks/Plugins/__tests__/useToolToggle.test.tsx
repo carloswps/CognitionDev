@@ -1,6 +1,6 @@
-import React from 'react';
-import { renderHook, act, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { LocalStorageKeys, Tools } from 'librechat-data-provider';
+import type React from 'react';
 import { RecoilRoot, useRecoilValue, useSetRecoilState } from 'recoil';
 import { ephemeralAgentByConvoId } from '~/store';
 import { useToolToggle } from '../useToolToggle';
@@ -186,7 +186,9 @@ describe('useToolToggle', () => {
         return { toggle, ephemeralAgent };
       };
 
-      const { result } = renderHook(() => TestComponent(), { wrapper: Wrapper });
+      const { result } = renderHook(() => TestComponent(), {
+        wrapper: Wrapper,
+      });
 
       act(() => {
         result.current.toggle.handleChange({ value: true });
@@ -218,11 +220,16 @@ describe('useToolToggle', () => {
         return { toggle, setEphemeralAgent };
       };
 
-      const { result } = renderHook(() => TestComponent(), { wrapper: Wrapper });
+      const { result } = renderHook(() => TestComponent(), {
+        wrapper: Wrapper,
+      });
 
       // External update (e.g., from applyModelSpecEphemeralAgent)
       act(() => {
-        result.current.setEphemeralAgent({ web_search: true, execute_code: false });
+        result.current.setEphemeralAgent({
+          web_search: true,
+          execute_code: false,
+        });
       });
 
       await waitFor(() => {
@@ -244,7 +251,9 @@ describe('useToolToggle', () => {
         return { toggle, setEphemeralAgent };
       };
 
-      const { result } = renderHook(() => TestComponent(), { wrapper: Wrapper });
+      const { result } = renderHook(() => TestComponent(), {
+        wrapper: Wrapper,
+      });
 
       // Simulate applyModelSpecEphemeralAgent setting a value
       act(() => {
@@ -290,7 +299,9 @@ describe('useToolToggle', () => {
         return { toggle, setEphemeralAgent };
       };
 
-      const { result } = renderHook(() => TestComponent(), { wrapper: Wrapper });
+      const { result } = renderHook(() => TestComponent(), {
+        wrapper: Wrapper,
+      });
 
       act(() => {
         result.current.setEphemeralAgent({ artifacts: 'default' });
@@ -314,7 +325,9 @@ describe('useToolToggle', () => {
         return { toggle, setEphemeralAgent };
       };
 
-      const { result } = renderHook(() => TestComponent(), { wrapper: Wrapper });
+      const { result } = renderHook(() => TestComponent(), {
+        wrapper: Wrapper,
+      });
 
       act(() => {
         result.current.setEphemeralAgent({ artifacts: '' });

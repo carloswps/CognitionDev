@@ -972,7 +972,11 @@ These points highlight Harry's initial experiences in the magical world and set 
       return Promise.resolve(fileMap[file_id]);
     });
 
-    const result = await processMessages({ openai: {}, client: mockClient, messages });
+    const result = await processMessages({
+      openai: {},
+      client: mockClient,
+      messages,
+    });
 
     const expectedText =
       'I have generated three dummy CSV files for you. You can download them using the links below:\n\n1. [Download Dummy Data 1](https://api.openai.com/v1/files/XXXXXXXXXXXXXXXXXXXX/file-XXXXXXXXXXXXXXXXXXXX/dummy_data1.csv)\n2. [Download Dummy Data 2](https://api.openai.com/v1/files/XXXXXXXXXXXXXXXXXXXX/file-YYYYYYYYYYYYYYYYYYYY/dummy_data2.csv)\n3. [Download Dummy Data 3](https://api.openai.com/v1/files/XXXXXXXXXXXXXXXXXXXX/file-ZZZZZZZZZZZZZZZZZZZZ/dummy_data3.csv)';

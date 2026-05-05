@@ -93,7 +93,13 @@ describe('formatToolContent', () => {
   describe('image handling', () => {
     it('should handle images with http URLs', () => {
       const result: t.MCPToolCallResponse = {
-        content: [{ type: 'image', data: 'https://example.com/image.png', mimeType: 'image/png' }],
+        content: [
+          {
+            type: 'image',
+            data: 'https://example.com/image.png',
+            mimeType: 'image/png',
+          },
+        ],
       };
 
       const [content, artifacts] = formatToolContent(result, 'openai');
@@ -138,8 +144,16 @@ describe('formatToolContent', () => {
     it('should handle multiple images without text', () => {
       const result: t.MCPToolCallResponse = {
         content: [
-          { type: 'image', data: 'https://example.com/a.png', mimeType: 'image/png' },
-          { type: 'image', data: 'https://example.com/b.jpg', mimeType: 'image/jpeg' },
+          {
+            type: 'image',
+            data: 'https://example.com/a.png',
+            mimeType: 'image/png',
+          },
+          {
+            type: 'image',
+            data: 'https://example.com/b.jpg',
+            mimeType: 'image/jpeg',
+          },
         ],
       };
       const [content, artifacts] = formatToolContent(result, 'google');
@@ -309,7 +323,10 @@ describe('formatToolContent', () => {
       const result: t.MCPToolCallResponse = {
         content: [
           { type: 'text', text: 'Normal text' },
-          { type: 'unknown', data: 'some data' } as unknown as t.ToolContentPart,
+          {
+            type: 'unknown',
+            data: 'some data',
+          } as unknown as t.ToolContentPart,
         ],
       };
 
@@ -343,7 +360,11 @@ describe('formatToolContent', () => {
               text: '',
             },
           },
-          { type: 'image', data: 'https://example.com/image2.jpg', mimeType: 'image/jpeg' },
+          {
+            type: 'image',
+            data: 'https://example.com/image2.jpg',
+            mimeType: 'image/jpeg',
+          },
           { type: 'text', text: 'Conclusion' },
         ],
       };

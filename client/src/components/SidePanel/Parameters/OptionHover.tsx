@@ -1,7 +1,7 @@
+import { HoverCardContent, HoverCardPortal } from '@librechat/client';
 import React from 'react';
-import { HoverCardPortal, HoverCardContent } from '@librechat/client';
-import { TranslationKeys, useLocalize } from '~/hooks';
-import { ESide } from '~/common';
+import type { ESide } from '~/common';
+import { type TranslationKeys, useLocalize } from '~/hooks';
 
 type TOptionHoverProps = {
   description: string;

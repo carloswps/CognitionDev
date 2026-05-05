@@ -14,9 +14,9 @@ describe('buildSandpackOptions', () => {
   });
 
   it('uses staticBundlerURL when template is static and config is provided', () => {
-    const config = { staticBundlerURL: 'https://static.example.com' } as Parameters<
-      typeof buildSandpackOptions
-    >[1];
+    const config = {
+      staticBundlerURL: 'https://static.example.com',
+    } as Parameters<typeof buildSandpackOptions>[1];
     const options = buildSandpackOptions('static', config);
     expect(options?.bundlerURL).toBe('https://static.example.com');
     expect(options?.externalResources).toEqual([TAILWIND_CDN]);

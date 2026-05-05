@@ -1,38 +1,38 @@
-import { v4 } from 'uuid';
-import { cloneDeep } from 'lodash';
-import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
-import {
-  Constants,
-  QueryKeys,
-  ContentTypes,
-  EModelEndpoint,
-  getEndpointField,
-  isAgentsEndpoint,
-  parseCompactConvo,
-  replaceSpecialVars,
-  isAssistantsEndpoint,
-  getDefaultParamsEndpoint,
-} from 'librechat-data-provider';
 import type {
-  TMessage,
-  TSubmission,
+  EndpointSchemaKey,
   TConversation,
-  TStartupConfig,
   TEndpointOption,
   TEndpointsConfig,
-  EndpointSchemaKey,
+  TMessage,
+  TStartupConfig,
+  TSubmission,
 } from 'librechat-data-provider';
+import {
+  Constants,
+  ContentTypes,
+  EModelEndpoint,
+  getDefaultParamsEndpoint,
+  getEndpointField,
+  isAgentsEndpoint,
+  isAssistantsEndpoint,
+  parseCompactConvo,
+  QueryKeys,
+  replaceSpecialVars,
+} from 'librechat-data-provider';
+import { cloneDeep } from 'lodash';
+import { useNavigate } from 'react-router-dom';
 import type { SetterOrUpdater } from 'recoil';
-import type { TAskFunction, ExtendedFile } from '~/common';
-import useSetFilesToDelete from '~/hooks/Files/useSetFilesToDelete';
-import useGetSender from '~/hooks/Conversations/useGetSender';
-import { logger, createDualMessageContent } from '~/utils';
-import store, { useGetEphemeralAgent } from '~/store';
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from 'recoil';
+import { v4 } from 'uuid';
+import type { ExtendedFile, TAskFunction } from '~/common';
 import { startupConfigKey } from '~/data-provider';
-import useUserKey from '~/hooks/Input/useUserKey';
 import { useAuthContext } from '~/hooks';
+import useGetSender from '~/hooks/Conversations/useGetSender';
+import useSetFilesToDelete from '~/hooks/Files/useSetFilesToDelete';
+import useUserKey from '~/hooks/Input/useUserKey';
+import store, { useGetEphemeralAgent } from '~/store';
+import { createDualMessageContent, logger } from '~/utils';
 
 const logChatRequest = (request: Record<string, unknown>) => {
   logger.log('=====================================\nAsk function called with:');
@@ -100,7 +100,7 @@ export default function useChatFunctions({
     resetLatestMultiMessage();
 
     text = text.trim();
-    if (!!isSubmitting || text === '') {
+    if (isSubmitting || text === '') {
       return;
     }
 
@@ -203,7 +203,10 @@ export default function useChatFunctions({
     } else {
       endpointOption.key = new Date(Date.now() + 60 * 60 * 1000).toISOString();
     }
-    const responseSender = getSender({ model: conversation?.model, ...endpointOption });
+    const responseSender = getSender({
+      model: conversation?.model,
+      ...endpointOption,
+    });
 
     const currentMsg: TMessage = {
       text,

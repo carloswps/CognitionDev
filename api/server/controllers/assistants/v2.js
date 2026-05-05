@@ -144,7 +144,11 @@ const updateAssistant = async ({ req, openai, assistant_id, updateData }) => {
           continue;
         }
 
-        const updatedTool = await validateAndUpdateTool({ req, tool: subTool, assistant_id });
+        const updatedTool = await validateAndUpdateTool({
+          req,
+          tool: subTool,
+          assistant_id,
+        });
         if (updatedTool) {
           tools.push(updatedTool);
         }
@@ -161,7 +165,11 @@ const updateAssistant = async ({ req, openai, assistant_id, updateData }) => {
       continue;
     }
 
-    const updatedTool = await validateAndUpdateTool({ req, tool: actualTool, assistant_id });
+    const updatedTool = await validateAndUpdateTool({
+      req,
+      tool: actualTool,
+      assistant_id,
+    });
     if (updatedTool) {
       tools.push(updatedTool);
     }
@@ -280,7 +288,12 @@ const patchAssistant = async (req, res) => {
     const assistant_id = req.params.id;
     const { endpoint: _e, ...updateData } = req.body;
     updateData.tools = updateData.tools ?? [];
-    const updatedAssistant = await updateAssistant({ req, openai, assistant_id, updateData });
+    const updatedAssistant = await updateAssistant({
+      req,
+      openai,
+      assistant_id,
+      updateData,
+    });
     res.json(updatedAssistant);
   } catch (error) {
     logger.error('[/assistants/:id] Error updating assistant', error);

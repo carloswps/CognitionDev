@@ -55,7 +55,10 @@ function mockReq(user) {
 }
 
 function mockRes() {
-  return { status: jest.fn().mockReturnThis(), json: jest.fn().mockReturnThis() };
+  return {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn().mockReturnThis(),
+  };
 }
 
 /** Runs requireJwtAuth and returns the tenantId observed inside next(). */

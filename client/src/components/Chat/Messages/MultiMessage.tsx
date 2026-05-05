@@ -1,12 +1,12 @@
-import { useRecoilState } from 'recoil';
-import { useEffect, useCallback } from 'react';
-import { isAssistantsEndpoint } from 'librechat-data-provider';
 import type { TMessage } from 'librechat-data-provider';
+import { isAssistantsEndpoint } from 'librechat-data-provider';
+import { useCallback, useEffect } from 'react';
+import { useRecoilState } from 'recoil';
 import type { TMessageProps } from '~/common';
 import MessageContent from '~/components/Messages/MessageContent';
-import MessageParts from './MessageParts';
-import Message from './Message';
 import store from '~/store';
+import Message from './Message';
+import MessageParts from './MessageParts';
 
 export default function MultiMessage({
   // messageId is used recursively here

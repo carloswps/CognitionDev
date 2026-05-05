@@ -1,7 +1,7 @@
 import {
   EModelEndpoint,
-  isDocumentSupportedProvider,
   inferMimeType,
+  isDocumentSupportedProvider,
 } from 'librechat-data-provider';
 
 describe('DragDropModal - Provider Detection', () => {

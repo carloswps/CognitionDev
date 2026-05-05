@@ -1,12 +1,12 @@
-import React, { useCallback } from 'react';
-import { Trash2 } from 'lucide-react';
 import {
   Button,
   OGDialog,
+  OGDialogTemplate,
   OGDialogTrigger,
   TooltipAnchor,
-  OGDialogTemplate,
 } from '@librechat/client';
+import { Trash2 } from 'lucide-react';
+import React, { useCallback } from 'react';
 import { useDeletePrompt } from '~/data-provider';
 import { useLocalize } from '~/hooks';
 
@@ -51,7 +51,9 @@ const DeleteConfirmDialog = ({
           <div className="flex w-full flex-col items-center gap-2">
             <div className="grid w-full items-center gap-2">
               <p className="text-left text-sm text-text-primary">
-                {localize('com_ui_delete_confirm_prompt_version_var', { 0: name })}
+                {localize('com_ui_delete_confirm_prompt_version_var', {
+                  0: name,
+                })}
               </p>
             </div>
           </div>

@@ -104,7 +104,11 @@ describe('ldapStrategy', () => {
   });
 
   it('blocks login if an existing user has a different provider', async () => {
-    findUser.mockResolvedValue({ _id: 'u1', email: 'first@example.com', provider: 'google' });
+    findUser.mockResolvedValue({
+      _id: 'u1',
+      email: 'first@example.com',
+      provider: 'google',
+    });
 
     const userinfo = {
       uid: 'uid123',
@@ -237,7 +241,12 @@ describe('ldapStrategy', () => {
     });
     isEmailDomainAllowed.mockReturnValueOnce(true).mockReturnValueOnce(false);
 
-    const userinfo = { uid: 'uid-tenant', mail: 'user@example.com', givenName: 'Test', cn: 'Test' };
+    const userinfo = {
+      uid: 'uid-tenant',
+      mail: 'user@example.com',
+      givenName: 'Test',
+      cn: 'Test',
+    };
     const { user, info } = await callVerify(userinfo);
 
     expect(user).toBe(false);

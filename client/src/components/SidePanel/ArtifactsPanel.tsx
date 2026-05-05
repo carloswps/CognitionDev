@@ -1,6 +1,6 @@
-import { useEffect, memo } from 'react';
-import { usePanelRef } from 'react-resizable-panels';
 import { ResizableHandleAlt, ResizablePanel } from '@librechat/client';
+import { memo, useEffect } from 'react';
+import { usePanelRef } from 'react-resizable-panels';
 
 interface ArtifactsPanelProps {
   artifacts: React.ReactNode | null;

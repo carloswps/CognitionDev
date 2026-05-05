@@ -1,10 +1,10 @@
 import type { DeleteResult, Model } from 'mongoose';
 import type {
-  FindPluginAuthsByKeysParams,
-  UpdatePluginAuthParams,
   DeletePluginAuthParams,
   FindPluginAuthParams,
+  FindPluginAuthsByKeysParams,
   IPluginAuth,
+  UpdatePluginAuthParams,
 } from '~/types';
 
 // Factory function that takes mongoose instance and returns the methods
@@ -66,7 +66,11 @@ export function createPluginAuthMethods(mongoose: typeof import('mongoose')) {
   }: UpdatePluginAuthParams): Promise<IPluginAuth> {
     try {
       const PluginAuth: Model<IPluginAuth> = mongoose.models.PluginAuth;
-      const existingAuth = await PluginAuth.findOne({ userId, pluginKey, authField }).lean();
+      const existingAuth = await PluginAuth.findOne({
+        userId,
+        pluginKey,
+        authField,
+      }).lean();
 
       if (existingAuth) {
         return await PluginAuth.findOneAndUpdate(

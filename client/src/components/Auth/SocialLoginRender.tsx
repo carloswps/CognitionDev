@@ -1,18 +1,16 @@
 import {
-  GoogleIcon,
-  FacebookIcon,
-  OpenIDIcon,
-  GithubIcon,
-  DiscordIcon,
   AppleIcon,
+  DiscordIcon,
+  FacebookIcon,
+  GithubIcon,
+  GoogleIcon,
+  OpenIDIcon,
   SamlIcon,
 } from '@librechat/client';
-
-import SocialButton from './SocialButton';
+import type { TStartupConfig } from 'librechat-data-provider';
 
 import { useLocalize } from '~/hooks';
-
-import { TStartupConfig } from 'librechat-data-provider';
+import SocialButton from './SocialButton';
 
 function SocialLoginRender({
   startupConfig,

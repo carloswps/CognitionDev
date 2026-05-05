@@ -1,7 +1,7 @@
-import { Types } from 'mongoose';
+import type { TPrincipalSearchResult, TUser } from 'librechat-data-provider';
 import { PrincipalType } from 'librechat-data-provider';
-import type { TUser, TPrincipalSearchResult } from 'librechat-data-provider';
-import type { Model, ClientSession, FilterQuery } from 'mongoose';
+import type { ClientSession, FilterQuery, Model } from 'mongoose';
+import { Types } from 'mongoose';
 import type { IGroup, IRole, IUser } from '~/types';
 import { escapeRegExp } from '~/utils/string';
 
@@ -288,7 +288,12 @@ export function createUserGroupMethods(mongoose: typeof import('mongoose')) {
       role?: string | null;
     },
     session?: ClientSession,
-  ): Promise<Array<{ principalType: PrincipalType; principalId?: string | Types.ObjectId }>> {
+  ): Promise<
+    Array<{
+      principalType: PrincipalType;
+      principalId?: string | Types.ObjectId;
+    }>
+  > {
     const { userId, role } = params;
     /** `userId` must be an `ObjectId` for USER principal since ACL entries store `ObjectId`s */
     const userObjectId = typeof userId === 'string' ? new Types.ObjectId(userId) : userId;
@@ -311,13 +316,19 @@ export function createUserGroupMethods(mongoose: typeof import('mongoose')) {
 
     // Add role as a principal if user has one
     if (userRole && userRole.trim()) {
-      principals.push({ principalType: PrincipalType.ROLE, principalId: userRole });
+      principals.push({
+        principalType: PrincipalType.ROLE,
+        principalId: userRole,
+      });
     }
 
     const userGroups = await getUserGroups(userId, session);
     if (userGroups && userGroups.length > 0) {
       userGroups.forEach((group) => {
-        principals.push({ principalType: PrincipalType.GROUP, principalId: group._id });
+        principals.push({
+          principalType: PrincipalType.GROUP,
+          principalId: group._id,
+        });
       });
     }
 
@@ -335,7 +346,12 @@ export function createUserGroupMethods(mongoose: typeof import('mongoose')) {
    */
   async function syncUserEntraGroups(
     userId: string | Types.ObjectId,
-    entraGroups: Array<{ id: string; name: string; description?: string; email?: string }>,
+    entraGroups: Array<{
+      id: string;
+      name: string;
+      description?: string;
+      email?: string;
+    }>,
     session?: ClientSession,
   ): Promise<{
     user: IUser;
@@ -349,7 +365,10 @@ export function createUserGroupMethods(mongoose: typeof import('mongoose')) {
     if (session) {
       query.session(session);
     }
-    const user = (await query.lean()) as { idOnTheSource?: string; _id: Types.ObjectId } | null;
+    const user = (await query.lean()) as {
+      idOnTheSource?: string;
+      _id: Types.ObjectId;
+    } | null;
 
     if (!user) {
       throw new Error(`User not found: ${userId}`);
@@ -476,7 +495,12 @@ export function createUserGroupMethods(mongoose: typeof import('mongoose')) {
    * @returns Sorted array
    */
   function sortPrincipalsByRelevance<
-    T extends { _searchScore?: number; type: string; name?: string; email?: string },
+    T extends {
+      _searchScore?: number;
+      type: string;
+      name?: string;
+      email?: string;
+    },
   >(results: T[]): T[] {
     return results.sort((a, b) => {
       if (b._searchScore !== a._searchScore) {

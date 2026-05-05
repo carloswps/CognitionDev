@@ -621,8 +621,12 @@ describe('MCP Routes', () => {
       const { getCachedTools, setCachedTools } = require('~/server/services/Config');
       const { Constants } = require('librechat-data-provider');
       getCachedTools.mockResolvedValue({
-        [`existing-tool${Constants.mcp_delimiter}test-server`]: { type: 'function' },
-        [`other-tool${Constants.mcp_delimiter}other-server`]: { type: 'function' },
+        [`existing-tool${Constants.mcp_delimiter}test-server`]: {
+          type: 'function',
+        },
+        [`other-tool${Constants.mcp_delimiter}other-server`]: {
+          type: 'function',
+        },
       });
       setCachedTools.mockResolvedValue();
 
@@ -950,7 +954,10 @@ describe('MCP Routes', () => {
       const flowState = {
         serverName: 'test-server',
         userId: 'test-user-id',
-        metadata: { toolFlowId: 'tool-flow-123', serverUrl: 'http://example.com' },
+        metadata: {
+          toolFlowId: 'tool-flow-123',
+          serverUrl: 'http://example.com',
+        },
         clientInfo: clientInfo,
         codeVerifier: 'test-verifier',
         status: 'PENDING',
@@ -1402,8 +1409,16 @@ describe('MCP Routes', () => {
     it('should successfully reinitialize server and cache tools', async () => {
       const mockUserConnection = {
         fetchTools: jest.fn().mockResolvedValue([
-          { name: 'tool1', description: 'Test tool 1', inputSchema: { type: 'object' } },
-          { name: 'tool2', description: 'Test tool 2', inputSchema: { type: 'object' } },
+          {
+            name: 'tool1',
+            description: 'Test tool 1',
+            inputSchema: { type: 'object' },
+          },
+          {
+            name: 'tool2',
+            description: 'Test tool 2',
+            inputSchema: { type: 'object' },
+          },
         ]),
       };
 
@@ -1556,7 +1571,9 @@ describe('MCP Routes', () => {
       const response = await request(app).get('/api/mcp/connection/status');
 
       expect(response.status).toBe(500);
-      expect(response.body).toEqual({ error: 'Failed to get connection status' });
+      expect(response.body).toEqual({
+        error: 'Failed to get connection status',
+      });
     });
 
     it('should return 401 when user is not authenticated', async () => {
@@ -1630,7 +1647,9 @@ describe('MCP Routes', () => {
       const response = await request(app).get('/api/mcp/connection/status/test-server');
 
       expect(response.status).toBe(500);
-      expect(response.body).toEqual({ error: 'Failed to get connection status' });
+      expect(response.body).toEqual({
+        error: 'Failed to get connection status',
+      });
     });
 
     it('should return 401 when user is not authenticated', async () => {
@@ -1728,7 +1747,9 @@ describe('MCP Routes', () => {
       const response = await request(app).get('/api/mcp/test-server/auth-values');
 
       expect(response.status).toBe(500);
-      expect(response.body).toEqual({ error: 'Failed to check auth value flags' });
+      expect(response.body).toEqual({
+        error: 'Failed to check auth value flags',
+      });
     });
 
     it('should handle customUserVars that is not an object', async () => {
@@ -2151,7 +2172,11 @@ describe('MCP Routes', () => {
         serverName: 'test-server',
         config: {
           ...validConfig,
-          apiKey: { source: 'admin', authorization_type: 'bearer', key: 'admin-secret-key' },
+          apiKey: {
+            source: 'admin',
+            authorization_type: 'bearer',
+            key: 'admin-secret-key',
+          },
           oauth: { client_id: 'cid', client_secret: 'admin-oauth-secret' },
           headers: { Authorization: 'Bearer leaked-token' },
         },
@@ -2220,7 +2245,11 @@ describe('MCP Routes', () => {
         type: 'sse',
         url: 'https://mcp-server.example.com/sse',
         title: 'Secret Server',
-        apiKey: { source: 'admin', authorization_type: 'bearer', key: 'decrypted-admin-key' },
+        apiKey: {
+          source: 'admin',
+          authorization_type: 'bearer',
+          key: 'decrypted-admin-key',
+        },
         oauth: { client_id: 'cid', client_secret: 'decrypted-oauth-secret' },
         headers: { Authorization: 'Bearer internal-token' },
         oauth_headers: { 'X-OAuth': 'secret-value' },
@@ -2287,7 +2316,11 @@ describe('MCP Routes', () => {
 
       mockRegistryInstance.updateServer.mockResolvedValue({
         ...validConfig,
-        apiKey: { source: 'admin', authorization_type: 'bearer', key: 'preserved-admin-key' },
+        apiKey: {
+          source: 'admin',
+          authorization_type: 'bearer',
+          key: 'preserved-admin-key',
+        },
         oauth: { client_id: 'cid', client_secret: 'preserved-oauth-secret' },
         headers: { Authorization: 'Bearer internal-token' },
         env: { DATABASE_URL: 'postgres://admin:pass@localhost/db' },
@@ -2393,7 +2426,9 @@ describe('MCP Routes', () => {
       const response = await request(app).delete('/api/mcp/servers/test-server');
 
       expect(response.status).toBe(200);
-      expect(response.body).toEqual({ message: 'MCP server deleted successfully' });
+      expect(response.body).toEqual({
+        message: 'MCP server deleted successfully',
+      });
       expect(mockRegistryInstance.removeServer).toHaveBeenCalledWith(
         'test-server',
         'DB',

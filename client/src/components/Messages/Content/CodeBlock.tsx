@@ -1,12 +1,13 @@
-import React, { useRef, useState, useMemo, useEffect, useCallback } from 'react';
 import { Tools } from 'librechat-data-provider';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { CodeBarProps } from '~/common';
-import FloatingCodeBar from '~/components/Messages/Content/FloatingCodeBar';
-import ResultSwitcher from '~/components/Messages/Content/ResultSwitcher';
-import { useToolCallsMapContext, useMessageContext } from '~/Providers';
 import { LogContent } from '~/components/Chat/Messages/Content/Parts';
 import CodeBar from '~/components/Messages/Content/CodeBar';
+import FloatingCodeBar from '~/components/Messages/Content/FloatingCodeBar';
+import ResultSwitcher from '~/components/Messages/Content/ResultSwitcher';
 import { useLocalize } from '~/hooks';
+import { useMessageContext, useToolCallsMapContext } from '~/Providers';
 import cn from '~/utils/cn';
 
 type CodeBlockProps = Pick<

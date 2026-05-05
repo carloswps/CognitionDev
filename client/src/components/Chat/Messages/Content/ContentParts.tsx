@@ -1,19 +1,19 @@
-import { memo, useMemo, useCallback } from 'react';
-import { ContentTypes } from 'librechat-data-provider';
 import type {
-  TMessageContentParts,
+  Agents,
   SearchResultData,
   TAttachment,
-  Agents,
+  TMessageContentParts,
 } from 'librechat-data-provider';
-import { ParallelContentRenderer, type PartWithIndex } from './ParallelContent';
-import { mapAttachments, groupSequentialToolCalls } from '~/utils';
+import { ContentTypes } from 'librechat-data-provider';
+import { memo, useCallback, useMemo } from 'react';
 import { MessageContext, SearchContext } from '~/Providers';
-import { EditTextPart, EmptyText } from './Parts';
-import MemoryArtifacts from './MemoryArtifacts';
-import ToolCallGroup from './ToolCallGroup';
+import { groupSequentialToolCalls, mapAttachments } from '~/utils';
 import Container from './Container';
+import MemoryArtifacts from './MemoryArtifacts';
+import { ParallelContentRenderer, type PartWithIndex } from './ParallelContent';
 import Part from './Part';
+import { EditTextPart, EmptyText } from './Parts';
+import ToolCallGroup from './ToolCallGroup';
 
 type PartWithContextProps = {
   part: TMessageContentParts;

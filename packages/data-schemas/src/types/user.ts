@@ -1,6 +1,6 @@
-import type { Document, Types } from 'mongoose';
 import type { TUserFavorite } from 'librechat-data-provider';
-import { CursorPaginationParams } from '~/common';
+import type { Document, Types } from 'mongoose';
+import type { CursorPaginationParams } from '~/common';
 
 export interface IUser extends Document {
   _id: Types.ObjectId;

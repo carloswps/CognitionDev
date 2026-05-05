@@ -1,12 +1,12 @@
-import { Constants } from 'librechat-data-provider';
 import type { JsonSchemaType } from '@librechat/data-schemas';
+import { Constants } from 'librechat-data-provider';
+import { extractMCPServerDomain, isMCPDomainAllowed } from '~/auth/domain';
 import type { MCPConnection } from '~/mcp/connection';
-import type * as t from '~/mcp/types';
-import { isMCPDomainAllowed, extractMCPServerDomain } from '~/auth/domain';
-import { MCPConnectionFactory } from '~/mcp/MCPConnectionFactory';
-import { hasCustomUserVars, isUserSourced } from '~/mcp/utils';
 import { MCPDomainNotAllowedError } from '~/mcp/errors';
+import { MCPConnectionFactory } from '~/mcp/MCPConnectionFactory';
 import { detectOAuthRequirement } from '~/mcp/oauth';
+import type * as t from '~/mcp/types';
+import { hasCustomUserVars, isUserSourced } from '~/mcp/utils';
 import { isEnabled } from '~/utils';
 
 /**

@@ -1,24 +1,24 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
-import { EModelEndpoint } from 'librechat-data-provider';
-import { X, Waypoints, PlusCircle, ChevronDown } from 'lucide-react';
 import {
-  Label,
-  Input,
-  Textarea,
-  HoverCard,
   CircleHelpIcon,
-  HoverCardPortal,
   ControlCombobox,
+  HoverCard,
   HoverCardContent,
+  HoverCardPortal,
   HoverCardTrigger,
+  Input,
+  Label,
+  Textarea,
 } from '@librechat/client';
-import type { TMessage, GraphEdge } from 'librechat-data-provider';
+import type { GraphEdge, TMessage } from 'librechat-data-provider';
+import { EModelEndpoint } from 'librechat-data-provider';
+import { ChevronDown, PlusCircle, Waypoints, X } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { ControllerRenderProps } from 'react-hook-form';
 import type { AgentForm, OptionWithIcon } from '~/common';
-import MessageIcon from '~/components/Share/MessageIcon';
-import { useAgentsMapContext } from '~/Providers';
-import { useLocalize } from '~/hooks';
 import { ESide } from '~/common';
+import MessageIcon from '~/components/Share/MessageIcon';
+import { useLocalize } from '~/hooks';
+import { useAgentsMapContext } from '~/Providers';
 
 interface AgentHandoffsProps {
   field: ControllerRenderProps<AgentForm, 'edges'>;
@@ -146,7 +146,9 @@ const AgentHandoffs: React.FC<AgentHandoffsProps> = ({ field, currentAgentId }) 
                 <div className="flex h-9 items-center gap-2 rounded-md border border-border-medium bg-surface-tertiary pr-2">
                   <ControlCombobox
                     isCollapsed={false}
-                    ariaLabel={localize('com_ui_agent_var', { 0: localize('com_ui_select') })}
+                    ariaLabel={localize('com_ui_agent_var', {
+                      0: localize('com_ui_select'),
+                    })}
                     selectedValue={targetAgentId}
                     setValue={(id) => updateHandoffAt(idx, id)}
                     selectPlaceholder={localize('com_ui_agent_var', {
@@ -270,11 +272,15 @@ const AgentHandoffs: React.FC<AgentHandoffsProps> = ({ field, currentAgentId }) 
             {edges.length > 0 && <Waypoints className="mx-auto text-text-secondary" size={14} />}
             <ControlCombobox
               isCollapsed={false}
-              ariaLabel={localize('com_ui_agent_var', { 0: localize('com_ui_add') })}
+              ariaLabel={localize('com_ui_agent_var', {
+                0: localize('com_ui_add'),
+              })}
               selectedValue=""
               setValue={setNewAgentId}
               selectPlaceholder={localize('com_ui_agent_handoff_add')}
-              searchPlaceholder={localize('com_ui_agent_var', { 0: localize('com_ui_search') })}
+              searchPlaceholder={localize('com_ui_agent_var', {
+                0: localize('com_ui_search'),
+              })}
               items={selectableAgents}
               className="h-9 w-full border-dashed border-border-heavy text-center text-text-secondary hover:text-text-primary"
               containerClassName="px-0"

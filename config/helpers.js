@@ -30,7 +30,7 @@ const askMultiLineQuestion = (query) => {
   console.cyan(query);
 
   return new Promise((resolve) => {
-    let lines = [];
+    const lines = [];
     rl.on('line', (line) => {
       if (line.trim() === '.') {
         rl.close();

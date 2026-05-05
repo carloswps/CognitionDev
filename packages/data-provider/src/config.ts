@@ -1,13 +1,13 @@
-import { z } from 'zod';
 import type { ZodError } from 'zod';
-import type { TEndpointsConfig, TModelsConfig, TConfig } from './types';
-import { EModelEndpoint, eModelEndpointSchema, isAgentsEndpoint } from './schemas';
-import { ComponentTypes, SettingTypes, OptionTypes } from './generate';
-import { specsConfigSchema, TSpecsConfig } from './models';
-import { fileConfigSchema } from './file-config';
+import { z } from 'zod';
 import { apiBaseUrl } from './api-endpoints';
-import { FileSources } from './types/files';
+import { fileConfigSchema } from './file-config';
+import { ComponentTypes, OptionTypes, SettingTypes } from './generate';
 import { MCPServersSchema } from './mcp';
+import { specsConfigSchema, type TSpecsConfig } from './models';
+import { EModelEndpoint, eModelEndpointSchema, isAgentsEndpoint } from './schemas';
+import type { TConfig, TEndpointsConfig, TModelsConfig } from './types';
+import { FileSources } from './types/files';
 
 export const defaultSocialLogins = ['google', 'facebook', 'openid', 'github', 'discord', 'saml'];
 
@@ -189,7 +189,10 @@ export type TAzureModelMapSchema = {
 export type TAzureModelGroupMap = Record<string, TAzureModelMapSchema | undefined>;
 export type TAzureGroupMap = Record<
   string,
-  (TAzureBaseSchema & { models: Record<string, TAzureModelConfig | undefined> }) | undefined
+  | (TAzureBaseSchema & {
+      models: Record<string, TAzureModelConfig | undefined>;
+    })
+  | undefined
 >;
 
 export type TValidatedAzureConfig = {
@@ -411,6 +414,7 @@ export const endpointSchema = baseEndpointSchema.merge(
       .optional(),
     directEndpoint: z.boolean().optional(),
     titleMessageRole: z.enum(['system', 'user', 'assistant']).optional(),
+    filterFreeModels: z.boolean().optional(),
   }),
 );
 

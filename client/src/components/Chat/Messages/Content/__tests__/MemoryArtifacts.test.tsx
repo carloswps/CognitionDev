@@ -1,9 +1,9 @@
+import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import MemoryArtifacts from '../MemoryArtifacts';
-import type { TAttachment, MemoryArtifact } from 'librechat-data-provider';
+import type { MemoryArtifact, TAttachment } from 'librechat-data-provider';
 import { Tools } from 'librechat-data-provider';
+import MemoryArtifacts from '../MemoryArtifacts';
 
 // Mock the localize hook
 jest.mock('~/hooks', () => ({

@@ -1,8 +1,9 @@
-import React, { useRef, useState } from 'react';
-import { Plus, X } from 'lucide-react';
 import { TooltipAnchor } from '@librechat/client';
-import { Transition } from 'react-transition-group';
 import { Constants } from 'librechat-data-provider';
+import { Plus, X } from 'lucide-react';
+import type React from 'react';
+import { useRef, useState } from 'react';
+import { Transition } from 'react-transition-group';
 import { useLocalize } from '~/hooks';
 
 interface AssistantConversationStartersProps {

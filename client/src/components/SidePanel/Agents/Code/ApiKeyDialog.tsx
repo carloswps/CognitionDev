@@ -1,7 +1,7 @@
-import { OGDialogTemplate, Input, Button, OGDialog } from '@librechat/client';
-import type { UseFormRegister, UseFormHandleSubmit } from 'react-hook-form';
-import type { ApiKeyFormData } from '~/common';
+import { Button, Input, OGDialog, OGDialogTemplate } from '@librechat/client';
 import type { RefObject } from 'react';
+import type { UseFormHandleSubmit, UseFormRegister } from 'react-hook-form';
+import type { ApiKeyFormData } from '~/common';
 import { useLocalize } from '~/hooks';
 
 export default function ApiKeyDialog({

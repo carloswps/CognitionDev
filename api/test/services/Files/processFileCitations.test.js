@@ -214,7 +214,9 @@ describe('processFileCitations', () => {
 
       const result = await enhanceSourcesWithMetadata(sources, mockCustomConfig);
 
-      expect(getFiles).toHaveBeenCalledWith({ file_id: { $in: ['file_123', 'file_456'] } });
+      expect(getFiles).toHaveBeenCalledWith({
+        file_id: { $in: ['file_123', 'file_456'] },
+      });
       expect(result).toHaveLength(2);
 
       expect(result[0]).toEqual({
@@ -329,9 +331,24 @@ describe('processFileCitations', () => {
 
     it('should deduplicate file IDs when querying database', async () => {
       const sources = [
-        { fileId: 'file_123', fileName: 'doc1.pdf', relevance: 0.9, type: 'file' },
-        { fileId: 'file_123', fileName: 'doc1.pdf', relevance: 0.8, type: 'file' },
-        { fileId: 'file_456', fileName: 'doc2.pdf', relevance: 0.7, type: 'file' },
+        {
+          fileId: 'file_123',
+          fileName: 'doc1.pdf',
+          relevance: 0.9,
+          type: 'file',
+        },
+        {
+          fileId: 'file_123',
+          fileName: 'doc1.pdf',
+          relevance: 0.8,
+          type: 'file',
+        },
+        {
+          fileId: 'file_456',
+          fileName: 'doc2.pdf',
+          relevance: 0.7,
+          type: 'file',
+        },
       ];
 
       getFiles.mockResolvedValue([
@@ -341,7 +358,9 @@ describe('processFileCitations', () => {
 
       await enhanceSourcesWithMetadata(sources, mockCustomConfig);
 
-      expect(getFiles).toHaveBeenCalledWith({ file_id: { $in: ['file_123', 'file_456'] } });
+      expect(getFiles).toHaveBeenCalledWith({
+        file_id: { $in: ['file_123', 'file_456'] },
+      });
     });
   });
 });

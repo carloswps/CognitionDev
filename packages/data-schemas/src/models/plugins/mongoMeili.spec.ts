@@ -1,9 +1,9 @@
+import { EModelEndpoint } from 'librechat-data-provider';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { EModelEndpoint } from 'librechat-data-provider';
 import { createConversationModel } from '~/models/convo';
 import { createMessageModel } from '~/models/message';
-import { SchemaWithMeiliMethods } from '~/models/plugins/mongoMeili';
+import type { SchemaWithMeiliMethods } from '~/models/plugins/mongoMeili';
 
 const mockAddDocuments = jest.fn();
 const mockAddDocumentsInBatches = jest.fn();
@@ -351,7 +351,9 @@ describe('Meilisearch Mongoose plugin', () => {
       expect(estimatedCount).toBe(4);
 
       // Actual syncable documents (expiredAt: null)
-      const syncableCount = await messageModel.countDocuments({ expiredAt: null });
+      const syncableCount = await messageModel.countDocuments({
+        expiredAt: null,
+      });
       expect(syncableCount).toBe(2);
 
       // Sync should complete successfully even though estimated count is higher than processed count
@@ -362,7 +364,9 @@ describe('Meilisearch Mongoose plugin', () => {
       expect(mockAddDocuments).toHaveBeenCalled();
 
       // Verify that only 2 documents were indexed (the syncable ones)
-      const indexedCount = await messageModel.countDocuments({ _meiliIndex: true });
+      const indexedCount = await messageModel.countDocuments({
+        _meiliIndex: true,
+      });
       expect(indexedCount).toBe(2);
     });
   });
@@ -666,7 +670,9 @@ describe('Meilisearch Mongoose plugin', () => {
       expect(mockAddDocumentsInBatches).toHaveBeenCalledTimes(1);
 
       // No documents should be indexed since sync failed
-      const indexedCount = await conversationModel.countDocuments({ _meiliIndex: true });
+      const indexedCount = await conversationModel.countDocuments({
+        _meiliIndex: true,
+      });
       expect(indexedCount).toBe(0);
     });
 
@@ -816,9 +822,15 @@ describe('Meilisearch Mongoose plugin', () => {
 
       // Should have called getDocuments with correct offsets
       expect(mockGetDocuments).toHaveBeenCalledTimes(2);
-      expect(mockGetDocuments).toHaveBeenNthCalledWith(1, { limit: 3, offset: 0 });
+      expect(mockGetDocuments).toHaveBeenNthCalledWith(1, {
+        limit: 3,
+        offset: 0,
+      });
       // After deleting 2 documents, offset should be: 0 + (3 - 2) = 1
-      expect(mockGetDocuments).toHaveBeenNthCalledWith(2, { limit: 3, offset: 1 });
+      expect(mockGetDocuments).toHaveBeenNthCalledWith(2, {
+        limit: 3,
+        offset: 1,
+      });
 
       // Should delete only the orphaned documents
       expect(mockDeleteDocuments).toHaveBeenCalledWith([orphanedIds[0], orphanedIds[1]]);
@@ -964,9 +976,18 @@ describe('Meilisearch Mongoose plugin', () => {
       await messageModel.cleanupMeiliIndex(indexMock, 'messageId', 3, 0);
 
       expect(mockGetDocuments).toHaveBeenCalledTimes(3);
-      expect(mockGetDocuments).toHaveBeenNthCalledWith(1, { limit: 3, offset: 0 });
-      expect(mockGetDocuments).toHaveBeenNthCalledWith(2, { limit: 3, offset: 2 });
-      expect(mockGetDocuments).toHaveBeenNthCalledWith(3, { limit: 3, offset: 3 });
+      expect(mockGetDocuments).toHaveBeenNthCalledWith(1, {
+        limit: 3,
+        offset: 0,
+      });
+      expect(mockGetDocuments).toHaveBeenNthCalledWith(2, {
+        limit: 3,
+        offset: 2,
+      });
+      expect(mockGetDocuments).toHaveBeenNthCalledWith(3, {
+        limit: 3,
+        offset: 3,
+      });
 
       // Should have deleted orphaned documents in batches
       expect(mockDeleteDocuments).toHaveBeenCalledTimes(2);
@@ -1093,9 +1114,15 @@ describe('Meilisearch Mongoose plugin', () => {
       await messageModel.cleanupMeiliIndex(indexMock, 'messageId', 3, 0);
 
       expect(mockGetDocuments).toHaveBeenCalledTimes(2);
-      expect(mockGetDocuments).toHaveBeenNthCalledWith(1, { limit: 3, offset: 0 });
+      expect(mockGetDocuments).toHaveBeenNthCalledWith(1, {
+        limit: 3,
+        offset: 0,
+      });
       // After deleting all 3, offset remains at 0
-      expect(mockGetDocuments).toHaveBeenNthCalledWith(2, { limit: 3, offset: 0 });
+      expect(mockGetDocuments).toHaveBeenNthCalledWith(2, {
+        limit: 3,
+        offset: 0,
+      });
 
       expect(mockDeleteDocuments).toHaveBeenCalledWith([
         orphanedIds[0],
@@ -1147,7 +1174,9 @@ describe('Meilisearch Mongoose plugin', () => {
       await conversationModel.syncWithMeili();
 
       // Verify _meiliIndex was updated
-      const indexedCount = await conversationModel.countDocuments({ _meiliIndex: true });
+      const indexedCount = await conversationModel.countDocuments({
+        _meiliIndex: true,
+      });
       expect(indexedCount).toBe(2);
 
       // Verify updatedAt was NOT modified
@@ -1194,7 +1223,9 @@ describe('Meilisearch Mongoose plugin', () => {
 
       await messageModel.syncWithMeili();
 
-      const indexedCount = await messageModel.countDocuments({ _meiliIndex: true });
+      const indexedCount = await messageModel.countDocuments({
+        _meiliIndex: true,
+      });
       expect(indexedCount).toBe(2);
 
       const afterSync = await messageModel.find({}).lean();

@@ -1,9 +1,9 @@
-import React from 'react';
 import { UIResourceRenderer } from '@mcp-ui/client';
-import { useOptionalMessagesConversation, useOptionalMessagesOperations } from '~/Providers';
-import { useConversationUIResources } from '~/hooks/Messages/useConversationUIResources';
-import { handleUIAction } from '~/utils';
+import React from 'react';
 import { useLocalize } from '~/hooks';
+import { useConversationUIResources } from '~/hooks/Messages/useConversationUIResources';
+import { useOptionalMessagesConversation, useOptionalMessagesOperations } from '~/Providers';
+import { handleUIAction } from '~/utils';
 
 interface MCPUIResourceProps {
   node: {
@@ -51,7 +51,9 @@ export function MCPUIResource(props: MCPUIResourceProps) {
     console.error('Error rendering UI resource:', error);
     return (
       <span className="inline-flex items-center rounded bg-red-50 px-2 py-1 text-xs font-medium text-red-600">
-        {localize('com_ui_ui_resource_error', { 0: uiResource.name || resourceId })}
+        {localize('com_ui_ui_resource_error', {
+          0: uiResource.name || resourceId,
+        })}
       </span>
     );
   }

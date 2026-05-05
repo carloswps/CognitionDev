@@ -1,4 +1,5 @@
-import React, { useState, useRef, useLayoutEffect, useEffect, useCallback, memo } from 'react';
+import type React from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLocalize } from '~/hooks';
 
 interface Option {

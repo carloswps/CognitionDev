@@ -128,7 +128,10 @@ describe('Code CRUD', () => {
         },
       });
 
-      const result = await uploadCodeEnvFile({ ...baseUploadParams, entity_id: 'agent-42' });
+      const result = await uploadCodeEnvFile({
+        ...baseUploadParams,
+        entity_id: 'agent-42',
+      });
       expect(result).toBe('sess-1/fid-1?entity_id=agent-42');
     });
 

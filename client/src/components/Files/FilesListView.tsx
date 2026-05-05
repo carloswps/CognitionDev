@@ -1,9 +1,9 @@
 import React from 'react';
-import FileSidePanel from './FileList/FileSidePanel';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
-import FilesSectionSelector from './FilesSectionSelector';
 import { useLocalize } from '~/hooks';
 import { Button } from '../ui';
+import FileSidePanel from './FileList/FileSidePanel';
+import FilesSectionSelector from './FilesSectionSelector';
 
 export default function FilesListView() {
   const params = useParams();

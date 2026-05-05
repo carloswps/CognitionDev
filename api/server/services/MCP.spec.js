@@ -124,7 +124,9 @@ describe('tests for the new helper functions used by the MCP connection status e
       const mockUserConnections = new Map([['server2', { status: 'disconnected' }]]);
 
       const mockMCPManager = {
-        appConnections: { getLoaded: jest.fn(() => Promise.resolve(mockAppConnections)) },
+        appConnections: {
+          getLoaded: jest.fn(() => Promise.resolve(mockAppConnections)),
+        },
         getUserConnections: jest.fn(() => mockUserConnections),
       };
       mockGetMCPManager.mockReturnValue(mockMCPManager);
@@ -827,8 +829,12 @@ describe('User parameter passing tests', () => {
         return Promise.resolve({
           tools: [{ name: 'tool1' }, { name: 'tool2' }],
           availableTools: {
-            [`tool1${D}server1`]: { function: { description: 'Tool 1', parameters: {} } },
-            [`tool2${D}server1`]: { function: { description: 'Tool 2', parameters: {} } },
+            [`tool1${D}server1`]: {
+              function: { description: 'Tool 1', parameters: {} },
+            },
+            [`tool2${D}server1`]: {
+              function: { description: 'Tool 2', parameters: {} },
+            },
           },
         });
       });
@@ -1061,8 +1067,12 @@ describe('User parameter passing tests', () => {
 
       // Mock different responses based on role
       mockGetAppConfig
-        .mockResolvedValueOnce({ mcpSettings: { allowedDomains: ['admin-allowed.com'] } })
-        .mockResolvedValueOnce({ mcpSettings: { allowedDomains: ['user-allowed.com'] } });
+        .mockResolvedValueOnce({
+          mcpSettings: { allowedDomains: ['admin-allowed.com'] },
+        })
+        .mockResolvedValueOnce({
+          mcpSettings: { allowedDomains: ['user-allowed.com'] },
+        });
 
       mockIsMCPDomainAllowed.mockResolvedValue(true);
 
@@ -1303,7 +1313,9 @@ describe('User parameter passing tests', () => {
         return Promise.resolve({
           tools: [{ name: 'test' }],
           availableTools: {
-            [`test${D}server`]: { function: { description: 'Test', parameters: {} } },
+            [`test${D}server`]: {
+              function: { description: 'Test', parameters: {} },
+            },
           },
         });
       });

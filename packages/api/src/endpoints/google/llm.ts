@@ -1,7 +1,7 @@
-import { Providers } from '@librechat/agents';
-import { googleSettings, AuthKeys, removeNullishValues } from 'librechat-data-provider';
-import type { GoogleClientOptions, VertexAIClientOptions } from '@librechat/agents';
 import type { GoogleAIToolType } from '@langchain/google-common';
+import type { GoogleClientOptions, VertexAIClientOptions } from '@librechat/agents';
+import { Providers } from '@librechat/agents';
+import { AuthKeys, googleSettings, removeNullishValues } from 'librechat-data-provider';
 import type * as t from '~/types';
 import { isEnabled } from '~/utils';
 
@@ -284,7 +284,9 @@ export function getGoogleConfig(
 
       if (knownGoogleParams.has(key)) {
         /** Route known Google params to llmConfig only if undefined */
-        applyDefaultParams(llmConfig as Record<string, unknown>, { [key]: value });
+        applyDefaultParams(llmConfig as Record<string, unknown>, {
+          [key]: value,
+        });
       }
       /** Leave other params for transform to handle - they might be OpenAI params */
     }

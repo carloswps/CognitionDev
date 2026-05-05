@@ -1,7 +1,7 @@
 import { ErrorTypes } from 'librechat-data-provider';
-// Note: checkUserKeyExpiry moved to @librechat/api (utils/key.ts) as it's a pure validation utility
-import { encrypt, decrypt } from '~/crypto';
 import logger from '~/config/winston';
+// Note: checkUserKeyExpiry moved to @librechat/api (utils/key.ts) as it's a pure validation utility
+import { decrypt, encrypt } from '~/crypto';
 
 /** Factory function that takes mongoose instance and returns the key methods */
 export function createKeyMethods(mongoose: typeof import('mongoose')) {
@@ -105,12 +105,20 @@ export function createKeyMethods(mongoose: typeof import('mongoose')) {
     const { userId, name, value, expiresAt = null } = params;
     const Key = mongoose.models.Key;
     const encryptedValue = await encrypt(value);
-    const updateObject: { userId: string; name: string; value: string; expiresAt?: Date } = {
+    const updateObject: {
+      userId: string;
+      name: string;
+      value: string;
+      expiresAt?: Date;
+    } = {
       userId,
       name,
       value: encryptedValue,
     };
-    const updateQuery: { $set: typeof updateObject; $unset?: { expiresAt: string } } = {
+    const updateQuery: {
+      $set: typeof updateObject;
+      $unset?: { expiresAt: string };
+    } = {
       $set: updateObject,
     };
     if (expiresAt) {

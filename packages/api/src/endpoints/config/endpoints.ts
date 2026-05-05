@@ -1,13 +1,13 @@
+import type { AppConfig } from '@librechat/data-schemas';
+import type { AgentCapabilities, TConfig, TEndpointsConfig } from 'librechat-data-provider';
 import {
+  defaultAgentCapabilities,
   EModelEndpoint,
   isAgentsEndpoint,
   orderEndpointsConfig,
-  defaultAgentCapabilities,
 } from 'librechat-data-provider';
-import type { AppConfig } from '@librechat/data-schemas';
-import type { AgentCapabilities, TEndpointsConfig, TConfig } from 'librechat-data-provider';
-import type { ServerRequest, TCustomEndpointsConfig } from '~/types';
 import { loadCustomEndpointsConfig as defaultLoadCustomEndpoints } from '~/endpoints/custom';
+import type { ServerRequest, TCustomEndpointsConfig } from '~/types';
 
 type PartialEndpointEntry = Partial<TConfig>;
 type DefaultEndpointsResult = Record<string, PartialEndpointEntry | false | null>;
@@ -28,7 +28,11 @@ export function createEndpointsConfigService(deps: EndpointsConfigDeps) {
 
   async function getEndpointsConfig(req: ServerRequest): Promise<TEndpointsConfig> {
     const appConfig =
-      req.config ?? (await getAppConfig({ role: req.user?.role, tenantId: req.user?.tenantId }));
+      req.config ??
+      (await getAppConfig({
+        role: req.user?.role,
+        tenantId: req.user?.tenantId,
+      }));
     const defaultEndpointsConfig = await loadDefaultEndpointsConfig(appConfig);
     const customEndpointsConfig = loadCustomEndpointsConfig(appConfig?.endpoints?.custom);
 

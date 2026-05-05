@@ -1,8 +1,9 @@
-import React, { createRef } from 'react';
 import { render } from '@testing-library/react';
+import type React from 'react';
+import { createRef } from 'react';
 import '@testing-library/jest-dom';
-import { RecoilRoot } from 'recoil';
 import type { CellMeasurerCache, List } from 'react-virtualized';
+import { RecoilRoot } from 'recoil';
 
 let mockCapturedCache: CellMeasurerCache | null = null;
 
@@ -52,7 +53,10 @@ jest.mock('~/store', () => {
   return {
     __esModule: true,
     default: {
-      search: atom({ key: 'test-conversations-search', default: { query: '' } }),
+      search: atom({
+        key: 'test-conversations-search',
+        default: { query: '' },
+      }),
     },
   };
 });

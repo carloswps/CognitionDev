@@ -1,17 +1,17 @@
-import { useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import type { Agent, TConversation, TPreset } from 'librechat-data-provider';
 import {
   Constants,
-  QueryKeys,
   dataService,
   EModelEndpoint,
   isAssistantsEndpoint,
+  QueryKeys,
 } from 'librechat-data-provider';
-import type { TConversation, TPreset, Agent } from 'librechat-data-provider';
-import useGetConversation from '~/hooks/Conversations/useGetConversation';
+import { useCallback } from 'react';
 import useDefaultConvo from '~/hooks/Conversations/useDefaultConvo';
-import { useAgentsMapContext } from '~/Providers/AgentsMapContext';
+import useGetConversation from '~/hooks/Conversations/useGetConversation';
 import useNewConvo from '~/hooks/useNewConvo';
+import { useAgentsMapContext } from '~/Providers/AgentsMapContext';
 import { logger } from '~/utils';
 
 export default function useSelectAgent() {
@@ -67,7 +67,10 @@ export default function useSelectAgent() {
           }),
         );
         if (fullAgent) {
-          await updateConversation(fullAgent, { ...template, agent_id: fullAgent.id });
+          await updateConversation(fullAgent, {
+            ...template,
+            agent_id: fullAgent.id,
+          });
         }
       } catch (error) {
         if ((error as { silent: boolean } | undefined)?.silent) {

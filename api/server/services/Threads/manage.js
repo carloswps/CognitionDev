@@ -221,8 +221,8 @@ async function syncMessages({
   assistant_id,
   conversationId,
 }) {
-  let result = [];
-  let dbMessageMap = new Map(dbMessages.map((msg) => [msg.messageId, msg]));
+  const result = [];
+  const dbMessageMap = new Map(dbMessages.map((msg) => [msg.messageId, msg]));
 
   const modifyPromises = [];
   const recordPromises = [];
@@ -271,7 +271,7 @@ async function syncMessages({
 
     // Check if the message exists in the database based on metadata
     const dbMessageId = apiMessage.metadata && apiMessage.metadata.messageId;
-    let dbMessage = dbMessageMap.get(dbMessageId);
+    const dbMessage = dbMessageMap.get(dbMessageId);
 
     if (dbMessage) {
       // If message exists in DB, use its messageId and update parentMessageId
@@ -586,7 +586,12 @@ async function processMessages({ openai, client, messages = [] }) {
 
         try {
           if (alreadyProcessed) {
-            file = await retrieveAndProcessFile({ openai, client, file_id, unknownType: true });
+            file = await retrieveAndProcessFile({
+              openai,
+              client,
+              file_id,
+              unknownType: true,
+            });
           } else if (type === AnnotationTypes.FILE_PATH) {
             const basename = path.basename(annotation.text);
             file = await retrieveAndProcessFile({

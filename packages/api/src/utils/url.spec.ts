@@ -1,4 +1,4 @@
-import { extractBaseURL, deriveBaseURL } from './url';
+import { deriveBaseURL, extractBaseURL } from './url';
 
 describe('extractBaseURL', () => {
   test('should extract base URL up to /v1 for standard endpoints', () => {

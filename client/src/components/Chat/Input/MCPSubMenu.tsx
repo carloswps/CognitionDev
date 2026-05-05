@@ -1,11 +1,11 @@
-import React from 'react';
 import * as Ariakit from '@ariakit/react';
-import { ChevronRight } from 'lucide-react';
 import { MCPIcon, PinIcon } from '@librechat/client';
-import MCPServerMenuItem from '~/components/MCP/MCPServerMenuItem';
+import { ChevronRight } from 'lucide-react';
+import React from 'react';
 import MCPConfigDialog from '~/components/MCP/MCPConfigDialog';
-import { useBadgeRowContext } from '~/Providers';
+import MCPServerMenuItem from '~/components/MCP/MCPServerMenuItem';
 import { useLocalize } from '~/hooks';
+import { useBadgeRowContext } from '~/Providers';
 import { cn } from '~/utils';
 
 interface MCPSubMenuProps {

@@ -1,14 +1,14 @@
-import { InfiniteCollections } from 'librechat-data-provider';
 import type { InfiniteData } from '@tanstack/react-query';
 import type { PromptGroupListResponse, TPromptGroup } from 'librechat-data-provider';
+import { InfiniteCollections } from 'librechat-data-provider';
 import {
   addPromptGroup,
   deletePromptGroup,
+  findPromptGroup,
+  getSnippet,
   updateGroupFields,
   updateGroupFieldsInPlace,
   updatePromptGroup,
-  getSnippet,
-  findPromptGroup,
 } from '../promptGroups';
 
 // ---------------------------------------------------------------------------
@@ -46,7 +46,10 @@ describe('updateGroupFieldsInPlace', () => {
 
     const data = makeInfiniteData([{ promptGroups: [groupA, groupB, groupC] }]);
 
-    const result = updateGroupFieldsInPlace(data, { _id: 'b', name: 'Group B Updated' });
+    const result = updateGroupFieldsInPlace(data, {
+      _id: 'b',
+      name: 'Group B Updated',
+    });
 
     expect(result.pages[0][InfiniteCollections.PROMPT_GROUPS][1]).toMatchObject({
       _id: 'b',
@@ -65,7 +68,10 @@ describe('updateGroupFieldsInPlace', () => {
 
     const data = makeInfiniteData([{ promptGroups: [groupA] }, { promptGroups: [groupB] }]);
 
-    const result = updateGroupFieldsInPlace(data, { _id: 'b', name: 'Group B Updated' });
+    const result = updateGroupFieldsInPlace(data, {
+      _id: 'b',
+      name: 'Group B Updated',
+    });
 
     // Group B stays on page 1
     expect(result.pages[1][InfiniteCollections.PROMPT_GROUPS][0]).toMatchObject({
@@ -81,7 +87,10 @@ describe('updateGroupFieldsInPlace', () => {
     const groupA = makeGroup({ _id: 'a', name: 'Group A' });
     const data = makeInfiniteData([{ promptGroups: [groupA] }]);
 
-    const result = updateGroupFieldsInPlace(data, { _id: 'a', name: 'Changed' });
+    const result = updateGroupFieldsInPlace(data, {
+      _id: 'a',
+      name: 'Changed',
+    });
 
     expect(result.pages[0][InfiniteCollections.PROMPT_GROUPS][0].updatedAt).toBeUndefined();
   });
@@ -91,16 +100,26 @@ describe('updateGroupFieldsInPlace', () => {
     const data = makeInfiniteData([{ promptGroups: [groupA] }]);
     const snapshot = JSON.stringify(data);
 
-    const result = updateGroupFieldsInPlace(data, { _id: 'nonexistent', name: 'Ghost' });
+    const result = updateGroupFieldsInPlace(data, {
+      _id: 'nonexistent',
+      name: 'Ghost',
+    });
 
     expect(JSON.stringify(result)).toBe(snapshot);
   });
 
   it('merges only the provided partial fields, preserving others', () => {
-    const groupA = makeGroup({ _id: 'a', name: 'Group A', numberOfGenerations: 5 });
+    const groupA = makeGroup({
+      _id: 'a',
+      name: 'Group A',
+      numberOfGenerations: 5,
+    });
     const data = makeInfiniteData([{ promptGroups: [groupA] }]);
 
-    const result = updateGroupFieldsInPlace(data, { _id: 'a', name: 'Group A Renamed' });
+    const result = updateGroupFieldsInPlace(data, {
+      _id: 'a',
+      name: 'Group A Renamed',
+    });
 
     expect(result.pages[0][InfiniteCollections.PROMPT_GROUPS][0]).toMatchObject({
       _id: 'a',
@@ -134,7 +153,10 @@ describe('updateGroupFieldsInPlace', () => {
     const groupA = makeGroup({ _id: 'a', name: 'Group A' });
     const data = makeInfiniteData([{ promptGroups: [groupA] }]);
 
-    const result = updateGroupFieldsInPlace(data, { _id: 'a', name: 'Changed' });
+    const result = updateGroupFieldsInPlace(data, {
+      _id: 'a',
+      name: 'Changed',
+    });
 
     expect(result.pageParams).toEqual(data.pageParams);
   });
@@ -146,7 +168,10 @@ describe('updateGroupFieldsInPlace', () => {
       { promptGroups: [makeGroup({ _id: 'c', name: 'C' })] },
     ]);
 
-    const result = updateGroupFieldsInPlace(data, { _id: 'c', name: 'C Updated' });
+    const result = updateGroupFieldsInPlace(data, {
+      _id: 'c',
+      name: 'C Updated',
+    });
 
     expect(result.pages[0][InfiniteCollections.PROMPT_GROUPS][0]).toMatchObject({
       _id: 'a',

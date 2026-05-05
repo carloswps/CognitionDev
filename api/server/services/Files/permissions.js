@@ -126,7 +126,12 @@ const filterFilesByAgentAccess = async ({ files, userId, role, agentId }) => {
 
   // Batch check access for all non-owned files
   const fileIds = filesToCheck.map((f) => f.file_id);
-  const accessMap = await hasAccessToFilesViaAgent({ userId, role, fileIds, agentId });
+  const accessMap = await hasAccessToFilesViaAgent({
+    userId,
+    role,
+    fileIds,
+    agentId,
+  });
 
   // Filter files based on access
   const accessibleFiles = filesToCheck.filter((file) => accessMap.get(file.file_id));

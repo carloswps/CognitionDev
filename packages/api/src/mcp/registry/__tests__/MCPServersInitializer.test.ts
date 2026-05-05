@@ -1,11 +1,11 @@
 import { logger } from '@librechat/data-schemas';
-import * as t from '~/mcp/types';
-import { registryStatusCache } from '~/mcp/registry/cache/RegistryStatusCache';
-import { MCPServersInitializer } from '~/mcp/registry/MCPServersInitializer';
-import { MCPServerInspector } from '~/mcp/registry/MCPServerInspector';
-import { MCPServersRegistry } from '~/mcp/registry/MCPServersRegistry';
+import type { MCPConnection } from '~/mcp/connection';
 import { MCPConnectionFactory } from '~/mcp/MCPConnectionFactory';
-import { MCPConnection } from '~/mcp/connection';
+import { registryStatusCache } from '~/mcp/registry/cache/RegistryStatusCache';
+import { MCPServerInspector } from '~/mcp/registry/MCPServerInspector';
+import { MCPServersInitializer } from '~/mcp/registry/MCPServersInitializer';
+import { MCPServersRegistry } from '~/mcp/registry/MCPServersRegistry';
+import type * as t from '~/mcp/types';
 
 const FIXED_TIME = 1699564800000;
 const originalDateNow = Date.now;

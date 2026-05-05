@@ -64,8 +64,9 @@ module.exports = {
   fetchUserInfo: jest.fn().mockResolvedValue({
     preferred_username: 'preferred_username',
   }),
-  genericGrantRequest: jest
-    .fn()
-    .mockResolvedValue({ access_token: 'mock_grant_access_token', expires_in: 3600 }),
+  genericGrantRequest: jest.fn().mockResolvedValue({
+    access_token: 'mock_grant_access_token',
+    expires_in: 3600,
+  }),
   customFetch: Symbol('customFetch'),
 };

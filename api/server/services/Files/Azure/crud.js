@@ -65,7 +65,13 @@ async function saveURLToAzure({
   try {
     const response = await fetch(URL);
     const buffer = await response.buffer();
-    return await saveBufferToAzure({ userId, buffer, fileName, basePath, containerName });
+    return await saveBufferToAzure({
+      userId,
+      buffer,
+      fileName,
+      basePath,
+      containerName,
+    });
   } catch (error) {
     logger.error('[saveURLToAzure] Error uploading file from URL:', error);
     throw error;

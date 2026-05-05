@@ -1,7 +1,7 @@
-import logger from '~/config/winston';
 import type { FilterQuery, Model, Types } from 'mongoose';
-import type { IBalance, IBalanceUpdate, TransactionData } from '~/types';
+import logger from '~/config/winston';
 import type { ITransaction } from '~/schema/transaction';
+import type { IBalance, IBalanceUpdate, TransactionData } from '~/types';
 
 const cancelRate = 1.15;
 
@@ -115,8 +115,11 @@ export function createTransactionMethods(
           endpointTokenConfig: etConfig,
         }) ?? inputMultiplier;
       const readMultiplier =
-        txMethods.getCacheMultiplier({ cacheType: 'read', model, endpointTokenConfig: etConfig }) ??
-        inputMultiplier;
+        txMethods.getCacheMultiplier({
+          cacheType: 'read',
+          model,
+          endpointTokenConfig: etConfig,
+        }) ?? inputMultiplier;
 
       txn.rateDetail = {
         input: inputMultiplier,

@@ -1,12 +1,12 @@
-import React from 'react';
 import { VisuallyHidden } from '@ariakit/react';
-import { CheckCircle2, Pin, PinOff } from 'lucide-react';
 import type { TModelSpec } from 'librechat-data-provider';
-import { useFavorites, useLocalize, useIsActiveItem } from '~/hooks';
-import { useModelSelectorContext } from '../ModelSelectorContext';
-import { CustomMenuItem as MenuItem } from '../CustomMenu';
-import SpecIcon from './SpecIcon';
+import { CheckCircle2, Pin, PinOff } from 'lucide-react';
+import type React from 'react';
+import { useFavorites, useIsActiveItem, useLocalize } from '~/hooks';
 import { cn } from '~/utils';
+import { CustomMenuItem as MenuItem } from '../CustomMenu';
+import { useModelSelectorContext } from '../ModelSelectorContext';
+import SpecIcon from './SpecIcon';
 
 interface ModelSpecItemProps {
   spec: TModelSpec;

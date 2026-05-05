@@ -1,4 +1,4 @@
-import { buildToolSet, BuildToolSetConfig } from './tools';
+import { type BuildToolSetConfig, buildToolSet } from './tools';
 
 describe('buildToolSet', () => {
   describe('event-driven mode (toolDefinitions)', () => {
@@ -24,8 +24,16 @@ describe('buildToolSet', () => {
       const agentConfig: BuildToolSetConfig = {
         toolDefinitions: [
           { name: 'tool_search', description: 'Search for deferred tools' },
-          { name: 'deferred_tool_1', description: 'A deferred tool', defer_loading: true },
-          { name: 'deferred_tool_2', description: 'Another deferred tool', defer_loading: true },
+          {
+            name: 'deferred_tool_1',
+            description: 'A deferred tool',
+            defer_loading: true,
+          },
+          {
+            name: 'deferred_tool_2',
+            description: 'Another deferred tool',
+            defer_loading: true,
+          },
         ],
       };
 

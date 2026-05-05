@@ -1,12 +1,12 @@
 import {
-  TPreset,
-  TConversation,
   EModelEndpoint,
+  type TConversation,
+  type TPreset,
   tConvoUpdateSchema,
 } from 'librechat-data-provider';
 import type { TSetExample, TSetOption, TSetOptionsPayload } from '~/common';
-import usePresetIndexOptions from './usePresetIndexOptions';
 import { useChatContext } from '~/Providers/ChatContext';
+import usePresetIndexOptions from './usePresetIndexOptions';
 
 type TUseSetOptions = (preset?: TPreset | boolean | null) => TSetOptionsPayload;
 

@@ -1,6 +1,6 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import React from 'react';
 import '@testing-library/jest-dom';
 import SearchBar from '../SearchBar';
 
@@ -46,14 +46,18 @@ describe('SearchBar', () => {
   it('shows clear button when there is text', () => {
     render(<SearchBar value="test" onSearch={mockOnSearch} />);
 
-    const clearButton = screen.getByRole('button', { name: 'com_agents_clear_search' });
+    const clearButton = screen.getByRole('button', {
+      name: 'com_agents_clear_search',
+    });
     expect(clearButton).toBeInTheDocument();
   });
 
   it('does not show clear button when text is empty', () => {
     render(<SearchBar value="" onSearch={mockOnSearch} />);
 
-    const clearButton = screen.queryByRole('button', { name: 'com_agents_clear_search' });
+    const clearButton = screen.queryByRole('button', {
+      name: 'com_agents_clear_search',
+    });
     expect(clearButton).not.toBeInTheDocument();
   });
 
@@ -61,7 +65,9 @@ describe('SearchBar', () => {
     render(<SearchBar value="test" onSearch={mockOnSearch} />);
 
     const input = screen.getByRole('textbox');
-    const clearButton = screen.getByRole('button', { name: 'com_agents_clear_search' });
+    const clearButton = screen.getByRole('button', {
+      name: 'com_agents_clear_search',
+    });
 
     // Verify initial state
     expect(input).toHaveValue('test');
@@ -106,7 +112,9 @@ describe('SearchBar', () => {
       </form>,
     );
 
-    const clearButton = screen.getByRole('button', { name: 'com_agents_clear_search' });
+    const clearButton = screen.getByRole('button', {
+      name: 'com_agents_clear_search',
+    });
     await user.click(clearButton);
 
     expect(handleSubmit).not.toHaveBeenCalled();
@@ -128,7 +136,9 @@ describe('SearchBar', () => {
     render(<SearchBar value="test" onSearch={mockOnSearch} />);
 
     const input = screen.getByRole('textbox');
-    const clearButton = screen.getByRole('button', { name: 'com_agents_clear_search' });
+    const clearButton = screen.getByRole('button', {
+      name: 'com_agents_clear_search',
+    });
 
     input.focus();
     await user.click(clearButton);

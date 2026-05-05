@@ -1,14 +1,14 @@
-import { useMemo, useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import type { SearchResultData, TAttachment, ValidSource } from 'librechat-data-provider';
 import { Tools } from 'librechat-data-provider';
-import { Globe, ChevronDown } from 'lucide-react';
-import type { TAttachment, ValidSource, SearchResultData } from 'librechat-data-provider';
+import { ChevronDown, Globe } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { FaviconImage, getCleanDomain } from '~/components/Web/SourceHovercard';
 import { StackedFavicons } from '~/components/Web/Sources';
-import { useLocalize, useExpandCollapse } from '~/hooks';
+import { useExpandCollapse, useLocalize } from '~/hooks';
 import { useSearchContext } from '~/Providers';
-import cn from '~/utils/cn';
 import store from '~/store';
+import cn from '~/utils/cn';
 
 type ProgressKeys =
   | 'com_ui_web_searching'

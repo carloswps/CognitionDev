@@ -45,7 +45,10 @@ function withSSRFProtection<T extends http.Agent>(agent: T): T {
  * preventing DNS rebinding attacks where a hostname resolves to a public IP during
  * pre-validation but to a private IP when the actual connection is made.
  */
-export function createSSRFSafeAgents(): { httpAgent: http.Agent; httpsAgent: https.Agent } {
+export function createSSRFSafeAgents(): {
+  httpAgent: http.Agent;
+  httpsAgent: https.Agent;
+} {
   return {
     httpAgent: withSSRFProtection(new http.Agent()),
     httpsAgent: withSSRFProtection(new https.Agent()),

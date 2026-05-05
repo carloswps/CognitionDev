@@ -1,14 +1,14 @@
-import { useParams } from 'react-router-dom';
-import { useEffect, useCallback } from 'react';
-import { QueryKeys } from 'librechat-data-provider';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import type { TMessage } from 'librechat-data-provider';
-import { useCustomAudioRef, MediaSourceAppender, usePauseGlobalAudio } from '~/hooks/Audio';
-import { getLatestText, logger } from '~/utils';
-import { useAuthContext } from '~/hooks';
+import { QueryKeys } from 'librechat-data-provider';
+import { useCallback, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { globalAudioId } from '~/common';
+import { useAuthContext } from '~/hooks';
+import { MediaSourceAppender, useCustomAudioRef, usePauseGlobalAudio } from '~/hooks/Audio';
 import store from '~/store';
+import { getLatestText, logger } from '~/utils';
 
 function timeoutPromise(ms: number, message?: string) {
   return new Promise((_, reject) =>
@@ -95,8 +95,15 @@ export default function StreamAudio({ index = 0 }) {
         logger.log('Fetching audio...', navigator.userAgent);
         const response = await fetch('/api/files/speech/tts', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-          body: JSON.stringify({ messageId: latestMessage?.messageId, runId: activeRunId, voice }),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            messageId: latestMessage?.messageId,
+            runId: activeRunId,
+            voice,
+          }),
         });
 
         if (!response.ok) {

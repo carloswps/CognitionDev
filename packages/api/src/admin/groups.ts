@@ -1,16 +1,16 @@
-import { Types } from 'mongoose';
-import { PrincipalType } from 'librechat-data-provider';
-import { logger, isValidObjectIdString } from '@librechat/data-schemas';
 import type {
+  CreateGroupRequest,
+  GroupFilterOptions,
+  IConfig,
   IGroup,
   IUser,
-  IConfig,
-  CreateGroupRequest,
   UpdateGroupRequest,
-  GroupFilterOptions,
 } from '@librechat/data-schemas';
-import type { FilterQuery, ClientSession, DeleteResult } from 'mongoose';
+import { isValidObjectIdString, logger } from '@librechat/data-schemas';
 import type { Response } from 'express';
+import { PrincipalType } from 'librechat-data-provider';
+import type { ClientSession, DeleteResult, FilterQuery } from 'mongoose';
+import { Types } from 'mongoose';
 import type { ValidationError } from '~/types/error';
 import type { ServerRequest } from '~/types/http';
 import { parsePagination } from './pagination';
@@ -102,15 +102,18 @@ export function createAdminGroupsHandlers(deps: AdminGroupsDeps) {
 
   async function listGroupsHandler(req: ServerRequest, res: Response) {
     try {
-      const { search, source } = req.query as { search?: string; source?: string };
+      const { search, source } = req.query as {
+        search?: string;
+        source?: string;
+      };
       const filter: GroupListFilter = {};
       if (source && VALID_GROUP_SOURCES.has(source)) {
         filter.source = source as IGroup['source'];
       }
       if (search && search.length > MAX_SEARCH_LENGTH) {
-        return res
-          .status(400)
-          .json({ error: `search must not exceed ${MAX_SEARCH_LENGTH} characters` });
+        return res.status(400).json({
+          error: `search must not exceed ${MAX_SEARCH_LENGTH} characters`,
+        });
       }
       if (search) {
         filter.search = search;
@@ -151,39 +154,39 @@ export function createAdminGroupsHandlers(deps: AdminGroupsDeps) {
         return res.status(400).json({ error: 'name is required' });
       }
       if (body.name.trim().length > MAX_NAME_LENGTH) {
-        return res
-          .status(400)
-          .json({ error: `name must not exceed ${MAX_NAME_LENGTH} characters` });
+        return res.status(400).json({
+          error: `name must not exceed ${MAX_NAME_LENGTH} characters`,
+        });
       }
       if (body.source && !VALID_GROUP_SOURCES.has(body.source)) {
         return res.status(400).json({ error: 'Invalid source value' });
       }
       if (body.description && body.description.length > MAX_DESCRIPTION_LENGTH) {
-        return res
-          .status(400)
-          .json({ error: `description must not exceed ${MAX_DESCRIPTION_LENGTH} characters` });
+        return res.status(400).json({
+          error: `description must not exceed ${MAX_DESCRIPTION_LENGTH} characters`,
+        });
       }
       if (body.email && body.email.length > MAX_EMAIL_LENGTH) {
-        return res
-          .status(400)
-          .json({ error: `email must not exceed ${MAX_EMAIL_LENGTH} characters` });
+        return res.status(400).json({
+          error: `email must not exceed ${MAX_EMAIL_LENGTH} characters`,
+        });
       }
       if (body.avatar && body.avatar.length > MAX_AVATAR_LENGTH) {
-        return res
-          .status(400)
-          .json({ error: `avatar must not exceed ${MAX_AVATAR_LENGTH} characters` });
+        return res.status(400).json({
+          error: `avatar must not exceed ${MAX_AVATAR_LENGTH} characters`,
+        });
       }
       if (body.idOnTheSource && body.idOnTheSource.length > MAX_EXTERNAL_ID_LENGTH) {
-        return res
-          .status(400)
-          .json({ error: `idOnTheSource must not exceed ${MAX_EXTERNAL_ID_LENGTH} characters` });
+        return res.status(400).json({
+          error: `idOnTheSource must not exceed ${MAX_EXTERNAL_ID_LENGTH} characters`,
+        });
       }
 
       const rawIds = Array.isArray(body.memberIds) ? body.memberIds : [];
       if (rawIds.length > MAX_CREATE_MEMBER_IDS) {
-        return res
-          .status(400)
-          .json({ error: `memberIds must not exceed ${MAX_CREATE_MEMBER_IDS} entries` });
+        return res.status(400).json({
+          error: `memberIds must not exceed ${MAX_CREATE_MEMBER_IDS} entries`,
+        });
       }
       let memberIds = rawIds;
       const objectIds = rawIds.filter(isValidObjectIdString);
@@ -238,24 +241,24 @@ export function createAdminGroupsHandlers(deps: AdminGroupsDeps) {
         return res.status(400).json({ error: 'name must be a non-empty string' });
       }
       if (body.name !== undefined && body.name.trim().length > MAX_NAME_LENGTH) {
-        return res
-          .status(400)
-          .json({ error: `name must not exceed ${MAX_NAME_LENGTH} characters` });
+        return res.status(400).json({
+          error: `name must not exceed ${MAX_NAME_LENGTH} characters`,
+        });
       }
       if (body.description !== undefined && body.description.length > MAX_DESCRIPTION_LENGTH) {
-        return res
-          .status(400)
-          .json({ error: `description must not exceed ${MAX_DESCRIPTION_LENGTH} characters` });
+        return res.status(400).json({
+          error: `description must not exceed ${MAX_DESCRIPTION_LENGTH} characters`,
+        });
       }
       if (body.email !== undefined && body.email.length > MAX_EMAIL_LENGTH) {
-        return res
-          .status(400)
-          .json({ error: `email must not exceed ${MAX_EMAIL_LENGTH} characters` });
+        return res.status(400).json({
+          error: `email must not exceed ${MAX_EMAIL_LENGTH} characters`,
+        });
       }
       if (body.avatar !== undefined && body.avatar.length > MAX_AVATAR_LENGTH) {
-        return res
-          .status(400)
-          .json({ error: `avatar must not exceed ${MAX_AVATAR_LENGTH} characters` });
+        return res.status(400).json({
+          error: `avatar must not exceed ${MAX_AVATAR_LENGTH} characters`,
+        });
       }
 
       const updateData: Partial<Pick<IGroup, 'name' | 'description' | 'email' | 'avatar'>> = {};
@@ -368,7 +371,12 @@ export function createAdminGroupsHandlers(deps: AdminGroupsDeps) {
       }
 
       const seen = new Set<string>();
-      const members: { userId: string; name: string; email: string; avatarUrl?: string }[] = [];
+      const members: {
+        userId: string;
+        name: string;
+        email: string;
+        avatarUrl?: string;
+      }[] = [];
       for (const memberId of memberIds) {
         const user = userMap.get(memberId);
         const userId = user?._id?.toString() ?? memberId;
@@ -402,9 +410,9 @@ export function createAdminGroupsHandlers(deps: AdminGroupsDeps) {
         return res.status(400).json({ error: 'userId is required' });
       }
       if (!isValidObjectIdString(userId)) {
-        return res
-          .status(400)
-          .json({ error: 'Only native user ObjectIds can be added via this endpoint' });
+        return res.status(400).json({
+          error: 'Only native user ObjectIds can be added via this endpoint',
+        });
       }
 
       const { group } = await addUserToGroup(userId, id);

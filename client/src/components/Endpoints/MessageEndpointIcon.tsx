@@ -1,20 +1,20 @@
-import { memo } from 'react';
-import { Feather } from 'lucide-react';
-import { EModelEndpoint, isAssistantsEndpoint, alternateName } from 'librechat-data-provider';
 import {
-  Plugin,
+  AnthropicIcon,
+  AssistantIcon,
+  AzureMinimalIcon,
+  BedrockIcon,
+  CodeyIcon,
+  CustomMinimalIcon,
+  GeminiIcon,
   GPTIcon,
   PaLMIcon,
-  CodeyIcon,
-  GeminiIcon,
-  BedrockIcon,
-  AssistantIcon,
-  AnthropicIcon,
-  AzureMinimalIcon,
-  CustomMinimalIcon,
+  Plugin,
 } from '@librechat/client';
+import { alternateName, EModelEndpoint, isAssistantsEndpoint } from 'librechat-data-provider';
+import { Feather } from 'lucide-react';
+import { memo } from 'react';
+import type { IconProps } from '~/common';
 import UnknownIcon from '~/hooks/Endpoint/UnknownIcon';
-import { IconProps } from '~/common';
 import { cn } from '~/utils';
 
 type EndpointIcon = {

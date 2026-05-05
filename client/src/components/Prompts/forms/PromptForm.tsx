@@ -1,42 +1,42 @@
-import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react';
-import debounce from 'lodash/debounce';
-import { useRecoilValue } from 'recoil';
-import { Menu, Rocket, X } from 'lucide-react';
-import { useParams } from 'react-router-dom';
-import { useForm, FormProvider } from 'react-hook-form';
 import { Button, Skeleton, useToastContext } from '@librechat/client';
-import {
-  Permissions,
-  ResourceType,
-  PermissionBits,
-  PermissionTypes,
-} from 'librechat-data-provider';
 import type { TCreatePrompt, TPrompt, TPromptGroup } from 'librechat-data-provider';
 import {
-  useGetPrompts,
-  useGetPromptGroup,
-  useAddPromptToGroup,
-  useUpdatePromptGroup,
-  useMakePromptProduction,
-} from '~/data-provider';
-import { useResourcePermissions, useHasAccess, useLocalize, useFocusTrap } from '~/hooks';
+  PermissionBits,
+  Permissions,
+  PermissionTypes,
+  ResourceType,
+} from 'librechat-data-provider';
+import debounce from 'lodash/debounce';
+import { Menu, Rocket, X } from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { PromptsEditorMode } from '~/common';
 import OpenSidebar from '~/components/Chat/Menus/OpenSidebar';
-import CategorySelector from '../fields/CategorySelector';
+import {
+  useAddPromptToGroup,
+  useGetPromptGroup,
+  useGetPrompts,
+  useMakePromptProduction,
+  useUpdatePromptGroup,
+} from '~/data-provider';
+import { useFocusTrap, useHasAccess, useLocalize, useResourcePermissions } from '~/hooks';
+import { usePromptGroupsContext } from '~/Providers';
+import store from '~/store';
+import { cn, findPromptGroup } from '~/utils';
+import DeletePrompt from '../dialogs/DeletePrompt';
+import SharePrompt from '../dialogs/SharePrompt';
+import PromptDetails from '../display/PromptDetails';
 import PromptVariables from '../display/PromptVariables';
 import PromptVersions from '../display/PromptVersions';
-import { usePromptGroupsContext } from '~/Providers';
-import PromptDetails from '../display/PromptDetails';
-import DeletePrompt from '../dialogs/DeletePrompt';
-import NoPromptGroup from '../lists/NoPromptGroup';
 import PromptEditor from '../editor/PromptEditor';
-import SkeletonForm from '../utils/SkeletonForm';
-import Description from '../fields/Description';
-import SharePrompt from '../dialogs/SharePrompt';
-import PromptName from '../fields/PromptName';
-import { cn, findPromptGroup } from '~/utils';
-import { PromptsEditorMode } from '~/common';
+import CategorySelector from '../fields/CategorySelector';
 import Command from '../fields/Command';
-import store from '~/store';
+import Description from '../fields/Description';
+import PromptName from '../fields/PromptName';
+import NoPromptGroup from '../lists/NoPromptGroup';
+import SkeletonForm from '../utils/SkeletonForm';
 
 interface VersionsPanelProps {
   group: TPromptGroup;
@@ -333,7 +333,9 @@ const PromptForm = ({ promptId: promptIdProp }: { promptId?: string }) => {
   }, [promptId, editorMode, group?.productionId, prompts, handleLoadingComplete]);
 
   useEffect(() => {
-    setValue('prompt', selectedPrompt ? selectedPrompt.prompt : '', { shouldDirty: false });
+    setValue('prompt', selectedPrompt ? selectedPrompt.prompt : '', {
+      shouldDirty: false,
+    });
     setValue('category', group ? group.category : '', { shouldDirty: false });
   }, [selectedPrompt, group, setValue]);
 

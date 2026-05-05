@@ -1,15 +1,15 @@
-import React from 'react';
-import { Clock, MoreHorizontal, Code2 } from 'lucide-react';
 import {
   Checkbox,
   DropdownMenu,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuSeparator,
   DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@librechat/client';
 import type { AgentToolType } from 'librechat-data-provider';
+import { Clock, Code2, MoreHorizontal } from 'lucide-react';
+import React from 'react';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
 

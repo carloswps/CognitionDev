@@ -1,8 +1,8 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import { render, fireEvent } from 'test/layout-test-utils';
-import ConversationModeSwitch from './ConversationModeSwitch';
 import { RecoilRoot } from 'recoil';
+import { fireEvent, render } from 'test/layout-test-utils';
+import ConversationModeSwitch from './ConversationModeSwitch';
 
 describe('ConversationModeSwitch', () => {
   /**

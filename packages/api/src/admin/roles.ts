@@ -1,8 +1,8 @@
-import { PrincipalType, SystemRoles } from 'librechat-data-provider';
-import { logger, isValidObjectIdString, RoleConflictError } from '@librechat/data-schemas';
-import type { IRole, IUser, IConfig, AdminMember } from '@librechat/data-schemas';
-import type { FilterQuery, Types } from 'mongoose';
+import type { AdminMember, IConfig, IRole, IUser } from '@librechat/data-schemas';
+import { isValidObjectIdString, logger, RoleConflictError } from '@librechat/data-schemas';
 import type { Response } from 'express';
+import { PrincipalType, SystemRoles } from 'librechat-data-provider';
+import type { FilterQuery, Types } from 'mongoose';
 import type { ServerRequest } from '~/types/http';
 import { parsePagination } from './pagination';
 
@@ -78,7 +78,11 @@ interface RoleMemberParams extends RoleNameParams {
   userId: string;
 }
 
-export type RoleListItem = { _id: Types.ObjectId | string; name: string; description?: string };
+export type RoleListItem = {
+  _id: Types.ObjectId | string;
+  name: string;
+  description?: string;
+};
 
 export interface AdminRolesDeps {
   listRoles: (options?: { limit?: number; offset?: number }) => Promise<RoleListItem[]>;
@@ -390,7 +394,10 @@ export function createAdminRolesHandlers(deps: AdminRolesDeps) {
       const tenantId = req.user?.tenantId;
       const cleanupResults = await Promise.allSettled([
         deleteConfig(PrincipalType.ROLE, name),
-        deleteAclEntries({ principalType: PrincipalType.ROLE, principalId: name }),
+        deleteAclEntries({
+          principalType: PrincipalType.ROLE,
+          principalId: name,
+        }),
         deleteGrantsForPrincipal(PrincipalType.ROLE, name, { tenantId }),
       ]);
       for (const result of cleanupResults) {

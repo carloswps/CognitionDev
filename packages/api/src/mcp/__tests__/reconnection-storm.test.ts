@@ -5,20 +5,21 @@
  * MCP SDK transports (no mocked stubs). A real StreamableHTTP server is spun up
  * per test suite and MCPConnection talks to it through a genuine HTTP stack.
  */
-import http from 'http';
+
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
+import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js';
 import { randomUUID } from 'crypto';
 import express from 'express';
-import { z } from 'zod';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js';
-import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
+import type http from 'http';
 import type { Socket } from 'net';
-import type { OAuthTestServer } from './helpers/oauthTestServer';
-import type { MCPOAuthTokens } from '~/mcp/oauth';
-import { OAuthReconnectionTracker } from '~/mcp/oauth/OAuthReconnectionTracker';
-import { createOAuthMCPServer } from './helpers/oauthTestServer';
+import { z } from 'zod';
 import { MCPConnection } from '~/mcp/connection';
 import { mcpConfig } from '~/mcp/mcpConfig';
+import type { MCPOAuthTokens } from '~/mcp/oauth';
+import { OAuthReconnectionTracker } from '~/mcp/oauth/OAuthReconnectionTracker';
+import type { OAuthTestServer } from './helpers/oauthTestServer';
+import { createOAuthMCPServer } from './helpers/oauthTestServer';
 
 jest.mock('@librechat/data-schemas', () => ({
   logger: {
@@ -104,7 +105,10 @@ function startMCPServer(): Promise<TestServer> {
 
     res.status(400).json({
       jsonrpc: '2.0',
-      error: { code: -32000, message: 'Bad Request: No valid session ID provided' },
+      error: {
+        code: -32000,
+        message: 'Bad Request: No valid session ID provided',
+      },
       id: null,
     });
   });
@@ -298,7 +302,11 @@ describe('Fix #5: Dead server triggers circuit breaker', () => {
 
     const userA = new MCPConnection({
       serverName: 'shared-dead',
-      serverConfig: { url: deadUrl, type: 'streamable-http', initTimeout: 1000 } as never,
+      serverConfig: {
+        url: deadUrl,
+        type: 'streamable-http',
+        initTimeout: 1000,
+      } as never,
       userId: 'user-A',
     });
 
@@ -312,7 +320,11 @@ describe('Fix #5: Dead server triggers circuit breaker', () => {
 
     const userB = new MCPConnection({
       serverName: 'shared-dead',
-      serverConfig: { url: deadUrl, type: 'streamable-http', initTimeout: 1000 } as never,
+      serverConfig: {
+        url: deadUrl,
+        type: 'streamable-http',
+        initTimeout: 1000,
+      } as never,
       userId: 'user-B',
     });
     const spyB = jest.spyOn(userB.client, 'connect');
@@ -336,7 +348,11 @@ describe('Fix #5: Dead server triggers circuit breaker', () => {
 
     const userA = new MCPConnection({
       serverName: 'shared-dead-clear',
-      serverConfig: { url: deadUrl, type: 'streamable-http', initTimeout: 1000 } as never,
+      serverConfig: {
+        url: deadUrl,
+        type: 'streamable-http',
+        initTimeout: 1000,
+      } as never,
       userId: 'user-A',
     });
     for (let i = 0; i < mcpConfig.CB_MAX_FAILED_ROUNDS; i++) {
@@ -349,7 +365,11 @@ describe('Fix #5: Dead server triggers circuit breaker', () => {
 
     const userB = new MCPConnection({
       serverName: 'shared-dead-clear',
-      serverConfig: { url: deadUrl, type: 'streamable-http', initTimeout: 1000 } as never,
+      serverConfig: {
+        url: deadUrl,
+        type: 'streamable-http',
+        initTimeout: 1000,
+      } as never,
       userId: 'user-B',
     });
     try {
@@ -544,7 +564,11 @@ describe('OAuth: cycle budget recovery after successful OAuth', () => {
 
     const conn = new MCPConnection({
       serverName,
-      serverConfig: { type: 'streamable-http', url: oauthServer.url, initTimeout: 10000 },
+      serverConfig: {
+        type: 'streamable-http',
+        url: oauthServer.url,
+        initTimeout: 10000,
+      },
       userId: 'user-1',
     });
 
@@ -589,7 +613,11 @@ describe('OAuth: cycle budget recovery after successful OAuth', () => {
     for (let i = 0; i < 10; i++) {
       const conn = new MCPConnection({
         serverName,
-        serverConfig: { type: 'streamable-http', url: oauthServer.url, initTimeout: 10000 },
+        serverConfig: {
+          type: 'streamable-http',
+          url: oauthServer.url,
+          initTimeout: 10000,
+        },
         userId: `user-${i}`,
       });
 
@@ -628,7 +656,11 @@ describe('OAuth: cycle budget recovery after successful OAuth', () => {
 
     const conn = new MCPConnection({
       serverName,
-      serverConfig: { type: 'streamable-http', url: oauthServer.url, initTimeout: 10000 },
+      serverConfig: {
+        type: 'streamable-http',
+        url: oauthServer.url,
+        initTimeout: 10000,
+      },
       userId: 'user-1',
     });
 

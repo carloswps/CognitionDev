@@ -110,7 +110,7 @@ router.get('/all', async (req, res) => {
       category,
     });
 
-    let accessibleIds = await findAccessibleResources({
+    const accessibleIds = await findAccessibleResources({
       userId,
       role: req.user.role,
       resourceType: ResourceType.PROMPTGROUP,
@@ -183,7 +183,7 @@ router.get('/groups', async (req, res) => {
       actualCursor = null;
     }
 
-    let accessibleIds = await findAccessibleResources({
+    const accessibleIds = await findAccessibleResources({
       userId,
       role: req.user.role,
       resourceType: ResourceType.PROMPTGROUP,
@@ -308,9 +308,9 @@ const addPromptToGroup = async (req, res) => {
     }
 
     if (typeof prompt.prompt !== 'string' || !prompt.prompt.trim()) {
-      return res
-        .status(400)
-        .send({ error: 'Prompt text is required and must be a non-empty string' });
+      return res.status(400).send({
+        error: 'Prompt text is required and must be a non-empty string',
+      });
     }
 
     if (prompt.type !== 'text' && prompt.type !== 'chat') {
@@ -468,9 +468,9 @@ router.get('/', async (req, res) => {
       });
 
       if (!(permissions & PermissionBits.VIEW)) {
-        return res
-          .status(403)
-          .send({ error: 'Insufficient permissions to view prompts in this group' });
+        return res.status(403).send({
+          error: 'Insufficient permissions to view prompts in this group',
+        });
       }
 
       // If user has access, fetch all prompts in the group (not just their own)

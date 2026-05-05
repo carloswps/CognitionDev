@@ -485,9 +485,7 @@ export async function isMCPDomainAllowed(
   const hasAllowlist = Array.isArray(allowedDomains) && allowedDomains.length > 0;
 
   const hasExplicitUrl =
-    Object.prototype.hasOwnProperty.call(config, 'url') &&
-    typeof config.url === 'string' &&
-    config.url.trim().length > 0;
+    Object.hasOwn(config, 'url') && typeof config.url === 'string' && config.url.trim().length > 0;
 
   if (!domain && hasExplicitUrl && hasAllowlist) {
     return false;

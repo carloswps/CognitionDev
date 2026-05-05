@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useMemo } from 'react';
+import type React from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import { useChatContext } from './ChatContext';
 
 interface MessagesViewContextValue {
@@ -27,9 +28,9 @@ interface MessagesViewContextValue {
 
 const MessagesViewContext = createContext<MessagesViewContextValue | undefined>(undefined);
 
+export type { MessagesViewContextValue };
 // Export the context so it can be provided by other providers (e.g., ShareMessagesProvider)
 export { MessagesViewContext };
-export type { MessagesViewContextValue };
 
 export function MessagesViewProvider({ children }: { children: React.ReactNode }) {
   const chatContext = useChatContext();

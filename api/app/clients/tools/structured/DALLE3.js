@@ -60,7 +60,7 @@ class DALLE3 extends Tool {
       this.processFileURL = fields.processFileURL.bind(this);
     }
 
-    let apiKey = fields.DALLE3_API_KEY ?? fields.DALLE_API_KEY ?? this.getApiKey();
+    const apiKey = fields.DALLE3_API_KEY ?? fields.DALLE_API_KEY ?? this.getApiKey();
     const config = { apiKey };
     if (process.env.DALLE_REVERSE_PROXY) {
       config.baseURL = extractBaseURL(process.env.DALLE_REVERSE_PROXY);
@@ -68,7 +68,9 @@ class DALLE3 extends Tool {
 
     if (process.env.DALLE3_AZURE_API_VERSION && process.env.DALLE3_BASEURL) {
       config.baseURL = process.env.DALLE3_BASEURL;
-      config.defaultQuery = { 'api-version': process.env.DALLE3_AZURE_API_VERSION };
+      config.defaultQuery = {
+        'api-version': process.env.DALLE3_AZURE_API_VERSION,
+      };
       config.defaultHeaders = {
         'api-key': process.env.DALLE3_API_KEY,
         'Content-Type': 'application/json',
@@ -159,8 +161,7 @@ class DALLE3 extends Tool {
       });
     } catch (error) {
       logger.error('[DALL-E-3] Problem generating the image:', error);
-      return this
-        .returnValue(`Something went wrong when trying to generate the image. The DALL-E API may be unavailable:
+      return this.returnValue(`Something went wrong when trying to generate the image. The DALL-E API may be unavailable:
 Error Message: ${error.message}`);
     }
 
@@ -179,7 +180,7 @@ Error Message: ${error.message}`);
     }
 
     if (this.isAgent) {
-      let fetchOptions = {};
+      const fetchOptions = {};
       if (process.env.PROXY) {
         const proxyAgent = new ProxyAgent(process.env.PROXY);
         fetchOptions.dispatcher = proxyAgent;

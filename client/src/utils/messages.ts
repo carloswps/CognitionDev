@@ -1,18 +1,18 @@
-import {
-  QueryKeys,
-  Constants,
-  ContentTypes,
-  isEphemeralAgentId,
-  appendAgentIdSuffix,
-  encodeEphemeralAgentId,
-} from 'librechat-data-provider';
+import type { QueryClient } from '@tanstack/react-query';
 import type {
-  TMessage,
   TConversation,
   TEndpointsConfig,
+  TMessage,
   TMessageContentParts,
 } from 'librechat-data-provider';
-import type { QueryClient } from '@tanstack/react-query';
+import {
+  appendAgentIdSuffix,
+  Constants,
+  ContentTypes,
+  encodeEphemeralAgentId,
+  isEphemeralAgentId,
+  QueryKeys,
+} from 'librechat-data-provider';
 import type { LocalizeFunction } from '~/common';
 
 export const TEXT_KEY_DIVIDER = '|||';
@@ -39,7 +39,6 @@ export const getLatestText = (message?: TMessage | null, includeIndex?: boolean)
           return text;
         }
       } else {
-        continue;
       }
     }
   }

@@ -7,7 +7,11 @@ const { getLogStores } = require('~/cache');
 const denyRequest = require('./denyRequest');
 const { findUser } = require('~/models');
 
-const banCache = new Keyv({ store: keyvMongo, namespace: ViolationTypes.BAN, ttl: 0 });
+const banCache = new Keyv({
+  store: keyvMongo,
+  namespace: ViolationTypes.BAN,
+  ttl: 0,
+});
 const message = 'Your account has been temporarily banned due to violations of our service.';
 
 /** @returns {string} Cache key for ban lookups, prefixed for Redis or raw for MongoDB */

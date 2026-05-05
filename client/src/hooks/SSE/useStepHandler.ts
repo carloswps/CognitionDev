@@ -1,21 +1,21 @@
-import { useCallback, useRef } from 'react';
-import {
-  Constants,
-  StepTypes,
-  StepEvents,
-  ContentTypes,
-  ToolCallTypes,
-  getNonEmptyValue,
-} from 'librechat-data-provider';
 import type {
   Agents,
-  TMessage,
-  PartMetadata,
   ContentMetadata,
   EventSubmission,
+  PartMetadata,
   SummaryContentPart,
+  TMessage,
   TMessageContentParts,
 } from 'librechat-data-provider';
+import {
+  Constants,
+  ContentTypes,
+  getNonEmptyValue,
+  StepEvents,
+  StepTypes,
+  ToolCallTypes,
+} from 'librechat-data-provider';
+import { useCallback, useRef } from 'react';
 import type { SetterOrUpdater } from 'recoil';
 import type { AnnounceOptions } from '~/common';
 import { MESSAGE_UPDATE_INTERVAL } from '~/common';
@@ -35,12 +35,22 @@ type TStepEvent =
   | { event: StepEvents.ON_MESSAGE_DELTA; data: Agents.MessageDeltaEvent }
   | { event: StepEvents.ON_REASONING_DELTA; data: Agents.ReasoningDeltaEvent }
   | { event: StepEvents.ON_RUN_STEP_DELTA; data: Agents.RunStepDeltaEvent }
-  | { event: StepEvents.ON_RUN_STEP_COMPLETED; data: { result: Agents.ToolEndEvent } }
+  | {
+      event: StepEvents.ON_RUN_STEP_COMPLETED;
+      data: { result: Agents.ToolEndEvent };
+    }
   | { event: StepEvents.ON_SUMMARIZE_START; data: Agents.SummarizeStartEvent }
   | { event: StepEvents.ON_SUMMARIZE_DELTA; data: Agents.SummarizeDeltaEvent }
-  | { event: StepEvents.ON_SUMMARIZE_COMPLETE; data: Agents.SummarizeCompleteEvent };
+  | {
+      event: StepEvents.ON_SUMMARIZE_COMPLETE;
+      data: Agents.SummarizeCompleteEvent;
+    };
 
-type MessageDeltaUpdate = { type: ContentTypes.TEXT; text: string; tool_call_ids?: string[] };
+type MessageDeltaUpdate = {
+  type: ContentTypes.TEXT;
+  text: string;
+  tool_call_ids?: string[];
+};
 
 type ReasoningDeltaUpdate = { type: ContentTypes.THINK; think: string };
 
@@ -124,7 +134,11 @@ export default function useStepHandler({
       !contentType.startsWith(existingType) &&
       !existingType.startsWith(contentType)
     ) {
-      console.warn('Content type mismatch', { existingType, contentType, index });
+      console.warn('Content type mismatch', {
+        existingType,
+        contentType,
+        index,
+      });
       return message;
     }
 
@@ -372,7 +386,9 @@ export default function useStepHandler({
             provider: runStep.summary.provider,
           };
 
-          let updatedResponse = { ...(messageMap.current.get(responseMessageId) ?? response) };
+          let updatedResponse = {
+            ...(messageMap.current.get(responseMessageId) ?? response),
+          };
           updatedResponse = updateContent(
             updatedResponse,
             contentIndex,
@@ -435,7 +451,10 @@ export default function useStepHandler({
 
         if (!runStep || !responseMessageId) {
           const buffer = pendingDeltaBuffer.current.get(messageDelta.id) ?? [];
-          buffer.push({ event: StepEvents.ON_MESSAGE_DELTA, data: messageDelta });
+          buffer.push({
+            event: StepEvents.ON_MESSAGE_DELTA,
+            data: messageDelta,
+          });
           pendingDeltaBuffer.current.set(messageDelta.id, buffer);
           return;
         }
@@ -478,7 +497,10 @@ export default function useStepHandler({
 
         if (!runStep || !responseMessageId) {
           const buffer = pendingDeltaBuffer.current.get(reasoningDelta.id) ?? [];
-          buffer.push({ event: StepEvents.ON_REASONING_DELTA, data: reasoningDelta });
+          buffer.push({
+            event: StepEvents.ON_REASONING_DELTA,
+            data: reasoningDelta,
+          });
           pendingDeltaBuffer.current.set(reasoningDelta.id, buffer);
           return;
         }
@@ -521,7 +543,10 @@ export default function useStepHandler({
 
         if (!runStep || !responseMessageId) {
           const buffer = pendingDeltaBuffer.current.get(runStepDelta.id) ?? [];
-          buffer.push({ event: StepEvents.ON_RUN_STEP_DELTA, data: runStepDelta });
+          buffer.push({
+            event: StepEvents.ON_RUN_STEP_DELTA,
+            data: runStepDelta,
+          });
           pendingDeltaBuffer.current.set(runStepDelta.id, buffer);
           return;
         }
@@ -625,7 +650,10 @@ export default function useStepHandler({
 
         if (!runStep || !responseMessageId) {
           const buffer = pendingDeltaBuffer.current.get(deltaData.id) ?? [];
-          buffer.push({ event: StepEvents.ON_SUMMARIZE_DELTA, data: deltaData });
+          buffer.push({
+            event: StepEvents.ON_SUMMARIZE_DELTA,
+            data: deltaData,
+          });
           pendingDeltaBuffer.current.set(deltaData.id, buffer);
           return;
         }
@@ -696,7 +724,10 @@ export default function useStepHandler({
               if (!completeData.summary) {
                 return { ...part, summarizing: false } as SummaryContentPart;
               }
-              return { ...completeData.summary, summarizing: false } as SummaryContentPart;
+              return {
+                ...completeData.summary,
+                summarizing: false,
+              } as SummaryContentPart;
             }
             return part;
           });

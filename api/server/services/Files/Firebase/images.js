@@ -51,7 +51,11 @@ async function uploadImageToFirebase({ req, file, file_id, endpoint, resolution 
     }
   }
 
-  const downloadURL = await saveBufferToFirebase({ userId, buffer: webPBuffer, fileName });
+  const downloadURL = await saveBufferToFirebase({
+    userId,
+    buffer: webPBuffer,
+    fileName,
+  });
 
   await fs.promises.unlink(inputFilePath);
 
@@ -118,4 +122,8 @@ async function processFirebaseAvatar({ buffer, userId, manual, agentId }) {
   }
 }
 
-module.exports = { uploadImageToFirebase, prepareImageURL, processFirebaseAvatar };
+module.exports = {
+  uploadImageToFirebase,
+  prepareImageURL,
+  processFirebaseAvatar,
+};

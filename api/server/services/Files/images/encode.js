@@ -108,7 +108,7 @@ async function encodeAndFormat(req, files, params, mode) {
     return result;
   }
 
-  for (let file of files) {
+  for (const file of files) {
     /** @type {FileSources} */
     const source = file.source ?? FileSources.local;
 

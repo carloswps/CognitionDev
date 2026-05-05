@@ -1,19 +1,19 @@
+import type { DeepPartial, FileSources, TCustomConfig } from 'librechat-data-provider';
 import {
   EModelEndpoint,
   getConfigDefaults,
   summarizationConfigSchema,
 } from 'librechat-data-provider';
-import type { TCustomConfig, FileSources, DeepPartial } from 'librechat-data-provider';
-import type { AppConfig, FunctionTool } from '~/types/app';
-import { loadDefaultInterface } from './interface';
-import { loadTurnstileConfig } from './turnstile';
-import { agentsConfigSetup } from './agents';
-import { loadWebSearchConfig } from './web';
-import { processModelSpecs } from './specs';
-import { loadMemoryConfig } from './memory';
-import { loadEndpoints } from './endpoints';
-import { loadOCRConfig } from './ocr';
 import logger from '~/config/winston';
+import type { AppConfig, FunctionTool } from '~/types/app';
+import { agentsConfigSetup } from './agents';
+import { loadEndpoints } from './endpoints';
+import { loadDefaultInterface } from './interface';
+import { loadMemoryConfig } from './memory';
+import { loadOCRConfig } from './ocr';
+import { processModelSpecs } from './specs';
+import { loadTurnstileConfig } from './turnstile';
+import { loadWebSearchConfig } from './web';
 
 export function loadSummarizationConfig(
   config: DeepPartial<TCustomConfig>,
@@ -106,7 +106,10 @@ export const AppService = async (params?: {
   const mcpSettings = config.mcpSettings || null;
   const actions = config.actions;
   const registration = config.registration ?? configDefaults.registration;
-  const interfaceConfig = await loadDefaultInterface({ config, configDefaults });
+  const interfaceConfig = await loadDefaultInterface({
+    config,
+    configDefaults,
+  });
   const turnstileConfig = loadTurnstileConfig(config, configDefaults);
   const speech = config.speech;
 

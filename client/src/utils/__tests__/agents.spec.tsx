@@ -1,8 +1,8 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+import React from 'react';
 import '@testing-library/jest-dom';
-import { getAgentAvatarUrl, renderAgentAvatar, getContactDisplayName } from '../agents';
 import type t from 'librechat-data-provider';
+import { getAgentAvatarUrl, getContactDisplayName, renderAgentAvatar } from '../agents';
 
 // Mock the Feather icon from lucide-react
 jest.mock('lucide-react', () => ({

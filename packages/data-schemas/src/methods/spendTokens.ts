@@ -1,5 +1,5 @@
 import logger from '~/config/winston';
-import type { TxData, TransactionResult } from './transaction';
+import type { TransactionResult, TxData } from './transaction';
 
 /** Base transaction context passed by callers — does not include fields added internally */
 export interface SpendTxData {

@@ -1,9 +1,9 @@
+import { ESide, InfoHoverCard } from '@librechat/client';
+import { Permissions, PermissionTypes } from 'librechat-data-provider';
 import { memo } from 'react';
-import { InfoHoverCard, ESide } from '@librechat/client';
-import { PermissionTypes, Permissions } from 'librechat-data-provider';
-import { useLocalize, useHasAccess } from '~/hooks';
-import ToggleSwitch from '../ToggleSwitch';
+import { useHasAccess, useLocalize } from '~/hooks';
 import store from '~/store';
+import ToggleSwitch from '../ToggleSwitch';
 
 const commandSwitchConfigs = [
   {

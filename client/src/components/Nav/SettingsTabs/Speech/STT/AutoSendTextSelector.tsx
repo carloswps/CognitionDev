@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { InputNumber, Slider, Switch } from '@librechat/client';
+import React, { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { Slider, InputNumber, Switch } from '@librechat/client';
-import { cn, defaultTextProps, optionText } from '~/utils/';
 import { useLocalize } from '~/hooks';
 import store from '~/store';
+import { cn, defaultTextProps, optionText } from '~/utils/';
 
 export default function AutoSendTextSelector() {
   const localize = useLocalize();

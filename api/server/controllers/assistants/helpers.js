@@ -186,7 +186,7 @@ const listAssistantsForAzure = async ({ req, res, version, azureConfig = {}, que
  * @returns {Promise<{ openai: OpenAI, openAIApiKey: string }>} - The initialized OpenAI SDK client.
  */
 async function getOpenAIClient({ req, res, endpointOption, initAppClient, overrideEndpoint }) {
-  let endpoint = overrideEndpoint ?? req.body?.endpoint ?? req.query?.endpoint;
+  const endpoint = overrideEndpoint ?? req.body?.endpoint ?? req.query?.endpoint;
   const version = await getCurrentVersion(req, endpoint);
   if (!endpoint) {
     throw new Error(`[${req.baseUrl}] Endpoint is required`);
@@ -194,9 +194,21 @@ async function getOpenAIClient({ req, res, endpointOption, initAppClient, overri
 
   let result;
   if (endpoint === EModelEndpoint.assistants) {
-    result = await initializeClient({ req, res, version, endpointOption, initAppClient });
+    result = await initializeClient({
+      req,
+      res,
+      version,
+      endpointOption,
+      initAppClient,
+    });
   } else if (endpoint === EModelEndpoint.azureAssistants) {
-    result = await initAzureClient({ req, res, version, endpointOption, initAppClient });
+    result = await initAzureClient({
+      req,
+      res,
+      version,
+      endpointOption,
+      initAppClient,
+    });
   }
 
   return result;
@@ -234,7 +246,13 @@ const fetchAssistants = async ({ req, res, overrideEndpoint }) => {
     ({ body } = await listAllAssistants({ req, res, version, query }));
   } else if (endpoint === EModelEndpoint.azureAssistants) {
     const azureConfig = appConfig.endpoints?.[EModelEndpoint.azureOpenAI];
-    body = await listAssistantsForAzure({ req, res, version, azureConfig, query });
+    body = await listAssistantsForAzure({
+      req,
+      res,
+      version,
+      azureConfig,
+      query,
+    });
   }
 
   if (!appConfig.endpoints?.[endpoint]) {

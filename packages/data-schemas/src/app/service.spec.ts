@@ -1,6 +1,6 @@
 import type { DeepPartial, TCustomConfig } from 'librechat-data-provider';
-import { loadSummarizationConfig } from './service';
 import logger from '~/config/winston';
+import { loadSummarizationConfig } from './service';
 
 jest.mock('~/config/winston', () => ({
   __esModule: true,

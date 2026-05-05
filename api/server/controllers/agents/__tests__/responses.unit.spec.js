@@ -265,7 +265,10 @@ describe('createResponse controller', () => {
           previous_response_id: 'resp_abc',
         },
       });
-      getConvo.mockResolvedValueOnce({ conversationId: 'resp_abc', user: 'user-123' });
+      getConvo.mockResolvedValueOnce({
+        conversationId: 'resp_abc',
+        user: 'user-123',
+      });
 
       await createResponse(req, res);
       expect(getConvo).toHaveBeenCalledWith('user-123', 'resp_abc');
@@ -309,7 +312,10 @@ describe('createResponse controller', () => {
         {
           spendTokens: mockSpendTokens,
           spendStructuredTokens: mockSpendStructuredTokens,
-          pricing: { getMultiplier: mockGetMultiplier, getCacheMultiplier: mockGetCacheMultiplier },
+          pricing: {
+            getMultiplier: mockGetMultiplier,
+            getCacheMultiplier: mockGetCacheMultiplier,
+          },
           bulkWriteOps: {
             insertMany: mockBulkInsertTransactions,
             updateBalance: mockUpdateBalance,
@@ -325,7 +331,10 @@ describe('createResponse controller', () => {
     });
 
     it('should pass balance and transactions config to recordCollectedUsage', async () => {
-      mockGetBalanceConfig.mockReturnValue({ enabled: true, startBalance: 2000 });
+      mockGetBalanceConfig.mockReturnValue({
+        enabled: true,
+        startBalance: 2000,
+      });
       mockGetTransactionsConfig.mockReturnValue({ enabled: true });
 
       await createResponse(req, res);
@@ -383,7 +392,10 @@ describe('createResponse controller', () => {
         {
           spendTokens: mockSpendTokens,
           spendStructuredTokens: mockSpendStructuredTokens,
-          pricing: { getMultiplier: mockGetMultiplier, getCacheMultiplier: mockGetCacheMultiplier },
+          pricing: {
+            getMultiplier: mockGetMultiplier,
+            getCacheMultiplier: mockGetCacheMultiplier,
+          },
           bulkWriteOps: {
             insertMany: mockBulkInsertTransactions,
             updateBalance: mockUpdateBalance,

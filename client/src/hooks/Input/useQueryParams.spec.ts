@@ -17,15 +17,15 @@ jest.mock('~/store', () => ({
   availableTools: { key: 'availableTools', default: [] },
 }));
 
-import { renderHook, act } from '@testing-library/react';
-import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
+import { act, renderHook } from '@testing-library/react';
+import { useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import useQueryParams from './useQueryParams';
-import { useChatContext, useChatFormContext } from '~/Providers';
-import useSubmitMessage from '~/hooks/Messages/useSubmitMessage';
 import useDefaultConvo from '~/hooks/Conversations/useDefaultConvo';
+import useSubmitMessage from '~/hooks/Messages/useSubmitMessage';
+import { useChatContext, useChatFormContext } from '~/Providers';
 import store from '~/store';
+import useQueryParams from './useQueryParams';
 
 // Other mocks
 jest.mock('react-router-dom', () => ({
@@ -429,7 +429,11 @@ describe('useQueryParams', () => {
       }),
     });
 
-    setUrlParams({ q: 'hello world', submit: 'true', model: 'non-existent-model' });
+    setUrlParams({
+      q: 'hello world',
+      submit: 'true',
+      model: 'non-existent-model',
+    });
 
     // Execute
     renderHook(() => useQueryParams({ textAreaRef: mockTextAreaRef }));

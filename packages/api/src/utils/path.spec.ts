@@ -1,5 +1,5 @@
-import { logger } from '@librechat/data-schemas';
 import type { Logger } from '@librechat/agents';
+import { logger } from '@librechat/data-schemas';
 import { getBasePath } from './path';
 
 describe('getBasePath', () => {

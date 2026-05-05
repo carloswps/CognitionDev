@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import { createUserMethods } from './user';
 import { signPayload } from '~/crypto';
 import type { IUser } from '~/types';
+import { createUserMethods } from './user';
 
 jest.mock('~/crypto', () => ({
   signPayload: jest.fn(),

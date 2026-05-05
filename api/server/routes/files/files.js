@@ -108,7 +108,9 @@ router.get('/agent/:agent_id', async (req, res) => {
       return res.status(200).json([]);
     }
 
-    const files = await db.getFiles({ file_id: { $in: agentFileIds } }, null, { text: 0 });
+    const files = await db.getFiles({ file_id: { $in: agentFileIds } }, null, {
+      text: 0,
+    });
 
     res.status(200).json(files);
   } catch (error) {
@@ -178,7 +180,7 @@ router.delete('/', async (req, res) => {
       return;
     }
 
-    let authorizedFiles = [...ownedFiles];
+    const authorizedFiles = [...ownedFiles];
     let unauthorizedFiles = [];
 
     if (req.body.agent_id && nonOwnedFiles.length > 0) {
@@ -233,16 +235,18 @@ router.delete('/', async (req, res) => {
       const assistantFiles = files.filter((f) => toolResourceFiles.includes(f.file_id));
 
       await processDeleteRequest({ req, files: assistantFiles });
-      res.status(200).json({ message: 'File associations removed successfully from assistant' });
+      res.status(200).json({
+        message: 'File associations removed successfully from assistant',
+      });
       return;
     } else if (
       req.body.assistant_id &&
       req.body.files?.[0]?.filepath === EModelEndpoint.azureAssistants
     ) {
       await processDeleteRequest({ req, files: req.body.files });
-      return res
-        .status(200)
-        .json({ message: 'File associations removed successfully from Azure Assistant' });
+      return res.status(200).json({
+        message: 'File associations removed successfully from Azure Assistant',
+      });
     }
 
     await processDeleteRequest({ req, files: authorizedFiles });
@@ -287,7 +291,10 @@ router.get('/code/download/:session_id/:fileId', async (req, res) => {
       return res.status(501).send('Not Implemented');
     }
 
-    const result = await loadAuthValues({ userId: req.user.id, authFields: [EnvVar.CODE_API_KEY] });
+    const result = await loadAuthValues({
+      userId: req.user.id,
+      authFields: [EnvVar.CODE_API_KEY],
+    });
 
     /** @type {AxiosResponse<ReadableStream> | undefined} */
     const response = await getDownloadStream(

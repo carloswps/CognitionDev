@@ -1,4 +1,4 @@
-import { EToolResources } from './assistants';
+import type { EToolResources } from './assistants';
 
 export enum FileSources {
   local = 'local',

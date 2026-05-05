@@ -1,12 +1,12 @@
-import { memo, useCallback, useEffect } from 'react';
 import { useToastContext } from '@librechat/client';
-import { useFormContext, useWatch } from 'react-hook-form';
-import { mergeFileConfig, fileConfig as defaultFileConfig } from 'librechat-data-provider';
 import type { AgentAvatar } from 'librechat-data-provider';
+import { fileConfig as defaultFileConfig, mergeFileConfig } from 'librechat-data-provider';
+import { memo, useCallback, useEffect } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 import type { AgentForm } from '~/common';
-import { AgentAvatarRender, NoImage, AvatarMenu } from './Images';
 import { useGetFileConfig } from '~/data-provider';
 import { useLocalize } from '~/hooks';
+import { AgentAvatarRender, AvatarMenu, NoImage } from './Images';
 
 function Avatar({ avatar }: { avatar: AgentAvatar | null }) {
   const localize = useLocalize();
@@ -59,7 +59,9 @@ function Avatar({ avatar }: { avatar: AgentAvatar | null }) {
       const reader = new FileReader();
       reader.onloadend = () => {
         setValue('avatar_file', file, { shouldDirty: true });
-        setValue('avatar_preview', (reader.result as string) ?? '', { shouldDirty: true });
+        setValue('avatar_preview', (reader.result as string) ?? '', {
+          shouldDirty: true,
+        });
         setValue('avatar_action', 'upload', { shouldDirty: true });
       };
       reader.readAsDataURL(file);
@@ -71,7 +73,9 @@ function Avatar({ avatar }: { avatar: AgentAvatar | null }) {
     const remoteAvatarExists = Boolean(avatar?.filepath);
     setValue('avatar_preview', '', { shouldDirty: true });
     setValue('avatar_file', null, { shouldDirty: true });
-    setValue('avatar_action', remoteAvatarExists ? 'reset' : null, { shouldDirty: true });
+    setValue('avatar_action', remoteAvatarExists ? 'reset' : null, {
+      shouldDirty: true,
+    });
   }, [avatar?.filepath, setValue]);
 
   const hasIcon = Boolean(avatarPreview) || hasRemoteAvatar;

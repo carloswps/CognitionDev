@@ -1,17 +1,17 @@
-import React, { useMemo } from 'react';
-import { KeyRound, PlugZap, AlertTriangle } from 'lucide-react';
 import {
-  Spinner,
   OGDialog,
-  OGDialogTitle,
-  OGDialogHeader,
   OGDialogContent,
+  OGDialogHeader,
+  OGDialogTitle,
+  Spinner,
 } from '@librechat/client';
 import type { MCPServerStatus } from 'librechat-data-provider';
+import { AlertTriangle, KeyRound, PlugZap } from 'lucide-react';
+import React, { useMemo } from 'react';
 import type { ConfigFieldDetail } from '~/common';
-import ServerInitializationSection from './ServerInitializationSection';
-import CustomUserVarsSection from './CustomUserVarsSection';
 import { useLocalize } from '~/hooks';
+import CustomUserVarsSection from './CustomUserVarsSection';
+import ServerInitializationSection from './ServerInitializationSection';
 
 interface MCPConfigDialogProps {
   isOpen: boolean;

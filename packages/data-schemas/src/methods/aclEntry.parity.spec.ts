@@ -1,15 +1,15 @@
-import mongoose from 'mongoose';
 import { performance } from 'node:perf_hooks';
 import {
-  ResourceType,
-  PrincipalType,
-  PrincipalModel,
   PermissionBits,
+  PrincipalModel,
+  PrincipalType,
+  ResourceType,
 } from 'librechat-data-provider';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
+import aclEntrySchema from '~/schema/aclEntry';
 import type * as t from '~/types';
 import { createAclEntryMethods } from './aclEntry';
-import aclEntrySchema from '~/schema/aclEntry';
 
 /**
  * Parity spec — verifies the `$in`-based queries added in #12729 are behaviorally
@@ -54,11 +54,16 @@ function idsToSortedStrings(ids: mongoose.Types.ObjectId[]): string[] {
 }
 
 function buildPrincipalsQuery(
-  principals: Array<{ principalType: string; principalId?: mongoose.Types.ObjectId }>,
+  principals: Array<{
+    principalType: string;
+    principalId?: mongoose.Types.ObjectId;
+  }>,
 ) {
   return principals.map((p) => ({
     principalType: p.principalType,
-    ...(p.principalType !== PrincipalType.PUBLIC && { principalId: p.principalId }),
+    ...(p.principalType !== PrincipalType.PUBLIC && {
+      principalId: p.principalId,
+    }),
   }));
 }
 
@@ -109,26 +114,23 @@ describe('ACL $bitsAllSet vs $in parity (issue #12729)', () => {
       PermissionBits.VIEW | PermissionBits.EDIT,
       PermissionBits.VIEW | PermissionBits.EDIT | PermissionBits.DELETE,
       PermissionBits.VIEW | PermissionBits.EDIT | PermissionBits.DELETE | PermissionBits.SHARE,
-    ])(
-      'findAccessibleResources returns the same set as `$bitsAllSet` for bits=%i',
-      async (bits) => {
-        await seedVariedPermissions(userId, grantedById, FIXTURE_SIZE);
+    ])('findAccessibleResources returns the same set as `$bitsAllSet` for bits=%i', async (bits) => {
+      await seedVariedPermissions(userId, grantedById, FIXTURE_SIZE);
 
-        const legacy = await AclEntry.find({
-          $or: buildPrincipalsQuery(principalsList),
-          resourceType: ResourceType.AGENT,
-          permBits: { $bitsAllSet: bits },
-        }).distinct('resourceId');
+      const legacy = await AclEntry.find({
+        $or: buildPrincipalsQuery(principalsList),
+        resourceType: ResourceType.AGENT,
+        permBits: { $bitsAllSet: bits },
+      }).distinct('resourceId');
 
-        const current = await methods.findAccessibleResources(
-          principalsList,
-          ResourceType.AGENT,
-          bits,
-        );
+      const current = await methods.findAccessibleResources(
+        principalsList,
+        ResourceType.AGENT,
+        bits,
+      );
 
-        expect(idsToSortedStrings(current)).toEqual(idsToSortedStrings(legacy));
-      },
-    );
+      expect(idsToSortedStrings(current)).toEqual(idsToSortedStrings(legacy));
+    });
 
     test.each([
       PermissionBits.VIEW,

@@ -1,7 +1,7 @@
+import { Button, OGDialog, OGDialogTemplate, OGDialogTrigger } from '@librechat/client';
 import { useState } from 'react';
-import { OGDialogTemplate, OGDialog, OGDialogTrigger, Button } from '@librechat/client';
-import ArchivedChatsTable from './ArchivedChatsTable';
 import { useLocalize } from '~/hooks';
+import ArchivedChatsTable from './ArchivedChatsTable';
 
 export default function ArchivedChats() {
   const localize = useLocalize();

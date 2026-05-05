@@ -1,13 +1,14 @@
-import React, { useMemo, useEffect } from 'react';
 import { Spinner } from '@librechat/client';
-import { PermissionBits } from 'librechat-data-provider';
 import type t from 'librechat-data-provider';
+import { PermissionBits } from 'librechat-data-provider';
+import type React from 'react';
+import { useEffect, useMemo } from 'react';
 import { useMarketplaceAgentsInfiniteQuery } from '~/data-provider/Agents';
 import { useAgentCategories, useLocalize } from '~/hooks';
 import { useInfiniteScroll } from '~/hooks/useInfiniteScroll';
-import { useHasData } from './SmartLoader';
-import ErrorDisplay from './ErrorDisplay';
 import AgentCard from './AgentCard';
+import ErrorDisplay from './ErrorDisplay';
+import { useHasData } from './SmartLoader';
 
 interface AgentGridProps {
   category: string;

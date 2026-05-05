@@ -1,16 +1,16 @@
-import { logger, getTenantId } from '@librechat/data-schemas';
+import type { TokenMethods } from '@librechat/data-schemas';
+import { getTenantId, logger } from '@librechat/data-schemas';
 import type { OAuthClientInformation } from '@modelcontextprotocol/sdk/shared/auth.js';
 import type { Tool } from '@modelcontextprotocol/sdk/types.js';
-import type { TokenMethods } from '@librechat/data-schemas';
-import type { MCPOAuthTokens, OAuthMetadata, MCPOAuthFlowMetadata } from '~/mcp/oauth';
 import type { FlowStateManager } from '~/flow/manager';
-import type * as t from './types';
-import { MCPTokenStorage, MCPOAuthHandler, ReauthenticationRequiredError } from '~/mcp/oauth';
-import { PENDING_STALE_MS, normalizeExpiresAt } from '~/flow/manager';
-import { sanitizeUrlForLogging, isClientRejectionMessage } from './utils';
+import { normalizeExpiresAt, PENDING_STALE_MS } from '~/flow/manager';
+import type { MCPOAuthFlowMetadata, MCPOAuthTokens, OAuthMetadata } from '~/mcp/oauth';
+import { MCPOAuthHandler, MCPTokenStorage, ReauthenticationRequiredError } from '~/mcp/oauth';
+import { processMCPEnv } from '~/utils';
 import { withTimeout } from '~/utils/promise';
 import { MCPConnection } from './connection';
-import { processMCPEnv } from '~/utils';
+import type * as t from './types';
+import { isClientRejectionMessage, sanitizeUrlForLogging } from './utils';
 
 export interface ToolDiscoveryResult {
   tools: Tool[] | null;
@@ -366,7 +366,11 @@ export class MCPConnectionFactory {
           }
 
           // Store flow state BEFORE redirecting so the callback can find it
-          const metadataWithUrl = { ...flowMetadata, authorizationUrl, tenantId: getTenantId() };
+          const metadataWithUrl = {
+            ...flowMetadata,
+            authorizationUrl,
+            tenantId: getTenantId(),
+          };
           await this.flowManager!.initFlow(newFlowId, 'mcp_oauth', metadataWithUrl);
           await MCPOAuthHandler.storeStateMapping(flowMetadata.state, newFlowId, this.flowManager!);
 
@@ -670,7 +674,11 @@ export class MCPConnectionFactory {
       reusedStoredClient = flowMetadata.reusedStoredClient === true;
 
       // Store flow state BEFORE redirecting so the callback can find it
-      const metadataWithUrl = { ...flowMetadata, authorizationUrl, tenantId: getTenantId() };
+      const metadataWithUrl = {
+        ...flowMetadata,
+        authorizationUrl,
+        tenantId: getTenantId(),
+      };
       await this.flowManager.initFlow(newFlowId, 'mcp_oauth', metadataWithUrl);
       await MCPOAuthHandler.storeStateMapping(flowMetadata.state, newFlowId, this.flowManager);
 

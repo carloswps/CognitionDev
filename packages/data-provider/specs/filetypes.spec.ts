@@ -1,15 +1,15 @@
 import {
-  fileConfig,
-  fullMimeTypesList,
-  codeInterpreterMimeTypesList,
-  retrievalMimeTypesList,
-  supportedMimeTypes,
   codeInterpreterMimeTypes,
-  retrievalMimeTypes,
+  codeInterpreterMimeTypesList,
   excelFileTypes,
   excelMimeTypes,
-  mergeFileConfig,
+  fileConfig,
+  fullMimeTypesList,
   mbToBytes,
+  mergeFileConfig,
+  retrievalMimeTypes,
+  retrievalMimeTypesList,
+  supportedMimeTypes,
 } from '../src/file-config';
 
 describe('MIME Type Regex Patterns', () => {
@@ -131,7 +131,7 @@ describe('mergeFileConfig', () => {
     const result = mergeFileConfig(dynamicConfigs.fullOverrideDefaultEndpoint);
     expect(result.endpoints.default.fileLimit).toEqual(15);
     expect(result.endpoints.default.supportedMimeTypes).toEqual(
-      expect.arrayContaining([new RegExp('^video/.*$')]),
+      expect.arrayContaining([/^video\/.*$/]),
     );
   });
 
@@ -140,7 +140,7 @@ describe('mergeFileConfig', () => {
     expect(result.endpoints.newEndpoint).toBeDefined();
     expect(result.endpoints.newEndpoint.fileLimit).toEqual(5);
     expect(result.endpoints.newEndpoint.supportedMimeTypes).toEqual(
-      expect.arrayContaining([new RegExp('^application/json$')]),
+      expect.arrayContaining([/^application\/json$/]),
     );
   });
 

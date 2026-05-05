@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-import React from 'react';
+
 import { render, screen } from '@testing-library/react';
+import type React from 'react';
 import '@testing-library/jest-dom';
 import { EModelEndpoint } from 'librechat-data-provider';
-import { MarketplaceProvider } from '../MarketplaceContext';
 import { useChatContext } from '~/Providers';
+import { MarketplaceProvider } from '../MarketplaceContext';
 
 // Mock the ChatContext from Providers
 jest.mock('~/Providers', () => ({

@@ -1,32 +1,32 @@
-import { useMemo } from 'react';
-import { MCPIcon, AttachmentIcon, OpenAIMinimalIcon } from '@librechat/client';
+import { AttachmentIcon, MCPIcon, OpenAIMinimalIcon } from '@librechat/client';
+import type { TEndpointsConfig, TInterfaceConfig } from 'librechat-data-provider';
 import {
-  Bot,
-  Brain,
-  Bookmark,
-  NotebookPen,
-  ArrowRightToLine,
-  SlidersHorizontal,
-} from 'lucide-react';
-import {
-  Permissions,
   EModelEndpoint,
-  PermissionTypes,
-  isParamEndpoint,
   isAgentsEndpoint,
   isAssistantsEndpoint,
+  isParamEndpoint,
+  Permissions,
+  PermissionTypes,
 } from 'librechat-data-provider';
-import type { TInterfaceConfig, TEndpointsConfig } from 'librechat-data-provider';
+import {
+  ArrowRightToLine,
+  Bookmark,
+  Bot,
+  Brain,
+  NotebookPen,
+  SlidersHorizontal,
+} from 'lucide-react';
+import { useMemo } from 'react';
 import type { NavLink } from '~/common';
-import MCPBuilderPanel from '~/components/SidePanel/MCPBuilder/MCPBuilderPanel';
+import { PromptsAccordion } from '~/components/Prompts';
 import AgentPanelSwitch from '~/components/SidePanel/Agents/AgentPanelSwitch';
 import BookmarkPanel from '~/components/SidePanel/Bookmarks/BookmarkPanel';
 import PanelSwitch from '~/components/SidePanel/Builder/PanelSwitch';
-import Parameters from '~/components/SidePanel/Parameters/Panel';
-import { MemoryPanel } from '~/components/SidePanel/Memories';
 import FilesPanel from '~/components/SidePanel/Files/Panel';
+import MCPBuilderPanel from '~/components/SidePanel/MCPBuilder/MCPBuilderPanel';
+import { MemoryPanel } from '~/components/SidePanel/Memories';
+import Parameters from '~/components/SidePanel/Parameters/Panel';
 import { useHasAccess, useMCPServerManager } from '~/hooks';
-import { PromptsAccordion } from '~/components/Prompts';
 
 export default function useSideNavLinks({
   hidePanel,

@@ -26,7 +26,7 @@ const { updateUser, findUser } = require('~/models');
  * This enables seamless migration for existing users when SharePoint integration is enabled.
  */
 const openIdJwtLogin = (openIdConfig) => {
-  let jwksRsaOptions = {
+  const jwksRsaOptions = {
     cache: isEnabled(process.env.OPENID_JWKS_URL_CACHE_ENABLED) || true,
     cacheMaxAge: math(process.env.OPENID_JWKS_URL_CACHE_TIME, 60000),
     jwksUri: openIdConfig.serverMetadata().jwks_uri,

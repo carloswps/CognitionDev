@@ -1,7 +1,7 @@
-import { useAtom } from 'jotai';
 import { Dropdown } from '@librechat/client';
-import { fontSizeAtom } from '~/store/fontSize';
+import { useAtom } from 'jotai';
 import { useLocalize } from '~/hooks';
+import { fontSizeAtom } from '~/store/fontSize';
 
 export default function FontSizeSelector() {
   const localize = useLocalize();

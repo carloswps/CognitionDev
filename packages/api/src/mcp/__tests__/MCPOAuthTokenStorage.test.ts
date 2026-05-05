@@ -102,7 +102,11 @@ describe('MCPTokenStorage', () => {
       await MCPTokenStorage.storeTokens({
         userId: 'u1',
         serverName: 'srv1',
-        tokens: { access_token: 'new-token', token_type: 'Bearer', expires_in: 7200 },
+        tokens: {
+          access_token: 'new-token',
+          token_type: 'Bearer',
+          expires_in: 7200,
+        },
         createToken: store.createToken,
         updateToken: store.updateToken,
         findToken: store.findToken,

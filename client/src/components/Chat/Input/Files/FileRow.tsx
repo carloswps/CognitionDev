@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
 import { useToastContext } from '@librechat/client';
-import { EToolResources } from 'librechat-data-provider';
+import type { EToolResources } from 'librechat-data-provider';
+import { useEffect } from 'react';
 import type { ExtendedFile } from '~/common';
 import { useDeleteFilesMutation } from '~/data-provider';
-import { logger, getCachedPreview } from '~/utils';
-import { useFileDeletion } from '~/hooks/Files';
-import FileContainer from './FileContainer';
 import { useLocalize } from '~/hooks';
+import { useFileDeletion } from '~/hooks/Files';
+import { getCachedPreview, logger } from '~/utils';
+import FileContainer from './FileContainer';
 import Image from './Image';
 
 export default function FileRow({
@@ -55,7 +55,12 @@ export default function FileRow({
     },
   });
 
-  const { deleteFile } = useFileDeletion({ mutateAsync, agent_id, assistant_id, tool_resource });
+  const { deleteFile } = useFileDeletion({
+    mutateAsync,
+    agent_id,
+    assistant_id,
+    tool_resource,
+  });
 
   useEffect(() => {
     if (!setFilesLoading) return;

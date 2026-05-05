@@ -322,7 +322,9 @@ describe('ServerConfigsCacheRedis Performance Benchmark', () => {
         const mgetStart = Date.now();
         if ('mGet' in keyvRedisClient!) {
           const rawValues = await (
-            keyvRedisClient as { mGet: (keys: string[]) => Promise<(string | null)[]> }
+            keyvRedisClient as {
+              mGet: (keys: string[]) => Promise<(string | null)[]>;
+            }
           ).mGet(keys);
           // Parse the Keyv-wrapped JSON values
           rawValues.filter(Boolean).map((v) => JSON.parse(v!));

@@ -44,7 +44,11 @@ class ImportBatchBuilder {
    * @returns {object} The saved message object.
    */
   addUserMessage(text) {
-    const message = this.saveMessage({ text, sender: 'user', isCreatedByUser: true });
+    const message = this.saveMessage({
+      text,
+      sender: 'user',
+      isCreatedByUser: true,
+    });
     return message;
   }
 

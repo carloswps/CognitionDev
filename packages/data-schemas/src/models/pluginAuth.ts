@@ -1,5 +1,5 @@
-import pluginAuthSchema from '~/schema/pluginAuth';
 import { applyTenantIsolation } from '~/models/plugins/tenantIsolation';
+import pluginAuthSchema from '~/schema/pluginAuth';
 import type { IPluginAuth } from '~/types/pluginAuth';
 
 export function createPluginAuthModel(mongoose: typeof import('mongoose')) {

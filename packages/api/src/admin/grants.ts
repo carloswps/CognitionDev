@@ -1,15 +1,15 @@
-import { PrincipalType } from 'librechat-data-provider';
-import {
-  logger,
-  isValidCapability,
-  SystemCapabilities,
-  expandImplications,
-} from '@librechat/data-schemas';
 import type { ISystemGrant, SystemCapability } from '@librechat/data-schemas';
+import {
+  expandImplications,
+  isValidCapability,
+  logger,
+  SystemCapabilities,
+} from '@librechat/data-schemas';
 import type { Response } from 'express';
+import { PrincipalType } from 'librechat-data-provider';
 import type { Types } from 'mongoose';
-import type { ResolvedPrincipal } from '~/types/principal';
 import type { ServerRequest } from '~/types/http';
+import type { ResolvedPrincipal } from '~/types/principal';
 import { parsePagination } from './pagination';
 
 interface GrantRequestBody {
@@ -35,7 +35,10 @@ export interface AdminGrantsDeps {
     tenantId?: string;
   }) => Promise<ISystemGrant[]>;
   getCapabilitiesForPrincipals: (params: {
-    principals: Array<{ principalType: PrincipalType; principalId: string | Types.ObjectId }>;
+    principals: Array<{
+      principalType: PrincipalType;
+      principalId: string | Types.ObjectId;
+    }>;
     tenantId?: string;
   }) => Promise<ISystemGrant[]>;
   grantCapability: (params: {
@@ -134,7 +137,11 @@ export function createAdminGrantsHandlers(deps: AdminGrantsDeps) {
         return cached;
       }
     }
-    return getUserPrincipals({ userId: user.userId, role: user.role, tenantId: user.tenantId });
+    return getUserPrincipals({
+      userId: user.userId,
+      role: user.role,
+      tenantId: user.tenantId,
+    });
   }
 
   function validatePrincipal(principalType: string, principalId: string): string | null {
@@ -382,7 +389,13 @@ export function createAdminGrantsHandlers(deps: AdminGrantsDeps) {
       const { tenantId } = caller;
       const principals = await resolvePrincipals(caller);
       const manageCap = MANAGE_CAPABILITY_BY_TYPE[principalType as GrantPrincipalType];
-      if (!(await hasCapabilityForPrincipals({ principals, capability: manageCap, tenantId }))) {
+      if (
+        !(await hasCapabilityForPrincipals({
+          principals,
+          capability: manageCap,
+          tenantId,
+        }))
+      ) {
         return res.status(403).json({ error: 'Insufficient permissions' });
       }
 

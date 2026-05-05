@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { TFile } from 'librechat-data-provider/dist/types';
-import { CheckMark, TrashIcon, Button } from '@librechat/client';
-import VectorStoreButton from '../VectorStore/VectorStoreButton';
+import { Button, CheckMark, TrashIcon } from '@librechat/client';
+import type { TFile } from 'librechat-data-provider/dist/types';
 import { CircleIcon, Clock3Icon, InfoIcon } from 'lucide-react';
-import DeleteIconButton from '../DeleteIconButton';
-import { TThread, TVectorStore } from '~/common';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import type { TThread, TVectorStore } from '~/common';
+import DeleteIconButton from '../DeleteIconButton';
+import VectorStoreButton from '../VectorStore/VectorStoreButton';
 
 const tempFile: TFile = {
   filename: 'File1.jpg',
@@ -32,9 +32,24 @@ const tempThreads: TThread[] = [
 ];
 
 const tempVectorStoresAttached: TVectorStore[] = [
-  { name: 'vector 1', created_at: '2022-01-01T10:00:00', _id: 'id', object: 'vector_store' },
-  { name: 'vector 1', created_at: '2022-01-01T10:00:00', _id: 'id', object: 'vector_store' },
-  { name: 'vector 1', created_at: '2022-01-01T10:00:00', _id: 'id', object: 'vector_store' },
+  {
+    name: 'vector 1',
+    created_at: '2022-01-01T10:00:00',
+    _id: 'id',
+    object: 'vector_store',
+  },
+  {
+    name: 'vector 1',
+    created_at: '2022-01-01T10:00:00',
+    _id: 'id',
+    object: 'vector_store',
+  },
+  {
+    name: 'vector 1',
+    created_at: '2022-01-01T10:00:00',
+    _id: 'id',
+    object: 'vector_store',
+  },
 ];
 
 export default function FilePreview() {

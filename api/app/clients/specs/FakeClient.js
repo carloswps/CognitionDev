@@ -53,7 +53,7 @@ class FakeClient extends BaseClient {
 }
 
 const initializeFakeClient = (apiKey, options, fakeMessages) => {
-  let TestClient = new FakeClient(apiKey);
+  const TestClient = new FakeClient(apiKey);
   TestClient.options = options;
   TestClient.abortController = { abort: jest.fn() };
   TestClient.loadHistory = jest
@@ -106,7 +106,7 @@ const initializeFakeClient = (apiKey, options, fakeMessages) => {
       parentMessageId,
     });
     const formattedMessages = orderedMessages.map((message) => {
-      let { role: _role, sender, text } = message;
+      const { role: _role, sender, text } = message;
       const role = _role ?? sender;
       const content = text ?? '';
       return {

@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { OGDialog, OGDialogTitle, OGDialogContent } from '@librechat/client';
+import { OGDialog, OGDialogContent, OGDialogTitle } from '@librechat/client';
+import type * as DialogPrimitive from '@radix-ui/react-dialog';
 import type { TPromptGroup } from 'librechat-data-provider';
-import VariableForm from '../forms/VariableForm';
+import type React from 'react';
+import { useMemo } from 'react';
 import { detectVariables } from '~/utils';
+import VariableForm from '../forms/VariableForm';
 
 interface VariableDialogProps extends Omit<DialogPrimitive.DialogProps, 'onOpenChange'> {
   onClose: () => void;

@@ -1,14 +1,14 @@
 import { Providers } from '@librechat/agents';
-import { EModelEndpoint } from 'librechat-data-provider';
-import type { TEndpoint } from 'librechat-data-provider';
 import type { AppConfig } from '@librechat/data-schemas';
+import type { TEndpoint } from 'librechat-data-provider';
+import { EModelEndpoint } from 'librechat-data-provider';
+import { getCustomEndpointConfig } from '~/app/config';
 import type { BaseInitializeParams, InitializeResultBase } from '~/types';
 import { initializeAnthropic } from '../anthropic/initialize';
 import { initializeBedrock } from '../bedrock/initialize';
 import { initializeCustom } from '../custom/initialize';
 import { initializeGoogle } from '../google/initialize';
 import { initializeOpenAI } from '../openai/initialize';
-import { getCustomEndpointConfig } from '~/app/config';
 
 /**
  * Type for initialize functions
@@ -77,7 +77,10 @@ export function getProviderConfig({
     overrideProvider = provider.toLowerCase();
     getOptions = providerConfigMap[overrideProvider];
   } else if (!getOptions) {
-    customEndpointConfig = getCustomEndpointConfig({ endpoint: provider, appConfig });
+    customEndpointConfig = getCustomEndpointConfig({
+      endpoint: provider,
+      appConfig,
+    });
     if (!customEndpointConfig) {
       throw new Error(`Provider ${provider} not supported`);
     }
@@ -86,7 +89,10 @@ export function getProviderConfig({
   }
 
   if (isKnownCustomProvider(overrideProvider) && !customEndpointConfig) {
-    customEndpointConfig = getCustomEndpointConfig({ endpoint: provider, appConfig });
+    customEndpointConfig = getCustomEndpointConfig({
+      endpoint: provider,
+      appConfig,
+    });
     if (!customEndpointConfig) {
       throw new Error(`Provider ${provider} not supported`);
     }

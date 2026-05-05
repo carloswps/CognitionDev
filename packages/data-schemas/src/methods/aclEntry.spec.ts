@@ -1,14 +1,14 @@
-import mongoose from 'mongoose';
 import {
-  ResourceType,
-  PrincipalType,
-  PrincipalModel,
   PermissionBits,
+  PrincipalModel,
+  PrincipalType,
+  ResourceType,
 } from 'librechat-data-provider';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
+import aclEntrySchema from '~/schema/aclEntry';
 import type * as t from '~/types';
 import { createAclEntryMethods, permissionBitSupersets } from './aclEntry';
-import aclEntrySchema from '~/schema/aclEntry';
 
 let mongoServer: MongoMemoryServer;
 let AclEntry: mongoose.Model<t.IAclEntry>;
@@ -1083,12 +1083,17 @@ describe('AclEntry Model Tests', () => {
               principalId: userId,
               resourceId,
             },
-            update: { $set: { permBits: PermissionBits.VIEW | PermissionBits.EDIT } },
+            update: {
+              $set: { permBits: PermissionBits.VIEW | PermissionBits.EDIT },
+            },
           },
         },
       ]);
 
-      const entry = await AclEntry.findOne({ principalId: userId, resourceId }).lean();
+      const entry = await AclEntry.findOne({
+        principalId: userId,
+        resourceId,
+      }).lean();
       expect(entry?.permBits).toBe(PermissionBits.VIEW | PermissionBits.EDIT);
     });
   });

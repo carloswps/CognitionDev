@@ -11,7 +11,9 @@ const getProfileDetails = ({ profile }) => ({
 });
 
 const googleLogin = socialLogin('google', getProfileDetails);
-const googleAdminLogin = socialLogin('google', getProfileDetails, { existingUsersOnly: true });
+const googleAdminLogin = socialLogin('google', getProfileDetails, {
+  existingUsersOnly: true,
+});
 
 const getGoogleConfig = (callbackURL) => ({
   clientID: process.env.GOOGLE_CLIENT_ID,

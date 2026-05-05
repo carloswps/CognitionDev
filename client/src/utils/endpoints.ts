@@ -1,16 +1,16 @@
+import type * as t from 'librechat-data-provider';
 import {
   Constants,
-  EModelEndpoint,
   defaultEndpoints,
-  modularEndpoints,
-  LocalStorageKeys,
+  EModelEndpoint,
   getEndpointField,
   isAgentsEndpoint,
-  isEphemeralAgentId,
   isAssistantsEndpoint,
+  isEphemeralAgentId,
+  LocalStorageKeys,
+  modularEndpoints,
 } from 'librechat-data-provider';
-import type * as t from 'librechat-data-provider';
-import type { LocalizeFunction, IconsRecord } from '~/common';
+import type { IconsRecord, LocalizeFunction } from '~/common';
 import { getTimestampedValue } from './timestamps';
 
 /**
@@ -297,7 +297,9 @@ export function getDefaultModelSpec(startupConfig?: t.TStartupConfig):
   if (!lastConversationSetup.spec) {
     return;
   }
-  return { last: list?.find((spec) => spec.name === lastConversationSetup.spec) };
+  return {
+    last: list?.find((spec) => spec.name === lastConversationSetup.spec),
+  };
 }
 
 export function getModelSpecPreset(modelSpec?: t.TModelSpec) {

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export const MIN_ZOOM = 0.25;
 export const MAX_ZOOM = 4;
@@ -41,7 +41,10 @@ export default function useMermaidZoom({ containerRef, wheelDep }: UseMermaidZoo
     const target = e.target as HTMLElement;
     if (e.button === 0 && target.tagName !== 'BUTTON' && !target.closest('button')) {
       setIsPanning(true);
-      panStartRef.current = { x: e.clientX - panRef.current.x, y: e.clientY - panRef.current.y };
+      panStartRef.current = {
+        x: e.clientX - panRef.current.x,
+        y: e.clientY - panRef.current.y,
+      };
     }
   }, []);
 

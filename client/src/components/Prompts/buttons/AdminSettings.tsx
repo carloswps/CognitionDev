@@ -1,16 +1,19 @@
-import { useState } from 'react';
-import { Permissions, PermissionTypes } from 'librechat-data-provider';
 import { OGDialog, OGDialogTemplate, useToastContext } from '@librechat/client';
+import { Permissions, PermissionTypes } from 'librechat-data-provider';
+import { useState } from 'react';
 import type { PermissionConfig } from '~/components/ui';
-import { useUpdatePromptPermissionsMutation } from '~/data-provider';
 import { AdminSettingsDialog } from '~/components/ui';
+import { useUpdatePromptPermissionsMutation } from '~/data-provider';
 import { useLocalize } from '~/hooks';
 
 const permissions: PermissionConfig[] = [
   { permission: Permissions.USE, labelKey: 'com_ui_prompts_allow_use' },
   { permission: Permissions.CREATE, labelKey: 'com_ui_prompts_allow_create' },
   { permission: Permissions.SHARE, labelKey: 'com_ui_prompts_allow_share' },
-  { permission: Permissions.SHARE_PUBLIC, labelKey: 'com_ui_prompts_allow_share_public' },
+  {
+    permission: Permissions.SHARE_PUBLIC,
+    labelKey: 'com_ui_prompts_allow_share_public',
+  },
 ];
 
 const AdminSettings = () => {
@@ -26,7 +29,10 @@ const AdminSettings = () => {
       showToast({ status: 'success', message: localize('com_ui_saved') });
     },
     onError: () => {
-      showToast({ status: 'error', message: localize('com_ui_error_save_admin_settings') });
+      showToast({
+        status: 'error',
+        message: localize('com_ui_error_save_admin_settings'),
+      });
     },
   });
 

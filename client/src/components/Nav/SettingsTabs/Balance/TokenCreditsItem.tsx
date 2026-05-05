@@ -1,5 +1,5 @@
-import React from 'react';
-import { Label, InfoHoverCard, ESide } from '@librechat/client';
+import { ESide, InfoHoverCard, Label } from '@librechat/client';
+import type React from 'react';
 import { useLocalize } from '~/hooks';
 
 interface TokenCreditsItemProps {

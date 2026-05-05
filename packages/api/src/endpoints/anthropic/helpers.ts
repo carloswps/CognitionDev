@@ -1,13 +1,13 @@
+import type { AnthropicClientOptions } from '@librechat/agents';
 import { logger } from '@librechat/data-schemas';
-import { AnthropicClientOptions } from '@librechat/agents';
 import {
-  EModelEndpoint,
-  ThinkingDisplay,
   AnthropicEffort,
   anthropicSettings,
-  supportsContext1m,
+  EModelEndpoint,
   resolveThinkingDisplay,
   supportsAdaptiveThinking,
+  supportsContext1m,
+  type ThinkingDisplay,
 } from 'librechat-data-provider';
 import { matchModelName } from '~/utils/tokens';
 
@@ -163,4 +163,4 @@ function configureReasoning(
   return updatedOptions;
 }
 
-export { checkPromptCacheSupport, getClaudeHeaders, configureReasoning, supportsAdaptiveThinking };
+export { checkPromptCacheSupport, configureReasoning, getClaudeHeaders, supportsAdaptiveThinking };

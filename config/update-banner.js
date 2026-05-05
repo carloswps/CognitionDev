@@ -21,8 +21,8 @@ const connect = require('./connect');
   let displayFrom = '';
   let displayTo = '';
   let message = '';
-  let isPublic = undefined;
-  let persistable = undefined;
+  let isPublic;
+  let persistable;
   // If we have the right number of arguments, lets use them
   if (process.argv.length >= 3) {
     displayFrom = process.argv[2];

@@ -38,7 +38,11 @@ const handleExistingUser = async (oldUser, avatarUrl, appConfig, email) => {
       input: avatarUrl,
     });
     const { processAvatar } = getStrategyFunctions(fileStrategy);
-    updatedAvatar = await processAvatar({ buffer: resizedBuffer, userId, manual: 'false' });
+    updatedAvatar = await processAvatar({
+      buffer: resizedBuffer,
+      userId,
+      manual: 'false',
+    });
   }
 
   if (updatedAvatar) {

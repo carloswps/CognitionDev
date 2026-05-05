@@ -159,7 +159,11 @@ describe('canAccessAgentFromBody middleware', () => {
   describe('addedConvo — MULTI_CONVO permission gate', () => {
     test('returns 403 when user lacks MULTI_CONVO:USE', async () => {
       req.user.role = 'no-multi-convo';
-      req.body.addedConvo = { agent_id: 'agent_x', endpoint: 'agents', model: 'gpt-4' };
+      req.body.addedConvo = {
+        agent_id: 'agent_x',
+        endpoint: 'agents',
+        model: 'gpt-4',
+      };
 
       const middleware = canAccessAgentFromBody({ requiredPermission: 1 });
       await middleware(req, res, next);
@@ -167,13 +171,19 @@ describe('canAccessAgentFromBody middleware', () => {
       expect(next).not.toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(403);
       expect(res.json).toHaveBeenCalledWith(
-        expect.objectContaining({ message: 'Multi-conversation feature is not enabled' }),
+        expect.objectContaining({
+          message: 'Multi-conversation feature is not enabled',
+        }),
       );
     });
 
     test('returns 403 when user.role is missing', async () => {
       req.user = { id: testUser._id };
-      req.body.addedConvo = { agent_id: 'agent_x', endpoint: 'agents', model: 'gpt-4' };
+      req.body.addedConvo = {
+        agent_id: 'agent_x',
+        endpoint: 'agents',
+        model: 'gpt-4',
+      };
 
       const middleware = canAccessAgentFromBody({ requiredPermission: 1 });
       await middleware(req, res, next);
@@ -184,7 +194,11 @@ describe('canAccessAgentFromBody middleware', () => {
 
     test('ADMIN bypasses MULTI_CONVO check', async () => {
       req.user.role = SystemRoles.ADMIN;
-      req.body.addedConvo = { agent_id: 'ephemeral_x', endpoint: 'agents', model: 'gpt-4' };
+      req.body.addedConvo = {
+        agent_id: 'ephemeral_x',
+        endpoint: 'agents',
+        model: 'gpt-4',
+      };
 
       const middleware = canAccessAgentFromBody({ requiredPermission: 1 });
       await middleware(req, res, next);
@@ -196,7 +210,11 @@ describe('canAccessAgentFromBody middleware', () => {
 
   describe('addedConvo — agent_id shape validation', () => {
     test('calls next when agent_id is ephemeral', async () => {
-      req.body.addedConvo = { agent_id: 'ephemeral_xyz', endpoint: 'agents', model: 'gpt-4' };
+      req.body.addedConvo = {
+        agent_id: 'ephemeral_xyz',
+        endpoint: 'agents',
+        model: 'gpt-4',
+      };
 
       const middleware = canAccessAgentFromBody({ requiredPermission: 1 });
       await middleware(req, res, next);
@@ -214,7 +232,11 @@ describe('canAccessAgentFromBody middleware', () => {
     });
 
     test('calls next when agent_id is not a string (object injection)', async () => {
-      req.body.addedConvo = { agent_id: { $gt: '' }, endpoint: 'agents', model: 'gpt-4' };
+      req.body.addedConvo = {
+        agent_id: { $gt: '' },
+        endpoint: 'agents',
+        model: 'gpt-4',
+      };
 
       const middleware = canAccessAgentFromBody({ requiredPermission: 1 });
       await middleware(req, res, next);
@@ -247,7 +269,11 @@ describe('canAccessAgentFromBody middleware', () => {
     });
 
     test('returns 403 when requester has no ACL for the added agent', async () => {
-      req.body.addedConvo = { agent_id: addedAgent.id, endpoint: 'agents', model: 'gpt-4' };
+      req.body.addedConvo = {
+        agent_id: addedAgent.id,
+        endpoint: 'agents',
+        model: 'gpt-4',
+      };
 
       const middleware = canAccessAgentFromBody({ requiredPermission: 1 });
       await middleware(req, res, next);
@@ -286,7 +312,11 @@ describe('canAccessAgentFromBody middleware', () => {
         grantedBy: otherUser._id,
       });
 
-      req.body.addedConvo = { agent_id: addedAgent.id, endpoint: 'agents', model: 'gpt-4' };
+      req.body.addedConvo = {
+        agent_id: addedAgent.id,
+        endpoint: 'agents',
+        model: 'gpt-4',
+      };
 
       const middleware = canAccessAgentFromBody({ requiredPermission: 1 });
       await middleware(req, res, next);
@@ -306,7 +336,11 @@ describe('canAccessAgentFromBody middleware', () => {
         grantedBy: otherUser._id,
       });
 
-      req.body.addedConvo = { agent_id: addedAgent.id, endpoint: 'agents', model: 'gpt-4' };
+      req.body.addedConvo = {
+        agent_id: addedAgent.id,
+        endpoint: 'agents',
+        model: 'gpt-4',
+      };
 
       const middleware = canAccessAgentFromBody({ requiredPermission: 2 });
       await middleware(req, res, next);
@@ -326,7 +360,11 @@ describe('canAccessAgentFromBody middleware', () => {
         grantedBy: otherUser._id,
       });
 
-      req.body.addedConvo = { agent_id: addedAgent.id, endpoint: 'agents', model: 'gpt-4' };
+      req.body.addedConvo = {
+        agent_id: addedAgent.id,
+        endpoint: 'agents',
+        model: 'gpt-4',
+      };
 
       const middleware = canAccessAgentFromBody({ requiredPermission: 1 });
       await middleware(req, res, next);
@@ -338,7 +376,11 @@ describe('canAccessAgentFromBody middleware', () => {
 
     test('ADMIN bypasses agent resource ACL for addedConvo', async () => {
       req.user.role = SystemRoles.ADMIN;
-      req.body.addedConvo = { agent_id: addedAgent.id, endpoint: 'agents', model: 'gpt-4' };
+      req.body.addedConvo = {
+        agent_id: addedAgent.id,
+        endpoint: 'agents',
+        model: 'gpt-4',
+      };
 
       const middleware = canAccessAgentFromBody({ requiredPermission: 1 });
       await middleware(req, res, next);
@@ -403,7 +445,11 @@ describe('canAccessAgentFromBody middleware', () => {
         grantedBy: otherUser._id,
       });
 
-      req.body.addedConvo = { agent_id: addedAgent.id, endpoint: 'agents', model: 'gpt-4' };
+      req.body.addedConvo = {
+        agent_id: addedAgent.id,
+        endpoint: 'agents',
+        model: 'gpt-4',
+      };
 
       const middleware = canAccessAgentFromBody({ requiredPermission: 1 });
       await middleware(req, res, next);
@@ -414,7 +460,11 @@ describe('canAccessAgentFromBody middleware', () => {
     });
 
     test('primary passes but addedConvo denied → 403', async () => {
-      req.body.addedConvo = { agent_id: addedAgent.id, endpoint: 'agents', model: 'gpt-4' };
+      req.body.addedConvo = {
+        agent_id: addedAgent.id,
+        endpoint: 'agents',
+        model: 'gpt-4',
+      };
 
       const middleware = canAccessAgentFromBody({ requiredPermission: 1 });
       await middleware(req, res, next);
@@ -443,7 +493,11 @@ describe('canAccessAgentFromBody middleware', () => {
       });
 
       req.body.agent_id = foreignAgent.id;
-      req.body.addedConvo = { agent_id: addedAgent.id, endpoint: 'agents', model: 'gpt-4' };
+      req.body.addedConvo = {
+        agent_id: addedAgent.id,
+        endpoint: 'agents',
+        model: 'gpt-4',
+      };
 
       const middleware = canAccessAgentFromBody({ requiredPermission: 1 });
       await middleware(req, res, next);
@@ -477,7 +531,11 @@ describe('canAccessAgentFromBody middleware', () => {
     });
 
     test('runs full addedConvo ACL check even when primary is ephemeral', async () => {
-      req.body.addedConvo = { agent_id: addedAgent.id, endpoint: 'agents', model: 'gpt-4' };
+      req.body.addedConvo = {
+        agent_id: addedAgent.id,
+        endpoint: 'agents',
+        model: 'gpt-4',
+      };
 
       const middleware = canAccessAgentFromBody({ requiredPermission: 1 });
       await middleware(req, res, next);
@@ -497,7 +555,11 @@ describe('canAccessAgentFromBody middleware', () => {
         grantedBy: otherUser._id,
       });
 
-      req.body.addedConvo = { agent_id: addedAgent.id, endpoint: 'agents', model: 'gpt-4' };
+      req.body.addedConvo = {
+        agent_id: addedAgent.id,
+        endpoint: 'agents',
+        model: 'gpt-4',
+      };
 
       const middleware = canAccessAgentFromBody({ requiredPermission: 1 });
       await middleware(req, res, next);

@@ -1,5 +1,5 @@
-import { EModelEndpoint } from 'librechat-data-provider';
-import { useFormContext, Controller } from 'react-hook-form';
+import type { EModelEndpoint } from 'librechat-data-provider';
+import { Controller, useFormContext } from 'react-hook-form';
 import InputWithLabel from './InputWithLabel';
 
 const CustomEndpoint = ({

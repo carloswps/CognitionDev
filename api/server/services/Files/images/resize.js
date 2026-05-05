@@ -28,7 +28,7 @@ async function resizeImageBuffer(inputBuffer, resolution, endpoint) {
   }
 
   let newWidth, newHeight;
-  let resizeOptions = { fit: 'inside', withoutEnlargement: true };
+  const resizeOptions = { fit: 'inside', withoutEnlargement: true };
 
   if (customPercent != null || customPx != null) {
     // percentage-based resize

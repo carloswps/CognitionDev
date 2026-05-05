@@ -1,27 +1,27 @@
-import { Dispatcher, ProxyAgent } from 'undici';
+import type { AnthropicClientOptions } from '@librechat/agents';
 import { logger } from '@librechat/data-schemas';
-import { AnthropicClientOptions } from '@librechat/agents';
 import {
+  AuthKeys,
   anthropicSettings,
   removeNullishValues,
-  ThinkingDisplay,
-  AuthKeys,
+  type ThinkingDisplay,
 } from 'librechat-data-provider';
+import { type Dispatcher, ProxyAgent } from 'undici';
 import type {
-  AnthropicLLMConfigResult,
   AnthropicConfigOptions,
   AnthropicCredentials,
+  AnthropicLLMConfigResult,
 } from '~/types/anthropic';
 import {
-  supportsAdaptiveThinking,
   checkPromptCacheSupport,
   configureReasoning,
   getClaudeHeaders,
+  supportsAdaptiveThinking,
 } from './helpers';
 import {
   createAnthropicVertexClient,
-  isAnthropicVertexCredentials,
   getVertexDeploymentName,
+  isAnthropicVertexCredentials,
 } from './vertex';
 
 /**
@@ -244,7 +244,9 @@ function getLLMConfig(
 
       if (knownAnthropicParams.has(key)) {
         /** Route known Anthropic params to requestOptions only if undefined */
-        applyDefaultParams(requestOptions as Record<string, unknown>, { [key]: value });
+        applyDefaultParams(requestOptions as Record<string, unknown>, {
+          [key]: value,
+        });
       }
       /** Leave other params for transform to handle - they might be OpenAI params */
     }
@@ -310,7 +312,9 @@ function getLLMConfig(
     tools,
     llmConfig: removeNullishValues(
       requestOptions as Record<string, unknown>,
-    ) as AnthropicClientOptions & { clientOptions?: { fetchOptions?: { dispatcher: Dispatcher } } },
+    ) as AnthropicClientOptions & {
+      clientOptions?: { fetchOptions?: { dispatcher: Dispatcher } };
+    },
   };
 }
 

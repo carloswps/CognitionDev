@@ -1,5 +1,5 @@
-import configSchema from '~/schema/config';
 import { applyTenantIsolation } from '~/models/plugins/tenantIsolation';
+import configSchema from '~/schema/config';
 import type * as t from '~/types';
 
 export function createConfigModel(mongoose: typeof import('mongoose')) {

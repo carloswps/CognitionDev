@@ -1,10 +1,10 @@
-import React from 'react';
-import { PermissionTypes, Permissions } from 'librechat-data-provider';
-import UninitializedMCPTool from './UninitializedMCPTool';
-import UnconfiguredMCPTool from './UnconfiguredMCPTool';
+import { Permissions, PermissionTypes } from 'librechat-data-provider';
+import type React from 'react';
 import { useHasAccess, useLocalize } from '~/hooks';
 import { useAgentPanelContext } from '~/Providers';
 import MCPTool from './MCPTool';
+import UnconfiguredMCPTool from './UnconfiguredMCPTool';
+import UninitializedMCPTool from './UninitializedMCPTool';
 
 export default function MCPTools({
   agentId,

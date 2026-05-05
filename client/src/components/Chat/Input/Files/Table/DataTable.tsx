@@ -1,39 +1,39 @@
-import { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
 import {
-  flexRender,
-  useReactTable,
-  getCoreRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-} from '@tanstack/react-table';
-import type {
-  ColumnDef,
-  SortingState,
-  VisibilityState,
-  ColumnFiltersState,
-} from '@tanstack/react-table';
-import { FileContext } from 'librechat-data-provider';
-import {
-  Table,
   Button,
+  FilterInput,
   Spinner,
-  TableRow,
+  Table,
   TableBody,
   TableCell,
   TableHead,
-  TrashIcon,
-  FilterInput,
   TableHeader,
+  TableRow,
+  TrashIcon,
   useMediaQuery,
 } from '@librechat/client';
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+} from '@tanstack/react-table';
+import {
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
 import type { TFile } from 'librechat-data-provider';
-import { ColumnVisibilityDropdown } from './ColumnVisibilityDropdown';
+import { FileContext } from 'librechat-data-provider';
+import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { type TranslationKeys, useLocalize } from '~/hooks';
 import { useDeleteFilesFromTable } from '~/hooks/Files';
-import { useLocalize, TranslationKeys } from '~/hooks';
-import { cn } from '~/utils';
 import store from '~/store';
+import { cn } from '~/utils';
+import { ColumnVisibilityDropdown } from './ColumnVisibilityDropdown';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

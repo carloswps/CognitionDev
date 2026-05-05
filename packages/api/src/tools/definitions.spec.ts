@@ -1,11 +1,11 @@
-import { loadToolDefinitions } from './definitions';
-import { toolkitExpansion, toolkitParent } from './toolkits/mapping';
-import { getToolDefinition } from './registry/definitions';
 import type {
-  LoadToolDefinitionsParams,
-  LoadToolDefinitionsDeps,
   ActionToolDefinition,
+  LoadToolDefinitionsDeps,
+  LoadToolDefinitionsParams,
 } from './definitions';
+import { loadToolDefinitions } from './definitions';
+import { getToolDefinition } from './registry/definitions';
+import { toolkitExpansion, toolkitParent } from './toolkits/mapping';
 
 describe('definitions.ts', () => {
   const mockLoadAuthValues = jest.fn().mockResolvedValue({});
@@ -46,8 +46,14 @@ describe('definitions.ts', () => {
             parameters: {
               type: 'object',
               properties: {
-                latitude: { type: 'number', description: 'Latitude coordinate' },
-                longitude: { type: 'number', description: 'Longitude coordinate' },
+                latitude: {
+                  type: 'number',
+                  description: 'Latitude coordinate',
+                },
+                longitude: {
+                  type: 'number',
+                  description: 'Longitude coordinate',
+                },
               },
               required: ['latitude', 'longitude'],
             },

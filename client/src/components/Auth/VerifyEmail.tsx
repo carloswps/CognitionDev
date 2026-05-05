@@ -1,7 +1,7 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Spinner, ThemeSelector } from '@librechat/client';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { useVerifyEmailMutation, useResendVerificationEmail } from '~/data-provider';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useResendVerificationEmail, useVerifyEmailMutation } from '~/data-provider';
 import { useLocalize } from '~/hooks';
 
 function RequestPasswordReset() {
@@ -83,7 +83,9 @@ function RequestPasswordReset() {
       </h1>
       {countdown > 0 && (
         <p className="text-center text-lg text-gray-600 dark:text-gray-400">
-          {localize('com_auth_email_verification_redirecting', { 0: countdown.toString() })}
+          {localize('com_auth_email_verification_redirecting', {
+            0: countdown.toString(),
+          })}
         </p>
       )}
       {showResendLink && countdown === 0 && (

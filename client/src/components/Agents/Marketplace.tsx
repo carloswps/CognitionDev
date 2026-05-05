@@ -1,17 +1,18 @@
-import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useMediaQuery } from '@librechat/client';
-import { PermissionTypes, Permissions } from 'librechat-data-provider';
-import { useSearchParams, useParams, useNavigate } from 'react-router-dom';
 import type t from 'librechat-data-provider';
-import { useDocumentTitle, useHasAccess, useLocalize, TranslationKeys } from '~/hooks';
-import { useGetEndpointsQuery, useGetAgentCategoriesQuery } from '~/data-provider';
-import MarketplaceAdminSettings from './MarketplaceAdminSettings';
+import { Permissions, PermissionTypes } from 'librechat-data-provider';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import OpenSidebar from '~/components/Chat/Menus/OpenSidebar';
 import { SidePanelGroup } from '~/components/SidePanel';
-import CategoryTabs from './CategoryTabs';
-import SearchBar from './SearchBar';
-import AgentGrid from './AgentGrid';
+import { useGetAgentCategoriesQuery, useGetEndpointsQuery } from '~/data-provider';
+import { type TranslationKeys, useDocumentTitle, useHasAccess, useLocalize } from '~/hooks';
 import { cn } from '~/utils';
+import AgentGrid from './AgentGrid';
+import CategoryTabs from './CategoryTabs';
+import MarketplaceAdminSettings from './MarketplaceAdminSettings';
+import SearchBar from './SearchBar';
 
 interface AgentMarketplaceProps {
   className?: string;

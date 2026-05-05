@@ -1,13 +1,14 @@
 // client/src/hooks/Audio/useTTSExternal.ts
-import { useRef, useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { parseTextParts } from 'librechat-data-provider';
+
 import type { TMessageContentParts } from 'librechat-data-provider';
-import useTextToSpeechExternal from '~/hooks/Input/useTextToSpeechExternal';
-import usePauseGlobalAudio from '~/hooks/Audio/usePauseGlobalAudio';
+import { parseTextParts } from 'librechat-data-provider';
+import { useEffect, useRef, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import useAudioRef from '~/hooks/Audio/useAudioRef';
-import { logger } from '~/utils';
+import usePauseGlobalAudio from '~/hooks/Audio/usePauseGlobalAudio';
+import useTextToSpeechExternal from '~/hooks/Input/useTextToSpeechExternal';
 import store from '~/store';
+import { logger } from '~/utils';
 
 type TUseTextToSpeech = {
   messageId?: string;
@@ -47,7 +48,10 @@ const useTTSExternal = (props?: TUseTextToSpeech) => {
     if (voices.length) {
       const lastSelectedVoice = voices.find((v) => v === voice);
       if (lastSelectedVoice != null) {
-        logger.log('useTextToSpeech.ts - Effect:', { voices, voice: lastSelectedVoice });
+        logger.log('useTextToSpeech.ts - Effect:', {
+          voices,
+          voice: lastSelectedVoice,
+        });
         setVoice(lastSelectedVoice.toString());
         return;
       }

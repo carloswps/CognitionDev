@@ -1,15 +1,10 @@
-import { logger } from '@librechat/data-schemas';
-import {
-  ErrorTypes,
-  EModelEndpoint,
-  extractEnvVariable,
-  normalizeEndpointName,
-} from 'librechat-data-provider';
-import type { TModelsConfig, TEndpoint } from 'librechat-data-provider';
 import type { AppConfig } from '@librechat/data-schemas';
-import type { ServerRequest, GetUserKeyValuesFunction, UserKeyValues } from '~/types';
+import { logger } from '@librechat/data-schemas';
+import type { TEndpoint, TModelsConfig } from 'librechat-data-provider';
+import { EModelEndpoint, ErrorTypes, extractEnvVariable, normalizeEndpointName } from 'librechat-data-provider';
 import type { FetchModelsParams } from '~/endpoints/models';
 import { fetchModels as defaultFetchModels } from '~/endpoints/models';
+import type { GetUserKeyValuesFunction, ServerRequest, UserKeyValues } from '~/types';
 import { isUserProvided } from '~/utils';
 
 interface ResolvedEndpoint {
@@ -156,6 +151,7 @@ export function createLoadConfigModels(deps: LoadConfigModelsDeps) {
             headers: endpointHeaders,
             direct: endpoint.directEndpoint,
             userIdQuery: models.userIdQuery,
+            filterFreeModels: endpoint.filterFreeModels,
           });
         uniqueKeyToEndpointsMap[uniqueKey] = uniqueKeyToEndpointsMap[uniqueKey] || [];
         uniqueKeyToEndpointsMap[uniqueKey].push(name);
@@ -181,6 +177,7 @@ export function createLoadConfigModels(deps: LoadConfigModelsDeps) {
               direct: endpoint.directEndpoint,
               userIdQuery: models.userIdQuery,
               skipCache: true,
+              filterFreeModels: endpoint.filterFreeModels,
             });
           uniqueKeyToEndpointsMap[userFetchKey] = uniqueKeyToEndpointsMap[userFetchKey] || [];
           uniqueKeyToEndpointsMap[userFetchKey].push(name);

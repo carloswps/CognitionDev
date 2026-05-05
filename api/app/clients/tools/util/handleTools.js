@@ -124,7 +124,7 @@ const validateTools = async (user, tools = []) => {
  * @returns {() => Promise<Tool>} An Async function that, when called, asynchronously initializes and returns an instance of the tool with authentication.
  */
 const loadToolWithAuth = (userId, authFields, ToolConstructor, options = {}) => {
-  return async function () {
+  return async () => {
     const authValues = await loadAuthValues({ userId, authFields });
     return new ToolConstructor({ ...options, ...authValues, userId });
   };
@@ -208,7 +208,11 @@ const loadTools = async ({
     },
     gemini_image_gen: async (toolContextMap) => {
       const authFields = getAuthFields('gemini_image_gen');
-      const authValues = await loadAuthValues({ userId: user, authFields, throwError: false });
+      const authValues = await loadAuthValues({
+        userId: user,
+        authFields,
+        throwError: false,
+      });
       const imageFiles = options.tool_resources?.[EToolResources.image_edit]?.files ?? [];
       const toolContext = buildImageToolContext({
         imageFiles,
@@ -398,7 +402,6 @@ const loadTools = async ({
         options,
       );
       requestedTools[tool] = toolInstance;
-      continue;
     }
   }
 

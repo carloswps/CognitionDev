@@ -1,7 +1,7 @@
 import { useAtomValue } from 'jotai';
 import { forwardRef, useLayoutEffect, useState } from 'react';
-import ReactTextareaAutosize from 'react-textarea-autosize';
 import type { TextareaAutosizeProps } from 'react-textarea-autosize';
+import ReactTextareaAutosize from 'react-textarea-autosize';
 import { chatDirectionAtom } from '~/store';
 
 type BaseTextareaAutosizeProps = Omit<TextareaAutosizeProps, 'aria-label' | 'aria-labelledby'>;

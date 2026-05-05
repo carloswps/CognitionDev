@@ -1,12 +1,12 @@
+import type { AppConfig } from '@librechat/data-schemas';
 import {
   AgentCapabilities,
-  EModelEndpoint,
   defaultAgentCapabilities,
+  EModelEndpoint,
 } from 'librechat-data-provider';
-import { createEndpointsConfigService } from './endpoints';
-import type { AppConfig } from '@librechat/data-schemas';
-import type { EndpointsConfigDeps } from './endpoints';
 import type { ServerRequest } from '~/types';
+import type { EndpointsConfigDeps } from './endpoints';
+import { createEndpointsConfigService } from './endpoints';
 
 function appConfig(partial: Record<string, unknown>): AppConfig {
   return partial as unknown as AppConfig;
@@ -49,7 +49,9 @@ describe('createEndpointsConfigService', () => {
       const deps = createMockDeps({
         getAppConfig: jest.fn().mockResolvedValue(
           appConfig({
-            endpoints: { [EModelEndpoint.azureOpenAI]: { modelNames: ['gpt-4'] } },
+            endpoints: {
+              [EModelEndpoint.azureOpenAI]: { modelNames: ['gpt-4'] },
+            },
           }),
         ),
       });
@@ -81,7 +83,9 @@ describe('createEndpointsConfigService', () => {
       const deps = createMockDeps({
         getAppConfig: jest.fn().mockResolvedValue(
           appConfig({
-            endpoints: { [EModelEndpoint.anthropic]: { vertexConfig: { enabled: true } } },
+            endpoints: {
+              [EModelEndpoint.anthropic]: { vertexConfig: { enabled: true } },
+            },
           }),
         ),
       });
@@ -149,7 +153,9 @@ describe('createEndpointsConfigService', () => {
         getAppConfig: jest.fn().mockResolvedValue(
           appConfig({
             endpoints: {
-              [EModelEndpoint.bedrock]: { availableRegions: ['us-east-1', 'eu-west-1'] },
+              [EModelEndpoint.bedrock]: {
+                availableRegions: ['us-east-1', 'eu-west-1'],
+              },
             },
           }),
         ),

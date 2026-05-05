@@ -1,7 +1,7 @@
 import { Providers } from '@librechat/agents';
-import { EModelEndpoint } from 'librechat-data-provider';
 import type { Agent } from 'librechat-data-provider';
-import type { ServerRequest, InitializeResultBase, EndpointTokenConfig } from '~/types';
+import { EModelEndpoint } from 'librechat-data-provider';
+import type { EndpointTokenConfig, InitializeResultBase, ServerRequest } from '~/types';
 import type { InitializeAgentDbMethods } from '../initialize';
 import { DEFAULT_MAX_CONTEXT_TOKENS } from '../initialize';
 

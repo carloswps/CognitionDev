@@ -1,5 +1,5 @@
 import type { Document, Types } from 'mongoose';
-import { CursorPaginationParams } from '~/common';
+import type { CursorPaginationParams } from '~/common';
 
 export interface IGroup extends Document {
   _id: Types.ObjectId;

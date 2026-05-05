@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import { storeEmbeddings, loadEmbeddings } from './embeddings';
 import { translateKeyPhrase } from './anthropic';
+import { loadEmbeddings, storeEmbeddings } from './embeddings';
 
 const missingKeyMap = {};
 const vectorStoreMap = {};

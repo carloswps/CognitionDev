@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState, useRef } from 'react';
-import { fixSubgraphTitleContrast } from '~/utils/mermaid';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDebouncedMermaid } from '~/hooks';
+import { fixSubgraphTitleContrast } from '~/utils/mermaid';
 
 const MIN_CONTAINER_HEIGHT = 200;
 const MAX_CONTAINER_HEIGHT = 500;
@@ -93,9 +93,10 @@ export default function useSvgProcessing({
   containerRef,
 }: UseSvgProcessingOptions) {
   const [blobUrl, setBlobUrl] = useState('');
-  const [svgDimensions, setSvgDimensions] = useState<{ width: number; height: number } | null>(
-    null,
-  );
+  const [svgDimensions, setSvgDimensions] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
   const [containerWidth, setContainerWidth] = useState(700);
   const lastValidSvgRef = useRef<string | null>(null);
 

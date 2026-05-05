@@ -1,11 +1,11 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
 import { Button } from '@librechat/client';
-import { Maximize2, X } from 'lucide-react';
-import { FileSources } from 'librechat-data-provider';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
+import type { FileSources } from 'librechat-data-provider';
+import { Maximize2, X } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { cn } from '~/utils';
 import ProgressCircle from './ProgressCircle';
 import SourceIcon from './SourceIcon';
-import { cn } from '~/utils';
 
 type styleProps = {
   backgroundImage?: string;

@@ -1,7 +1,7 @@
-import { Types } from 'mongoose';
 import { Providers } from '@librechat/agents';
-import { EModelEndpoint } from 'librechat-data-provider';
 import type { IMongoFile } from '@librechat/data-schemas';
+import { EModelEndpoint } from 'librechat-data-provider';
+import { Types } from 'mongoose';
 import type { ServerRequest } from '~/types';
 import { filterFilesByEndpointConfig } from './filter';
 
@@ -740,8 +740,14 @@ describe('filterFilesByEndpointConfig', () => {
       } as unknown as ServerRequest;
 
       const files = [
-        { ...createMockFile('file1.pdf'), bytes: 1024 * 1024 * 100 } as IMongoFile,
-        { ...createMockFile('file2.pdf'), bytes: 1024 * 1024 * 200 } as IMongoFile,
+        {
+          ...createMockFile('file1.pdf'),
+          bytes: 1024 * 1024 * 100,
+        } as IMongoFile,
+        {
+          ...createMockFile('file2.pdf'),
+          bytes: 1024 * 1024 * 200,
+        } as IMongoFile,
       ];
 
       const result = filterFilesByEndpointConfig(req, {
@@ -767,8 +773,14 @@ describe('filterFilesByEndpointConfig', () => {
       } as unknown as ServerRequest;
 
       const files = [
-        { ...createMockFile('file1.pdf'), bytes: 1024 * 1024 * 5 } as IMongoFile,
-        { ...createMockFile('file2.pdf'), bytes: 1024 * 1024 * 10 } as IMongoFile,
+        {
+          ...createMockFile('file1.pdf'),
+          bytes: 1024 * 1024 * 5,
+        } as IMongoFile,
+        {
+          ...createMockFile('file2.pdf'),
+          bytes: 1024 * 1024 * 10,
+        } as IMongoFile,
       ];
 
       const result = filterFilesByEndpointConfig(req, {
@@ -794,7 +806,12 @@ describe('filterFilesByEndpointConfig', () => {
         },
       } as unknown as ServerRequest;
 
-      const files = [{ ...createMockFile('huge.pdf'), bytes: 1024 * 1024 * 1000 } as IMongoFile];
+      const files = [
+        {
+          ...createMockFile('huge.pdf'),
+          bytes: 1024 * 1024 * 1000,
+        } as IMongoFile,
+      ];
 
       const result = filterFilesByEndpointConfig(req, {
         files,
@@ -1028,8 +1045,14 @@ describe('filterFilesByEndpointConfig', () => {
       } as unknown as ServerRequest;
 
       const files = [
-        { ...createMockFile('file1.pdf'), bytes: 1024 * 1024 * 5 } as IMongoFile,
-        { ...createMockFile('file2.pdf'), bytes: 1024 * 1024 * 5 } as IMongoFile,
+        {
+          ...createMockFile('file1.pdf'),
+          bytes: 1024 * 1024 * 5,
+        } as IMongoFile,
+        {
+          ...createMockFile('file2.pdf'),
+          bytes: 1024 * 1024 * 5,
+        } as IMongoFile,
       ];
 
       const result = filterFilesByEndpointConfig(req, {
@@ -1055,8 +1078,14 @@ describe('filterFilesByEndpointConfig', () => {
       } as unknown as ServerRequest;
 
       const files = [
-        { ...createMockFile('file1.pdf'), bytes: 1024 * 1024 * 100 } as IMongoFile,
-        { ...createMockFile('file2.pdf'), bytes: 1024 * 1024 * 100 } as IMongoFile,
+        {
+          ...createMockFile('file1.pdf'),
+          bytes: 1024 * 1024 * 100,
+        } as IMongoFile,
+        {
+          ...createMockFile('file2.pdf'),
+          bytes: 1024 * 1024 * 100,
+        } as IMongoFile,
       ];
 
       const result = filterFilesByEndpointConfig(req, {
@@ -1083,8 +1112,14 @@ describe('filterFilesByEndpointConfig', () => {
       } as unknown as ServerRequest;
 
       const files = [
-        { ...createMockFile('large.pdf'), bytes: 1024 * 1024 * 10 } as IMongoFile,
-        { ...createMockFile('small.pdf'), bytes: 1024 * 1024 * 1 } as IMongoFile,
+        {
+          ...createMockFile('large.pdf'),
+          bytes: 1024 * 1024 * 10,
+        } as IMongoFile,
+        {
+          ...createMockFile('small.pdf'),
+          bytes: 1024 * 1024 * 1,
+        } as IMongoFile,
       ];
 
       const result = filterFilesByEndpointConfig(req, {

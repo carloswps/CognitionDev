@@ -1,21 +1,21 @@
 import {
-  TextPaths,
-  FilePaths,
-  CodePaths,
   AudioPaths,
-  VideoPaths,
+  CodePaths,
+  FilePaths,
   SheetPaths,
+  TextPaths,
+  VideoPaths,
 } from '@librechat/client';
+import type { QueryClient } from '@tanstack/react-query';
+import type { EndpointFileConfig, FileConfig, TFile } from 'librechat-data-provider';
 import {
+  fileConfig as defaultFileConfig,
+  EToolResources,
+  excelMimeTypes,
+  inferMimeType,
   megabyte,
   QueryKeys,
-  inferMimeType,
-  excelMimeTypes,
-  EToolResources,
-  fileConfig as defaultFileConfig,
 } from 'librechat-data-provider';
-import type { TFile, EndpointFileConfig, FileConfig } from 'librechat-data-provider';
-import type { QueryClient } from '@tanstack/react-query';
 import type { ExtendedFile } from '~/common';
 
 export const partialTypes = ['text/x-'];
@@ -215,7 +215,7 @@ export function formatBytes(bytes: number, decimals = 2) {
   const k = 1024;
   const dm = decimals < 0 ? 0 : decimals;
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm));
+  return parseFloat((bytes / k ** i).toFixed(dm));
 }
 
 const { checkType } = defaultFileConfig;
@@ -267,7 +267,9 @@ export const validateFiles = ({
 
     // Replace empty type with inferred type
     if (originalFile.type !== fileType) {
-      const newFile = new File([originalFile], originalFile.name, { type: fileType });
+      const newFile = new File([originalFile], originalFile.name, {
+        type: fileType,
+      });
       originalFile = newFile;
       fileList[i] = newFile;
     }

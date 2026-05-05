@@ -1,5 +1,5 @@
-import { render, screen } from 'test/layout-test-utils';
 import userEvent from '@testing-library/user-event';
+import { render, screen } from 'test/layout-test-utils';
 import PluginAuthForm from '../PluginAuthForm';
 
 describe('PluginAuthForm', () => {
@@ -20,7 +20,7 @@ describe('PluginAuthForm', () => {
   const onSubmit = jest.fn();
 
   it('renders the form with the correct fields', () => {
-    //@ts-ignore - dont need all props of plugin
+    //@ts-expect-error - dont need all props of plugin
     render(<PluginAuthForm plugin={plugin} onSubmit={onSubmit} />);
 
     expect(screen.getByLabelText('Key')).toBeInTheDocument();
@@ -28,7 +28,7 @@ describe('PluginAuthForm', () => {
   });
 
   it('calls the onSubmit function with the form data when submitted', async () => {
-    //@ts-ignore - dont need all props of plugin
+    //@ts-expect-error - dont need all props of plugin
     render(<PluginAuthForm plugin={plugin} onSubmit={onSubmit} />);
 
     await userEvent.type(screen.getByLabelText('Key'), '1234567890');

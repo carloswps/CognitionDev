@@ -1,12 +1,12 @@
-import { useEffect, useRef } from 'react';
 import debounce from 'lodash/debounce';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState, useResetRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
 import type { Artifact } from '~/common';
 import FilePreview from '~/components/Chat/Input/Files/FilePreview';
-import { cn, getFileType, logger, isArtifactRoute } from '~/utils';
 import { useLocalize } from '~/hooks';
 import store from '~/store';
+import { cn, getFileType, isArtifactRoute, logger } from '~/utils';
 
 const ArtifactButton = ({ artifact }: { artifact: Artifact | null }) => {
   const localize = useLocalize();

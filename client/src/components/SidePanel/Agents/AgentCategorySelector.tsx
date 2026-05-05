@@ -1,14 +1,15 @@
-import React, { memo, useState } from 'react';
 import { ControlCombobox } from '@librechat/client';
+import type React from 'react';
+import { memo, useState } from 'react';
 import {
-  useWatch,
-  FieldPath,
   Controller,
-  FieldValues,
+  type ControllerRenderProps,
+  type FieldPath,
+  type FieldValues,
   useFormContext,
-  ControllerRenderProps,
+  useWatch,
 } from 'react-hook-form';
-import { TranslationKeys, useLocalize, useAgentCategories } from '~/hooks';
+import { type TranslationKeys, useAgentCategories, useLocalize } from '~/hooks';
 import { cn } from '~/utils';
 
 /**

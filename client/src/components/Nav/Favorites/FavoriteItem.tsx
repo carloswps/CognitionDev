@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
 import * as Menu from '@ariakit/react/menu';
-import { Ellipsis, PinOff } from 'lucide-react';
 import { DropdownPopup } from '@librechat/client';
+import type { Agent, TEndpointsConfig, TModelSpec } from 'librechat-data-provider';
 import { EModelEndpoint } from 'librechat-data-provider';
-import type { Agent, TModelSpec, TEndpointsConfig } from 'librechat-data-provider';
-import type { FavoriteModel } from '~/store/favorites';
+import { Ellipsis, PinOff } from 'lucide-react';
+import React, { useState } from 'react';
 import SpecIcon from '~/components/Chat/Menus/Endpoints/components/SpecIcon';
 import MinimalIcon from '~/components/Endpoints/MinimalIcon';
 import { useFavorites, useLocalize } from '~/hooks';
-import { renderAgentAvatar, cn } from '~/utils';
+import type { FavoriteModel } from '~/store/favorites';
+import { cn, renderAgentAvatar } from '~/utils';
 
 type Kwargs = {
   model?: string;
@@ -50,11 +50,15 @@ export default function FavoriteItem(props: FavoriteItemProps) {
 
   const handleSelect = () => {
     if (props.type === 'agent') {
-      props.onSelectEndpoint?.(EModelEndpoint.agents, { agent_id: props.item.id });
+      props.onSelectEndpoint?.(EModelEndpoint.agents, {
+        agent_id: props.item.id,
+      });
     } else if (props.type === 'spec') {
       props.onSelectSpec?.(props.item);
     } else {
-      props.onSelectEndpoint?.(props.item.endpoint, { model: props.item.model });
+      props.onSelectEndpoint?.(props.item.endpoint, {
+        model: props.item.model,
+      });
     }
   };
 

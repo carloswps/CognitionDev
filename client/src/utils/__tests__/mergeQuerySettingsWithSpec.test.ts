@@ -1,5 +1,5 @@
-import { EModelEndpoint } from 'librechat-data-provider';
 import type { TPreset } from 'librechat-data-provider';
+import { EModelEndpoint } from 'librechat-data-provider';
 import { mergeQuerySettingsWithSpec, specDisplayFieldReset } from '../endpoints';
 
 describe('mergeQuerySettingsWithSpec', () => {

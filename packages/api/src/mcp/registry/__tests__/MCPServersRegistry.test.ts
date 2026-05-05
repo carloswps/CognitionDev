@@ -1,6 +1,6 @@
-import type * as t from '~/mcp/types';
-import { MCPServersRegistry } from '~/mcp/registry/MCPServersRegistry';
 import { MCPServerInspector } from '~/mcp/registry/MCPServerInspector';
+import { MCPServersRegistry } from '~/mcp/registry/MCPServersRegistry';
+import type * as t from '~/mcp/types';
 
 // Mock MCPServerInspector to avoid actual server connections
 jest.mock('~/mcp/registry/MCPServerInspector');
@@ -146,7 +146,10 @@ describe('MCPServersRegistry', () => {
       it('should route updateServer to cache repository', async () => {
         await registry.addServer('cache_server', testParsedConfig, 'CACHE');
 
-        const updatedConfig = { ...testParsedConfig, command: 'python' } as t.ParsedServerConfig;
+        const updatedConfig = {
+          ...testParsedConfig,
+          command: 'python',
+        } as t.ParsedServerConfig;
         await registry.updateServer('cache_server', updatedConfig, 'CACHE');
 
         const config = await registry.getServerConfig('cache_server');

@@ -1,16 +1,16 @@
-import { Capabilities } from 'librechat-data-provider';
-import { useFormContext, Controller } from 'react-hook-form';
 import {
   Checkbox,
+  CircleHelpIcon,
   HoverCard,
   HoverCardContent,
   HoverCardPortal,
   HoverCardTrigger,
-  CircleHelpIcon,
 } from '@librechat/client';
+import { Capabilities } from 'librechat-data-provider';
+import { Controller, useFormContext } from 'react-hook-form';
 import type { AssistantForm } from '~/common';
-import { useLocalize } from '~/hooks';
 import { ESide } from '~/common';
+import { useLocalize } from '~/hooks';
 
 export default function Code({ version }: { version: number | string }) {
   const localize = useLocalize();

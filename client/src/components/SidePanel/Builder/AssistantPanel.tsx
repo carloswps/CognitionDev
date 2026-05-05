@@ -1,35 +1,35 @@
-import { useState, useMemo } from 'react';
-import { useGetModelsQuery } from 'librechat-data-provider/react-query';
-import { Spinner, useToastContext, SelectDropDown } from '@librechat/client';
-import { useForm, FormProvider, Controller, useWatch } from 'react-hook-form';
-import {
-  Tools,
-  Capabilities,
-  isActionTool,
-  ImageVisionTool,
-  defaultAssistantFormValues,
-} from 'librechat-data-provider';
+import { SelectDropDown, Spinner, useToastContext } from '@librechat/client';
 import type { FunctionTool, TConfig } from 'librechat-data-provider';
-import type { AssistantForm, AssistantPanelProps } from '~/common';
 import {
+  Capabilities,
+  defaultAssistantFormValues,
+  ImageVisionTool,
+  isActionTool,
+  Tools,
+} from 'librechat-data-provider';
+import { useGetModelsQuery } from 'librechat-data-provider/react-query';
+import { useMemo, useState } from 'react';
+import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
+import type { AssistantForm, AssistantPanelProps } from '~/common';
+import { Panel } from '~/common';
+import AssistantToolsDialog from '~/components/Tools/AssistantToolsDialog';
+import {
+  useAvailableAgentToolsQuery,
   useCreateAssistantMutation,
   useUpdateAssistantMutation,
-  useAvailableAgentToolsQuery,
 } from '~/data-provider';
-import { cn, cardStyle, defaultTextProps, removeFocusOutlines } from '~/utils';
-import AssistantConversationStarters from './AssistantConversationStarters';
-import AssistantToolsDialog from '~/components/Tools/AssistantToolsDialog';
-import { useSelectAssistant, useLocalize } from '~/hooks';
+import { useLocalize, useSelectAssistant } from '~/hooks';
 import { useAssistantsMapContext } from '~/Providers';
-import AppendDateCheckbox from './AppendDateCheckbox';
-import CapabilitiesForm from './CapabilitiesForm';
-import AssistantAvatar from './AssistantAvatar';
-import AssistantSelect from './AssistantSelect';
-import ContextButton from './ContextButton';
-import AssistantTool from './AssistantTool';
-import Knowledge from './Knowledge';
-import { Panel } from '~/common';
+import { cardStyle, cn, defaultTextProps, removeFocusOutlines } from '~/utils';
 import Action from './Action';
+import AppendDateCheckbox from './AppendDateCheckbox';
+import AssistantAvatar from './AssistantAvatar';
+import AssistantConversationStarters from './AssistantConversationStarters';
+import AssistantSelect from './AssistantSelect';
+import AssistantTool from './AssistantTool';
+import CapabilitiesForm from './CapabilitiesForm';
+import ContextButton from './ContextButton';
+import Knowledge from './Knowledge';
 
 const labelClass = 'mb-2 text-token-text-primary block font-medium';
 const inputClass = cn(

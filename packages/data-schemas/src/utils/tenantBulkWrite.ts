@@ -1,5 +1,5 @@
-import type { AnyBulkWriteOperation, Model, MongooseBulkWriteOptions } from 'mongoose';
 import type { BulkWriteResult } from 'mongodb';
+import type { AnyBulkWriteOperation, Model, MongooseBulkWriteOptions } from 'mongoose';
 import { getTenantId, SYSTEM_TENANT_ID } from '~/config/tenantContext';
 import logger from '~/config/winston';
 

@@ -635,8 +635,14 @@ const createResponse = async (req, res) => {
         {
           spendTokens: db.spendTokens,
           spendStructuredTokens: db.spendStructuredTokens,
-          pricing: { getMultiplier: db.getMultiplier, getCacheMultiplier: db.getCacheMultiplier },
-          bulkWriteOps: { insertMany: db.bulkInsertTransactions, updateBalance: db.updateBalance },
+          pricing: {
+            getMultiplier: db.getMultiplier,
+            getCacheMultiplier: db.getCacheMultiplier,
+          },
+          bulkWriteOps: {
+            insertMany: db.bulkInsertTransactions,
+            updateBalance: db.updateBalance,
+          },
         },
         {
           user: userId,
@@ -695,7 +701,12 @@ const createResponse = async (req, res) => {
 
       /** @type {Promise<import('librechat-data-provider').TAttachment | null>[]} */
       const artifactPromises = [];
-      const toolEndCallback = createToolEndCallback({ req, res, artifactPromises, streamId: null });
+      const toolEndCallback = createToolEndCallback({
+        req,
+        res,
+        artifactPromises,
+        streamId: null,
+      });
 
       const toolExecuteOptions = {
         loadTools: async (toolNames, agentId) => {
@@ -800,8 +811,14 @@ const createResponse = async (req, res) => {
         {
           spendTokens: db.spendTokens,
           spendStructuredTokens: db.spendStructuredTokens,
-          pricing: { getMultiplier: db.getMultiplier, getCacheMultiplier: db.getCacheMultiplier },
-          bulkWriteOps: { insertMany: db.bulkInsertTransactions, updateBalance: db.updateBalance },
+          pricing: {
+            getMultiplier: db.getMultiplier,
+            getCacheMultiplier: db.getCacheMultiplier,
+          },
+          bulkWriteOps: {
+            insertMany: db.bulkInsertTransactions,
+            updateBalance: db.updateBalance,
+          },
         },
         {
           user: userId,
@@ -963,7 +980,10 @@ const getResponse = async (req, res) => {
     }
 
     // Load messages for this conversation
-    const messages = await db.getMessages({ conversationId: responseId, user: userId });
+    const messages = await db.getMessages({
+      conversationId: responseId,
+      user: userId,
+    });
 
     if (!messages || messages.length === 0) {
       return sendResponsesErrorResponse(

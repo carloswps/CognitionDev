@@ -1,8 +1,8 @@
-import React from 'react';
-import { RecoilRoot } from 'recoil';
 import { renderHook } from '@testing-library/react';
-import { PermissionTypes, Permissions } from 'librechat-data-provider';
 import type { TUser } from 'librechat-data-provider';
+import { Permissions, PermissionTypes } from 'librechat-data-provider';
+import type React from 'react';
+import { RecoilRoot } from 'recoil';
 
 const mockUseHasAccess = jest.fn();
 const mockUseMCPServersQuery = jest.fn();
@@ -52,7 +52,10 @@ const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 
 describe('useAppStartup — MCP permission gating', () => {
   beforeEach(() => {
-    mockUseMCPServersQuery.mockReturnValue({ data: undefined, isLoading: false });
+    mockUseMCPServersQuery.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+    });
     mockUseMCPToolsQuery.mockReturnValue({ data: undefined, isLoading: false });
   });
 
@@ -114,7 +117,10 @@ describe('useAppStartup — MCP permission gating', () => {
 
   it('suppresses tools query while servers are still loading', () => {
     mockUseHasAccess.mockReturnValue(true);
-    mockUseMCPServersQuery.mockReturnValue({ data: undefined, isLoading: true });
+    mockUseMCPServersQuery.mockReturnValue({
+      data: undefined,
+      isLoading: true,
+    });
 
     renderHook(() => useAppStartup({ startupConfig: undefined, user: mockUser }), { wrapper });
 

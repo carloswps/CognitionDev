@@ -1,6 +1,6 @@
+import { Label, Radio } from '@librechat/client';
 import { useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Label, Radio } from '@librechat/client';
 import { useLocalize } from '~/hooks';
 import type { MCPServerFormData } from '../hooks/useMCPServerForm';
 
@@ -18,7 +18,10 @@ export default function TransportSection() {
 
   const transportOptions = useMemo(
     () => [
-      { value: 'streamable-http', label: localize('com_ui_mcp_type_streamable_http') },
+      {
+        value: 'streamable-http',
+        label: localize('com_ui_mcp_type_streamable_http'),
+      },
       { value: 'sse', label: localize('com_ui_mcp_type_sse') },
     ],
     [localize],

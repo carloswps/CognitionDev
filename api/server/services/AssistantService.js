@@ -80,7 +80,12 @@ async function createOnTextProgress({
  * @return {Promise<OpenAIAssistantFinish | OpenAIAssistantAction[] | ThreadMessage[] | RequiredActionFunctionToolCall[]>}
  */
 async function getResponse({ openai, run_id, thread_id }) {
-  const run = await waitForRun({ openai, run_id, thread_id, pollIntervalMs: 2000 });
+  const run = await waitForRun({
+    openai,
+    run_id,
+    thread_id,
+    pollIntervalMs: 2000,
+  });
 
   if (run.status === RunStatus.COMPLETED) {
     const messages = await openai.beta.threads.messages.list(thread_id, defaultOrderQuery);
@@ -281,7 +286,9 @@ function createInProgressHandler(openai, thread_id, messages) {
 
       openai.seenCompletedMessages.add(message_id);
 
-      const message = await openai.beta.threads.messages.retrieve(message_id, { thread_id });
+      const message = await openai.beta.threads.messages.retrieve(message_id, {
+        thread_id,
+      });
       if (!message?.content?.length) {
         return;
       }
@@ -295,7 +302,11 @@ function createInProgressHandler(openai, thread_id, messages) {
         openai.index++;
       }
 
-      const result = await processMessages({ openai, client: openai, messages: [message] });
+      const result = await processMessages({
+        openai,
+        client: openai,
+        messages: [message],
+      });
       openai.addContentData({
         [ContentTypes.TEXT]: { value: result.text },
         type: ContentTypes.TEXT,
@@ -352,7 +363,7 @@ async function runAssistant({
 }) {
   const appConfig = openai.req.config;
   let steps = accumulatedSteps;
-  let messages = accumulatedMessages;
+  const messages = accumulatedMessages;
   const in_progress = inProgress ?? createInProgressHandler(openai, thread_id, messages);
   openai.in_progress = in_progress;
 

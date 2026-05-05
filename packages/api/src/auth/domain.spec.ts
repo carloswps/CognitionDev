@@ -8,8 +8,8 @@ import {
   extractMCPServerDomain,
   isActionDomainAllowed,
   isEmailDomainAllowed,
-  isOAuthUrlAllowed,
   isMCPDomainAllowed,
+  isOAuthUrlAllowed,
   isPrivateIP,
   isSSRFTarget,
   resolveHostnameSSRF,
@@ -884,7 +884,10 @@ describe('extractMCPServerDomain', () => {
 
   describe('stdio transports (no URL)', () => {
     it('should return null for stdio transport with command only', () => {
-      const config = { command: 'npx', args: ['-y', '@modelcontextprotocol/server-puppeteer'] };
+      const config = {
+        command: 'npx',
+        args: ['-y', '@modelcontextprotocol/server-puppeteer'],
+      };
       expect(extractMCPServerDomain(config)).toBeNull();
     });
 
@@ -932,7 +935,10 @@ describe('isMCPDomainAllowed', () => {
 
   describe('stdio transports (always allowed)', () => {
     it('should allow stdio transport regardless of allowlist', async () => {
-      const config = { command: 'npx', args: ['-y', '@modelcontextprotocol/server-puppeteer'] };
+      const config = {
+        command: 'npx',
+        args: ['-y', '@modelcontextprotocol/server-puppeteer'],
+      };
       expect(await isMCPDomainAllowed(config, ['example.com'])).toBe(true);
     });
 

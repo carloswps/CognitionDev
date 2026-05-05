@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { Constants } from 'librechat-data-provider';
 import type { Artifact } from '~/common';
 
@@ -33,9 +33,9 @@ jest.mock('recoil', () => {
   };
 });
 
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 /** Import mocked functions after mocking */
 import { useArtifactsContext } from '~/Providers';
-import { useRecoilValue, useRecoilState, useResetRecoilState } from 'recoil';
 import { logger } from '~/utils';
 import useArtifacts from '../useArtifacts';
 
@@ -105,9 +105,18 @@ describe('useArtifacts', () => {
   describe('artifact ordering', () => {
     it('should order artifacts by lastUpdateTime', () => {
       const artifacts = {
-        'artifact-3': createArtifact({ id: 'artifact-3', lastUpdateTime: 3000 }),
-        'artifact-1': createArtifact({ id: 'artifact-1', lastUpdateTime: 1000 }),
-        'artifact-2': createArtifact({ id: 'artifact-2', lastUpdateTime: 2000 }),
+        'artifact-3': createArtifact({
+          id: 'artifact-3',
+          lastUpdateTime: 3000,
+        }),
+        'artifact-1': createArtifact({
+          id: 'artifact-1',
+          lastUpdateTime: 1000,
+        }),
+        'artifact-2': createArtifact({
+          id: 'artifact-2',
+          lastUpdateTime: 2000,
+        }),
       };
 
       (useRecoilValue as jest.Mock).mockReturnValue(artifacts);
@@ -119,8 +128,14 @@ describe('useArtifacts', () => {
 
     it('should automatically select latest artifact', () => {
       const artifacts = {
-        'artifact-1': createArtifact({ id: 'artifact-1', lastUpdateTime: 1000 }),
-        'artifact-2': createArtifact({ id: 'artifact-2', lastUpdateTime: 2000 }),
+        'artifact-1': createArtifact({
+          id: 'artifact-1',
+          lastUpdateTime: 1000,
+        }),
+        'artifact-2': createArtifact({
+          id: 'artifact-2',
+          lastUpdateTime: 2000,
+        }),
       };
 
       (useRecoilValue as jest.Mock).mockReturnValue(artifacts);
@@ -374,9 +389,14 @@ describe('useArtifacts', () => {
 
   describe('artifact selection preservation', () => {
     it('should preserve selection when a new artifact is added', () => {
-      const artifact1 = createArtifact({ id: 'artifact-1', lastUpdateTime: 1000 });
+      const artifact1 = createArtifact({
+        id: 'artifact-1',
+        lastUpdateTime: 1000,
+      });
 
-      (useRecoilValue as jest.Mock).mockReturnValue({ 'artifact-1': artifact1 });
+      (useRecoilValue as jest.Mock).mockReturnValue({
+        'artifact-1': artifact1,
+      });
       (useRecoilState as jest.Mock).mockReturnValue(['artifact-1', mockSetCurrentArtifactId]);
 
       const { rerender } = renderHook(() => useArtifacts());
@@ -384,7 +404,10 @@ describe('useArtifacts', () => {
       mockSetCurrentArtifactId.mockClear();
 
       /** Append a second artifact; mock still returns 'artifact-1' as current */
-      const artifact2 = createArtifact({ id: 'artifact-2', lastUpdateTime: 2000 });
+      const artifact2 = createArtifact({
+        id: 'artifact-2',
+        lastUpdateTime: 2000,
+      });
       (useRecoilValue as jest.Mock).mockReturnValue({
         'artifact-1': artifact1,
         'artifact-2': artifact2,
@@ -396,9 +419,15 @@ describe('useArtifacts', () => {
     });
 
     it('should advance to new artifact during streaming', () => {
-      const artifact1 = createArtifact({ id: 'artifact-1', lastUpdateTime: 1000, content: 'c1' });
+      const artifact1 = createArtifact({
+        id: 'artifact-1',
+        lastUpdateTime: 1000,
+        content: 'c1',
+      });
 
-      (useRecoilValue as jest.Mock).mockReturnValue({ 'artifact-1': artifact1 });
+      (useRecoilValue as jest.Mock).mockReturnValue({
+        'artifact-1': artifact1,
+      });
       (useRecoilState as jest.Mock).mockReturnValue(['artifact-1', mockSetCurrentArtifactId]);
       (useArtifactsContext as jest.Mock).mockReturnValue({
         ...defaultContext,
@@ -409,7 +438,11 @@ describe('useArtifacts', () => {
       const { rerender } = renderHook(() => useArtifacts());
       mockSetCurrentArtifactId.mockClear();
 
-      const artifact2 = createArtifact({ id: 'artifact-2', lastUpdateTime: 2000, content: 'c2' });
+      const artifact2 = createArtifact({
+        id: 'artifact-2',
+        lastUpdateTime: 2000,
+        content: 'c2',
+      });
       (useRecoilValue as jest.Mock).mockReturnValue({
         'artifact-1': artifact1,
         'artifact-2': artifact2,
@@ -421,10 +454,15 @@ describe('useArtifacts', () => {
     });
 
     it('should keep selection null after an explicit reset', () => {
-      const artifact1 = createArtifact({ id: 'artifact-1', lastUpdateTime: 1000 });
+      const artifact1 = createArtifact({
+        id: 'artifact-1',
+        lastUpdateTime: 1000,
+      });
 
       /** First render: valid selection */
-      (useRecoilValue as jest.Mock).mockReturnValue({ 'artifact-1': artifact1 });
+      (useRecoilValue as jest.Mock).mockReturnValue({
+        'artifact-1': artifact1,
+      });
       (useRecoilState as jest.Mock).mockReturnValue(['artifact-1', mockSetCurrentArtifactId]);
 
       const { rerender } = renderHook(() => useArtifacts());
@@ -488,9 +526,18 @@ describe('useArtifacts', () => {
   describe('currentIndex calculation', () => {
     it('should return correct index for current artifact', () => {
       const artifacts = {
-        'artifact-1': createArtifact({ id: 'artifact-1', lastUpdateTime: 1000 }),
-        'artifact-2': createArtifact({ id: 'artifact-2', lastUpdateTime: 2000 }),
-        'artifact-3': createArtifact({ id: 'artifact-3', lastUpdateTime: 3000 }),
+        'artifact-1': createArtifact({
+          id: 'artifact-1',
+          lastUpdateTime: 1000,
+        }),
+        'artifact-2': createArtifact({
+          id: 'artifact-2',
+          lastUpdateTime: 2000,
+        }),
+        'artifact-3': createArtifact({
+          id: 'artifact-3',
+          lastUpdateTime: 3000,
+        }),
       };
 
       (useRecoilValue as jest.Mock).mockReturnValue(artifacts);
@@ -534,11 +581,19 @@ describe('useArtifacts', () => {
     });
 
     it('should handle multiple artifacts in sequence', () => {
-      const artifact1 = createArtifact({ id: 'artifact-1', messageId: 'msg-1' });
-      const artifact2 = createArtifact({ id: 'artifact-2', messageId: 'msg-2' });
+      const artifact1 = createArtifact({
+        id: 'artifact-1',
+        messageId: 'msg-1',
+      });
+      const artifact2 = createArtifact({
+        id: 'artifact-2',
+        messageId: 'msg-2',
+      });
 
       /** First artifact */
-      (useRecoilValue as jest.Mock).mockReturnValue({ 'artifact-1': artifact1 });
+      (useRecoilValue as jest.Mock).mockReturnValue({
+        'artifact-1': artifact1,
+      });
       (useArtifactsContext as jest.Mock).mockReturnValue({
         ...defaultContext,
         isSubmitting: true,

@@ -13,16 +13,16 @@
  * 6. Mixed headers: some placeholders resolve, others are blocked.
  */
 
-import * as net from 'net';
-import * as http from 'http';
-import { Agent } from 'undici';
-import { Types } from 'mongoose';
-import { randomUUID } from 'crypto';
+import type { IUser } from '@librechat/data-schemas';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
+import { randomUUID } from 'crypto';
+import * as http from 'http';
 import type { MCPOptions } from 'librechat-data-provider';
-import type { IUser } from '@librechat/data-schemas';
+import { Types } from 'mongoose';
 import type { Socket } from 'net';
+import * as net from 'net';
+import { Agent } from 'undici';
 import { MCPConnection } from '~/mcp/connection';
 import { processMCPEnv } from '~/utils/env';
 
@@ -148,8 +148,13 @@ async function createHeaderCapturingServer(): Promise<TestServer> {
     let transport = sid ? sessions.get(sid) : undefined;
 
     if (!transport) {
-      transport = new StreamableHTTPServerTransport({ sessionIdGenerator: () => randomUUID() });
-      const mcp = new McpServer({ name: 'header-capture-server', version: '0.0.1' });
+      transport = new StreamableHTTPServerTransport({
+        sessionIdGenerator: () => randomUUID(),
+      });
+      const mcp = new McpServer({
+        name: 'header-capture-server',
+        version: '0.0.1',
+      });
       mcp.tool('echo', 'Echo tool for testing', {}, async () => ({
         content: [{ type: 'text', text: 'ok' }],
       }));
@@ -267,7 +272,10 @@ describe('dbSourced header security – integration', () => {
   });
 
   it('DB-sourced: does NOT resolve {{LIBRECHAT_USER_*}} placeholders', async () => {
-    const user = createTestUser({ id: 'user-secret-id', email: 'private@corp.com' });
+    const user = createTestUser({
+      id: 'user-secret-id',
+      email: 'private@corp.com',
+    });
     const options: MCPOptions = {
       type: 'streamable-http',
       url: server.url,
@@ -334,7 +342,11 @@ describe('dbSourced header security – integration', () => {
 
   it('DB-sourced: mixed headers — customUserVars resolve, everything else blocked', async () => {
     const user = createTestUser({ id: 'user-id-value' });
-    const body = { conversationId: 'conv-id-value', parentMessageId: 'p-1', messageId: 'm-1' };
+    const body = {
+      conversationId: 'conv-id-value',
+      parentMessageId: 'p-1',
+      messageId: 'm-1',
+    };
     const options: MCPOptions = {
       type: 'streamable-http',
       url: server.url,
@@ -382,8 +394,15 @@ describe('dbSourced header security – integration', () => {
   });
 
   it('YAML-sourced (default): resolves ALL placeholder types', async () => {
-    const user = createTestUser({ id: 'yaml-user-id', email: 'yaml@example.com' });
-    const body = { conversationId: 'yaml-conv-id', parentMessageId: 'p-1', messageId: 'm-1' };
+    const user = createTestUser({
+      id: 'yaml-user-id',
+      email: 'yaml@example.com',
+    });
+    const body = {
+      conversationId: 'yaml-conv-id',
+      parentMessageId: 'p-1',
+      messageId: 'm-1',
+    };
     const options: MCPOptions = {
       type: 'streamable-http',
       url: server.url,

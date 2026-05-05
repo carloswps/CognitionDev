@@ -1,12 +1,12 @@
+import type { SearchResultData, TAttachment, TMessageContentParts } from 'librechat-data-provider';
 import { memo, useMemo } from 'react';
-import type { TMessageContentParts, SearchResultData, TAttachment } from 'librechat-data-provider';
-import { SearchContext } from '~/Providers';
-import MemoryArtifacts from './MemoryArtifacts';
 import Sources from '~/components/Web/Sources';
+import { SearchContext } from '~/Providers';
+import { cn } from '~/utils';
+import Container from './Container';
+import MemoryArtifacts from './MemoryArtifacts';
 import { EmptyText } from './Parts';
 import SiblingHeader from './SiblingHeader';
-import Container from './Container';
-import { cn } from '~/utils';
 
 export type PartWithIndex = { part: TMessageContentParts; idx: number };
 

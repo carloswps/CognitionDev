@@ -1,4 +1,4 @@
-import { isSafeUrl, getMarkdownFiles, EMBEDDED_IS_SAFE_URL } from '../markdown';
+import { EMBEDDED_IS_SAFE_URL, getMarkdownFiles, isSafeUrl } from '../markdown';
 
 describe('isSafeUrl', () => {
   it('allows https URLs', () => {

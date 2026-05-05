@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import { Permissions, PermissionTypes, roleDefaults, SystemRoles } from 'librechat-data-provider';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { SystemRoles, Permissions, roleDefaults, PermissionTypes } from 'librechat-data-provider';
+import mongoose from 'mongoose';
 import type { IRole, IUser, RolePermissions } from '..';
-import { createRoleMethods } from './role';
 import { createModels } from '../models';
+import { createRoleMethods } from './role';
 
 jest.mock('~/config/winston', () => ({
   error: jest.fn(),
@@ -203,7 +203,9 @@ describe('updateAccessPermissions', () => {
       USE: false,
       SHARE: true,
     });
-    expect(updatedRole.permissions[PermissionTypes.BOOKMARKS]).toEqual({ USE: false });
+    expect(updatedRole.permissions[PermissionTypes.BOOKMARKS]).toEqual({
+      USE: false,
+    });
   });
 
   it('should handle updates for a single permission type', async () => {
@@ -239,7 +241,9 @@ describe('updateAccessPermissions', () => {
     });
 
     const updatedRole = await getRoleByName(SystemRoles.USER);
-    expect(updatedRole.permissions[PermissionTypes.MULTI_CONVO]).toEqual({ USE: true });
+    expect(updatedRole.permissions[PermissionTypes.MULTI_CONVO]).toEqual({
+      USE: true,
+    });
   });
 
   it('should update MULTI_CONVO permissions along with other permission types', async () => {
@@ -262,7 +266,9 @@ describe('updateAccessPermissions', () => {
       USE: true,
       SHARE: true,
     });
-    expect(updatedRole.permissions[PermissionTypes.MULTI_CONVO]).toEqual({ USE: true });
+    expect(updatedRole.permissions[PermissionTypes.MULTI_CONVO]).toEqual({
+      USE: true,
+    });
   });
 
   it('should inherit SHARED_GLOBAL value into SHARE when SHARE is absent from both DB and update', async () => {
@@ -271,8 +277,16 @@ describe('updateAccessPermissions', () => {
     await Role.collection.insertOne({
       name: SystemRoles.USER,
       permissions: {
-        [PermissionTypes.PROMPTS]: { USE: true, CREATE: true, SHARED_GLOBAL: true },
-        [PermissionTypes.AGENTS]: { USE: true, CREATE: true, SHARED_GLOBAL: false },
+        [PermissionTypes.PROMPTS]: {
+          USE: true,
+          CREATE: true,
+          SHARED_GLOBAL: true,
+        },
+        [PermissionTypes.AGENTS]: {
+          USE: true,
+          CREATE: true,
+          SHARED_GLOBAL: false,
+        },
       },
     });
 
@@ -384,7 +398,9 @@ describe('updateAccessPermissions', () => {
     });
 
     const updatedRole = await getRoleByName(SystemRoles.USER);
-    expect(updatedRole.permissions[PermissionTypes.MULTI_CONVO]).toEqual({ USE: true });
+    expect(updatedRole.permissions[PermissionTypes.MULTI_CONVO]).toEqual({
+      USE: true,
+    });
   });
 });
 
@@ -544,7 +560,10 @@ describe('initializeRoles', () => {
 
 describe('createRoleByName', () => {
   it('creates a custom role and caches it', async () => {
-    const role = await createRoleByName({ name: 'editor', description: 'Can edit' });
+    const role = await createRoleByName({
+      name: 'editor',
+      description: 'Can edit',
+    });
 
     expect(role.name).toBe('editor');
     expect(role.description).toBe('Can edit');
@@ -595,9 +614,19 @@ describe('deleteRoleByName', () => {
   it('deletes a custom role and reassigns users to USER', async () => {
     await createRoleByName({ name: 'editor' });
     await User.create([
-      { name: 'Alice', email: 'alice@test.com', role: 'editor', username: 'alice' },
+      {
+        name: 'Alice',
+        email: 'alice@test.com',
+        role: 'editor',
+        username: 'alice',
+      },
       { name: 'Bob', email: 'bob@test.com', role: 'editor', username: 'bob' },
-      { name: 'Carol', email: 'carol@test.com', role: SystemRoles.USER, username: 'carol' },
+      {
+        name: 'Carol',
+        email: 'carol@test.com',
+        role: SystemRoles.USER,
+        username: 'carol',
+      },
     ]);
 
     const deleted = await deleteRoleByName('editor');
@@ -674,9 +703,19 @@ describe('updateRoleByName - cache on rename', () => {
 describe('listUsersByRole', () => {
   it('returns users matching the role', async () => {
     await User.create([
-      { name: 'Alice', email: 'alice@test.com', role: 'editor', username: 'alice' },
+      {
+        name: 'Alice',
+        email: 'alice@test.com',
+        role: 'editor',
+        username: 'alice',
+      },
       { name: 'Bob', email: 'bob@test.com', role: 'editor', username: 'bob' },
-      { name: 'Carol', email: 'carol@test.com', role: SystemRoles.USER, username: 'carol' },
+      {
+        name: 'Carol',
+        email: 'carol@test.com',
+        role: SystemRoles.USER,
+        username: 'carol',
+      },
     ]);
 
     const users = await listUsersByRole('editor');
@@ -735,9 +774,19 @@ describe('listUsersByRole', () => {
 describe('updateUsersByRole', () => {
   it('migrates all users from one role to another', async () => {
     await User.create([
-      { name: 'Alice', email: 'alice@test.com', role: 'editor', username: 'alice' },
+      {
+        name: 'Alice',
+        email: 'alice@test.com',
+        role: 'editor',
+        username: 'alice',
+      },
       { name: 'Bob', email: 'bob@test.com', role: 'editor', username: 'bob' },
-      { name: 'Carol', email: 'carol@test.com', role: SystemRoles.USER, username: 'carol' },
+      {
+        name: 'Carol',
+        email: 'carol@test.com',
+        role: SystemRoles.USER,
+        username: 'carol',
+      },
     ]);
 
     await updateUsersByRole('editor', 'senior-editor');
@@ -768,9 +817,19 @@ describe('updateUsersByRole', () => {
 describe('countUsersByRole', () => {
   it('returns the count of users with the given role', async () => {
     await User.create([
-      { name: 'Alice', email: 'alice@test.com', role: 'editor', username: 'alice' },
+      {
+        name: 'Alice',
+        email: 'alice@test.com',
+        role: 'editor',
+        username: 'alice',
+      },
       { name: 'Bob', email: 'bob@test.com', role: 'editor', username: 'bob' },
-      { name: 'Carol', email: 'carol@test.com', role: SystemRoles.USER, username: 'carol' },
+      {
+        name: 'Carol',
+        email: 'carol@test.com',
+        role: SystemRoles.USER,
+        username: 'carol',
+      },
     ]);
 
     expect(await countUsersByRole('editor')).toBe(2);
@@ -890,7 +949,9 @@ describe('createRoleByName - duplicate key race', () => {
     await createRoleByName({ name: 'editor' });
 
     const insertSpy = jest.spyOn(Role.prototype, 'save').mockImplementationOnce(() => {
-      const err = new Error('E11000 duplicate key error') as Error & { code: number };
+      const err = new Error('E11000 duplicate key error') as Error & {
+        code: number;
+      };
       err.code = 11000;
       throw err;
     });

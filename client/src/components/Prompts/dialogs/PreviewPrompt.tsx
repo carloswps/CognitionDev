@@ -1,7 +1,7 @@
-import { OGDialogContent, OGDialog, OGDialogTitle } from '@librechat/client';
+import { OGDialog, OGDialogContent, OGDialogTitle } from '@librechat/client';
 import type { TPromptGroup } from 'librechat-data-provider';
-import PromptDetails from '../display/PromptDetails';
 import { useLocalize } from '~/hooks';
+import PromptDetails from '../display/PromptDetails';
 
 const PreviewPrompt = ({
   group,

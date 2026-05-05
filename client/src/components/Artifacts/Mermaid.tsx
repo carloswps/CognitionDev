@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import mermaid from 'mermaid';
 import { Button } from '@librechat/client';
-import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+import { RotateCcw, ZoomIn, ZoomOut } from 'lucide-react';
+import mermaid from 'mermaid';
+import type React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ReactZoomPanPinchRef } from 'react-zoom-pan-pinch';
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { artifactFlowchartConfig } from '~/utils/mermaid';
 
 interface MermaidDiagramProps {
@@ -129,11 +130,20 @@ const MermaidDiagram: React.FC<MermaidDiagramProps> = ({ content, isDarkMode = t
         {({ zoomIn, zoomOut }) => (
           <>
             <TransformComponent
-              wrapperStyle={{ width: '100%', height: '100%', overflow: 'hidden' }}
+              wrapperStyle={{
+                width: '100%',
+                height: '100%',
+                overflow: 'hidden',
+              }}
             >
               <div
                 ref={mermaidRef}
-                style={{ width: 'auto', height: 'auto', minWidth: '100%', minHeight: '100%' }}
+                style={{
+                  width: 'auto',
+                  height: 'auto',
+                  minWidth: '100%',
+                  minHeight: '100%',
+                }}
               />
             </TransformComponent>
             <div className="absolute bottom-2 right-2 flex space-x-2">

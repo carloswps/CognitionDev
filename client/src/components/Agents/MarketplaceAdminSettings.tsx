@@ -1,10 +1,10 @@
-import { ShieldEllipsis } from 'lucide-react';
-import { Permissions, PermissionTypes } from 'librechat-data-provider';
 import { Button, useToastContext } from '@librechat/client';
+import { Permissions, PermissionTypes } from 'librechat-data-provider';
+import { ShieldEllipsis } from 'lucide-react';
+import type { PermissionConfig } from '~/components/ui';
 import { AdminSettingsDialog } from '~/components/ui';
 import { useUpdateMarketplacePermissionsMutation } from '~/data-provider';
 import { useLocalize } from '~/hooks';
-import type { PermissionConfig } from '~/components/ui';
 
 const permissions: PermissionConfig[] = [
   { permission: Permissions.USE, labelKey: 'com_ui_marketplace_allow_use' },
@@ -19,7 +19,10 @@ const MarketplaceAdminSettings = ({ compact = false }: { compact?: boolean }) =>
       showToast({ status: 'success', message: localize('com_ui_saved') });
     },
     onError: () => {
-      showToast({ status: 'error', message: localize('com_ui_error_save_admin_settings') });
+      showToast({
+        status: 'error',
+        message: localize('com_ui_error_save_admin_settings'),
+      });
     },
   });
 

@@ -1,16 +1,16 @@
-import { isMainThread } from 'node:worker_threads';
 import { AsyncLocalStorage } from 'node:async_hooks';
+import { isMainThread } from 'node:worker_threads';
+import type { ConfigSection, SystemCapability } from '@librechat/data-schemas';
 import {
-  logger,
   configCapability,
-  SystemCapabilities,
+  logger,
   readConfigCapability,
+  SystemCapabilities,
 } from '@librechat/data-schemas';
-import type { SystemCapability, ConfigSection } from '@librechat/data-schemas';
 import type { NextFunction, Response } from 'express';
-import type { Types, ClientSession } from 'mongoose';
-import type { ResolvedPrincipal } from '~/types/principal';
+import type { ClientSession, Types } from 'mongoose';
 import type { ServerRequest } from '~/types/http';
+import type { ResolvedPrincipal } from '~/types/principal';
 
 interface CapabilityDeps {
   getUserPrincipals: (
@@ -130,7 +130,10 @@ export function generateCapabilityCheck(deps: CapabilityDeps): {
     if (cachedPrincipals) {
       principals = cachedPrincipals;
     } else {
-      principals = await getUserPrincipals({ userId: user.id, role: user.role });
+      principals = await getUserPrincipals({
+        userId: user.id,
+        role: user.role,
+      });
       store?.principals.set(principalKey, principals);
     }
 

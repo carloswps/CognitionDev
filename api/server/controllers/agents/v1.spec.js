@@ -1788,7 +1788,13 @@ describe('Agent Controllers - Mass Assignment Protection', () => {
         name: 'Self-Ref Agent',
         provider: 'openai',
         model: 'gpt-4',
-        edges: [{ from: 'agent_does_not_exist_yet', to: 'agent_also_new', edgeType: 'handoff' }],
+        edges: [
+          {
+            from: 'agent_does_not_exist_yet',
+            to: 'agent_also_new',
+            edgeType: 'handoff',
+          },
+        ],
       };
 
       await createAgentHandler(mockReq, mockRes);

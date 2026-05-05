@@ -1,9 +1,9 @@
-import mongoose, { Types } from 'mongoose';
+import { PrincipalModel, PrincipalType } from 'librechat-data-provider';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { PrincipalType, PrincipalModel } from 'librechat-data-provider';
-import { createConfigMethods } from './config';
+import mongoose, { Types } from 'mongoose';
 import configSchema from '~/schema/config';
 import type { IConfig } from '~/types';
+import { createConfigMethods } from './config';
 
 let mongoServer: MongoMemoryServer;
 let methods: ReturnType<typeof createConfigMethods>;

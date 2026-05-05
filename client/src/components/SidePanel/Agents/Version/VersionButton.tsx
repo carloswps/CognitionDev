@@ -1,7 +1,7 @@
-import { History } from 'lucide-react';
 import { Button } from '@librechat/client';
-import { useLocalize } from '~/hooks';
+import { History } from 'lucide-react';
 import { Panel } from '~/common';
+import { useLocalize } from '~/hooks';
 
 interface VersionButtonProps {
   setActivePanel: (panel: Panel) => void;

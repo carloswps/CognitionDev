@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { useRecoilValue } from 'recoil';
-import { useParams } from 'react-router-dom';
-import { Constants } from 'librechat-data-provider';
-import { useToastContext, useMediaQuery } from '@librechat/client';
+import { useMediaQuery, useToastContext } from '@librechat/client';
 import type { TConversation } from 'librechat-data-provider';
-import { useUpdateConversationMutation } from '~/data-provider';
-import EndpointIcon from '~/components/Endpoints/EndpointIcon';
-import { useNavigateToConvo, useLocalize, useShiftKey } from '~/hooks';
-import { useGetEndpointsQuery } from '~/data-provider';
+import { Constants } from 'librechat-data-provider';
+import type React from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { NotificationSeverity } from '~/common';
-import { ConvoOptions } from './ConvoOptions';
-import RenameForm from './RenameForm';
+import EndpointIcon from '~/components/Endpoints/EndpointIcon';
+import { useGetEndpointsQuery, useUpdateConversationMutation } from '~/data-provider';
+import { useLocalize, useNavigateToConvo, useShiftKey } from '~/hooks';
+import store from '~/store';
 import { cn, logger } from '~/utils';
 import ConvoLink from './ConvoLink';
-import store from '~/store';
+import { ConvoOptions } from './ConvoOptions';
+import RenameForm from './RenameForm';
 
 interface ConversationProps {
   conversation: TConversation;

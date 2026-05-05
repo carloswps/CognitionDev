@@ -112,7 +112,9 @@ router.post('/:assistant_id', async (req, res) => {
         })),
       );
 
-    let updatedAssistant = await openai.beta.assistants.update(assistant_id, { tools });
+    let updatedAssistant = await openai.beta.assistants.update(assistant_id, {
+      tools,
+    });
     const promises = [];
 
     // Only update user field for new assistant documents
@@ -131,9 +133,9 @@ router.post('/:assistant_id', async (req, res) => {
     promises.push(db.updateAction({ action_id, assistant_id }, actionUpdateData));
 
     /** @type {[AssistantDocument, Action]} */
-    let [assistantDocument, updatedAction] = await Promise.all(promises);
+    const [assistantDocument, updatedAction] = await Promise.all(promises);
     const sensitiveFields = ['api_key', 'oauth_client_id', 'oauth_client_secret'];
-    for (let field of sensitiveFields) {
+    for (const field of sensitiveFields) {
       if (updatedAction.metadata[field]) {
         delete updatedAction.metadata[field];
       }

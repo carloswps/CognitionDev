@@ -1,7 +1,7 @@
 import type { TUserMemory } from 'librechat-data-provider';
-import MemoryEmptyState from './MemoryEmptyState';
-import MemoryCard from './MemoryCard';
 import { useLocalize } from '~/hooks';
+import MemoryCard from './MemoryCard';
+import MemoryEmptyState from './MemoryEmptyState';
 
 interface MemoryListProps {
   memories: TUserMemory[];

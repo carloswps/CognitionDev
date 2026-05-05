@@ -102,7 +102,9 @@ async function migrateOrphanedAgentFiles({ dryRun = true, batchSize = 100 } = {}
         }
       } catch (error) {
         results.errors++;
-        logger.error(`Failed to process agent ${agent.id}`, { error: error.message });
+        logger.error(`Failed to process agent ${agent.id}`, {
+          error: error.message,
+        });
       }
     }
 

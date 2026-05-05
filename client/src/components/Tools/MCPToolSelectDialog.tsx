@@ -1,22 +1,22 @@
-import { useEffect, useState, useMemo } from 'react';
-import { Search, X } from 'lucide-react';
-import { useFormContext } from 'react-hook-form';
+import { Description, Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { Constants, EModelEndpoint, QueryKeys } from 'librechat-data-provider';
-import { Dialog, DialogPanel, DialogTitle, Description } from '@headlessui/react';
+import type { AgentToolType, TError } from 'librechat-data-provider';
+import { Constants, type EModelEndpoint, QueryKeys } from 'librechat-data-provider';
 import { useUpdateUserPluginsMutation } from 'librechat-data-provider/react-query';
-import type { TError, AgentToolType } from 'librechat-data-provider';
+import { Search, X } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 import type { AgentForm, ToolDialogProps } from '~/common';
-import {
-  usePluginDialogHelpers,
-  useMCPServerManager,
-  useRemoveMCPTool,
-  useLocalize,
-} from '~/hooks';
 import CustomUserVarsSection from '~/components/MCP/CustomUserVarsSection';
 import { PluginPagination } from '~/components/Plugins/Store';
-import { useAgentPanelContext } from '~/Providers';
 import { useMCPToolsQuery } from '~/data-provider';
+import {
+  useLocalize,
+  useMCPServerManager,
+  usePluginDialogHelpers,
+  useRemoveMCPTool,
+} from '~/hooks';
+import { useAgentPanelContext } from '~/Providers';
 import MCPToolItem from './MCPToolItem';
 
 function MCPToolSelectDialog({
@@ -294,7 +294,9 @@ function MCPToolSelectDialog({
             <div className="p-4 sm:p-6 sm:pt-4">
               <div className="mb-4">
                 <p className="text-sm text-text-secondary">
-                  {localize('com_ui_mcp_configure_server_description', { 0: configuringServer })}
+                  {localize('com_ui_mcp_configure_server_description', {
+                    0: configuringServer,
+                  })}
                 </p>
               </div>
               <CustomUserVarsSection

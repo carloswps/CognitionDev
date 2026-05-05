@@ -72,7 +72,10 @@ describe('detectOAuthRequirement — MCP_OAUTH_ON_AUTH_ERROR fallback', () => {
   });
 
   it('honors a 403 observed by the probe without issuing a second HEAD', async () => {
-    mockFetch.mockResolvedValue({ status: 403, headers: new Headers() } as Response);
+    mockFetch.mockResolvedValue({
+      status: 403,
+      headers: new Headers(),
+    } as Response);
 
     const result = await detectOAuthRequirement('https://mcp.example.com');
 
@@ -100,7 +103,10 @@ describe('detectOAuthRequirement — MCP_OAUTH_ON_AUTH_ERROR fallback', () => {
   });
 
   it('does not fire fallback when the probe observed a clean 200', async () => {
-    mockFetch.mockResolvedValue({ status: 200, headers: new Headers() } as Response);
+    mockFetch.mockResolvedValue({
+      status: 200,
+      headers: new Headers(),
+    } as Response);
 
     const result = await detectOAuthRequirement('https://mcp.example.com');
 
@@ -114,9 +120,10 @@ describe('detectOAuthRequirement — MCP_OAUTH_ON_AUTH_ERROR fallback', () => {
     // If HEAD transiently fails (timeout/ECONNRESET) but POST responds non-auth, the
     // probe must treat HEAD status as "unknown" so the fallback still gets a chance
     // to classify 401/403 servers correctly.
-    mockFetch
-      .mockRejectedValueOnce(new Error('ETIMEDOUT'))
-      .mockResolvedValueOnce({ status: 200, headers: new Headers() } as Response);
+    mockFetch.mockRejectedValueOnce(new Error('ETIMEDOUT')).mockResolvedValueOnce({
+      status: 200,
+      headers: new Headers(),
+    } as Response);
     // Fallback HEAD finally succeeds and returns 401.
     mockFetch.mockResolvedValueOnce({
       status: 401,
@@ -134,8 +141,14 @@ describe('detectOAuthRequirement — MCP_OAUTH_ON_AUTH_ERROR fallback', () => {
     // A server that isn't OAuth-protected but 403s body-less POSTs for WAF/CSRF reasons
     // must NOT be misclassified as OAuth-required. The fallback is scoped to HEAD status.
     mockFetch
-      .mockResolvedValueOnce({ status: 200, headers: new Headers() } as Response)
-      .mockResolvedValueOnce({ status: 403, headers: new Headers() } as Response);
+      .mockResolvedValueOnce({
+        status: 200,
+        headers: new Headers(),
+      } as Response)
+      .mockResolvedValueOnce({
+        status: 403,
+        headers: new Headers(),
+      } as Response);
 
     const result = await detectOAuthRequirement('https://mcp.example.com');
 

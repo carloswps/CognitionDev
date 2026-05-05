@@ -1,16 +1,16 @@
 import {
-  paramDefinitionSchema,
   agentsEndpointSchema,
   azureEndpointSchema,
-  endpointSchema,
   configSchema,
-  interfaceSchema,
+  endpointSchema,
   fileStorageSchema,
   fileStrategiesSchema,
-  summarizationTriggerSchema,
+  interfaceSchema,
+  paramDefinitionSchema,
   summarizationConfigSchema,
+  summarizationTriggerSchema,
 } from '../src/config';
-import { tModelSpecPresetSchema, EModelEndpoint } from '../src/schemas';
+import { EModelEndpoint, tModelSpecPresetSchema } from '../src/schemas';
 import { FileSources } from '../src/types/files';
 
 describe('paramDefinitionSchema', () => {
@@ -491,7 +491,10 @@ describe('fileStrategiesSchema', () => {
 
 describe('configSchema fileStrategy', () => {
   it('rejects a processing strategy as fileStrategy', () => {
-    const result = configSchema.safeParse({ version: '1.3.7', fileStrategy: FileSources.vectordb });
+    const result = configSchema.safeParse({
+      version: '1.3.7',
+      fileStrategy: FileSources.vectordb,
+    });
     expect(result.success).toBe(false);
   });
 
@@ -546,19 +549,31 @@ describe('summarizationTriggerSchema', () => {
       false,
     );
     expect(
-      summarizationTriggerSchema.safeParse({ type: 'remaining_tokens', value: -1 }).success,
+      summarizationTriggerSchema.safeParse({
+        type: 'remaining_tokens',
+        value: -1,
+      }).success,
     ).toBe(false);
     expect(
-      summarizationTriggerSchema.safeParse({ type: 'messages_to_refine', value: -1 }).success,
+      summarizationTriggerSchema.safeParse({
+        type: 'messages_to_refine',
+        value: -1,
+      }).success,
     ).toBe(false);
   });
 
   it('rejects zero for count-based triggers where it has no meaningful effect', () => {
     expect(
-      summarizationTriggerSchema.safeParse({ type: 'remaining_tokens', value: 0 }).success,
+      summarizationTriggerSchema.safeParse({
+        type: 'remaining_tokens',
+        value: 0,
+      }).success,
     ).toBe(false);
     expect(
-      summarizationTriggerSchema.safeParse({ type: 'messages_to_refine', value: 0 }).success,
+      summarizationTriggerSchema.safeParse({
+        type: 'messages_to_refine',
+        value: 0,
+      }).success,
     ).toBe(false);
   });
 
@@ -582,10 +597,16 @@ describe('summarizationTriggerSchema', () => {
 
   it('allows remaining_tokens and messages_to_refine values above 1 (token/message counts)', () => {
     expect(
-      summarizationTriggerSchema.safeParse({ type: 'remaining_tokens', value: 2000 }).success,
+      summarizationTriggerSchema.safeParse({
+        type: 'remaining_tokens',
+        value: 2000,
+      }).success,
     ).toBe(true);
     expect(
-      summarizationTriggerSchema.safeParse({ type: 'messages_to_refine', value: 20 }).success,
+      summarizationTriggerSchema.safeParse({
+        type: 'messages_to_refine',
+        value: 20,
+      }).success,
     ).toBe(true);
   });
 
@@ -599,10 +620,16 @@ describe('summarizationTriggerSchema', () => {
 
   it('requires integer values for count-based triggers', () => {
     expect(
-      summarizationTriggerSchema.safeParse({ type: 'remaining_tokens', value: 500.5 }).success,
+      summarizationTriggerSchema.safeParse({
+        type: 'remaining_tokens',
+        value: 500.5,
+      }).success,
     ).toBe(false);
     expect(
-      summarizationTriggerSchema.safeParse({ type: 'messages_to_refine', value: 2.5 }).success,
+      summarizationTriggerSchema.safeParse({
+        type: 'messages_to_refine',
+        value: 2.5,
+      }).success,
     ).toBe(false);
   });
 

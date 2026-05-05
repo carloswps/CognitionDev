@@ -7,10 +7,10 @@
 
 import { MCPConnection } from '~/mcp/connection';
 import { MCPConnectionFactory } from '~/mcp/MCPConnectionFactory';
-import { createOAuthMCPServer } from './helpers/oauthTestServer';
-import type { OAuthTestServer } from './helpers/oauthTestServer';
-import type { StreamableHTTPOptions } from '~/mcp/types';
 import type { MCPOAuthTokens } from '~/mcp/oauth';
+import type { StreamableHTTPOptions } from '~/mcp/types';
+import type { OAuthTestServer } from './helpers/oauthTestServer';
+import { createOAuthMCPServer } from './helpers/oauthTestServer';
 
 jest.mock('@librechat/data-schemas', () => ({
   logger: {
@@ -29,7 +29,10 @@ jest.mock('~/auth', () => ({
 }));
 
 jest.mock('~/mcp/mcpConfig', () => ({
-  mcpConfig: { CONNECTION_CHECK_TTL: 0, USER_CONNECTION_IDLE_TIMEOUT: 30 * 60 * 1000 },
+  mcpConfig: {
+    CONNECTION_CHECK_TTL: 0,
+    USER_CONNECTION_IDLE_TIMEOUT: 30 * 60 * 1000,
+  },
 }));
 
 async function safeDisconnect(conn: MCPConnection | null): Promise<void> {

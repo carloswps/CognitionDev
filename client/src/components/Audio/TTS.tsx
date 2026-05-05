@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/media-has-caption */
+
+import { Spinner, VolumeIcon, VolumeMuteIcon } from '@librechat/client';
 import { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import type { TMessageAudio } from '~/common';
-import { VolumeIcon, VolumeMuteIcon, Spinner } from '@librechat/client';
 import { useLocalize, useTTSBrowser, useTTSExternal } from '~/hooks';
-import { logger } from '~/utils';
 import store from '~/store';
+import { logger } from '~/utils';
 
 export function BrowserTTS({
   isLast,

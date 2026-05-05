@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { throttle } from 'lodash';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface UseInfiniteScrollOptions {
   hasNextPage?: boolean;
@@ -71,7 +71,9 @@ export const useInfiniteScroll = ({
     if (!element) return;
 
     // Add the scroll listener
-    element.addEventListener('scroll', throttledHandleNeedToFetch, { passive: true });
+    element.addEventListener('scroll', throttledHandleNeedToFetch, {
+      passive: true,
+    });
 
     // Set up ResizeObserver to detect size changes
     if (resizeObserverRef.current) {

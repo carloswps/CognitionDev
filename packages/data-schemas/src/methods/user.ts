@@ -1,6 +1,7 @@
-import mongoose, { FilterQuery } from 'mongoose';
-import type { IUser, BalanceConfig, CreateUserRequest, UserDeleteResult } from '~/types';
+import type mongoose from 'mongoose';
+import type { FilterQuery } from 'mongoose';
 import { signPayload } from '~/crypto';
+import type { BalanceConfig, CreateUserRequest, IUser, UserDeleteResult } from '~/types';
 
 /** Default JWT session expiry: 15 minutes in milliseconds */
 export const DEFAULT_SESSION_EXPIRY = 1000 * 60 * 15;
@@ -47,7 +48,11 @@ export function createUserMethods(mongoose: typeof import('mongoose')) {
   async function findUsers(
     searchCriteria: FilterQuery<IUser>,
     fieldsToSelect?: string | string[] | null,
-    options?: { limit?: number; offset?: number; sort?: Record<string, 1 | -1> },
+    options?: {
+      limit?: number;
+      offset?: number;
+      sort?: Record<string, 1 | -1>;
+    },
   ): Promise<IUser[]> {
     const User = mongoose.models.User as mongoose.Model<IUser>;
     const normalizedCriteria = normalizeEmailInCriteria(searchCriteria);
@@ -178,7 +183,10 @@ export function createUserMethods(mongoose: typeof import('mongoose')) {
       if (result.deletedCount === 0) {
         return { deletedCount: 0, message: 'No user found with that ID.' };
       }
-      return { deletedCount: result.deletedCount, message: 'User was deleted successfully.' };
+      return {
+        deletedCount: result.deletedCount,
+        message: 'User was deleted successfully.',
+      };
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       throw new Error('Error deleting user: ' + errorMessage);
@@ -245,7 +253,7 @@ export function createUserMethods(mongoose: typeof import('mongoose')) {
    * @param fieldsToSelect - The fields to include or exclude in the returned documents
    * @returns Array of matching user documents
    */
-  const searchUsers = async function ({
+  const searchUsers = async ({
     searchPattern,
     limit = 20,
     fieldsToSelect = null,
@@ -253,7 +261,7 @@ export function createUserMethods(mongoose: typeof import('mongoose')) {
     searchPattern: string;
     limit?: number;
     fieldsToSelect?: string | string[] | null;
-  }) {
+  }) => {
     if (!searchPattern || searchPattern.trim().length === 0) {
       return [];
     }

@@ -1,12 +1,12 @@
-import { useMemo } from 'react';
-import { SquareSlash } from 'lucide-react';
-import { replaceSpecialVars } from 'librechat-data-provider';
 import type { TPromptGroup } from 'librechat-data-provider';
-import { useLocalize, useAuthContext } from '~/hooks';
-import PromptDetailHeader from './PromptDetailHeader';
-import PromptVariables from './PromptVariables';
-import PromptTextCard from './PromptTextCard';
+import { replaceSpecialVars } from 'librechat-data-provider';
+import { SquareSlash } from 'lucide-react';
+import { useMemo } from 'react';
+import { useAuthContext, useLocalize } from '~/hooks';
 import PromptActions from './PromptActions';
+import PromptDetailHeader from './PromptDetailHeader';
+import PromptTextCard from './PromptTextCard';
+import PromptVariables from './PromptVariables';
 
 interface PromptDetailsProps {
   group?: TPromptGroup;

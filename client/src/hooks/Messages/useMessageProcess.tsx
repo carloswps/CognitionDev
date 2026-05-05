@@ -1,9 +1,9 @@
-import throttle from 'lodash/throttle';
-import { Constants } from 'librechat-data-provider';
-import { useEffect, useRef, useMemo } from 'react';
 import type { TMessage } from 'librechat-data-provider';
-import { getTextKey, TEXT_KEY_DIVIDER, logger } from '~/utils';
+import { Constants } from 'librechat-data-provider';
+import throttle from 'lodash/throttle';
+import { useEffect, useMemo, useRef } from 'react';
 import { useMessagesViewContext } from '~/Providers';
+import { getTextKey, logger, TEXT_KEY_DIVIDER } from '~/utils';
 
 export default function useMessageProcess({ message }: { message?: TMessage | null }) {
   const latestText = useRef<string | number>('');

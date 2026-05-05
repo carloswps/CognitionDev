@@ -139,7 +139,10 @@ const verifyEmail = async (req) => {
     return { message: 'Email already verified', status: 'success' };
   }
 
-  let emailVerificationData = await findToken({ email: decodedEmail }, { sort: { createdAt: -1 } });
+  const emailVerificationData = await findToken(
+    { email: decodedEmail },
+    { sort: { createdAt: -1 } },
+  );
 
   if (!emailVerificationData) {
     logger.warn(`[verifyEmail] [No email verification data found] [Email: ${decodedEmail}]`);
@@ -155,7 +158,9 @@ const verifyEmail = async (req) => {
     return new Error('Invalid or expired email verification token');
   }
 
-  const updatedUser = await updateUser(emailVerificationData.userId, { emailVerified: true });
+  const updatedUser = await updateUser(emailVerificationData.userId, {
+    emailVerified: true,
+  });
 
   if (!updatedUser) {
     logger.warn(`[verifyEmail] [User update failed] [Email: ${decodedEmail}]`);
@@ -362,7 +367,7 @@ const requestPasswordReset = async (req) => {
  * @returns
  */
 const resetPassword = async (userId, token, password) => {
-  let passwordResetToken = await findToken(
+  const passwordResetToken = await findToken(
     {
       userId,
     },

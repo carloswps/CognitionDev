@@ -1,4 +1,4 @@
-import type { Schema, Query, Aggregate, UpdateQuery } from 'mongoose';
+import type { Aggregate, Query, Schema, UpdateQuery } from 'mongoose';
 import { getTenantId, SYSTEM_TENANT_ID } from '~/config/tenantContext';
 import logger from '~/config/winston';
 
@@ -188,7 +188,7 @@ export function applyTenantIsolation(schema: Schema): void {
     }
   });
 
-  schema.pre('insertMany', function (next, docs) {
+  schema.pre('insertMany', (next, docs) => {
     const tenantId = getTenantId();
 
     if (!tenantId && isStrict()) {

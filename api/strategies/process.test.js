@@ -107,7 +107,9 @@ describe('handleExistingUser', () => {
       userId: 'user123',
       manual: 'false',
     });
-    expect(updateUser).toHaveBeenCalledWith('user123', { avatar: 'processed-avatar-url' });
+    expect(updateUser).toHaveBeenCalledWith('user123', {
+      avatar: 'processed-avatar-url',
+    });
   });
 
   it('should not update if avatar already has manual flag in non-local storage', async () => {
@@ -179,7 +181,9 @@ describe('handleExistingUser', () => {
 
     await handleExistingUser(oldUser, avatarUrl, {}, newEmail);
 
-    expect(updateUser).toHaveBeenCalledWith('user123', { email: 'new@example.com' });
+    expect(updateUser).toHaveBeenCalledWith('user123', {
+      email: 'new@example.com',
+    });
   });
 
   it('should update both avatar and email when both have changed', async () => {
@@ -224,7 +228,9 @@ describe('handleExistingUser', () => {
 
     await handleExistingUser(oldUser, avatarUrl, {}, newEmailWithSpaces);
 
-    expect(updateUser).toHaveBeenCalledWith('user123', { email: 'newemail@example.com' });
+    expect(updateUser).toHaveBeenCalledWith('user123', {
+      email: 'newemail@example.com',
+    });
   });
 
   it('should not update when email parameter is not provided', async () => {

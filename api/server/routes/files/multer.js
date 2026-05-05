@@ -11,7 +11,7 @@ const {
 const { getAppConfig } = require('~/server/services/Config');
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
+  destination: (req, file, cb) => {
     const appConfig = req.config;
     const outputPath = path.join(appConfig.paths.uploads, 'temp', req.user.id);
     if (!fs.existsSync(outputPath)) {
@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
     }
     cb(null, outputPath);
   },
-  filename: function (req, file, cb) {
+  filename: (req, file, cb) => {
     req.file_id = crypto.randomUUID();
     file.originalname = decodeURIComponent(file.originalname);
     const sanitizedFilename = sanitizeFilename(file.originalname);

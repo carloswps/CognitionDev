@@ -1,24 +1,24 @@
-import React, { useMemo, useCallback } from 'react';
-import { useGetModelsQuery } from 'librechat-data-provider/react-query';
+import type {
+  Agent,
+  Assistant,
+  TAssistantsMap,
+  TEndpointsConfig,
+  TStartupConfig,
+} from 'librechat-data-provider';
 import {
-  Permissions,
   alternateName,
   EModelEndpoint,
-  PermissionTypes,
-  getEndpointField,
   getConfigDefaults,
+  getEndpointField,
+  Permissions,
+  PermissionTypes,
 } from 'librechat-data-provider';
-import type {
-  TEndpointsConfig,
-  TAssistantsMap,
-  TStartupConfig,
-  Assistant,
-  Agent,
-} from 'librechat-data-provider';
+import { useGetModelsQuery } from 'librechat-data-provider/react-query';
+import React, { useCallback, useMemo } from 'react';
 import type { Endpoint } from '~/common';
 import { useGetEndpointsQuery } from '~/data-provider';
-import { mapEndpoints, getIconKey } from '~/utils';
 import { useHasAccess } from '~/hooks';
+import { getIconKey, mapEndpoints } from '~/utils';
 import { icons } from './Icons';
 
 const defaultInterface = getConfigDefaults().interface;
@@ -35,7 +35,9 @@ export const useEndpoints = ({
   startupConfig: TStartupConfig | undefined;
 }) => {
   const modelsQuery = useGetModelsQuery();
-  const { data: endpoints = [] } = useGetEndpointsQuery({ select: mapEndpoints });
+  const { data: endpoints = [] } = useGetEndpointsQuery({
+    select: mapEndpoints,
+  });
   const interfaceConfig = startupConfig?.interface ?? defaultInterface;
   const includedEndpoints = useMemo(
     () => new Set(startupConfig?.modelSpecs?.addedEndpoints ?? []),
@@ -85,7 +87,11 @@ export const useEndpoints = ({
   const mappedEndpoints: Endpoint[] = useMemo(() => {
     return filteredEndpoints.map((ep) => {
       const endpointType = getEndpointField(endpointsConfig, ep, 'type');
-      const iconKey = getIconKey({ endpoint: ep, endpointsConfig, endpointType });
+      const iconKey = getIconKey({
+        endpoint: ep,
+        endpointsConfig,
+        endpointType,
+      });
       const Icon = icons[iconKey];
       const endpointIconURL = getEndpointField(endpointsConfig, ep, 'iconURL');
       const hasModels =

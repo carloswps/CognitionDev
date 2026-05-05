@@ -1,9 +1,8 @@
-import { useForm } from 'react-hook-form';
-import { Spinner, Button } from '@librechat/client';
-import { useOutletContext } from 'react-router-dom';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useResetPasswordMutation } from 'librechat-data-provider/react-query';
+import { Button, Spinner } from '@librechat/client';
 import type { TResetPassword } from 'librechat-data-provider';
+import { useResetPasswordMutation } from 'librechat-data-provider/react-query';
+import { useForm } from 'react-hook-form';
+import { useNavigate, useOutletContext, useSearchParams } from 'react-router-dom';
 import type { TLoginLayoutContext } from '~/common';
 import { useLocalize } from '~/hooks';
 
@@ -67,13 +66,17 @@ function ResetPassword() {
             type="hidden"
             id="token"
             value={params.get('token') ?? ''}
-            {...register('token', { required: 'Unable to process: No valid reset token' })}
+            {...register('token', {
+              required: 'Unable to process: No valid reset token',
+            })}
           />
           <input
             type="hidden"
             id="userId"
             value={params.get('userId') ?? ''}
-            {...register('userId', { required: 'Unable to process: No valid user id' })}
+            {...register('userId', {
+              required: 'Unable to process: No valid user id',
+            })}
           />
           <input
             type="password"

@@ -1,7 +1,7 @@
-import mongoose, { Schema } from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { tenantStorage, runAsSystem, SYSTEM_TENANT_ID } from '~/config/tenantContext';
-import { applyTenantIsolation, _resetStrictCache } from './tenantIsolation';
+import mongoose, { Schema } from 'mongoose';
+import { runAsSystem, SYSTEM_TENANT_ID, tenantStorage } from '~/config/tenantContext';
+import { _resetStrictCache, applyTenantIsolation } from './tenantIsolation';
 
 let mongoServer: InstanceType<typeof MongoMemoryServer>;
 
@@ -148,10 +148,14 @@ describe('applyTenantIsolation', () => {
         TestModel.updateMany({}, { $set: { name: 'updated' } }),
       );
 
-      const tenantBDoc = await TestModel.findOne({ tenantId: 'tenant-b' }).lean();
+      const tenantBDoc = await TestModel.findOne({
+        tenantId: 'tenant-b',
+      }).lean();
       expect(tenantBDoc!.name).toBe('tenant-b-doc');
 
-      const tenantADoc = await TestModel.findOne({ tenantId: 'tenant-a' }).lean();
+      const tenantADoc = await TestModel.findOne({
+        tenantId: 'tenant-a',
+      }).lean();
       expect(tenantADoc!.name).toBe('updated');
     });
   });
@@ -228,7 +232,10 @@ describe('applyTenantIsolation', () => {
 
     it('allows mismatched tenantId on save in non-strict mode', async () => {
       const doc = await tenantStorage.run({ tenantId: 'tenant-x' }, async () => {
-        const d = new TestModel({ name: 'mismatch', tenantId: 'tenant-other' });
+        const d = new TestModel({
+          name: 'mismatch',
+          tenantId: 'tenant-other',
+        });
         await d.save();
         return d;
       });
@@ -359,10 +366,9 @@ describe('applyTenantIsolation', () => {
     it('throws on cross-tenant top-level tenantId', async () => {
       await expect(
         tenantStorage.run({ tenantId: 'tenant-a' }, async () =>
-          TestModel.updateOne({ name: 'guarded' }, { tenantId: 'tenant-b' } as Record<
-            string,
-            string
-          >),
+          TestModel.updateOne({ name: 'guarded' }, {
+            tenantId: 'tenant-b',
+          } as Record<string, string>),
         ),
       ).rejects.toThrow('[TenantIsolation] Cross-tenant tenantId mutation is not allowed');
     });

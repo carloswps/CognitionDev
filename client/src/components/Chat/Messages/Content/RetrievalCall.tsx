@@ -1,16 +1,16 @@
-import { useMemo, useState, useEffect, useCallback } from 'react';
-import { useRecoilValue } from 'recoil';
-import { Tools } from 'librechat-data-provider';
 import { TooltipAnchor } from '@librechat/client';
-import { FileText, FileSpreadsheet, FileCode, FileImage, File } from 'lucide-react';
 import type { TAttachment, TFile } from 'librechat-data-provider';
-import { useLocalize, useProgress, useExpandCollapse } from '~/hooks';
-import { ToolIcon, OutputRenderer, isError } from './ToolOutput';
-import FilePreviewDialog from './FilePreviewDialog';
-import { sortPagesByRelevance, cn } from '~/utils';
+import { Tools } from 'librechat-data-provider';
+import { File, FileCode, FileImage, FileSpreadsheet, FileText } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import { useGetFiles } from '~/data-provider';
-import ProgressText from './ProgressText';
+import { useExpandCollapse, useLocalize, useProgress } from '~/hooks';
 import store from '~/store';
+import { cn, sortPagesByRelevance } from '~/utils';
+import FilePreviewDialog from './FilePreviewDialog';
+import ProgressText from './ProgressText';
+import { isError, OutputRenderer, ToolIcon } from './ToolOutput';
 
 interface FileSource {
   fileId: string;
@@ -50,7 +50,10 @@ function extractFileSources(attachments?: TAttachment[]): FileSource[] {
         const mergedPages = [...new Set([...existing.pages, ...(source.pages || [])])];
         existing.pages = mergedPages;
         existing.relevance = Math.max(existing.relevance, source.relevance || 0);
-        existing.pageRelevance = { ...existing.pageRelevance, ...source.pageRelevance };
+        existing.pageRelevance = {
+          ...existing.pageRelevance,
+          ...source.pageRelevance,
+        };
         if (source.content && existing.content) {
           existing.content += '\n\n' + source.content;
         } else if (source.content) {
@@ -231,7 +234,11 @@ function parseRetrievalOutput(raw: string): ParsedResult[] {
     }
 
     if (filename) {
-      results.push({ filename, relevance, content: contentLines.join('\n').trim() });
+      results.push({
+        filename,
+        relevance,
+        content: contentLines.join('\n').trim(),
+      });
     }
   }
 

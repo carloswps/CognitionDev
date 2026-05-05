@@ -88,7 +88,11 @@ async function resolveConfigServers(req) {
  */
 async function resolveAllMcpConfigs(userId, user) {
   const registry = getMCPServersRegistry();
-  const appConfig = await getAppConfig({ role: user?.role, tenantId: getTenantId(), userId });
+  const appConfig = await getAppConfig({
+    role: user?.role,
+    tenantId: getTenantId(),
+    userId,
+  });
   let configServers = {};
   try {
     configServers = await registry.ensureConfigServers(appConfig?.mcpConfig || {});
@@ -147,7 +151,7 @@ function createRunStepDeltaEmitter({ res, stepId, toolCall, streamId = null }) {
    * @param {string} authURL - The URL to redirect the user for OAuth authentication.
    * @returns {Promise<void>}
    */
-  return async function (authURL) {
+  return async (authURL) => {
     /** @type {{ id: string; delta: AgentToolCallDelta }} */
     const data = {
       id: stepId,
@@ -178,7 +182,7 @@ function createRunStepDeltaEmitter({ res, stepId, toolCall, streamId = null }) {
  * @returns {() => Promise<void>}
  */
 function createRunStepEmitter({ res, runId, stepId, toolCall, index, streamId = null }) {
-  return async function () {
+  return async () => {
     /** @type {import('@librechat/agents').RunStep} */
     const data = {
       runId: runId ?? Constants.USE_PRELIM_RESPONSE_MESSAGE_ID,
@@ -212,7 +216,7 @@ function createOAuthStart({ flowId, flowManager, callback }) {
    * @param {string} authURL - The URL to redirect the user for OAuth authentication.
    * @returns {Promise<boolean>} Returns true to indicate the event was sent successfully.
    */
-  return async function (authURL) {
+  return async (authURL) => {
     await flowManager.createFlowWithHandler(flowId, 'oauth_login', async () => {
       callback?.(authURL);
       logger.debug('Sent OAuth login request to client');
@@ -229,7 +233,7 @@ function createOAuthStart({ flowId, flowManager, callback }) {
  * @param {string | null} [params.streamId] - The stream ID for resumable mode.
  */
 function createOAuthEnd({ res, stepId, toolCall, streamId = null }) {
-  return async function () {
+  return async () => {
     /** @type {{ id: string; delta: AgentToolCallDelta }} */
     const data = {
       id: stepId,
@@ -256,7 +260,7 @@ function createOAuthEnd({ res, stepId, toolCall, streamId = null }) {
  * @param {FlowStateManager<any>} params.flowManager - The flow manager instance.
  */
 function createAbortHandler({ userId, serverName, toolName, flowManager }) {
-  return function () {
+  return () => {
     logger.info(`[MCP][User: ${userId}][${serverName}][${toolName}] Tool call aborted`);
     const flowId = MCPOAuthHandler.generateFlowId(userId, serverName);
     // Clean up both mcp_oauth and mcp_get_tokens flows
@@ -272,7 +276,7 @@ function createAbortHandler({ userId, serverName, toolName, flowManager }) {
  * @returns {(authURL: string) => void}
  */
 function createOAuthCallback({ runStepEmitter, runStepDeltaEmitter }) {
-  return function (authURL) {
+  return (authURL) => {
     runStepEmitter();
     runStepDeltaEmitter(authURL);
   };
@@ -354,7 +358,10 @@ async function reconnectServer({
       toolCall,
       streamId,
     });
-    const callback = createOAuthCallback({ runStepEmitter, runStepDeltaEmitter });
+    const callback = createOAuthCallback({
+      runStepEmitter,
+      runStepDeltaEmitter,
+    });
     const oauthStart = createOAuthStart({
       res,
       flowId,
@@ -415,7 +422,10 @@ async function createMCPTools({
   const serverConfig =
     config ?? (await getMCPServersRegistry().getServerConfig(serverName, user?.id, configServers));
   if (serverConfig?.url) {
-    const appConfig = await getAppConfig({ role: user?.role, tenantId: user?.tenantId });
+    const appConfig = await getAppConfig({
+      role: user?.role,
+      tenantId: user?.tenantId,
+    });
     const allowedDomains = appConfig?.mcpSettings?.allowedDomains;
     const isDomainAllowed = await isMCPDomainAllowed(serverConfig, allowedDomains);
     if (!isDomainAllowed) {
@@ -498,7 +508,10 @@ async function createMCPTool({
   const serverConfig =
     config ?? (await getMCPServersRegistry().getServerConfig(serverName, user?.id, configServers));
   if (serverConfig?.url) {
-    const appConfig = await getAppConfig({ role: user?.role, tenantId: user?.tenantId });
+    const appConfig = await getAppConfig({
+      role: user?.role,
+      tenantId: user?.tenantId,
+    });
     const allowedDomains = appConfig?.mcpSettings?.allowedDomains;
     const isDomainAllowed = await isMCPDomainAllowed(serverConfig, allowedDomains);
     if (!isDomainAllowed) {
@@ -620,7 +633,12 @@ function createToolInstance({
       });
 
       if (derivedSignal) {
-        abortHandler = createAbortHandler({ userId, serverName, toolName, flowManager });
+        abortHandler = createAbortHandler({
+          userId,
+          serverName,
+          toolName,
+          flowManager,
+        });
         derivedSignal.addEventListener('abort', abortHandler, { once: true });
       }
 

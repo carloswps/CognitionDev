@@ -7,7 +7,9 @@ jest.mock('@librechat/agents', () => require(MOCKS).agents());
 jest.mock('@librechat/api', () => require(MOCKS).api({ limiterCache: jest.fn(() => undefined) }));
 jest.mock('@librechat/data-schemas', () => require(MOCKS).dataSchemas());
 jest.mock('librechat-data-provider', () =>
-  require(MOCKS).dataProvider({ ViolationTypes: { FILE_UPLOAD_LIMIT: 'file_upload_limit' } }),
+  require(MOCKS).dataProvider({
+    ViolationTypes: { FILE_UPLOAD_LIMIT: 'file_upload_limit' },
+  }),
 );
 
 jest.mock('~/cache/logViolation', () => jest.fn().mockResolvedValue(undefined));

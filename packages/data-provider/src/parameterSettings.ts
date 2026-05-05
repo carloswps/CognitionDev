@@ -1,18 +1,18 @@
+import type { SettingDefinition, SettingsConfiguration } from './generate';
 import {
-  Verbosity,
-  ImageDetail,
-  ThinkingLevel,
-  ThinkingDisplay,
-  EModelEndpoint,
-  openAISettings,
-  googleSettings,
-  ReasoningEffort,
   AnthropicEffort,
-  ReasoningSummary,
-  BedrockProviders,
   anthropicSettings,
+  BedrockProviders,
+  EModelEndpoint,
+  googleSettings,
+  ImageDetail,
+  openAISettings,
+  ReasoningEffort,
+  ReasoningSummary,
+  ThinkingDisplay,
+  ThinkingLevel,
+  Verbosity,
 } from './types';
-import { SettingDefinition, SettingsConfiguration } from './generate';
 
 // Base definitions
 const baseDefinitions: Record<string, SettingDefinition> = {

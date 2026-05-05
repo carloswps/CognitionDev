@@ -1,9 +1,9 @@
 import {
-  SPAN_REGEX,
-  COMPOSITE_REGEX,
-  STANDALONE_PATTERN,
   CLEANUP_REGEX,
+  COMPOSITE_REGEX,
   INVALID_CITATION_REGEX,
+  SPAN_REGEX,
+  STANDALONE_PATTERN,
 } from '../citations';
 
 describe('Citation Regex Patterns', () => {

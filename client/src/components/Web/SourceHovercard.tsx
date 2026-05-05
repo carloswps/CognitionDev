@@ -1,7 +1,7 @@
-import React, { ReactNode } from 'react';
 import * as Ariakit from '@ariakit/react';
-import { ChevronDown, FileText } from 'lucide-react';
 import { VisuallyHidden } from '@ariakit/react';
+import { ChevronDown, FileText } from 'lucide-react';
+import React, { type ReactNode } from 'react';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
 
@@ -114,7 +114,10 @@ export function SourceHovercard({
 }: SourceHovercardProps) {
   const localize = useLocalize();
   const domain = getCleanDomain(source.link || '');
-  const hovercard = Ariakit.useHovercardStore({ showTimeout: 150, hideTimeout: 150 });
+  const hovercard = Ariakit.useHovercardStore({
+    showTimeout: 150,
+    hideTimeout: 150,
+  });
 
   const handleFileClick = React.useCallback(
     (e: React.MouseEvent) => {

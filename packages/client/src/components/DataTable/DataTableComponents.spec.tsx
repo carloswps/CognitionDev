@@ -1,7 +1,7 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { SelectionCheckbox, SkeletonRows } from './DataTableComponents';
+import { fireEvent, render, screen } from '@testing-library/react';
+import type React from 'react';
 import type { TableColumn } from './DataTable.types';
+import { SelectionCheckbox, SkeletonRows } from './DataTableComponents';
 
 // Mock the cn utility
 jest.mock('~/utils', () => ({
@@ -263,7 +263,11 @@ describe('DataTableComponents', () => {
     it('should apply desktopOnly class to column cells', () => {
       const columns = [
         { accessorKey: 'name', header: 'Name' },
-        { accessorKey: 'status', header: 'Status', meta: { desktopOnly: true } },
+        {
+          accessorKey: 'status',
+          header: 'Status',
+          meta: { desktopOnly: true },
+        },
       ] as TableColumn<Record<string, unknown>, unknown>[];
 
       render(
@@ -282,7 +286,11 @@ describe('DataTableComponents', () => {
 
     it('should apply custom className from column meta', () => {
       const columns = [
-        { accessorKey: 'name', header: 'Name', meta: { className: 'custom-class' } },
+        {
+          accessorKey: 'name',
+          header: 'Name',
+          meta: { className: 'custom-class' },
+        },
       ] as TableColumn<Record<string, unknown>, unknown>[];
 
       render(

@@ -10,7 +10,7 @@ const { getUserPluginAuthValue } = require('~/server/services/PluginService');
  * @returns
  */
 const loadAuthValues = async ({ userId, authFields, optional, throwError = true }) => {
-  let authValues = {};
+  const authValues = {};
 
   /**
    * Finds the first non-empty value for the given authentication field, supporting alternate fields.
@@ -40,7 +40,7 @@ const loadAuthValues = async ({ userId, authFields, optional, throwError = true 
     return null;
   };
 
-  for (let authField of authFields) {
+  for (const authField of authFields) {
     const fields = authField.split('||');
     const result = await findAuthValue(fields);
     if (result) {

@@ -1,5 +1,5 @@
-import actionSchema from '~/schema/action';
 import { applyTenantIsolation } from '~/models/plugins/tenantIsolation';
+import actionSchema from '~/schema/action';
 import type { IAction } from '~/types';
 
 export function createActionModel(mongoose: typeof import('mongoose')) {

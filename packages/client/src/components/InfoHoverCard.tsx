@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { CircleHelpIcon } from 'lucide-react';
-import { HoverCard, HoverCardTrigger, HoverCardPortal, HoverCardContent } from './HoverCard';
-import { ESide } from '~/common';
+import { useState } from 'react';
+import type { ESide } from '~/common';
+import { HoverCard, HoverCardContent, HoverCardPortal, HoverCardTrigger } from './HoverCard';
 
 type InfoHoverCardProps = {
   side?: ESide;

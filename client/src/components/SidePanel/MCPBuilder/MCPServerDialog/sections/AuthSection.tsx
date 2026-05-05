@@ -1,11 +1,11 @@
-import { useMemo, useState } from 'react';
+import { Checkbox, Input, Label, Radio, SecretInput, useToastContext } from '@librechat/client';
 import { Copy, CopyCheck } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Label, Input, Checkbox, SecretInput, Radio, useToastContext } from '@librechat/client';
-import { AuthTypeEnum, AuthorizationTypeEnum } from '../hooks/useMCPServerForm';
-import type { MCPServerFormData } from '../hooks/useMCPServerForm';
-import { useLocalize, useCopyToClipboard } from '~/hooks';
+import { useCopyToClipboard, useLocalize } from '~/hooks';
 import { cn } from '~/utils';
+import type { MCPServerFormData } from '../hooks/useMCPServerForm';
+import { AuthorizationTypeEnum, AuthTypeEnum } from '../hooks/useMCPServerForm';
 
 interface AuthSectionProps {
   isEditMode: boolean;
@@ -200,7 +200,9 @@ export default function AuthSection({ isEditMode, serverName }: AuthSectionProps
                 aria-describedby={
                   errors.auth?.oauth_client_secret ? 'oauth-client-secret-error' : undefined
                 }
-                {...register('auth.oauth_client_secret', { required: !isEditMode })}
+                {...register('auth.oauth_client_secret', {
+                  required: !isEditMode,
+                })}
                 className={cn(errors.auth?.oauth_client_secret && 'border-border-destructive')}
               />
               {errors.auth?.oauth_client_secret && (
@@ -265,7 +267,9 @@ export default function AuthSection({ isEditMode, serverName }: AuthSectionProps
                   type="button"
                   onClick={() => {
                     if (isCopying) return;
-                    showToast({ message: localize('com_ui_copied_to_clipboard') });
+                    showToast({
+                      message: localize('com_ui_copied_to_clipboard'),
+                    });
                     copyLink(setIsCopying);
                   }}
                   className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border-light text-text-secondary transition-colors hover:bg-surface-hover hover:text-text-primary"

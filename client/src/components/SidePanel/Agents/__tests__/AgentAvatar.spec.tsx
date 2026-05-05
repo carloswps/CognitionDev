@@ -2,9 +2,9 @@
  * @jest-environment jsdom
  */
 /* eslint-disable i18next/no-literal-string */
-import { describe, it, expect } from '@jest/globals';
-import { render, fireEvent } from '@testing-library/react';
-import { FormProvider, useForm, type UseFormReturn } from 'react-hook-form';
+import { describe, expect, it } from '@jest/globals';
+import { fireEvent, render } from '@testing-library/react';
+import { FormProvider, type UseFormReturn, useForm } from 'react-hook-form';
 import type { AgentForm } from '~/common';
 import AgentAvatar from '../AgentAvatar';
 
@@ -68,7 +68,9 @@ describe('AgentAvatar reset menu', () => {
         defaultValues: {
           ...defaultFormValues,
           avatar_preview: 'data:image/png;base64,abc',
-          avatar_file: new File(['avatar'], 'avatar.png', { type: 'image/png' }),
+          avatar_file: new File(['avatar'], 'avatar.png', {
+            type: 'image/png',
+          }),
           avatar_action: 'upload',
         },
       });

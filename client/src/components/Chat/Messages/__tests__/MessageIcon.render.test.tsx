@@ -1,7 +1,7 @@
-import React from 'react';
 import { render } from '@testing-library/react';
-import { EModelEndpoint } from 'librechat-data-provider';
 import type { Agent } from 'librechat-data-provider';
+import { EModelEndpoint } from 'librechat-data-provider';
+import React from 'react';
 import type { TMessageIcon } from '~/common';
 
 jest.mock('librechat-data-provider', () => ({
@@ -88,7 +88,9 @@ describe('MessageIcon render cycles', () => {
     const { rerender } = render(<MessageIcon iconData={baseIconData} agent={agent1} />);
     iconRenderCount.current = 0;
 
-    const agent2 = makeAgent({ avatar: { filepath: '/images/new-avatar.png' } });
+    const agent2 = makeAgent({
+      avatar: { filepath: '/images/new-avatar.png' },
+    });
     rerender(<MessageIcon iconData={baseIconData} agent={agent2} />);
 
     expect(iconRenderCount.current).toBe(1);

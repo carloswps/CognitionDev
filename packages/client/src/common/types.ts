@@ -1,4 +1,4 @@
-import { NotificationSeverity } from './enum';
+import type { NotificationSeverity } from './enum';
 
 export type TShowToast = {
   message: string;

@@ -1,14 +1,19 @@
-import { Types } from 'mongoose';
-import { PrincipalType, SystemRoles } from 'librechat-data-provider';
 import type { IUser, UserDeleteResult } from '@librechat/data-schemas';
 import type { Response } from 'express';
+import { PrincipalType, SystemRoles } from 'librechat-data-provider';
+import { Types } from 'mongoose';
 import type { ServerRequest } from '~/types/http';
 import type { AdminUsersDeps } from './users';
 import { createAdminUsersHandlers } from './users';
 
 jest.mock('@librechat/data-schemas', () => ({
   ...jest.requireActual('@librechat/data-schemas'),
-  logger: { error: jest.fn(), warn: jest.fn(), info: jest.fn(), debug: jest.fn() },
+  logger: {
+    error: jest.fn(),
+    warn: jest.fn(),
+    info: jest.fn(),
+    debug: jest.fn(),
+  },
 }));
 
 const validUserId = new Types.ObjectId().toString();
@@ -32,7 +37,12 @@ function createReqRes(
   overrides: {
     params?: Record<string, string>;
     query?: Record<string, string | string[]>;
-    user?: { _id?: Types.ObjectId; id?: string; role?: string; tenantId?: string };
+    user?: {
+      _id?: Types.ObjectId;
+      id?: string;
+      role?: string;
+      tenantId?: string;
+    };
   } = {},
 ) {
   const req = {
@@ -53,9 +63,10 @@ function createDeps(overrides: Partial<AdminUsersDeps> = {}): AdminUsersDeps {
   return {
     findUsers: jest.fn().mockResolvedValue([]),
     countUsers: jest.fn().mockResolvedValue(0),
-    deleteUserById: jest
-      .fn()
-      .mockResolvedValue({ deletedCount: 1, message: 'User was deleted successfully.' }),
+    deleteUserById: jest.fn().mockResolvedValue({
+      deletedCount: 1,
+      message: 'User was deleted successfully.',
+    }),
     deleteConfig: jest.fn().mockResolvedValue(null),
     deleteAclEntries: jest.fn().mockResolvedValue(undefined),
     ...overrides,
@@ -95,7 +106,9 @@ describe('createAdminUsersHandlers', () => {
       const countUsers = jest.fn().mockResolvedValue(0);
       const deps = createDeps({ findUsers, countUsers });
       const handlers = createAdminUsersHandlers(deps);
-      const { req, res } = createReqRes({ query: { limit: '10', offset: '20' } });
+      const { req, res } = createReqRes({
+        query: { limit: '10', offset: '20' },
+      });
 
       await handlers.listUsers(req, res);
 
@@ -120,7 +133,9 @@ describe('createAdminUsersHandlers', () => {
     });
 
     it('returns 500 when findUsers throws', async () => {
-      const deps = createDeps({ findUsers: jest.fn().mockRejectedValue(new Error('db down')) });
+      const deps = createDeps({
+        findUsers: jest.fn().mockRejectedValue(new Error('db down')),
+      });
       const handlers = createAdminUsersHandlers(deps);
       const { req, res, status, json } = createReqRes();
 
@@ -147,7 +162,9 @@ describe('createAdminUsersHandlers', () => {
   describe('searchUsers', () => {
     it('returns matching users with total and capped flag', async () => {
       const users = [mockUser()];
-      const deps = createDeps({ findUsers: jest.fn().mockResolvedValue(users) });
+      const deps = createDeps({
+        findUsers: jest.fn().mockResolvedValue(users),
+      });
       const handlers = createAdminUsersHandlers(deps);
       const { req, res, status, json } = createReqRes({ query: { q: 'test' } });
 
@@ -166,9 +183,13 @@ describe('createAdminUsersHandlers', () => {
 
     it('sets capped to true when results hit the limit', async () => {
       const users = Array.from({ length: 20 }, () => mockUser());
-      const deps = createDeps({ findUsers: jest.fn().mockResolvedValue(users) });
+      const deps = createDeps({
+        findUsers: jest.fn().mockResolvedValue(users),
+      });
       const handlers = createAdminUsersHandlers(deps);
-      const { req, res, json } = createReqRes({ query: { q: 'test', limit: '20' } });
+      const { req, res, json } = createReqRes({
+        query: { q: 'test', limit: '20' },
+      });
 
       await handlers.searchUsers(req, res);
 
@@ -226,7 +247,9 @@ describe('createAdminUsersHandlers', () => {
       await handlers.searchUsers(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'Query parameter "q" is required' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Query parameter "q" is required',
+      });
     });
 
     it('returns 400 when query is empty string', async () => {
@@ -237,7 +260,9 @@ describe('createAdminUsersHandlers', () => {
       await handlers.searchUsers(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'Query parameter "q" is required' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Query parameter "q" is required',
+      });
     });
 
     it('returns 400 when query is whitespace-only', async () => {
@@ -248,7 +273,9 @@ describe('createAdminUsersHandlers', () => {
       await handlers.searchUsers(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'Query parameter "q" is required' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Query parameter "q" is required',
+      });
     });
 
     it('returns 400 when query is too short', async () => {
@@ -259,13 +286,17 @@ describe('createAdminUsersHandlers', () => {
       await handlers.searchUsers(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'Query must be at least 2 characters' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Query must be at least 2 characters',
+      });
     });
 
     it('returns 400 when query exceeds max length', async () => {
       const deps = createDeps();
       const handlers = createAdminUsersHandlers(deps);
-      const { req, res, status, json } = createReqRes({ query: { q: 'a'.repeat(201) } });
+      const { req, res, status, json } = createReqRes({
+        query: { q: 'a'.repeat(201) },
+      });
 
       await handlers.searchUsers(req, res);
 
@@ -278,12 +309,16 @@ describe('createAdminUsersHandlers', () => {
     it('treats array query param as missing', async () => {
       const deps = createDeps();
       const handlers = createAdminUsersHandlers(deps);
-      const { req, res, status, json } = createReqRes({ query: { q: ['foo', 'bar'] } });
+      const { req, res, status, json } = createReqRes({
+        query: { q: ['foo', 'bar'] },
+      });
 
       await handlers.searchUsers(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'Query parameter "q" is required' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Query parameter "q" is required',
+      });
     });
 
     it('passes limit to findUsers', async () => {
@@ -315,7 +350,9 @@ describe('createAdminUsersHandlers', () => {
     });
 
     it('returns 500 on error', async () => {
-      const deps = createDeps({ findUsers: jest.fn().mockRejectedValue(new Error('db down')) });
+      const deps = createDeps({
+        findUsers: jest.fn().mockRejectedValue(new Error('db down')),
+      });
       const handlers = createAdminUsersHandlers(deps);
       const { req, res, status, json } = createReqRes({ query: { q: 'test' } });
 
@@ -332,26 +369,38 @@ describe('createAdminUsersHandlers', () => {
         deletedCount: 1,
         message: 'User was deleted successfully.',
       };
-      const deps = createDeps({ deleteUserById: jest.fn().mockResolvedValue(result) });
+      const deps = createDeps({
+        deleteUserById: jest.fn().mockResolvedValue(result),
+      });
       const handlers = createAdminUsersHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validUserId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validUserId },
+      });
 
       await handlers.deleteUser(req, res);
 
       expect(status).toHaveBeenCalledWith(200);
-      expect(json).toHaveBeenCalledWith({ message: 'User was deleted successfully.' });
+      expect(json).toHaveBeenCalledWith({
+        message: 'User was deleted successfully.',
+      });
     });
 
     it('returns fallback message when result.message is empty', async () => {
       const result: UserDeleteResult = { deletedCount: 1, message: '' };
-      const deps = createDeps({ deleteUserById: jest.fn().mockResolvedValue(result) });
+      const deps = createDeps({
+        deleteUserById: jest.fn().mockResolvedValue(result),
+      });
       const handlers = createAdminUsersHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validUserId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validUserId },
+      });
 
       await handlers.deleteUser(req, res);
 
       expect(status).toHaveBeenCalledWith(200);
-      expect(json).toHaveBeenCalledWith({ message: 'User deleted successfully' });
+      expect(json).toHaveBeenCalledWith({
+        message: 'User deleted successfully',
+      });
     });
 
     it('returns 403 when deleting own account', async () => {
@@ -366,7 +415,9 @@ describe('createAdminUsersHandlers', () => {
       await handlers.deleteUser(req, res);
 
       expect(status).toHaveBeenCalledWith(403);
-      expect(json).toHaveBeenCalledWith({ error: 'Cannot delete your own account' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Cannot delete your own account',
+      });
       expect(deps.deleteUserById).not.toHaveBeenCalled();
     });
 
@@ -377,12 +428,16 @@ describe('createAdminUsersHandlers', () => {
         countUsers: jest.fn().mockResolvedValue(1),
       });
       const handlers = createAdminUsersHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: targetId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: targetId },
+      });
 
       await handlers.deleteUser(req, res);
 
       expect(status).toHaveBeenCalledWith(400);
-      expect(json).toHaveBeenCalledWith({ error: 'Cannot delete the last admin user' });
+      expect(json).toHaveBeenCalledWith({
+        error: 'Cannot delete the last admin user',
+      });
       expect(deps.deleteUserById).not.toHaveBeenCalled();
       expect(deps.countUsers).toHaveBeenCalledWith({ role: SystemRoles.ADMIN });
     });
@@ -421,9 +476,13 @@ describe('createAdminUsersHandlers', () => {
         deletedCount: 1,
         message: 'User was deleted successfully.',
       };
-      const deps = createDeps({ deleteUserById: jest.fn().mockResolvedValue(result) });
+      const deps = createDeps({
+        deleteUserById: jest.fn().mockResolvedValue(result),
+      });
       const handlers = createAdminUsersHandlers(deps);
-      const { req, res, status } = createReqRes({ params: { id: validUserId } });
+      const { req, res, status } = createReqRes({
+        params: { id: validUserId },
+      });
 
       await handlers.deleteUser(req, res);
 
@@ -445,19 +504,27 @@ describe('createAdminUsersHandlers', () => {
         deleteConfig: jest.fn().mockRejectedValue(new Error('cleanup failed')),
       });
       const handlers = createAdminUsersHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validUserId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validUserId },
+      });
 
       await handlers.deleteUser(req, res);
 
       expect(status).toHaveBeenCalledWith(200);
-      expect(json).toHaveBeenCalledWith({ message: 'User was deleted successfully.' });
+      expect(json).toHaveBeenCalledWith({
+        message: 'User was deleted successfully.',
+      });
     });
 
     it('does not cascade when user is not found', async () => {
       const result: UserDeleteResult = { deletedCount: 0, message: '' };
-      const deps = createDeps({ deleteUserById: jest.fn().mockResolvedValue(result) });
+      const deps = createDeps({
+        deleteUserById: jest.fn().mockResolvedValue(result),
+      });
       const handlers = createAdminUsersHandlers(deps);
-      const { req, res, status } = createReqRes({ params: { id: validUserId } });
+      const { req, res, status } = createReqRes({
+        params: { id: validUserId },
+      });
 
       await handlers.deleteUser(req, res);
 
@@ -469,7 +536,9 @@ describe('createAdminUsersHandlers', () => {
     it('returns 400 for invalid ObjectId', async () => {
       const deps = createDeps();
       const handlers = createAdminUsersHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: 'not-valid' } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: 'not-valid' },
+      });
 
       await handlers.deleteUser(req, res);
 
@@ -479,9 +548,13 @@ describe('createAdminUsersHandlers', () => {
 
     it('returns 404 when user not found', async () => {
       const result: UserDeleteResult = { deletedCount: 0, message: '' };
-      const deps = createDeps({ deleteUserById: jest.fn().mockResolvedValue(result) });
+      const deps = createDeps({
+        deleteUserById: jest.fn().mockResolvedValue(result),
+      });
       const handlers = createAdminUsersHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validUserId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validUserId },
+      });
 
       await handlers.deleteUser(req, res);
 
@@ -494,7 +567,9 @@ describe('createAdminUsersHandlers', () => {
         deleteUserById: jest.fn().mockRejectedValue(new Error('db crash')),
       });
       const handlers = createAdminUsersHandlers(deps);
-      const { req, res, status, json } = createReqRes({ params: { id: validUserId } });
+      const { req, res, status, json } = createReqRes({
+        params: { id: validUserId },
+      });
 
       await handlers.deleteUser(req, res);
 

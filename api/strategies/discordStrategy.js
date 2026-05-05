@@ -22,7 +22,9 @@ const getProfileDetails = ({ profile }) => {
 };
 
 const discordLogin = socialLogin('discord', getProfileDetails);
-const discordAdminLogin = socialLogin('discord', getProfileDetails, { existingUsersOnly: true });
+const discordAdminLogin = socialLogin('discord', getProfileDetails, {
+  existingUsersOnly: true,
+});
 
 const getDiscordConfig = (callbackURL) => ({
   clientID: process.env.DISCORD_CLIENT_ID,

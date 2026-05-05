@@ -1,5 +1,5 @@
-import { scaleImage } from '~/utils/scaleImage';
 import type { RefObject } from 'react';
+import { scaleImage } from '~/utils/scaleImage';
 
 function makeContainerRef(clientWidth: number): RefObject<HTMLDivElement> {
   return {
@@ -14,7 +14,10 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  Object.defineProperty(window, 'innerHeight', { value: originalInnerHeight, writable: true });
+  Object.defineProperty(window, 'innerHeight', {
+    value: originalInnerHeight,
+    writable: true,
+  });
 });
 
 describe('scaleImage', () => {

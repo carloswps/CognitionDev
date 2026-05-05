@@ -1,12 +1,12 @@
-import { ErrorTypes, EModelEndpoint, mapModelToAzureConfig } from 'librechat-data-provider';
+import { EModelEndpoint, ErrorTypes, mapModelToAzureConfig } from 'librechat-data-provider';
+import { validateEndpointURL } from '~/auth';
 import type {
   BaseInitializeParams,
   InitializeResultBase,
   OpenAIConfigOptions,
   UserKeyValues,
 } from '~/types';
-import { getAzureCredentials, resolveHeaders, isUserProvided, checkUserKeyExpiry } from '~/utils';
-import { validateEndpointURL } from '~/auth';
+import { checkUserKeyExpiry, getAzureCredentials, isUserProvided, resolveHeaders } from '~/utils';
 import { getOpenAIConfig } from './config';
 
 /**
@@ -46,7 +46,10 @@ export async function initializeOpenAI({
   let userValues: UserKeyValues | null = null;
   if (expiresAt && (userProvidesKey || userProvidesURL)) {
     checkUserKeyExpiry(expiresAt, endpoint);
-    userValues = await db.getUserKeyValues({ userId: req.user?.id ?? '', name: endpoint });
+    userValues = await db.getUserKeyValues({
+      userId: req.user?.id ?? '',
+      name: endpoint,
+    });
   }
 
   let apiKey = userProvidesKey

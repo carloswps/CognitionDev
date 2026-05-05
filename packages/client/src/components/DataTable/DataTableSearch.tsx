@@ -1,9 +1,8 @@
-import { memo } from 'react';
-import { startTransition } from 'react';
-import type { DataTableSearchProps } from './DataTable.types';
+import { memo, startTransition } from 'react';
 import { useLocalize } from '~/hooks';
-import { Input } from '../Input';
 import { cn } from '~/utils';
+import { Input } from '../Input';
+import type { DataTableSearchProps } from './DataTable.types';
 
 export const DataTableSearch = memo(
   ({ value, onChange, placeholder, className, disabled = false }: DataTableSearchProps) => {

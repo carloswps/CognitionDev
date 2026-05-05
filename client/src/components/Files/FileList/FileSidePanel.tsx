@@ -1,10 +1,10 @@
-import React from 'react';
-import FileList from './FileList';
 import { Button, Input } from '@librechat/client';
-import { TFile } from 'librechat-data-provider/dist/types';
-import UploadFileButton from './UploadFileButton';
+import type { TFile } from 'librechat-data-provider/dist/types';
 import { ListFilter } from 'lucide-react';
+import React from 'react';
 import { useLocalize } from '~/hooks';
+import FileList from './FileList';
+import UploadFileButton from './UploadFileButton';
 
 const fakeFiles = [
   {

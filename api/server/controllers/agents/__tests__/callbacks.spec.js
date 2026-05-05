@@ -64,7 +64,11 @@ describe('createToolEndCallback', () => {
 
   describe('ui_resources artifact handling', () => {
     it('should process ui_resources artifact and return attachment when headers not sent', async () => {
-      const toolEndCallback = createToolEndCallback({ req, res, artifactPromises });
+      const toolEndCallback = createToolEndCallback({
+        req,
+        res,
+        artifactPromises,
+      });
 
       const output = {
         tool_call_id: 'tool123',
@@ -106,7 +110,11 @@ describe('createToolEndCallback', () => {
 
     it('should write to response when headers are already sent', async () => {
       res.headersSent = true;
-      const toolEndCallback = createToolEndCallback({ req, res, artifactPromises });
+      const toolEndCallback = createToolEndCallback({
+        req,
+        res,
+        artifactPromises,
+      });
 
       const output = {
         tool_call_id: 'tool123',
@@ -136,7 +144,11 @@ describe('createToolEndCallback', () => {
     });
 
     it('should handle errors when processing ui_resources', async () => {
-      const toolEndCallback = createToolEndCallback({ req, res, artifactPromises });
+      const toolEndCallback = createToolEndCallback({
+        req,
+        res,
+        artifactPromises,
+      });
 
       // Mock res.write to throw an error
       res.headersSent = true;
@@ -169,7 +181,11 @@ describe('createToolEndCallback', () => {
     });
 
     it('should handle multiple artifacts including ui_resources', async () => {
-      const toolEndCallback = createToolEndCallback({ req, res, artifactPromises });
+      const toolEndCallback = createToolEndCallback({
+        req,
+        res,
+        artifactPromises,
+      });
 
       const output = {
         tool_call_id: 'tool123',
@@ -209,7 +225,11 @@ describe('createToolEndCallback', () => {
     });
 
     it('should not process artifacts when output has no artifacts', async () => {
-      const toolEndCallback = createToolEndCallback({ req, res, artifactPromises });
+      const toolEndCallback = createToolEndCallback({
+        req,
+        res,
+        artifactPromises,
+      });
 
       const output = {
         tool_call_id: 'tool123',
@@ -231,7 +251,11 @@ describe('createToolEndCallback', () => {
 
   describe('edge cases', () => {
     it('should handle empty ui_resources data object', async () => {
-      const toolEndCallback = createToolEndCallback({ req, res, artifactPromises });
+      const toolEndCallback = createToolEndCallback({
+        req,
+        res,
+        artifactPromises,
+      });
 
       const output = {
         tool_call_id: 'tool123',
@@ -260,7 +284,11 @@ describe('createToolEndCallback', () => {
     });
 
     it('should handle ui_resources with complex nested data', async () => {
-      const toolEndCallback = createToolEndCallback({ req, res, artifactPromises });
+      const toolEndCallback = createToolEndCallback({
+        req,
+        res,
+        artifactPromises,
+      });
 
       const complexData = {
         0: {
@@ -299,7 +327,11 @@ describe('createToolEndCallback', () => {
     });
 
     it('should handle when output is undefined', async () => {
-      const toolEndCallback = createToolEndCallback({ req, res, artifactPromises });
+      const toolEndCallback = createToolEndCallback({
+        req,
+        res,
+        artifactPromises,
+      });
 
       const metadata = {
         run_id: 'run456',
@@ -313,7 +345,11 @@ describe('createToolEndCallback', () => {
     });
 
     it('should handle when data parameter is undefined', async () => {
-      const toolEndCallback = createToolEndCallback({ req, res, artifactPromises });
+      const toolEndCallback = createToolEndCallback({
+        req,
+        res,
+        artifactPromises,
+      });
 
       const metadata = {
         run_id: 'run456',

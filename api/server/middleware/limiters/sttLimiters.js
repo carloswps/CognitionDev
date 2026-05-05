@@ -62,9 +62,7 @@ const createSTTLimiters = () => {
     windowMs: sttUserWindowMs,
     max: sttUserMax,
     handler: createSTTHandler(false),
-    keyGenerator: function (req) {
-      return req.user?.id;
-    },
+    keyGenerator: (req) => req.user?.id,
     store: limiterCache('stt_user_limiter'),
   };
 

@@ -1,9 +1,9 @@
-import { useFormContext } from 'react-hook-form';
 import { Input, Label } from '@librechat/client';
+import { useFormContext } from 'react-hook-form';
 import { useLocalize } from '~/hooks';
 import { cn } from '~/utils';
-import { isValidUrl, normalizeUrl } from '../utils/urlUtils';
 import type { MCPServerFormData } from '../hooks/useMCPServerForm';
+import { isValidUrl, normalizeUrl } from '../utils/urlUtils';
 
 export default function ConnectionSection() {
   const localize = useLocalize();

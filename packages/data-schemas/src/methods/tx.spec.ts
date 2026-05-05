@@ -1,17 +1,21 @@
 /** Note: No hard-coded values should be used in this file. */
-import { matchModelName, findMatchingPattern } from './test-helpers';
+
 import { EModelEndpoint } from 'librechat-data-provider';
+import { findMatchingPattern, matchModelName } from './test-helpers';
 import {
-  createTxMethods,
-  tokenValues,
   cacheTokenValues,
-  premiumTokenValues,
+  createTxMethods,
   defaultRate,
+  premiumTokenValues,
+  tokenValues,
 } from './tx';
 
 const { getValueKey, getMultiplier, getPremiumRate, getCacheMultiplier } = createTxMethods(
   {} as typeof import('mongoose'),
-  { matchModelName, findMatchingPattern },
+  {
+    matchModelName,
+    findMatchingPattern,
+  },
 );
 
 describe('getValueKey', () => {
@@ -273,9 +277,12 @@ describe('getMultiplier', () => {
     expect(getMultiplier({ valueKey: 'non-existent-model', tokenType: 'prompt' })).toBe(
       defaultRate,
     );
-    expect(getMultiplier({ valueKey: 'non-existent-model', tokenType: 'completion' })).toBe(
-      defaultRate,
-    );
+    expect(
+      getMultiplier({
+        valueKey: 'non-existent-model',
+        tokenType: 'completion',
+      }),
+    ).toBe(defaultRate);
   });
 
   it('should derive the valueKey from the model if not provided', () => {
@@ -293,9 +300,12 @@ describe('getMultiplier', () => {
     expect(getMultiplier({ valueKey: 'gpt-3.5-turbo-1106', tokenType: 'prompt' })).toBe(
       tokenValues['gpt-3.5-turbo-1106'].prompt,
     );
-    expect(getMultiplier({ valueKey: 'gpt-3.5-turbo-1106', tokenType: 'completion' })).toBe(
-      tokenValues['gpt-3.5-turbo-1106'].completion,
-    );
+    expect(
+      getMultiplier({
+        valueKey: 'gpt-3.5-turbo-1106',
+        tokenType: 'completion',
+      }),
+    ).toBe(tokenValues['gpt-3.5-turbo-1106'].completion);
   });
 
   it('should return the correct multiplier for gpt-4-1106', () => {
@@ -524,17 +534,26 @@ describe('getMultiplier', () => {
 
   it('should derive the valueKey from the model if not provided for new models', () => {
     expect(
-      getMultiplier({ tokenType: 'prompt', model: 'gpt-3.5-turbo-1106-some-other-info' }),
+      getMultiplier({
+        tokenType: 'prompt',
+        model: 'gpt-3.5-turbo-1106-some-other-info',
+      }),
     ).toBe(tokenValues['gpt-3.5-turbo-1106'].prompt);
-    expect(getMultiplier({ tokenType: 'completion', model: 'gpt-4-1106-vision-preview' })).toBe(
-      tokenValues['gpt-4-1106'].completion,
-    );
+    expect(
+      getMultiplier({
+        tokenType: 'completion',
+        model: 'gpt-4-1106-vision-preview',
+      }),
+    ).toBe(tokenValues['gpt-4-1106'].completion);
     expect(getMultiplier({ tokenType: 'completion', model: 'gpt-4-0125-preview' })).toBe(
       tokenValues['gpt-4-1106'].completion,
     );
-    expect(getMultiplier({ tokenType: 'completion', model: 'gpt-4-turbo-vision-preview' })).toBe(
-      tokenValues['gpt-4-1106'].completion,
-    );
+    expect(
+      getMultiplier({
+        tokenType: 'completion',
+        model: 'gpt-4-turbo-vision-preview',
+      }),
+    ).toBe(tokenValues['gpt-4-1106'].completion);
     expect(getMultiplier({ tokenType: 'completion', model: 'gpt-3.5-turbo-0125' })).toBe(
       tokenValues['gpt-3.5-turbo-0125'].completion,
     );
@@ -633,12 +652,18 @@ describe('Amazon Model Tests', () => {
       expect(getMultiplier({ model: 'nova-premier', tokenType: 'completion' })).toBe(
         tokenValues['nova-premier'].completion,
       );
-      expect(getMultiplier({ model: 'amazon.nova-premier-v1:0', tokenType: 'prompt' })).toBe(
-        tokenValues['nova-premier'].prompt,
-      );
-      expect(getMultiplier({ model: 'amazon.nova-premier-v1:0', tokenType: 'completion' })).toBe(
-        tokenValues['nova-premier'].completion,
-      );
+      expect(
+        getMultiplier({
+          model: 'amazon.nova-premier-v1:0',
+          tokenType: 'prompt',
+        }),
+      ).toBe(tokenValues['nova-premier'].prompt);
+      expect(
+        getMultiplier({
+          model: 'amazon.nova-premier-v1:0',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['nova-premier'].completion);
     });
 
     it('should return correct pricing for nova-pro', () => {
@@ -651,9 +676,12 @@ describe('Amazon Model Tests', () => {
       expect(getMultiplier({ model: 'amazon.nova-pro-v1:0', tokenType: 'prompt' })).toBe(
         tokenValues['nova-pro'].prompt,
       );
-      expect(getMultiplier({ model: 'amazon.nova-pro-v1:0', tokenType: 'completion' })).toBe(
-        tokenValues['nova-pro'].completion,
-      );
+      expect(
+        getMultiplier({
+          model: 'amazon.nova-pro-v1:0',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['nova-pro'].completion);
     });
 
     it('should return correct pricing for nova-lite', () => {
@@ -666,9 +694,12 @@ describe('Amazon Model Tests', () => {
       expect(getMultiplier({ model: 'amazon.nova-lite-v1:0', tokenType: 'prompt' })).toBe(
         tokenValues['nova-lite'].prompt,
       );
-      expect(getMultiplier({ model: 'amazon.nova-lite-v1:0', tokenType: 'completion' })).toBe(
-        tokenValues['nova-lite'].completion,
-      );
+      expect(
+        getMultiplier({
+          model: 'amazon.nova-lite-v1:0',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['nova-lite'].completion);
     });
 
     it('should return correct pricing for nova-micro', () => {
@@ -681,9 +712,12 @@ describe('Amazon Model Tests', () => {
       expect(getMultiplier({ model: 'amazon.nova-micro-v1:0', tokenType: 'prompt' })).toBe(
         tokenValues['nova-micro'].prompt,
       );
-      expect(getMultiplier({ model: 'amazon.nova-micro-v1:0', tokenType: 'completion' })).toBe(
-        tokenValues['nova-micro'].completion,
-      );
+      expect(
+        getMultiplier({
+          model: 'amazon.nova-micro-v1:0',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['nova-micro'].completion);
     });
 
     it('should match both short and full model names to the same pricing', () => {
@@ -697,10 +731,22 @@ describe('Amazon Model Tests', () => {
 
       models.forEach((shortModel, i) => {
         const fullModel = fullModels[i];
-        const shortPrompt = getMultiplier({ model: shortModel, tokenType: 'prompt' });
-        const fullPrompt = getMultiplier({ model: fullModel, tokenType: 'prompt' });
-        const shortCompletion = getMultiplier({ model: shortModel, tokenType: 'completion' });
-        const fullCompletion = getMultiplier({ model: fullModel, tokenType: 'completion' });
+        const shortPrompt = getMultiplier({
+          model: shortModel,
+          tokenType: 'prompt',
+        });
+        const fullPrompt = getMultiplier({
+          model: fullModel,
+          tokenType: 'prompt',
+        });
+        const shortCompletion = getMultiplier({
+          model: shortModel,
+          tokenType: 'completion',
+        });
+        const fullCompletion = getMultiplier({
+          model: fullModel,
+          tokenType: 'completion',
+        });
 
         expect(shortPrompt).toBe(fullPrompt);
         expect(shortCompletion).toBe(fullCompletion);
@@ -718,11 +764,17 @@ describe('Amazon Model Tests', () => {
       expect(getMultiplier({ model: 'titan-text-premier', tokenType: 'completion' })).toBe(
         tokenValues['titan-text-premier'].completion,
       );
-      expect(getMultiplier({ model: 'amazon.titan-text-premier-v1:0', tokenType: 'prompt' })).toBe(
-        tokenValues['titan-text-premier'].prompt,
-      );
       expect(
-        getMultiplier({ model: 'amazon.titan-text-premier-v1:0', tokenType: 'completion' }),
+        getMultiplier({
+          model: 'amazon.titan-text-premier-v1:0',
+          tokenType: 'prompt',
+        }),
+      ).toBe(tokenValues['titan-text-premier'].prompt);
+      expect(
+        getMultiplier({
+          model: 'amazon.titan-text-premier-v1:0',
+          tokenType: 'completion',
+        }),
       ).toBe(tokenValues['titan-text-premier'].completion);
     });
 
@@ -733,11 +785,17 @@ describe('Amazon Model Tests', () => {
       expect(getMultiplier({ model: 'titan-text-express', tokenType: 'completion' })).toBe(
         tokenValues['titan-text-express'].completion,
       );
-      expect(getMultiplier({ model: 'amazon.titan-text-express-v1', tokenType: 'prompt' })).toBe(
-        tokenValues['titan-text-express'].prompt,
-      );
       expect(
-        getMultiplier({ model: 'amazon.titan-text-express-v1', tokenType: 'completion' }),
+        getMultiplier({
+          model: 'amazon.titan-text-express-v1',
+          tokenType: 'prompt',
+        }),
+      ).toBe(tokenValues['titan-text-express'].prompt);
+      expect(
+        getMultiplier({
+          model: 'amazon.titan-text-express-v1',
+          tokenType: 'completion',
+        }),
       ).toBe(tokenValues['titan-text-express'].completion);
     });
 
@@ -748,12 +806,18 @@ describe('Amazon Model Tests', () => {
       expect(getMultiplier({ model: 'titan-text-lite', tokenType: 'completion' })).toBe(
         tokenValues['titan-text-lite'].completion,
       );
-      expect(getMultiplier({ model: 'amazon.titan-text-lite-v1', tokenType: 'prompt' })).toBe(
-        tokenValues['titan-text-lite'].prompt,
-      );
-      expect(getMultiplier({ model: 'amazon.titan-text-lite-v1', tokenType: 'completion' })).toBe(
-        tokenValues['titan-text-lite'].completion,
-      );
+      expect(
+        getMultiplier({
+          model: 'amazon.titan-text-lite-v1',
+          tokenType: 'prompt',
+        }),
+      ).toBe(tokenValues['titan-text-lite'].prompt);
+      expect(
+        getMultiplier({
+          model: 'amazon.titan-text-lite-v1',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['titan-text-lite'].completion);
     });
 
     it('should match both short and full model names to the same pricing', () => {
@@ -766,10 +830,22 @@ describe('Amazon Model Tests', () => {
 
       models.forEach((shortModel, i) => {
         const fullModel = fullModels[i];
-        const shortPrompt = getMultiplier({ model: shortModel, tokenType: 'prompt' });
-        const fullPrompt = getMultiplier({ model: fullModel, tokenType: 'prompt' });
-        const shortCompletion = getMultiplier({ model: shortModel, tokenType: 'completion' });
-        const fullCompletion = getMultiplier({ model: fullModel, tokenType: 'completion' });
+        const shortPrompt = getMultiplier({
+          model: shortModel,
+          tokenType: 'prompt',
+        });
+        const fullPrompt = getMultiplier({
+          model: fullModel,
+          tokenType: 'prompt',
+        });
+        const shortCompletion = getMultiplier({
+          model: shortModel,
+          tokenType: 'completion',
+        });
+        const fullCompletion = getMultiplier({
+          model: fullModel,
+          tokenType: 'completion',
+        });
 
         expect(shortPrompt).toBe(fullPrompt);
         expect(shortCompletion).toBe(fullCompletion);
@@ -818,10 +894,22 @@ describe('AI21 Model Tests', () => {
 
       models.forEach((shortModel, i) => {
         const fullModel = fullModels[i];
-        const shortPrompt = getMultiplier({ model: shortModel, tokenType: 'prompt' });
-        const fullPrompt = getMultiplier({ model: fullModel, tokenType: 'prompt' });
-        const shortCompletion = getMultiplier({ model: shortModel, tokenType: 'completion' });
-        const fullCompletion = getMultiplier({ model: fullModel, tokenType: 'completion' });
+        const shortPrompt = getMultiplier({
+          model: shortModel,
+          tokenType: 'prompt',
+        });
+        const fullPrompt = getMultiplier({
+          model: fullModel,
+          tokenType: 'prompt',
+        });
+        const shortCompletion = getMultiplier({
+          model: shortModel,
+          tokenType: 'completion',
+        });
+        const fullCompletion = getMultiplier({
+          model: fullModel,
+          tokenType: 'completion',
+        });
 
         expect(shortPrompt).toBe(fullPrompt);
         expect(shortCompletion).toBe(fullCompletion);
@@ -839,21 +927,33 @@ describe('AI21 Model Tests', () => {
       expect(getMultiplier({ model: 'jamba-instruct', tokenType: 'completion' })).toBe(
         tokenValues['jamba-instruct'].completion,
       );
-      expect(getMultiplier({ model: 'ai21.jamba-instruct-v1:0', tokenType: 'prompt' })).toBe(
-        tokenValues['jamba-instruct'].prompt,
-      );
-      expect(getMultiplier({ model: 'ai21.jamba-instruct-v1:0', tokenType: 'completion' })).toBe(
-        tokenValues['jamba-instruct'].completion,
-      );
+      expect(
+        getMultiplier({
+          model: 'ai21.jamba-instruct-v1:0',
+          tokenType: 'prompt',
+        }),
+      ).toBe(tokenValues['jamba-instruct'].prompt);
+      expect(
+        getMultiplier({
+          model: 'ai21.jamba-instruct-v1:0',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['jamba-instruct'].completion);
     });
 
     it('should match both short and full model names to the same pricing', () => {
-      const shortPrompt = getMultiplier({ model: 'jamba-instruct', tokenType: 'prompt' });
+      const shortPrompt = getMultiplier({
+        model: 'jamba-instruct',
+        tokenType: 'prompt',
+      });
       const fullPrompt = getMultiplier({
         model: 'ai21.jamba-instruct-v1:0',
         tokenType: 'prompt',
       });
-      const shortCompletion = getMultiplier({ model: 'jamba-instruct', tokenType: 'completion' });
+      const shortCompletion = getMultiplier({
+        model: 'jamba-instruct',
+        tokenType: 'completion',
+      });
       const fullCompletion = getMultiplier({
         model: 'ai21.jamba-instruct-v1:0',
         tokenType: 'completion',
@@ -924,7 +1024,10 @@ describe('Deepseek Model Tests', () => {
 
     modelVariations.forEach((model) => {
       const promptMultiplier = getMultiplier({ model, tokenType: 'prompt' });
-      const completionMultiplier = getMultiplier({ model, tokenType: 'completion' });
+      const completionMultiplier = getMultiplier({
+        model,
+        tokenType: 'completion',
+      });
       expect(promptMultiplier).toBe(tokenValues['deepseek-chat'].prompt);
       expect(completionMultiplier).toBe(tokenValues['deepseek-chat'].completion);
     });
@@ -1014,9 +1117,12 @@ describe('Moonshot/Kimi Model Tests - Pricing', () => {
       expect(getMultiplier({ model: 'kimi-k2-thinking-turbo', tokenType: 'prompt' })).toBe(
         tokenValues['kimi-k2-thinking-turbo'].prompt,
       );
-      expect(getMultiplier({ model: 'kimi-k2-thinking-turbo', tokenType: 'completion' })).toBe(
-        tokenValues['kimi-k2-thinking-turbo'].completion,
-      );
+      expect(
+        getMultiplier({
+          model: 'kimi-k2-thinking-turbo',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['kimi-k2-thinking-turbo'].completion);
     });
 
     it('should handle Kimi model variations with provider prefixes', () => {
@@ -1024,7 +1130,10 @@ describe('Moonshot/Kimi Model Tests - Pricing', () => {
 
       modelVariations.forEach((model) => {
         const promptMultiplier = getMultiplier({ model, tokenType: 'prompt' });
-        const completionMultiplier = getMultiplier({ model, tokenType: 'completion' });
+        const completionMultiplier = getMultiplier({
+          model,
+          tokenType: 'completion',
+        });
         expect(promptMultiplier).toBe(tokenValues['kimi'].prompt);
         expect([tokenValues['kimi'].completion, tokenValues['kimi-k2.5'].completion]).toContain(
           completionMultiplier,
@@ -1074,21 +1183,33 @@ describe('Moonshot/Kimi Model Tests - Pricing', () => {
       expect(getMultiplier({ model: 'moonshot-v1-8k-vision', tokenType: 'prompt' })).toBe(
         tokenValues['moonshot-v1-8k-vision'].prompt,
       );
-      expect(getMultiplier({ model: 'moonshot-v1-8k-vision', tokenType: 'completion' })).toBe(
-        tokenValues['moonshot-v1-8k-vision'].completion,
-      );
+      expect(
+        getMultiplier({
+          model: 'moonshot-v1-8k-vision',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['moonshot-v1-8k-vision'].completion);
       expect(getMultiplier({ model: 'moonshot-v1-32k-vision', tokenType: 'prompt' })).toBe(
         tokenValues['moonshot-v1-32k-vision'].prompt,
       );
-      expect(getMultiplier({ model: 'moonshot-v1-32k-vision', tokenType: 'completion' })).toBe(
-        tokenValues['moonshot-v1-32k-vision'].completion,
-      );
-      expect(getMultiplier({ model: 'moonshot-v1-128k-vision', tokenType: 'prompt' })).toBe(
-        tokenValues['moonshot-v1-128k-vision'].prompt,
-      );
-      expect(getMultiplier({ model: 'moonshot-v1-128k-vision', tokenType: 'completion' })).toBe(
-        tokenValues['moonshot-v1-128k-vision'].completion,
-      );
+      expect(
+        getMultiplier({
+          model: 'moonshot-v1-32k-vision',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['moonshot-v1-32k-vision'].completion);
+      expect(
+        getMultiplier({
+          model: 'moonshot-v1-128k-vision',
+          tokenType: 'prompt',
+        }),
+      ).toBe(tokenValues['moonshot-v1-128k-vision'].prompt);
+      expect(
+        getMultiplier({
+          model: 'moonshot-v1-128k-vision',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['moonshot-v1-128k-vision'].completion);
     });
   });
 
@@ -1124,7 +1245,10 @@ describe('Moonshot/Kimi Model Tests - Pricing', () => {
       const modelVariations = ['openrouter/kimi-k2', 'openrouter/kimi'];
 
       modelVariations.forEach((model) => {
-        const writeMultiplier = getCacheMultiplier({ model, cacheType: 'write' });
+        const writeMultiplier = getCacheMultiplier({
+          model,
+          cacheType: 'write',
+        });
         const readMultiplier = getCacheMultiplier({ model, cacheType: 'read' });
         expect(writeMultiplier).toBe(cacheTokenValues['kimi'].write);
         expect(readMultiplier).toBe(cacheTokenValues['kimi'].read);
@@ -1224,18 +1348,24 @@ describe('Qwen3 Model Tests', () => {
       expect(getMultiplier({ model: 'qwen3-vl-8b-thinking', tokenType: 'prompt' })).toBe(
         tokenValues['qwen3-vl-8b-thinking'].prompt,
       );
-      expect(getMultiplier({ model: 'qwen3-vl-8b-thinking', tokenType: 'completion' })).toBe(
-        tokenValues['qwen3-vl-8b-thinking'].completion,
-      );
+      expect(
+        getMultiplier({
+          model: 'qwen3-vl-8b-thinking',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['qwen3-vl-8b-thinking'].completion);
     });
 
     it('should return correct pricing for qwen3-vl-8b-instruct', () => {
       expect(getMultiplier({ model: 'qwen3-vl-8b-instruct', tokenType: 'prompt' })).toBe(
         tokenValues['qwen3-vl-8b-instruct'].prompt,
       );
-      expect(getMultiplier({ model: 'qwen3-vl-8b-instruct', tokenType: 'completion' })).toBe(
-        tokenValues['qwen3-vl-8b-instruct'].completion,
-      );
+      expect(
+        getMultiplier({
+          model: 'qwen3-vl-8b-instruct',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['qwen3-vl-8b-instruct'].completion);
     });
 
     it('should return correct pricing for qwen3-vl-30b-a3b', () => {
@@ -1359,17 +1489,26 @@ describe('getCacheMultiplier', () => {
   it('should return null if cacheType is provided but not found in cacheTokenValues', () => {
     expect(
       // @ts-expect-error: intentionally passing invalid cacheType to test error handling
-      getCacheMultiplier({ valueKey: 'claude-3-5-sonnet', cacheType: 'unknownType' }),
+      getCacheMultiplier({
+        valueKey: 'claude-3-5-sonnet',
+        cacheType: 'unknownType',
+      }),
     ).toBeNull();
   });
 
   it('should derive the valueKey from the model if not provided', () => {
-    expect(getCacheMultiplier({ cacheType: 'write', model: 'claude-3-5-sonnet-20240620' })).toBe(
-      cacheTokenValues['claude-3-5-sonnet'].write,
-    );
-    expect(getCacheMultiplier({ cacheType: 'read', model: 'claude-3-haiku-20240307' })).toBe(
-      cacheTokenValues['claude-3-haiku'].read,
-    );
+    expect(
+      getCacheMultiplier({
+        cacheType: 'write',
+        model: 'claude-3-5-sonnet-20240620',
+      }),
+    ).toBe(cacheTokenValues['claude-3-5-sonnet'].write);
+    expect(
+      getCacheMultiplier({
+        cacheType: 'read',
+        model: 'claude-3-haiku-20240307',
+      }),
+    ).toBe(cacheTokenValues['claude-3-haiku'].read);
   });
 
   it('should return null if only model or cacheType is missing', () => {
@@ -1378,7 +1517,12 @@ describe('getCacheMultiplier', () => {
   });
 
   it('should return null if derived valueKey does not match any known patterns', () => {
-    expect(getCacheMultiplier({ cacheType: 'write', model: 'gpt-4-some-other-info' })).toBeNull();
+    expect(
+      getCacheMultiplier({
+        cacheType: 'write',
+        model: 'gpt-4-some-other-info',
+      }),
+    ).toBeNull();
   });
 
   it('should handle endpointTokenConfig if provided', () => {
@@ -1389,10 +1533,18 @@ describe('getCacheMultiplier', () => {
       },
     };
     expect(
-      getCacheMultiplier({ model: 'custom-model', cacheType: 'write', endpointTokenConfig }),
+      getCacheMultiplier({
+        model: 'custom-model',
+        cacheType: 'write',
+        endpointTokenConfig,
+      }),
     ).toBe(endpointTokenConfig['custom-model'].write);
     expect(
-      getCacheMultiplier({ model: 'custom-model', cacheType: 'read', endpointTokenConfig }),
+      getCacheMultiplier({
+        model: 'custom-model',
+        cacheType: 'read',
+        endpointTokenConfig,
+      }),
     ).toBe(endpointTokenConfig['custom-model'].read);
   });
 
@@ -1404,7 +1556,11 @@ describe('getCacheMultiplier', () => {
       },
     };
     expect(
-      getCacheMultiplier({ model: 'unknown-model', cacheType: 'write', endpointTokenConfig }),
+      getCacheMultiplier({
+        model: 'unknown-model',
+        cacheType: 'write',
+        endpointTokenConfig,
+      }),
     ).toBeNull();
   });
 
@@ -1573,17 +1729,28 @@ describe('Google Model Tests', () => {
     const testCases = [
       { input: 'google/gemini-pro', expected: 'gemini' },
       { input: 'gemini-pro/google', expected: 'gemini' },
-      { input: 'google/gemini-2.0-flash-lite', expected: 'gemini-2.0-flash-lite' },
+      {
+        input: 'google/gemini-2.0-flash-lite',
+        expected: 'gemini-2.0-flash-lite',
+      },
     ];
 
     testCases.forEach(({ input, expected }) => {
       const valueKey = getValueKey(input, EModelEndpoint.google);
       expect(valueKey).toBe(expected);
       expect(
-        getMultiplier({ model: input, tokenType: 'prompt', endpoint: EModelEndpoint.google }),
+        getMultiplier({
+          model: input,
+          tokenType: 'prompt',
+          endpoint: EModelEndpoint.google,
+        }),
       ).toBe(tokenValues[expected].prompt);
       expect(
-        getMultiplier({ model: input, tokenType: 'completion', endpoint: EModelEndpoint.google }),
+        getMultiplier({
+          model: input,
+          tokenType: 'completion',
+          endpoint: EModelEndpoint.google,
+        }),
       ).toBe(tokenValues[expected].completion);
     });
   });
@@ -1632,12 +1799,20 @@ describe('Google Model Tests', () => {
 
   it('should return correct rates for Gemini 3.1 Flash-Lite', () => {
     const model = 'gemini-3.1-flash-lite-preview';
-    expect(getMultiplier({ model, tokenType: 'prompt', endpoint: EModelEndpoint.google })).toBe(
-      tokenValues['gemini-3.1-flash-lite'].prompt,
-    );
-    expect(getMultiplier({ model, tokenType: 'completion', endpoint: EModelEndpoint.google })).toBe(
-      tokenValues['gemini-3.1-flash-lite'].completion,
-    );
+    expect(
+      getMultiplier({
+        model,
+        tokenType: 'prompt',
+        endpoint: EModelEndpoint.google,
+      }),
+    ).toBe(tokenValues['gemini-3.1-flash-lite'].prompt);
+    expect(
+      getMultiplier({
+        model,
+        tokenType: 'completion',
+        endpoint: EModelEndpoint.google,
+      }),
+    ).toBe(tokenValues['gemini-3.1-flash-lite'].completion);
     expect(getCacheMultiplier({ model, cacheType: 'write' })).toBe(
       cacheTokenValues['gemini-3.1-flash-lite'].write,
     );
@@ -1746,29 +1921,48 @@ describe('Gemini 3.1 Premium Token Pricing', () => {
     expect(getMultiplier({ model: 'gemini-3.1-pro-preview', tokenType: 'prompt' })).toBe(
       tokenValues[premiumKey].prompt,
     );
-    expect(getMultiplier({ model: 'gemini-3.1-pro-preview', tokenType: 'completion' })).toBe(
-      tokenValues[premiumKey].completion,
-    );
+    expect(
+      getMultiplier({
+        model: 'gemini-3.1-pro-preview',
+        tokenType: 'completion',
+      }),
+    ).toBe(tokenValues[premiumKey].completion);
   });
 
   it('should apply premium pricing through getMultiplier with valueKey path', () => {
     const valueKey = getValueKey('gemini-3.1-pro-preview');
     expect(valueKey).toBe(premiumKey);
-    expect(getMultiplier({ valueKey, tokenType: 'prompt', inputTokenCount: aboveThreshold })).toBe(
-      premiumEntry.prompt,
-    );
     expect(
-      getMultiplier({ valueKey, tokenType: 'completion', inputTokenCount: aboveThreshold }),
+      getMultiplier({
+        valueKey,
+        tokenType: 'prompt',
+        inputTokenCount: aboveThreshold,
+      }),
+    ).toBe(premiumEntry.prompt);
+    expect(
+      getMultiplier({
+        valueKey,
+        tokenType: 'completion',
+        inputTokenCount: aboveThreshold,
+      }),
     ).toBe(premiumEntry.completion);
   });
 
   it('should apply standard pricing through getMultiplier with valueKey path when below threshold', () => {
     const valueKey = getValueKey('gemini-3.1-pro-preview');
-    expect(getMultiplier({ valueKey, tokenType: 'prompt', inputTokenCount: belowThreshold })).toBe(
-      tokenValues[premiumKey].prompt,
-    );
     expect(
-      getMultiplier({ valueKey, tokenType: 'completion', inputTokenCount: belowThreshold }),
+      getMultiplier({
+        valueKey,
+        tokenType: 'prompt',
+        inputTokenCount: belowThreshold,
+      }),
+    ).toBe(tokenValues[premiumKey].prompt);
+    expect(
+      getMultiplier({
+        valueKey,
+        tokenType: 'completion',
+        inputTokenCount: belowThreshold,
+      }),
     ).toBe(tokenValues[premiumKey].completion);
   });
 });
@@ -1858,18 +2052,30 @@ describe('Grok Model Tests - Pricing', () => {
     });
 
     test('should return correct prompt and completion rates for Grok 4.1 Fast models', () => {
-      expect(getMultiplier({ model: 'grok-4-1-fast-reasoning', tokenType: 'prompt' })).toBe(
-        tokenValues['grok-4-1-fast'].prompt,
-      );
-      expect(getMultiplier({ model: 'grok-4-1-fast-reasoning', tokenType: 'completion' })).toBe(
-        tokenValues['grok-4-1-fast'].completion,
-      );
-      expect(getMultiplier({ model: 'grok-4-1-fast-non-reasoning', tokenType: 'prompt' })).toBe(
-        tokenValues['grok-4-1-fast'].prompt,
-      );
-      expect(getMultiplier({ model: 'grok-4-1-fast-non-reasoning', tokenType: 'completion' })).toBe(
-        tokenValues['grok-4-1-fast'].completion,
-      );
+      expect(
+        getMultiplier({
+          model: 'grok-4-1-fast-reasoning',
+          tokenType: 'prompt',
+        }),
+      ).toBe(tokenValues['grok-4-1-fast'].prompt);
+      expect(
+        getMultiplier({
+          model: 'grok-4-1-fast-reasoning',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['grok-4-1-fast'].completion);
+      expect(
+        getMultiplier({
+          model: 'grok-4-1-fast-non-reasoning',
+          tokenType: 'prompt',
+        }),
+      ).toBe(tokenValues['grok-4-1-fast'].prompt);
+      expect(
+        getMultiplier({
+          model: 'grok-4-1-fast-non-reasoning',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['grok-4-1-fast'].completion);
     });
 
     test('should return correct prompt and completion rates for Grok Code Fast model', () => {
@@ -1903,9 +2109,12 @@ describe('Grok Model Tests - Pricing', () => {
       expect(getMultiplier({ model: 'xai/grok-3-mini-fast', tokenType: 'prompt' })).toBe(
         tokenValues['grok-3-mini-fast'].prompt,
       );
-      expect(getMultiplier({ model: 'xai/grok-3-mini-fast', tokenType: 'completion' })).toBe(
-        tokenValues['grok-3-mini-fast'].completion,
-      );
+      expect(
+        getMultiplier({
+          model: 'xai/grok-3-mini-fast',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['grok-3-mini-fast'].completion);
     });
 
     test('should return correct prompt and completion rates for Grok 4 model with prefixes', () => {
@@ -1927,17 +2136,29 @@ describe('Grok Model Tests - Pricing', () => {
     });
 
     test('should return correct prompt and completion rates for Grok 4.1 Fast models with prefixes', () => {
-      expect(getMultiplier({ model: 'xai/grok-4-1-fast-reasoning', tokenType: 'prompt' })).toBe(
-        tokenValues['grok-4-1-fast'].prompt,
-      );
-      expect(getMultiplier({ model: 'xai/grok-4-1-fast-reasoning', tokenType: 'completion' })).toBe(
-        tokenValues['grok-4-1-fast'].completion,
-      );
-      expect(getMultiplier({ model: 'xai/grok-4-1-fast-non-reasoning', tokenType: 'prompt' })).toBe(
-        tokenValues['grok-4-1-fast'].prompt,
-      );
       expect(
-        getMultiplier({ model: 'xai/grok-4-1-fast-non-reasoning', tokenType: 'completion' }),
+        getMultiplier({
+          model: 'xai/grok-4-1-fast-reasoning',
+          tokenType: 'prompt',
+        }),
+      ).toBe(tokenValues['grok-4-1-fast'].prompt);
+      expect(
+        getMultiplier({
+          model: 'xai/grok-4-1-fast-reasoning',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['grok-4-1-fast'].completion);
+      expect(
+        getMultiplier({
+          model: 'xai/grok-4-1-fast-non-reasoning',
+          tokenType: 'prompt',
+        }),
+      ).toBe(tokenValues['grok-4-1-fast'].prompt);
+      expect(
+        getMultiplier({
+          model: 'xai/grok-4-1-fast-non-reasoning',
+          tokenType: 'completion',
+        }),
       ).toBe(tokenValues['grok-4-1-fast'].completion);
     });
 
@@ -1945,9 +2166,12 @@ describe('Grok Model Tests - Pricing', () => {
       expect(getMultiplier({ model: 'xai/grok-code-fast-1', tokenType: 'prompt' })).toBe(
         tokenValues['grok-code-fast'].prompt,
       );
-      expect(getMultiplier({ model: 'xai/grok-code-fast-1', tokenType: 'completion' })).toBe(
-        tokenValues['grok-code-fast'].completion,
-      );
+      expect(
+        getMultiplier({
+          model: 'xai/grok-code-fast-1',
+          tokenType: 'completion',
+        }),
+      ).toBe(tokenValues['grok-code-fast'].completion);
     });
   });
 });
@@ -2409,13 +2633,21 @@ describe('Premium Token Pricing', () => {
 
   it('should return standard rate from getMultiplier when inputTokenCount is exactly at threshold', () => {
     expect(
-      getMultiplier({ model: premiumModel, tokenType: 'prompt', inputTokenCount: threshold }),
+      getMultiplier({
+        model: premiumModel,
+        tokenType: 'prompt',
+        inputTokenCount: threshold,
+      }),
     ).toBe(tokenValues[premiumModel].prompt);
   });
 
   it('should return premium rate from getMultiplier when inputTokenCount is one above threshold', () => {
     expect(
-      getMultiplier({ model: premiumModel, tokenType: 'prompt', inputTokenCount: aboveThreshold }),
+      getMultiplier({
+        model: premiumModel,
+        tokenType: 'prompt',
+        inputTokenCount: aboveThreshold,
+      }),
     ).toBe(premiumEntry.prompt);
   });
 
@@ -2447,21 +2679,37 @@ describe('Premium Token Pricing', () => {
 
   it('should apply premium pricing through getMultiplier with valueKey path', () => {
     const valueKey = getValueKey(premiumModel);
-    expect(getMultiplier({ valueKey, tokenType: 'prompt', inputTokenCount: aboveThreshold })).toBe(
-      premiumEntry.prompt,
-    );
     expect(
-      getMultiplier({ valueKey, tokenType: 'completion', inputTokenCount: aboveThreshold }),
+      getMultiplier({
+        valueKey,
+        tokenType: 'prompt',
+        inputTokenCount: aboveThreshold,
+      }),
+    ).toBe(premiumEntry.prompt);
+    expect(
+      getMultiplier({
+        valueKey,
+        tokenType: 'completion',
+        inputTokenCount: aboveThreshold,
+      }),
     ).toBe(premiumEntry.completion);
   });
 
   it('should apply standard pricing through getMultiplier with valueKey path when below threshold', () => {
     const valueKey = getValueKey(premiumModel);
-    expect(getMultiplier({ valueKey, tokenType: 'prompt', inputTokenCount: belowThreshold })).toBe(
-      tokenValues[premiumModel].prompt,
-    );
     expect(
-      getMultiplier({ valueKey, tokenType: 'completion', inputTokenCount: belowThreshold }),
+      getMultiplier({
+        valueKey,
+        tokenType: 'prompt',
+        inputTokenCount: belowThreshold,
+      }),
+    ).toBe(tokenValues[premiumModel].prompt);
+    expect(
+      getMultiplier({
+        valueKey,
+        tokenType: 'completion',
+        inputTokenCount: belowThreshold,
+      }),
     ).toBe(tokenValues[premiumModel].completion);
   });
 });

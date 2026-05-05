@@ -1,5 +1,5 @@
-import { parseConvo } from 'librechat-data-provider';
 import type { TPreset } from 'librechat-data-provider';
+import { parseConvo } from 'librechat-data-provider';
 
 type UIPreset = Partial<TPreset> & { presetOverride?: Partial<TPreset> };
 type TCleanupPreset = {
@@ -37,7 +37,7 @@ const cleanupPreset = ({ preset: _preset, defaultParamsEndpoint }: TCleanupPrese
   }
 
   const parsedPreset = parseConvo({
-    /* @ts-ignore: endpoint can be a custom defined name */
+    /* @ts-expect-error: endpoint can be a custom defined name */
     endpoint,
     endpointType,
     conversation: preset,

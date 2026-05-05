@@ -1,8 +1,8 @@
-import type { Model, RootFilterQuery, Types } from 'mongoose';
-import type { MCPServerDocument } from '../types';
 import type { MCPOptions } from 'librechat-data-provider';
-import logger from '~/config/winston';
+import type { Model, RootFilterQuery, Types } from 'mongoose';
 import { nanoid } from 'nanoid';
+import logger from '~/config/winston';
+import type { MCPServerDocument } from '../types';
 
 const NORMALIZED_LIMIT_DEFAULT = 20;
 const MAX_CREATE_RETRIES = 5;
@@ -115,7 +115,7 @@ export function createMCPServerMethods(mongoose: typeof import('mongoose')) {
         // Only retry on duplicate key errors (serverName collision)
         if (isDuplicateKeyError(error) && attempt < MAX_CREATE_RETRIES - 1) {
           // Exponential backoff: 10ms, 20ms, 40ms
-          const delay = RETRY_BASE_DELAY_MS * Math.pow(2, attempt);
+          const delay = RETRY_BASE_DELAY_MS * 2 ** attempt;
           logger.debug(
             `[createMCPServer] Duplicate serverName detected, retrying (attempt ${attempt + 2}/${MAX_CREATE_RETRIES}) after ${delay}ms`,
           );
@@ -196,7 +196,10 @@ export function createMCPServerMethods(mongoose: typeof import('mongoose')) {
       : null;
 
     // Build base query combining accessible servers with other filters
-    const baseQuery: RootFilterQuery<MCPServerDocument> = { ...otherParams, _id: { $in: ids } };
+    const baseQuery: RootFilterQuery<MCPServerDocument> = {
+      ...otherParams,
+      _id: { $in: ids },
+    };
 
     // Add cursor condition
     if (after) {
@@ -207,7 +210,10 @@ export function createMCPServerMethods(mongoose: typeof import('mongoose')) {
         const cursorCondition = {
           $or: [
             { updatedAt: { $lt: new Date(updatedAt) } },
-            { updatedAt: new Date(updatedAt), _id: { $gt: new mongoose.Types.ObjectId(_id) } },
+            {
+              updatedAt: new Date(updatedAt),
+              _id: { $gt: new mongoose.Types.ObjectId(_id) },
+            },
           ],
         };
 

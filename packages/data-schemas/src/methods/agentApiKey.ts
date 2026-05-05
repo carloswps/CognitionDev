@@ -1,18 +1,22 @@
 import type { Types } from 'mongoose';
+import logger from '~/config/winston';
+import { getRandomValues, hashToken } from '~/crypto';
 import type {
-  AgentApiKeyCreateResult,
   AgentApiKeyCreateData,
+  AgentApiKeyCreateResult,
   AgentApiKeyListItem,
   IAgentApiKey,
 } from '~/types';
-import { hashToken, getRandomValues } from '~/crypto';
-import logger from '~/config/winston';
 
 const API_KEY_PREFIX = 'sk-';
 const API_KEY_LENGTH = 32;
 
 export function createAgentApiKeyMethods(mongoose: typeof import('mongoose')) {
-  async function generateApiKey(): Promise<{ key: string; keyHash: string; keyPrefix: string }> {
+  async function generateApiKey(): Promise<{
+    key: string;
+    keyHash: string;
+    keyPrefix: string;
+  }> {
     const randomPart = await getRandomValues(API_KEY_LENGTH);
     const key = `${API_KEY_PREFIX}${randomPart}`;
     const keyHash = await hashToken(key);
@@ -54,7 +58,9 @@ export function createAgentApiKeyMethods(mongoose: typeof import('mongoose')) {
       const AgentApiKey = mongoose.models.AgentApiKey;
       const keyHash = await hashToken(apiKey);
 
-      const keyDoc = (await AgentApiKey.findOne({ keyHash }).lean()) as IAgentApiKey | null;
+      const keyDoc = (await AgentApiKey.findOne({
+        keyHash,
+      }).lean()) as IAgentApiKey | null;
 
       if (!keyDoc) {
         return null;

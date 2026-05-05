@@ -1,11 +1,11 @@
-import { useRecoilState } from 'recoil';
+import { AssistantIcon, Button, DataIcon, MessagesSquared } from '@librechat/client';
 import { EModelEndpoint, SettingsViews } from 'librechat-data-provider';
-import { Button, MessagesSquared, AssistantIcon, DataIcon } from '@librechat/client';
 import type { ReactNode } from 'react';
-import { useChatContext } from '~/Providers';
+import { useRecoilState } from 'recoil';
 import { useLocalize } from '~/hooks';
-import { cn } from '~/utils';
+import { useChatContext } from '~/Providers';
 import store from '~/store';
+import { cn } from '~/utils';
 
 type TPopoverButton = {
   label: string;
@@ -46,7 +46,10 @@ export default function PopoverButtons({
 
   const triggerExamples = () => {
     setSettingsView(SettingsViews.default);
-    setOptionSettings((prev) => ({ ...prev, showExamples: !(prev.showExamples ?? false) }));
+    setOptionSettings((prev) => ({
+      ...prev,
+      showExamples: !(prev.showExamples ?? false),
+    }));
   };
 
   const endpointSpecificbuttons: { [key: string]: TPopoverButton[] } = {

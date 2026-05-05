@@ -1,12 +1,12 @@
-import { PrincipalType } from 'librechat-data-provider';
-import {
-  logger,
-  getTenantId,
-  mergeConfigOverrides,
-  BASE_CONFIG_PRINCIPAL_ID,
-} from '@librechat/data-schemas';
-import type { Types } from 'mongoose';
 import type { AppConfig, IConfig } from '@librechat/data-schemas';
+import {
+  BASE_CONFIG_PRINCIPAL_ID,
+  getTenantId,
+  logger,
+  mergeConfigOverrides,
+} from '@librechat/data-schemas';
+import { PrincipalType } from 'librechat-data-provider';
+import type { Types } from 'mongoose';
 
 const BASE_CONFIG_KEY = '_BASE_';
 
@@ -37,7 +37,10 @@ export interface AppConfigServiceDeps {
   cacheKeys: { APP_CONFIG: string };
   /** Fetch applicable DB config overrides for a set of principals. */
   getApplicableConfigs: (
-    principals?: Array<{ principalType: string; principalId?: string | Types.ObjectId }>,
+    principals?: Array<{
+      principalType: string;
+      principalId?: string | Types.ObjectId;
+    }>,
   ) => Promise<IConfig[]>;
   /** Resolve full principal list (user + role + groups) from userId/role. */
   getUserPrincipals: (params: {
@@ -99,7 +102,10 @@ export function createAppConfigService(deps: AppConfigServiceDeps) {
     if (userId) {
       return getUserPrincipals({ userId, role });
     }
-    const principals: Array<{ principalType: string; principalId?: string | Types.ObjectId }> = [];
+    const principals: Array<{
+      principalType: string;
+      principalId?: string | Types.ObjectId;
+    }> = [];
     if (role) {
       principals.push({ principalType: PrincipalType.ROLE, principalId: role });
     }

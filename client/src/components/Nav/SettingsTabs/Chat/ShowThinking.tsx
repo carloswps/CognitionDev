@@ -1,7 +1,7 @@
+import { ESide, InfoHoverCard, Switch } from '@librechat/client';
 import { useAtom } from 'jotai';
-import { Switch, InfoHoverCard, ESide } from '@librechat/client';
-import { showThinkingAtom } from '~/store/showThinking';
 import { useLocalize } from '~/hooks';
+import { showThinkingAtom } from '~/store/showThinking';
 
 export default function SaveDraft({
   onCheckedChange,

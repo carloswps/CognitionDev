@@ -62,7 +62,7 @@
   outline: none !important;
 }
 
-.select-item[aria-disabled='true'] {
+.select-item[aria-disabled="true"] {
   opacity: 0.5;
 }
 

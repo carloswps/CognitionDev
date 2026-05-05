@@ -11,13 +11,13 @@
  * Also tests the happy path: access token expired but refresh succeeds.
  */
 
-import { Keyv } from 'keyv';
 import { logger } from '@librechat/data-schemas';
+import type { Keyv } from 'keyv';
 import { FlowStateManager, PENDING_STALE_MS } from '~/flow/manager';
-import { MCPTokenStorage, ReauthenticationRequiredError } from '~/mcp/oauth';
-import { MockKeyv, InMemoryTokenStore, createOAuthMCPServer } from './helpers/oauthTestServer';
-import type { OAuthTestServer } from './helpers/oauthTestServer';
 import type { MCPOAuthTokens } from '~/mcp/oauth';
+import { MCPTokenStorage, ReauthenticationRequiredError } from '~/mcp/oauth';
+import type { OAuthTestServer } from './helpers/oauthTestServer';
+import { createOAuthMCPServer, InMemoryTokenStore, MockKeyv } from './helpers/oauthTestServer';
 
 jest.mock('@librechat/data-schemas', () => ({
   logger: {
@@ -617,10 +617,11 @@ describe('MCP OAuth Token Expiry Scenarios', () => {
       const state = await flowManager.getFlowState(flowId, 'mcp_oauth');
       if (state) {
         state.createdAt = Date.now() - 3 * 60 * 1000;
-        await (flowStore as unknown as { set: (k: string, v: unknown) => Promise<void> }).set(
-          `mcp_oauth:${flowId}`,
-          state,
-        );
+        await (
+          flowStore as unknown as {
+            set: (k: string, v: unknown) => Promise<void>;
+          }
+        ).set(`mcp_oauth:${flowId}`, state);
       }
 
       const agedState = await flowManager.getFlowState(flowId, 'mcp_oauth');

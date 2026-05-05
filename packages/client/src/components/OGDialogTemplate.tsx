@@ -1,16 +1,16 @@
-import { forwardRef, isValidElement, ReactNode, Ref } from 'react';
-import {
-  OGDialogTitle,
-  OGDialogClose,
-  OGDialogFooter,
-  OGDialogHeader,
-  OGDialogContent,
-  OGDialogDescription,
-} from './OriginalDialog';
+import { forwardRef, isValidElement, type ReactNode, type Ref } from 'react';
 import { useLocalize } from '~/hooks';
-import { Button } from './Button';
 import { Spinner } from '~/svgs';
 import { cn } from '~/utils/';
+import { Button } from './Button';
+import {
+  OGDialogClose,
+  OGDialogContent,
+  OGDialogDescription,
+  OGDialogFooter,
+  OGDialogHeader,
+  OGDialogTitle,
+} from './OriginalDialog';
 
 type SelectionProps = {
   selectHandler?: () => void;

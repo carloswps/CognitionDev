@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Input } from './Input';
 import { cn } from '~/utils';
+import { Input } from './Input';
 
 export type InputWithDropdownProps = React.InputHTMLAttributes<HTMLInputElement> & {
   options: string[];
@@ -22,7 +22,9 @@ const InputWithDropdown = React.forwardRef<HTMLInputElement, InputWithDropdownPr
         onSelect(value);
       }
       if (props.onChange) {
-        props.onChange({ target: { value } } as React.ChangeEvent<HTMLInputElement>);
+        props.onChange({
+          target: { value },
+        } as React.ChangeEvent<HTMLInputElement>);
       }
     };
 

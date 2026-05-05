@@ -62,7 +62,9 @@ export function createToolCallMethods(mongoose: typeof import('mongoose')) {
   async function updateToolCall(id: string, updateData: Partial<IToolCallData>) {
     try {
       const ToolCall = mongoose.models.ToolCall as Model<IToolCallData>;
-      return await ToolCall.findByIdAndUpdate(id, updateData, { new: true }).lean();
+      return await ToolCall.findByIdAndUpdate(id, updateData, {
+        new: true,
+      }).lean();
     } catch (error) {
       throw new Error(`Error updating tool call: ${(error as Error).message}`);
     }

@@ -1,5 +1,5 @@
-import roleSchema from '~/schema/role';
 import { applyTenantIsolation } from '~/models/plugins/tenantIsolation';
+import roleSchema from '~/schema/role';
 import type { IRole } from '~/types';
 
 export function createRoleModel(mongoose: typeof import('mongoose')) {
