@@ -5,6 +5,7 @@ const {
   getBedrockModels,
   getOpenAIModels,
   getGoogleModels,
+  getDeepseekModels,
 } = require('@librechat/api');
 const { getAppConfig } = require('./app');
 
@@ -24,7 +25,7 @@ async function loadDefaultModels(req) {
       }));
     const vertexConfig = appConfig?.endpoints?.[EModelEndpoint.anthropic]?.vertexConfig;
 
-    const [openAI, anthropic, azureOpenAI, assistants, azureAssistants, google, bedrock] =
+    const [openAI, anthropic, azureOpenAI, assistants, azureAssistants, google, bedrock, deepseek] =
       await Promise.all([
         getOpenAIModels({ user: req.user.id }).catch((error) => {
           logger.error('Error fetching OpenAI models:', error);
@@ -57,6 +58,10 @@ async function loadDefaultModels(req) {
           logger.error('Error getting Bedrock models:', error);
           return [];
         }),
+        Promise.resolve(getDeepseekModels()).catch((error) => {
+          logger.error('Error getting Deepseek models:', error);
+          return [];
+        }),
       ]);
 
     return {
@@ -67,6 +72,7 @@ async function loadDefaultModels(req) {
       [EModelEndpoint.assistants]: assistants,
       [EModelEndpoint.azureAssistants]: azureAssistants,
       [EModelEndpoint.bedrock]: bedrock,
+      [EModelEndpoint.deepseek]: deepseek,
     };
   } catch (error) {
     logger.error('Error fetching default models:', error);
