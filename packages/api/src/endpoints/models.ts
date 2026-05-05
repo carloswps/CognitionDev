@@ -426,3 +426,77 @@ export function getBedrockModels(): string[] {
   }
   return models;
 }
+
+/**
+ * Options for fetching DeepSeek models
+ * */
+export interface GetDeepSeekModelsOptions {
+  /** User ID for API requests*/
+  user?: string;
+  /**
+   * Skip MODEL_QUERIES cache (e. g., for user-provided keys)
+   * */
+  skipCache?: boolean;
+}
+
+/**
+ * Fetches models from the DeepSeek API.
+ * @param opts - Options for fetching models
+ * @param _models - Fallback models array
+ * @returns Promise resolving to array of model IDs
+ */
+export async function fetchDeepSeekModels(
+  opts: GetDeepSeekModelsOptions = {},
+  _models: string[] = [],
+): Promise<string[]> {
+  let models = _models.slice() ?? [];
+  const apiKey = process.env.DEEPSEEK_API_KEY;
+  const deepseekBaseUrl = 'https://api.deepseek.com/v1';
+  let baseURL = deepseekBaseUrl;
+  const reverseProxyUrl = process.env.DEEPSEEK_REVERSE_PROXY;
+
+  if (reverseProxyUrl) {
+    baseURL = extractBaseURL(reverseProxyUrl) ?? deepseekBaseUrl;
+  }
+
+  if (!apiKey) return models;
+
+  if (baseURL) {
+    models = await fetchModels({
+      apiKey,
+      baseURL,
+      user: opts.user,
+      name: EModelEndpoint.deepseek,
+      skipCache: opts.skipCache,
+    });
+  }
+
+  if (models.length === 0) {
+    return _models;
+  }
+
+  return models;
+}
+
+/**
+ * Gets DeepSeek models from environment or API.
+ * @param opts - Options for fetching models
+ * @returns Promise resolving to array of model IDs
+ */
+export async function getDeepSeekModels(opts: GetDeepSeekModelsOptions = {}): Promise<string[]> {
+  const models = defaultModels[EModelEndpoint.deepseek] ?? [];
+
+  if (process.env.DEEPSEEK_MODELS) {
+    return splitAndTrim(process.env.DEEPSEEK_MODELS);
+  }
+  if (isUserProvided(process.env.DEEPSEEK_API_KEY)) {
+    return models;
+  }
+
+  try {
+    return await fetchDeepSeekModels(opts, models);
+  } catch (error) {
+    logger.error('Error fetching DeepSeek models:', error);
+    return models;
+  }
+}

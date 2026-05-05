@@ -3,6 +3,7 @@ import type { AppConfig } from '@librechat/data-schemas';
 import type { TEndpoint } from 'librechat-data-provider';
 import { EModelEndpoint } from 'librechat-data-provider';
 import { getCustomEndpointConfig } from '~/app/config';
+import { initializeDeepSeek } from '~/endpoints';
 import type { BaseInitializeParams, InitializeResultBase } from '~/types';
 import { initializeAnthropic } from '../anthropic/initialize';
 import { initializeBedrock } from '../bedrock/initialize';
@@ -21,7 +22,7 @@ export type InitializeFn = (params: BaseInitializeParams) => Promise<InitializeR
  * @returns True if the provider is a known custom provider, false otherwise
  */
 export function isKnownCustomProvider(provider?: string): boolean {
-  return [Providers.XAI, Providers.DEEPSEEK, Providers.OPENROUTER, Providers.MOONSHOT].includes(
+  return [Providers.XAI, Providers.OPENROUTER, Providers.MOONSHOT].includes(
     (provider?.toLowerCase() ?? '') as Providers,
   );
 }
@@ -31,7 +32,7 @@ export function isKnownCustomProvider(provider?: string): boolean {
  */
 export const providerConfigMap: Record<string, InitializeFn> = {
   [Providers.XAI]: initializeCustom,
-  [Providers.DEEPSEEK]: initializeCustom,
+  [Providers.DEEPSEEK]: initializeDeepSeek,
   [Providers.MOONSHOT]: initializeCustom,
   [Providers.OPENROUTER]: initializeCustom,
   [EModelEndpoint.openAI]: initializeOpenAI,
@@ -39,6 +40,7 @@ export const providerConfigMap: Record<string, InitializeFn> = {
   [EModelEndpoint.bedrock]: initializeBedrock,
   [EModelEndpoint.azureOpenAI]: initializeOpenAI,
   [EModelEndpoint.anthropic]: initializeAnthropic,
+  [EModelEndpoint.deepseek]: initializeDeepSeek,
 };
 
 /**

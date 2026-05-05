@@ -51,6 +51,11 @@ export function createLoadConfigModels(deps: LoadConfigModelsDeps) {
       modelsConfig[EModelEndpoint.bedrock] = bedrockConfig.models;
     }
 
+    const deepseekConfig = appConfig.endpoints?.[EModelEndpoint.deepseek];
+    if (deepseekConfig?.models && Array.isArray(deepseekConfig.models)) {
+      modelsConfig[EModelEndpoint.deepseek] = deepseekConfig.models;
+    }
+
     if (!Array.isArray(appConfig.endpoints?.[EModelEndpoint.custom])) {
       return modelsConfig;
     }

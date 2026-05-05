@@ -25,6 +25,7 @@ export enum EModelEndpoint {
   agents = 'agents',
   custom = 'custom',
   bedrock = 'bedrock',
+  deepseek = 'deepseek',
 }
 
 /** Mirrors `@librechat/agents` providers */
