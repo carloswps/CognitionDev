@@ -245,6 +245,8 @@ actions:
 
 # Definition of custom endpoints
 endpoints:
+  all:
+    titleConvo: true
   # assistants:
   #   disableBuilder: false # Disable Assistants Builder Interface by setting to `true`
   #   pollIntervalMs: 3000  # Polling interval for checking assistant updates

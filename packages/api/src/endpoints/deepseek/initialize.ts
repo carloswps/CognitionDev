@@ -78,8 +78,11 @@ export async function initializeDeepSeek({
 
   const options = getOpenAIConfig(apiKey, finalClientOptions, endpoint);
 
-  const deepseekConfig = appConfig?.endpoints?.[EModelEndpoint.deepseek];
-  const allConfig = appConfig?.endpoints?.all;
+  const endpointsConfig = appConfig?.endpoints as Record<string, any>;
+  const deepseekConfig = endpointsConfig?.[EModelEndpoint.deepseek] as
+    | { streamRate?: number }
+    | undefined;
+  const allConfig = endpointsConfig?.all;
 
   let streamRate: number | undefined;
 
