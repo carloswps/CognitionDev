@@ -1,0 +1,22 @@
+**/.circleci
+**/.editorconfig
+**/.dockerignore
+**/.git
+**/.DS_Store
+**/.vscode
+**/node_modules
+
+# Specific patterns to ignore
+data-node
+meili_data*
+librechat.yaml
+librechat.yml
+Dockerfile*
+docs
+
+# Ignore all hidden files
+.*
+
+# Except librechat.yaml
+!librechat.yaml
+!librechat.yml

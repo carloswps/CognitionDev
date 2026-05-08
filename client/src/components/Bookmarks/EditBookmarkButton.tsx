@@ -1,0 +1,46 @@
+import { Button, EditIcon, OGDialogTrigger, TooltipAnchor } from '@librechat/client';
+import type { TConversationTag } from 'librechat-data-provider';
+import type { FC } from 'react';
+import { useState } from 'react';
+import { useLocalize } from '~/hooks';
+import BookmarkEditDialog from './BookmarkEditDialog';
+
+const EditBookmarkButton: FC<{
+  bookmark: TConversationTag;
+  tabIndex?: number;
+  onFocus?: () => void;
+  onBlur?: () => void;
+}> = ({ bookmark, tabIndex = 0, onFocus, onBlur }) => {
+  const localize = useLocalize();
+  const [open, setOpen] = useState(false);
+
+  return (
+    <BookmarkEditDialog
+      context="EditBookmarkButton"
+      bookmark={bookmark}
+      open={open}
+      setOpen={setOpen}
+    >
+      <OGDialogTrigger asChild>
+        <TooltipAnchor
+          description={localize('com_ui_edit')}
+          render={
+            <Button
+              variant="ghost"
+              aria-label={localize('com_ui_bookmarks_edit')}
+              tabIndex={tabIndex}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              onClick={() => setOpen(!open)}
+              className="h-8 w-8 p-0"
+            >
+              <EditIcon />
+            </Button>
+          }
+        />
+      </OGDialogTrigger>
+    </BookmarkEditDialog>
+  );
+};
+
+export default EditBookmarkButton;

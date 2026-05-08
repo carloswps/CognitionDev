@@ -1,0 +1,67 @@
+name: Biome Code Quality Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+      - dev-staging
+      - release/*
+    paths:
+      - 'api/**'
+      - 'client/**'
+      - 'packages/**'
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - 'api/**'
+      - 'client/**'
+      - 'packages/**'
+
+jobs:
+  biome_checks:
+    name: Run Biome Linting
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Run Biome on changed files within the api/, client/, and packages/ directories.
+      - name: Run Biome on changed files
+        run: |
+          # Extract the base commit SHA from the pull_request event payload.
+          BASE_SHA=$(jq --raw-output .pull_request.base.sha "$GITHUB_EVENT_PATH")
+          echo "Base commit SHA: $BASE_SHA"
+
+          # Get changed files (only JS/TS files in api/, client/, or packages/)
+          CHANGED_FILES=$(git diff --name-only --diff-filter=ACMRTUXB "$BASE_SHA" HEAD | grep -E '^(api|client|packages)/.*\.(js|jsx|ts|tsx)$' || true)
+
+          # Debug output
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          # Ensure there are files to lint before running Biome
+          if [[ -z "$CHANGED_FILES" ]]; then
+            echo "No matching files changed. Skipping Biome."
+            exit 0
+          fi
+
+          # Run Biome on changed files
+          npx biome check $CHANGED_FILES
