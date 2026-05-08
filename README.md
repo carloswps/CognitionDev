@@ -1,3 +1,12 @@
+---
+title: CognitionDev
+emoji: 🧠
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+pinned: false
+---
+
 <p align="center">
   <img src="client/public/assets/CognitionDev.jpg" height="120">
   <h1 align="center">CognitionDev</h1>
