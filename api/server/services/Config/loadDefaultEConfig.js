@@ -22,6 +22,7 @@ async function loadDefaultEndpointsConfig(appConfig) {
     [EModelEndpoint.google]: google,
     [EModelEndpoint.anthropic]: config[EModelEndpoint.anthropic],
     [EModelEndpoint.bedrock]: config[EModelEndpoint.bedrock],
+    [EModelEndpoint.deepseek]: config[EModelEndpoint.deepseek],
   };
 
   const orderedAndFilteredEndpoints = enabledEndpoints.reduce((config, key, index) => {

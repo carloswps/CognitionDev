@@ -9,6 +9,8 @@ const {
   AZURE_API_KEY: azureOpenAIApiKey,
   ANTHROPIC_API_KEY: anthropicApiKey,
   GOOGLE_KEY: googleKey,
+  DEEPSEEK_API_KEY: deepSeekApiKey,
+  DEEPSEEK_REVERSE_PROXY,
   OPENAI_REVERSE_PROXY,
   AZURE_OPENAI_BASEURL,
   ASSISTANTS_BASE_URL,
@@ -23,6 +25,7 @@ module.exports = {
     openAIApiKey,
     azureOpenAIApiKey,
     userProvidedOpenAI,
+    deepSeekApiKey,
     [EModelEndpoint.anthropic]: generateConfig(
       anthropicApiKey || isEnabled(process.env.ANTHROPIC_USE_VERTEX),
     ),
@@ -41,6 +44,7 @@ module.exports = {
     [EModelEndpoint.bedrock]: generateConfig(
       process.env.BEDROCK_AWS_SECRET_ACCESS_KEY ?? process.env.BEDROCK_AWS_DEFAULT_REGION,
     ),
+    [EModelEndpoint.deepseek]: generateConfig(deepSeekApiKey, DEEPSEEK_REVERSE_PROXY),
     /* key will be part of separate config */
     [EModelEndpoint.agents]: generateConfig('true', undefined, EModelEndpoint.agents),
   },

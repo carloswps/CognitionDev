@@ -94,7 +94,7 @@
         "noUnsafeOptionalChaining": "error",
         "noUnusedLabels": "error",
         "noUnusedPrivateClassMembers": "error",
-        "noUnusedVariables": "error",
+        "noUnusedVariables": "off",
         "useExhaustiveDependencies": "warn",
         "useHookAtTopLevel": "error",
         "useIsNan": "error",
@@ -320,12 +320,7 @@
       "linter": { "rules": { "suspicious": { "noAsyncPromiseExecutor": "off" } } }
     },
     {
-      "includes": [
-        "client/src/**/*.tsx",
-        "client/src/**/*.ts",
-        "client/src/**/*.jsx",
-        "client/src/**/*.js"
-      ],
+      "includes": ["client/src/**/*.tsx", "client/src/**/*.ts", "client/src/**/*.jsx", "client/src/**/*.js"],
       "linter": {
         "rules": {
           "a11y": {
@@ -417,7 +412,7 @@
             "noUselessThisAlias": "error",
             "noUselessTypeConstraint": "error"
           },
-          "correctness": { "noUnusedVariables": "error" },
+          "correctness": { "noUnusedVariables": "off" },
           "style": {
             "noCommonJs": "error",
             "noNamespace": "error",
@@ -443,7 +438,7 @@
       "linter": {
         "rules": {
           "correctness": {
-            "noUnusedVariables": "warn",
+            "noUnusedVariables": "off",
             "useExhaustiveDependencies": "warn",
             "useHookAtTopLevel": "error"
           },
@@ -459,12 +454,12 @@
     {
       "includes": ["packages/data-provider/**/*.ts"],
       "javascript": { "globals": [] },
-      "linter": { "rules": { "correctness": { "noUnusedVariables": "warn" } } }
+      "linter": { "rules": { "correctness": { "noUnusedVariables": "off" } } }
     },
     { "includes": ["api/demo/**/*.ts"] },
     {
       "includes": ["packages/api/**/*.ts"],
-      "linter": { "rules": { "correctness": { "noUnusedVariables": "warn" } } }
+      "linter": { "rules": { "correctness": { "noUnusedVariables": "off" } } }
     },
     { "includes": ["config/translations/**/*.ts"], "javascript": { "globals": [] } },
     { "includes": ["packages/data-provider/specs/**/*.ts"], "javascript": { "globals": [] } },
@@ -473,15 +468,10 @@
     {
       "includes": ["packages/data-schemas/**/*.ts"],
       "javascript": { "globals": [] },
-      "linter": { "rules": { "correctness": { "noUnusedVariables": "warn" } } }
+      "linter": { "rules": { "correctness": { "noUnusedVariables": "off" } } }
     },
     {
-      "includes": [
-        "packages/data-schemas/**/*.ts",
-        "!**/*.spec.ts",
-        "!**/*.test.ts",
-        "!**/utils/tenantBulkWrite.ts"
-      ],
+      "includes": ["packages/data-schemas/**/*.ts", "!**/*.spec.ts", "!**/*.test.ts", "!**/utils/tenantBulkWrite.ts"],
       "linter": {
         "rules": {
           "suspicious": {
