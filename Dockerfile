@@ -1,6 +1,6 @@
 # v0.8.5 - Hugging Face Optimized
 
-FROM node:20-alpine
+FROM node:22-alpine
 
 RUN apk upgrade --no-cache && \
     apk add --no-cache jemalloc python3
