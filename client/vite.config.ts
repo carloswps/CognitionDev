@@ -34,7 +34,7 @@ const backendURL = process.env.HOST
   ? `http://${process.env.HOST}:${backendPort}`
   : `http://localhost:${backendPort}`;
 
-export default defineConfig(({ command }) => ({
+export default defineConfig(({ command, mode }) => ({
   base: '',
   server: {
     allowedHosts:
@@ -130,9 +130,9 @@ export default defineConfig(({ command }) => ({
   ],
   publicDir: command === 'serve' ? './public' : false,
   build: {
-    sourcemap: process.env.NODE_ENV === 'development',
+    sourcemap: process.env.NODE_ENV === 'development' && mode !== 'ci',
     outDir: './dist',
-    minify: 'terser',
+    minify: mode === 'ci' ? false : 'terser',
     rollupOptions: {
       preserveEntrySignatures: 'strict',
       output: {

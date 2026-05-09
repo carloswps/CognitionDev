@@ -22,16 +22,18 @@ RUN touch .env && \
 RUN npm config set fetch-retry-maxtimeout 600000 && \
     npm ci --no-audit --prefer-offline
 
-# Buildar packages internos (necessários para o backend)
+# Buildar packages internos (necessários para backend e frontend)
 RUN npm run build:data-provider && \
     npm run build:data-schemas && \
-    npm run build:api
+    npm run build:api && \
+    npm run build:client-package
 
-# Buildar frontend com menos memória (evitar OOM)
-RUN NODE_OPTIONS="--max-old-space-size=4096" npm run frontend:ci || \
+# Buildar frontend com mais memória e otimizações para Hugging Face
+ENV NODE_OPTIONS="--max-old-space-size=12288"
+RUN cd client && npm run build:ci || \
     (echo "Frontend build falhou, criando pagina minima..." && \
-     mkdir -p client/dist && \
-     echo '<!DOCTYPE html><html><head><title>CognitionDev</title></head><body><h1>CognitionDev API</h1><p>Frontend em construcao</p></body></html>' > client/dist/index.html)
+     mkdir -p dist && \
+     echo '<!DOCTYPE html><html><head><title>CognitionDev</title></head><body><h1>CognitionDev API</h1><p>Frontend em construcao</p></body></html>' > dist/index.html)
 
 # Limpar e setar produção
 RUN npm prune --production && \
