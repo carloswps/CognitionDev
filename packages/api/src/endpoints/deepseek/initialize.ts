@@ -1,7 +1,12 @@
 import { EModelEndpoint, ErrorTypes } from 'librechat-data-provider';
 import { validateEndpointURL } from '~/auth';
 
-import type { BaseInitializeParams, InitializeResultBase, OpenAIConfigOptions, UserKeyValues } from '~/types';
+import type {
+  BaseInitializeParams,
+  InitializeResultBase,
+  OpenAIConfigOptions,
+  UserKeyValues,
+} from '~/types';
 import { checkUserKeyExpiry, isUserProvided } from '~/utils';
 
 import { getOpenAIConfig } from '../openai/config';
@@ -78,11 +83,11 @@ export async function initializeDeepSeek({
 
   const options = getOpenAIConfig(apiKey, finalClientOptions, endpoint);
 
-  const endpointsConfig = appConfig?.endpoints as Record<string, any>;
+  const endpointsConfig = appConfig?.endpoints as Record<string, unknown>;
   const deepseekConfig = endpointsConfig?.[EModelEndpoint.deepseek] as
     | { streamRate?: number }
     | undefined;
-  const allConfig = endpointsConfig?.all;
+  const allConfig = endpointsConfig?.all as { streamRate?: number } | undefined;
 
   const streamRate = deepseekConfig?.streamRate ?? allConfig?.streamRate;
 

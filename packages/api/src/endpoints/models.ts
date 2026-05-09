@@ -1,9 +1,15 @@
+import crypto from 'node:crypto';
 import type { IUser } from '@librechat/data-schemas';
 import { logger } from '@librechat/data-schemas';
 import axios from 'axios';
-import crypto from 'crypto';
 import { HttpsProxyAgent } from 'https-proxy-agent';
-import { CacheKeys, defaultModels, EModelEndpoint, KnownEndpoints, Time } from 'librechat-data-provider';
+import {
+  CacheKeys,
+  defaultModels,
+  EModelEndpoint,
+  KnownEndpoints,
+  Time,
+} from 'librechat-data-provider';
 import { standardCache, tokenConfigCache } from '~/cache';
 import {
   deriveBaseURL,
@@ -136,7 +142,7 @@ export async function fetchModels({
     }
   }
 
-  if (name && name.toLowerCase().startsWith(KnownEndpoints.ollama)) {
+  if (name?.toLowerCase().startsWith(KnownEndpoints.ollama)) {
     let ollamaModels: string[] | null = null;
     try {
       ollamaModels = await fetchOllamaModels(baseURL ?? '', {

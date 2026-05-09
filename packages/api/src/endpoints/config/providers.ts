@@ -3,7 +3,7 @@ import type { AppConfig } from '@librechat/data-schemas';
 import type { TEndpoint } from 'librechat-data-provider';
 import { EModelEndpoint } from 'librechat-data-provider';
 import { getCustomEndpointConfig } from '~/app/config';
-import { initializeDeepSeek } from '~/endpoints';
+import { initializeDeepSeek } from '~/endpoints/deepseek';
 import type { BaseInitializeParams, InitializeResultBase } from '~/types';
 import { initializeAnthropic } from '../anthropic/initialize';
 import { initializeBedrock } from '../bedrock/initialize';
@@ -32,7 +32,6 @@ export function isKnownCustomProvider(provider?: string): boolean {
  */
 export const providerConfigMap: Record<string, InitializeFn> = {
   [Providers.XAI]: initializeCustom,
-  [Providers.DEEPSEEK]: initializeDeepSeek,
   [Providers.MOONSHOT]: initializeCustom,
   [Providers.OPENROUTER]: initializeCustom,
   [EModelEndpoint.openAI]: initializeOpenAI,

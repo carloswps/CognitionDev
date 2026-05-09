@@ -105,7 +105,7 @@ export interface AppConfig {
     /** Bedrock endpoint configuration */
     bedrock?: Partial<TEndpoint>;
     /** DeepSeek endpoint configuration */
-    deepSeek?: Partial<TEndpoint>;
+    deepseek?: Partial<TEndpoint>;
     /** Anthropic endpoint configuration with optional Vertex AI support */
     anthropic?: Partial<TAnthropicEndpoint> & {
       /** Validated Vertex AI configuration */

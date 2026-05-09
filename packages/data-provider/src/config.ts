@@ -1139,7 +1139,7 @@ export type DeepPartial<T> = T extends (infer U)[]
   ? DeepPartial<U>[]
   : T extends ReadonlyArray<infer U>
     ? ReadonlyArray<DeepPartial<U>>
-    : // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+    : // biome-ignore lint/complexity/noBannedTypes: <explanation>
       T extends Function
       ? T
       : T extends Date

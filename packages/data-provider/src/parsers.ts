@@ -120,6 +120,7 @@ export function errorsToString(errors: ZodIssue[]) {
 }
 
 export function getFirstDefinedValue(possibleValues: string[]) {
+  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
   let returnValue;
   for (const value of possibleValues) {
     if (value) {
