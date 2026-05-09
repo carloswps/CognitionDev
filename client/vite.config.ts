@@ -65,68 +65,72 @@ export default defineConfig(({ command, mode }) => ({
       },
     },
     nodePolyfills(),
-    VitePWA({
-      injectRegister: 'auto', // 'auto' | 'manual' | 'disabled'
-      registerType: 'autoUpdate', // 'prompt' | 'autoUpdate'
-      devOptions: {
-        enabled: false, // disable service worker registration in development mode
-      },
-      useCredentials: true,
-      includeManifestIcons: false,
-      workbox: {
-        globPatterns: [
-          '**/*.{js,css,html}',
-          'assets/favicon*.png',
-          'assets/icon-*.png',
-          'assets/apple-touch-icon*.png',
-          'assets/maskable-icon.png',
-          'manifest.webmanifest',
-        ],
-        globIgnores: ['images/**/*', '**/*.map', 'index.html'],
-        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
-        navigateFallbackDenylist: [/^\/oauth/, /^\/api/],
-      },
-      includeAssets: [],
-      manifest: {
-        name: 'LibreChat',
-        short_name: 'LibreChat',
-        display: 'standalone',
-        background_color: '#000000',
-        theme_color: '#009688',
-        icons: [
-          {
-            src: 'assets/favicon-32x32.png',
-            sizes: '32x32',
-            type: 'image/png',
-          },
-          {
-            src: 'assets/favicon-16x16.png',
-            sizes: '16x16',
-            type: 'image/png',
-          },
-          {
-            src: 'assets/apple-touch-icon-180x180.png',
-            sizes: '180x180',
-            type: 'image/png',
-          },
-          {
-            src: 'assets/icon-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: 'assets/maskable-icon.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'maskable',
-          },
-        ],
-      },
-    }),
-    sourcemapExclude({ excludeNodeModules: true }),
-    compression({
-      threshold: 10240,
-    }),
+    ...(mode !== 'ci'
+      ? [
+          VitePWA({
+            injectRegister: 'auto',
+            registerType: 'autoUpdate',
+            devOptions: {
+              enabled: false,
+            },
+            useCredentials: true,
+            includeManifestIcons: false,
+            workbox: {
+              globPatterns: [
+                '**/*.{js,css,html}',
+                'assets/favicon*.png',
+                'assets/icon-*.png',
+                'assets/apple-touch-icon*.png',
+                'assets/maskable-icon.png',
+                'manifest.webmanifest',
+              ],
+              globIgnores: ['images/**/*', '**/*.map', 'index.html'],
+              maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
+              navigateFallbackDenylist: [/^\/oauth/, /^\/api/],
+            },
+            includeAssets: [],
+            manifest: {
+              name: 'LibreChat',
+              short_name: 'LibreChat',
+              display: 'standalone',
+              background_color: '#000000',
+              theme_color: '#009688',
+              icons: [
+                {
+                  src: 'assets/favicon-32x32.png',
+                  sizes: '32x32',
+                  type: 'image/png',
+                },
+                {
+                  src: 'assets/favicon-16x16.png',
+                  sizes: '16x16',
+                  type: 'image/png',
+                },
+                {
+                  src: 'assets/apple-touch-icon-180x180.png',
+                  sizes: '180x180',
+                  type: 'image/png',
+                },
+                {
+                  src: 'assets/icon-192x192.png',
+                  sizes: '192x192',
+                  type: 'image/png',
+                },
+                {
+                  src: 'assets/maskable-icon.png',
+                  sizes: '512x512',
+                  type: 'image/png',
+                  purpose: 'maskable',
+                },
+              ],
+            },
+          }),
+          sourcemapExclude({ excludeNodeModules: true }),
+          compression({
+            threshold: 10240,
+          }),
+        ]
+      : []),
   ],
   publicDir: command === 'serve' ? './public' : false,
   build: {
@@ -135,6 +139,7 @@ export default defineConfig(({ command, mode }) => ({
     minify: mode === 'ci' ? false : 'terser',
     rollupOptions: {
       preserveEntrySignatures: 'strict',
+      maxParallelFileOps: mode === 'ci' ? 1 : undefined,
       output: {
         manualChunks(id: string) {
           const normalizedId = id.replace(/\\/g, '/');

@@ -29,8 +29,8 @@ RUN npm run build:data-provider && \
     npm run build:client-package
 
 # Buildar frontend com mais memória e otimizações para Hugging Face
-ENV NODE_OPTIONS="--max-old-space-size=12288"
-RUN cd client && npm run build:ci || \
+ENV NODE_OPTIONS="--max-old-space-size=16384"
+RUN cd client && NODE_OPTIONS="--max-old-space-size=16384" npm run build:ci || \
     (echo "Frontend build falhou, criando pagina minima..." && \
      mkdir -p dist && \
      echo '<!DOCTYPE html><html><head><title>CognitionDev</title></head><body><h1>CognitionDev API</h1><p>Frontend em construcao</p></body></html>' > dist/index.html)
