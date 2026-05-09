@@ -84,15 +84,7 @@ export async function initializeDeepSeek({
     | undefined;
   const allConfig = endpointsConfig?.all;
 
-  let streamRate: number | undefined;
-
-  if (deepseekConfig) {
-    streamRate = deepseekConfig.streamRate;
-  }
-
-  if (allConfig?.streamRate) {
-    streamRate = allConfig.streamRate;
-  }
+  const streamRate = deepseekConfig?.streamRate ?? allConfig?.streamRate;
 
   if (streamRate) {
     options.llmConfig._lc_stream_delay = streamRate;

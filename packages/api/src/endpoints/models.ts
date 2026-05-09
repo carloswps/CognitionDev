@@ -449,7 +449,7 @@ export async function fetchDeepSeekModels(
   opts: GetDeepSeekModelsOptions = {},
   _models: string[] = [],
 ): Promise<string[]> {
-  let models = _models.slice() ?? [];
+  let models = _models.slice();
   const apiKey = process.env.DEEPSEEK_API_KEY;
   const deepseekBaseUrl = 'https://api.deepseek.com/v1';
   let baseURL = deepseekBaseUrl;
