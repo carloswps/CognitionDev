@@ -33,10 +33,13 @@ RUN npm prune --production && \
     npm cache clean --force
 
 ENV NODE_ENV=production
+ENV ALLOW_REGISTRATION=true
+ENV ALLOW_UNVERIFIED_EMAIL_LOGIN=true
 
 # Permissões
 RUN chmod -R 777 client/public/images logs uploads
 
 EXPOSE 7860
 
-CMD ["npm", "run", "backend"]
+# Criar usuário padrão se não existir, depois iniciar o backend
+CMD sh -c "node config/init-user.js && npm run backend"
