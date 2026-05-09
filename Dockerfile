@@ -23,10 +23,7 @@ RUN npm config set fetch-retry-maxtimeout 600000 && \
     npm ci --no-audit --prefer-offline
 
 # Buildar packages internos (necessários para backend e frontend)
-RUN npm run build:data-provider && \
-    npm run build:data-schemas && \
-    npm run build:api && \
-    npm run build:client-package
+RUN npm run frontend
 
 # Limpar e setar produção
 RUN npm prune --production && \
