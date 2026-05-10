@@ -1,0 +1,58 @@
+name: Deploy to Hugging Face Spaces
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-huggingface-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository with LFS
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Install Git LFS
+        run: |
+          git lfs version
+          git lfs install
+
+      - name: Create clean branch for Hugging Face
+        run: |
+          git checkout --orphan hf-deploy
+
+          # Configura Git LFS para arquivos binários
+          git lfs track "*.png"
+          git lfs track "*.jpg"
+          git lfs track "*.jpeg"
+          git lfs track "*.gif"
+          git lfs track "*.ico"
+          git lfs track "*.woff2"
+          git lfs track "*.lockb"
+
+          git add -A
+          git commit -m "deploy: auto-deploy to Hugging Face Spaces (${{ github.sha }})"
+
+      - name: Push to Hugging Face Spaces
+        run: |
+          git remote add hf https://user:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/carloswps/CognitionDev
+
+          git push --force hf hf-deploy:main
+
+      - name: Cleanup
+        if: always()
+        run: |
+          git checkout main || true
+          git branch -D hf-deploy || true
