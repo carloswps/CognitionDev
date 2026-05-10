@@ -40,6 +40,12 @@ public/main.js
 public/main.js.map
 public/main.js.LICENSE.txt
 client/public/images/
+client/public/assets/*.png
+client/public/assets/*.jpg
+client/public/assets/*.jpeg
+client/public/assets/*.webp
+client/public/assets/*.mp3
+client/public/fonts/*.woff2
 client/public/main.js
 client/public/main.js.map
 client/public/main.js.LICENSE.txt
