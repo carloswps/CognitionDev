@@ -139,25 +139,14 @@ export default defineConfig(({ command, mode }) => ({
     minify: mode === 'ci' ? false : 'terser',
     rollupOptions: {
       preserveEntrySignatures: 'strict',
-      maxParallelFileOps: mode === 'ci' ? 1 : undefined,
       output: {
         manualChunks(id: string) {
+          // No modo CI, deixar Rollup decidir automaticamente para máxima velocidade
+          if (mode === 'ci') {
+            return null;
+          }
           const normalizedId = id.replace(/\\/g, '/');
           if (normalizedId.includes('node_modules')) {
-            // Em modo CI, criar apenas chunks grandes para economizar memória
-            if (mode === 'ci') {
-              // Apenas separar mermaid (muito grande) e o resto em vendor
-              if (
-                normalizedId.includes('mermaid') ||
-                normalizedId.includes('dagre-d3-es') ||
-                normalizedId.includes('chevrotain') ||
-                normalizedId.includes('langium') ||
-                normalizedId.includes('lodash-es')
-              ) {
-                return 'mermaid';
-              }
-              return 'vendor';
-            }
             // High-impact chunking for large libraries
 
             // IMPORTANT: mermaid and ALL its dependencies must be in the same chunk
