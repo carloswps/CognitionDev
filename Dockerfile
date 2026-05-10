@@ -25,14 +25,11 @@ RUN npm config set fetch-retry-maxtimeout 600000 && \
 # Aumentar limite de memória para builds grandes (16GB)
 ENV NODE_OPTIONS=--max-old-space-size=16384
 
-# Criar swap para compensar falta de RAM
-RUN fallocate -l 4G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
-
-# Buildar packages necessários para o backend
-RUN npm run build:data-schemas && npm run build:api
-
-# Buildar packages do frontend
-RUN npm run build:data-provider && npm run build:client-package
+# Buildar packages na ordem correta de dependência
+RUN npm run build:data-schemas
+RUN npm run build:data-provider
+RUN npm run build:api
+RUN npm run build:client-package
 
 # Buildar frontend com modo CI (menor uso de memória)
 RUN cd client && npm run build:ci
