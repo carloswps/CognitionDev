@@ -141,7 +141,6 @@ export default defineConfig(({ command, mode }) => ({
       preserveEntrySignatures: 'strict',
       output: {
         manualChunks(id: string) {
-          // No modo CI, deixar Rollup decidir automaticamente para máxima velocidade
           if (mode === 'ci') {
             return null;
           }
