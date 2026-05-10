@@ -22,8 +22,11 @@ RUN touch .env && \
 RUN npm config set fetch-retry-maxtimeout 600000 && \
     npm ci --no-audit --prefer-offline
 
-# Buildar packages internos (necessários para backend e frontend)
-RUN npm run frontend
+# Aumentar limite de memória para builds grandes
+ENV NODE_OPTIONS=--max-old-space-size=12288
+
+# Buildar packages internos com otimizações para CI (menor uso de memória)
+RUN npm run frontend:ci
 
 # Limpar e setar produção
 RUN npm prune --production && \
