@@ -25,8 +25,11 @@ RUN npm config set fetch-retry-maxtimeout 600000 && \
 # Aumentar limite de memória para builds grandes
 ENV NODE_OPTIONS=--max-old-space-size=12288
 
-# Buildar packages internos com otimizações para CI (menor uso de memória)
-RUN npm run frontend:ci
+# Buildar packages necessários para o backend
+RUN npm run build:data-schemas && npm run build:api
+
+# Buildar frontend com otimizações para CI (menor uso de memória)
+RUN npm run build:data-provider && npm run build:client-package && cd client && npm run build:ci
 
 # Limpar e setar produção
 RUN npm prune --production && \
