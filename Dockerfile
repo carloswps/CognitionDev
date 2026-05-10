@@ -1,4 +1,5 @@
 # v0.8.5 - Hugging Face Optimized
+# NOTA: O frontend é pre-buildado pelo GitHub Actions e enviado com client/dist/
 
 FROM node:22-alpine
 
@@ -11,31 +12,17 @@ ENV HOST=0.0.0.0
 
 WORKDIR /app
 
-# Copiar tudo
+# Copiar tudo (incluindo client/dist/ já buildado)
 COPY . .
 
 # Criar .env vazio e diretórios necessários
 RUN touch .env && \
     mkdir -p client/dist client/public/images logs uploads
 
-# Instalar TODAS as dependências (incluindo devDependencies para build)
+# Instalar APENAS dependências de produção (frontend já está buildado)
 RUN npm config set fetch-retry-maxtimeout 600000 && \
-    npm ci --no-audit --prefer-offline
-
-# Aumentar limite de memória para builds grandes (16GB)
-ENV NODE_OPTIONS=--max-old-space-size=16384
-
-# Buildar packages na ordem correta de dependência
-RUN npm run build:data-schemas
-RUN npm run build:data-provider
-RUN npm run build:api
-RUN npm run build:client-package
-
-# Buildar frontend com modo CI (menor uso de memória)
-RUN cd client && npm run build:ci
-
-# Limpar e setar produção
-RUN npm prune --production && \
+    npm ci --no-audit --prefer-offline && \
+    npm prune --production && \
     npm cache clean --force
 
 ENV NODE_ENV=production

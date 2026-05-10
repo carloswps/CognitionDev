@@ -19,6 +19,12 @@ jobs:
           fetch-depth: 0
           lfs: true
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
       - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
@@ -29,9 +35,25 @@ jobs:
           git lfs version
           git lfs install
 
+      - name: Install dependencies
+        run: |
+          npm config set fetch-retry-maxtimeout 600000
+          npm ci --no-audit --prefer-offline
+
+      - name: Build packages and frontend
+        run: |
+          npm run build:data-schemas
+          npm run build:data-provider
+          npm run build:api
+          npm run build:client-package
+          cd client && npm run build
+
       - name: Create clean branch for Hugging Face
         run: |
           git checkout --orphan hf-deploy
+
+          # Remover dist/ do gitignore para incluir o frontend buildado
+          sed -i '/^dist\/$/d' .gitignore
 
           # Configura Git LFS para arquivos binários
           git lfs track "*.png"
