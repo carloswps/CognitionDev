@@ -367,6 +367,15 @@ export type TConfig = {
   order: number;
   type?: EModelEndpoint;
   azure?: boolean;
+  streamRate?: number;
+  baseUrl?: string;
+  titlePrompt?: string;
+  titleModel?: string;
+  titleConvo?: boolean;
+  titleMethod?: 'completion' | 'functions' | 'structured';
+  titleEndpoint?: string;
+  titlePromptTemplate?: string;
+  maxToolResultChars?: number;
   availableTools?: [];
   availableRegions?: string[];
   allowedProviders?: (string | EModelEndpoint)[];

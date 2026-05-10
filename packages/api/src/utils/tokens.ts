@@ -355,6 +355,7 @@ export const maxTokensMap = {
   [EModelEndpoint.google]: googleModels,
   [EModelEndpoint.anthropic]: anthropicModels,
   [EModelEndpoint.bedrock]: bedrockModels,
+  [EModelEndpoint.deepseek]: deepseekModels,
 };
 
 export const modelMaxOutputs = {
@@ -409,6 +410,7 @@ export const maxOutputTokensMap = {
   [EModelEndpoint.azureOpenAI]: modelMaxOutputs,
   [EModelEndpoint.openAI]: { ...modelMaxOutputs, ...deepseekMaxOutputs },
   [EModelEndpoint.custom]: { ...modelMaxOutputs, ...deepseekMaxOutputs },
+  [EModelEndpoint.deepseek]: { ...deepseekMaxOutputs },
 };
 
 /** Finds the longest matching key in the tokens map via substring match. */

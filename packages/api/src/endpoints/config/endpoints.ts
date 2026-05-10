@@ -104,6 +104,18 @@ export function createEndpointsConfigService(deps: EndpointsConfigDeps) {
       };
     }
 
+    if (mergedConfig[EModelEndpoint.deepseek] && appConfig?.endpoints?.[EModelEndpoint.deepseek]) {
+      const { streamRate, titleModel } = appConfig.endpoints[EModelEndpoint.deepseek] as {
+        streamRate?: number;
+        titleModel?: string;
+      };
+      mergedConfig[EModelEndpoint.deepseek] = {
+        ...mergedConfig[EModelEndpoint.deepseek],
+        streamRate,
+        titleModel,
+      };
+    }
+
     return orderEndpointsConfig(mergedConfig as TEndpointsConfig);
   }
 

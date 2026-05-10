@@ -245,6 +245,8 @@ actions:
 
 # Definition of custom endpoints
 endpoints:
+  all:
+    titleConvo: true
   # assistants:
   #   disableBuilder: false # Disable Assistants Builder Interface by setting to `true`
   #   pollIntervalMs: 3000  # Polling interval for checking assistant updates
@@ -334,6 +336,26 @@ endpoints:
   #     #   claude-sonnet-4: true  # Will use the default deploymentName
   #     #   claude-3.5-haiku:
   #     #     deploymentName: claude-3-5-haiku@20241022  # Override for this model
+
+  # deepseek:
+  #   # The name of the endpoint
+  #   name: "DeepSeek"
+  #   # Stream rate in milliseconds
+  #   streamRate: 20
+  #   # Model used for title generation
+  #   titleModel: "deepseek-chat"
+  #   # Custom title prompt
+  #   titlePrompt: "Generate a concise title..."
+  #   # API key (uses env var by default)
+  #   apiKey: "${DEEPSEEK_API_KEY}"
+  #   # Base URL (optional, defaults to https://api.deepseek.com/v1)
+  #   baseURL: "https://api.deepseek.com/v1"
+  #   # Models configuration
+  #   models:
+  #     # Default models if fetch fails
+  #     default: ["deepseek-chat", "deepseek-reasoner"]
+  #     # Fetch models from API
+  #     fetch: true
 
   custom:
     # Groq Example

@@ -1,7 +1,12 @@
 import type { AppConfig } from '@librechat/data-schemas';
 import { logger } from '@librechat/data-schemas';
 import type { TEndpoint, TModelsConfig } from 'librechat-data-provider';
-import { EModelEndpoint, ErrorTypes, extractEnvVariable, normalizeEndpointName } from 'librechat-data-provider';
+import {
+  EModelEndpoint,
+  ErrorTypes,
+  extractEnvVariable,
+  normalizeEndpointName,
+} from 'librechat-data-provider';
 import type { FetchModelsParams } from '~/endpoints/models';
 import { fetchModels as defaultFetchModels } from '~/endpoints/models';
 import type { GetUserKeyValuesFunction, ServerRequest, UserKeyValues } from '~/types';
@@ -49,6 +54,11 @@ export function createLoadConfigModels(deps: LoadConfigModelsDeps) {
     const bedrockConfig = appConfig.endpoints?.[EModelEndpoint.bedrock];
     if (bedrockConfig?.models && Array.isArray(bedrockConfig.models)) {
       modelsConfig[EModelEndpoint.bedrock] = bedrockConfig.models;
+    }
+
+    const deepseekConfig = appConfig.endpoints?.[EModelEndpoint.deepseek];
+    if (deepseekConfig?.models && Array.isArray(deepseekConfig.models)) {
+      modelsConfig[EModelEndpoint.deepseek] = deepseekConfig.models;
     }
 
     if (!Array.isArray(appConfig.endpoints?.[EModelEndpoint.custom])) {
